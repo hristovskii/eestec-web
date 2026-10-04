@@ -6,6 +6,7 @@ import { getMessages } from 'next-intl/server';
 
 import { SITE_URL } from '@/shared/config/site';
 import { roboto } from '@/shared/styles/fonts';
+import { Toaster } from '@/shared/ui/primitives/sonner';
 
 export const metadata: Metadata = {
   metadataBase: SITE_URL,
@@ -19,8 +20,11 @@ export default async function AdminRootLayout({ children }: LayoutProps<'/admin'
   return (
     <html lang="en" className={roboto.variable}>
       <body data-density="compact" className="bg-surface">
-        <NextIntlClientProvider messages={{ common: messages.common, admin: messages.admin }}>
+        <NextIntlClientProvider
+          messages={{ common: messages.common, ui: messages.ui, admin: messages.admin }}
+        >
           {children}
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -136,7 +136,8 @@ export default defineConfig([
   // No hard-coded UI copy: text goes through next-intl (board content comes from repositories).
   {
     files: ['src/features/**/*.tsx', 'src/shared/layout/**/*.tsx', 'src/app/**/*.tsx'],
-    ignores: ['**/*.test.tsx'],
+    // devtools is a dev/preview-only English showcase, never shown to visitors.
+    ignores: ['**/*.test.tsx', 'src/features/devtools/**'],
     plugins: { i18next },
     rules: { 'i18next/no-literal-string': ['error', { mode: 'jsx-text-only' }] },
   },

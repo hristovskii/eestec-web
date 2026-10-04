@@ -28,9 +28,11 @@ jobs:
       # The app must build with an empty environment (docs/ARCHITECTURE.md §6).
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
+      # Builds again with the e2e flags (phase 2 + dev surfaces).
       - run: pnpm e2e
         env:
           FEATURE_FLAGS: phase2
+          ENABLE_DEV_SURFACES: 'true'
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
