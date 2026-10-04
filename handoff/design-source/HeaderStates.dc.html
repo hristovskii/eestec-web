@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Header · logged-in states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h2,p{margin:0}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.stage{position:relative;background:#f5f5f5;border:1px solid #e3e3e3;border-radius:12px;overflow:hidden}
+.phone{width:390px;border:1px solid #e3e3e3;border-radius:16px;overflow:hidden;background:#f5f5f5;position:relative}
+</style>
+</helmet>
+<div style="width: 100%; padding: 56px 0 64px">
+  <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px; display: flex; flex-direction: column; gap: 28px">
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">Header · logged out and logged in</h2><p style="color: #6b6b6b; font-size: 15px; line-height: 1.5; max-width: 900px">Visitors get a “Log in” link next to the language switch. Logged-in members get their avatar with a menu. Board members who are also admins see one extra item, “Admin panel” (same login, different role).</p></div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">1 · Visitor (logged out)</span><div class="stage" style="height: 72px"><dc-import name="Header" variant="desktop" active="Members" auth="guest" hint-size="100%,72px"></dc-import></div></div>
+    <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">2 · Member, menu closed</span><div class="stage" style="height: 72px"><dc-import name="Header" variant="desktop" active="Members" auth="member" hint-size="100%,72px"></dc-import></div></div>
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">3 · Member, menu open</span><div class="stage" style="height: 380px"><div style="width: 1440px; margin-left: -760px"><dc-import name="Header" variant="desktop" active="Members" auth="member-menu" hint-size="1440px,72px"></dc-import></div></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">4 · Board member who is also an admin</span><div class="stage" style="height: 380px"><div style="width: 1440px; margin-left: -760px"><dc-import name="Header" variant="desktop" active="Members" auth="member-menu" admin="{{ true }}" hint-size="1440px,72px"></dc-import></div></div></div>
+    </div>
+
+    <div style="display: flex; gap: 32px; align-items: flex-start; padding-top: 8px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">5 · Mobile · visitor, menu open</span><div class="phone" style="height: 760px"><dc-import name="Header" variant="mobile-open" active="Members" auth="guest" hint-size="390px,700px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">6 · Mobile · member</span><div class="phone" style="height: 760px"><dc-import name="Header" variant="mobile" active="Members" auth="member" hint-size="390px,64px"></dc-import><p style="padding: 20px; font-size: 14px; line-height: 1.5; color: #6b6b6b">The avatar opens My profile directly. Everything else is in the menu.</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">7 · Mobile · member, menu open</span><div class="phone" style="height: 760px"><dc-import name="Header" variant="mobile-open" active="Members" auth="member" hint-size="390px,740px"></dc-import></div></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1711}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

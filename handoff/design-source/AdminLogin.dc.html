@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · sign in</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,p{margin:0}
+a{color:#b81f24;font-weight:500}
+.lg .muted{color:#6b6b6b}
+.lg .sm{font-size:13px}
+.lg .label{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:500;margin-bottom:6px}
+.lg .input{width:100%;height:44px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:15px}
+.lg .input:focus,.lg .input.focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.25)}
+.lg .input.err{border:2px solid #e52a30}
+.lg .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:46px;padding:0 18px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;text-decoration:none}
+.lg .btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.lg .btn-primary:hover{background:#b81f24;border-color:#b81f24}
+.lg .btn:focus-visible{outline:3px solid #e52a30;outline-offset:2px}
+.lg .btn[disabled]{background:#ececec;border-color:#ececec;color:#8a8a8a;cursor:not-allowed}
+.lg .em{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:13px;color:#b81f24}
+.lg .code{flex:1;min-width:0;width:auto;max-width:52px;height:56px;padding:0;border:1px solid #8c8c8c;border-radius:8px;text-align:center;font-family:inherit;font-size:22px;font-weight:500;color:#1a1a1a;background:#fff}
+.lg .code.focus{border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.25)}
+.lg .cb{width:18px;height:18px;accent-color:#e52a30;margin:0}
+</style>
+</helmet>
+
+<div class="lg" style="display: flex; flex-direction: {{dir}}; width: 100%; min-height: {{minH}}; background: {{pageBg}}">
+  <sc-if value="{{showSide}}" hint-placeholder-val="{{ true }}">
+    <aside style="flex: {{sideFlex}}; background: #e52a30; color: #ffffff; display: flex; flex-direction: column; justify-content: space-between; padding: {{sidePad}}; gap: 24px">
+      <img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje" style="height: {{logoH}}; width: auto; align-self: flex-start">
+      <sc-if value="{{wide}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 12px; max-width: 420px">
+          <p style="font-size: 36px; line-height: 1.2; font-weight: 700">Admin panel</p>
+          <p style="font-size: 17px; line-height: 1.55; font-weight: 500">Events, approvals, pages and settings for eestec.mk. For the board and organizing teams only.</p>
+        </div>
+        <p style="font-size: 14px; font-weight: 500">© 2026 EESTEC LC Skopje</p>
+      </sc-if>
+    </aside>
+  </sc-if>
+
+  <main style="flex: 1; display: flex; align-items: {{mainAlign}}; justify-content: center; padding: {{mainPad}}">
+    <div style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 24px; background: {{cardBg}}; border: {{cardBorder}}; border-radius: 14px; padding: {{cardPad}}">
+
+      <sc-if value="{{isSignin}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="font-size: 26px; line-height: 1.25; font-weight: 700">Sign in</h1><p class="muted">Use your admin e-mail. Members sign in on the main site.</p></div>
+        <sc-if value="{{isError}}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display: flex; gap: 12px; padding: 14px 16px; border: 2px solid #e52a30; border-radius: 10px; background: #fdf0f0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+            <div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 700">E-mail or password is wrong</strong><span class="sm">2 more tries, then sign-in pauses for 15 minutes.</span></div>
+          </div>
+        </sc-if>
+        <form style="display: flex; flex-direction: column; gap: 18px" novalidate>
+          <div><label class="label" for="lg-e">E-mail</label><input class="{{emailCls}}" id="lg-e" type="email" autocomplete="username" value="ana.t@eestec.mk"></div>
+          <div>
+            <label class="label" for="lg-p"><span>Password</span><a href="/admin/login?forgot" class="sm">Forgot password?</a></label>
+            <div style="position: relative"><input class="{{pwCls}}" id="lg-p" type="password" autocomplete="current-password" value="{{pw}}" placeholder="{{pwPh}}" aria-invalid="{{isError}}" style="padding-right: 48px"><button type="button" aria-label="Show password" style="position: absolute; right: 4px; top: 4px; width: 40px; height: 36px; border: 0; background: transparent; border-radius: 6px; color: #3a3a3a; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
+            <sc-if value="{{isError}}" hint-placeholder-val="{{ false }}"><p class="em"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Type your password again</p></sc-if>
+          </div>
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px"><input type="checkbox" class="cb" checked> Keep me signed in on this device for 14 days</label>
+          <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+      </sc-if>
+
+      <sc-if value="{{isForgot}}" hint-placeholder-val="{{ false }}">
+        <a href="/admin/login" class="sm" style="display: inline-flex; align-items: center; gap: 6px; color: #1a1a1a; text-decoration: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>Back to sign in</a>
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="font-size: 26px; line-height: 1.25; font-weight: 700">Reset your password</h1><p class="muted">Enter your admin e-mail and we'll send you a link to choose a new password.</p></div>
+        <form style="display: flex; flex-direction: column; gap: 18px" novalidate>
+          <div><label class="label" for="lg-f">E-mail</label><input class="input focus" id="lg-f" type="email" value="ana.t@eestec.mk"></div>
+          <button type="submit" class="btn btn-primary">Send reset link</button>
+        </form>
+        <p class="sm muted">No access to this e-mail any more? Ask a super admin to update your account.</p>
+      </sc-if>
+
+      <sc-if value="{{isSent}}" hint-placeholder-val="{{ false }}">
+        <span style="width: 52px; height: 52px; border-radius: 50%; background: #fdf0f0; color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6"></path></svg></span>
+        <div role="status" style="display: flex; flex-direction: column; gap: 8px"><h1 style="font-size: 26px; line-height: 1.25; font-weight: 700">Check your inbox</h1><p class="muted" style="line-height: 1.55">If <strong style="color: #1a1a1a">ana.t@eestec.mk</strong> has an admin account, a reset link is on its way. The link works for 30 minutes.</p></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><a href="/admin/login" class="btn btn-primary">Back to sign in</a><button type="button" class="btn" disabled>Resend link in 0:45</button></div>
+        <p class="sm muted">Not there? Check spam, or ask a super admin.</p>
+      </sc-if>
+
+      <sc-if value="{{isTfa}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="font-size: 26px; line-height: 1.25; font-weight: 700">2-step login</h1><p class="muted">Enter the 6-digit code from your authenticator app.</p></div>
+        <form style="display: flex; flex-direction: column; gap: 18px" novalidate>
+          <fieldset style="border: 0; margin: 0; padding: 0; min-width: 0"><legend class="label" style="padding: 0">Code</legend>
+            <div style="display: flex; gap: 8px; justify-content: space-between">
+              <input class="code" value="4" aria-label="Digit 1" inputmode="numeric"><input class="code" value="8" aria-label="Digit 2" inputmode="numeric"><input class="code" value="2" aria-label="Digit 3" inputmode="numeric"><input class="code focus" value="" aria-label="Digit 4" inputmode="numeric"><input class="code" value="" aria-label="Digit 5" inputmode="numeric"><input class="code" value="" aria-label="Digit 6" inputmode="numeric">
+            </div>
+          </fieldset>
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px"><input type="checkbox" class="cb"> Trust this device for 30 days</label>
+          <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+        <a href="#" class="sm">Use a backup code instead</a>
+      </sc-if>
+
+      <sc-if value="{{showFoot}}" hint-placeholder-val="{{ true }}">
+        <div style="padding-top: 18px; border-top: 1px solid #ececec; display: flex; justify-content: space-between; gap: 12px; font-size: 13px"><a href="/" style="color: #3a3a3a; font-weight: 400">← Back to eestec.mk</a><span class="muted">Admins only</span></div>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["signin","error","forgot","sent","twofa"],"default":"signin"},"device":{"editor":"enum","options":["desktop","mobile","card"],"default":"desktop"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.props.state ?? 'signin';
+    const dev = this.props.device ?? 'desktop';
+    const desk = dev === 'desktop', mob = dev === 'mobile', card = dev === 'card';
+    const err = st === 'error';
+    return {
+      isSignin: st === 'signin' || err, isError: err, isForgot: st === 'forgot', isSent: st === 'sent', isTfa: st === 'twofa',
+      emailCls: err ? 'input err' : 'input',
+      pwCls: err ? 'input err focus' : 'input',
+      pw: err ? '' : 'correct-horse-battery',
+      pwPh: err ? 'Password' : '',
+      showSide: !card, wide: desk,
+      dir: desk ? 'row' : 'column',
+      minH: card ? 'auto' : (mob ? '844px' : '900px'),
+      pageBg: card ? 'transparent' : (desk ? '#ffffff' : '#ffffff'),
+      sideFlex: desk ? '0 0 44%' : '0 0 auto',
+      sidePad: desk ? '48px 56px' : '18px 20px',
+      logoH: desk ? '64px' : '40px',
+      mainAlign: mob ? 'flex-start' : 'center',
+      mainPad: card ? '0' : (mob ? '28px 20px 32px' : '48px'),
+      cardBg: card ? '#ffffff' : 'transparent',
+      cardBorder: card ? '1px solid #e3e3e3' : '0',
+      cardPad: card ? '28px' : '0',
+      showFoot: !card
+    };
+  }
+}
+</script>
+</body>
+</html>

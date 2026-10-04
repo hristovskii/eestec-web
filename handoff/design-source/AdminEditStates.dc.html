@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · edit form states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+.muted{color:#6b6b6b}
+.sm{font-size:13px}
+.ds-h{font-size:28px;line-height:1.2;font-weight:700}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1a1a1a}
+.panel{background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;line-height:1;white-space:nowrap;cursor:pointer;text-decoration:none}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-ghost{border-color:transparent;background:transparent}
+.btn:disabled{background:#f0f0f0;border-color:#e3e3e3;color:#9a9a9a;cursor:not-allowed}
+.label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.req{color:#b81f24}
+.input{width:100%;height:38px;padding:0 12px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px}
+.input.err{border:2px solid #e52a30}
+textarea.input{height:auto;padding:10px 12px;line-height:1.5}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:13px;font-weight:500;color:#b81f24}
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.b-pub{background:#1a1a1a;color:#ffffff}
+.b-draft{border:1px solid #8c8c8c;color:#3a3a3a;background:#ffffff}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block}
+.bar{display:flex;align-items:center;gap:14px;padding:12px 20px;background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.bar h3{font-size:17px;font-weight:700}
+.toast{display:flex;align-items:center;gap:12px;width:400px;padding:14px 16px;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.18)}
+</style>
+</helmet>
+<div style="width: 100%; background: #f5f5f5">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 56px 24px 80px; display: flex; flex-direction: column; gap: 56px">
+
+    <section style="display: flex; flex-direction: column; gap: 16px">
+      <h2 class="ds-h">Edit form · save bar</h2>
+      <p class="muted" style="font-size: 15px">Sticky under the top bar on every edit screen. Leaving with unsaved changes asks first (see Dialogs).</p>
+      <span class="ds-label">1 · No changes</span>
+      <div class="bar"><h3>Workshop: AI at the Edge</h3><span class="badge b-draft"><span class="dot"></span>Draft</span><span class="sm muted" style="margin-left: auto; display: flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>All changes saved · 4 min ago</span><button type="button" class="btn btn-ghost">Preview</button><button type="button" class="btn" disabled>Save draft</button><button type="button" class="btn btn-primary">Publish</button></div>
+      <span class="ds-label">2 · Unsaved changes</span>
+      <div class="bar"><h3>Workshop: AI at the Edge</h3><span class="badge b-draft"><span class="dot"></span>Draft</span><span role="status" style="margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span>Unsaved changes</span><button type="button" class="btn btn-ghost">Preview</button><button type="button" class="btn">Save draft</button><button type="button" class="btn btn-primary">Publish</button></div>
+      <span class="ds-label">3 · Saving</span>
+      <div class="bar" aria-busy="true"><h3>Workshop: AI at the Edge</h3><span class="badge b-draft"><span class="dot"></span>Draft</span><span role="status" class="sm muted" style="margin-left: auto; display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#e3e3e3" stroke-width="3"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"></path></svg>Saving…</span><button type="button" class="btn btn-ghost" disabled>Preview</button><button type="button" class="btn" disabled>Save draft</button><button type="button" class="btn" disabled>Publish</button></div>
+      <span class="ds-label">4 · Published, then edited</span>
+      <div class="bar"><h3>Workshop: AI at the Edge</h3><span class="badge b-pub"><span class="dot"></span>Published</span><span role="status" style="margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span>Unsaved changes · the live page still shows the old version</span><button type="button" class="btn btn-ghost">Discard</button><button type="button" class="btn btn-primary">Update live page</button></div>
+    </section>
+
+    <section style="display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: 40px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <h2 class="ds-h">Validation errors</h2>
+        <p class="muted" style="font-size: 15px">“Save draft” always works. “Publish” checks required fields first and lists what's missing.</p>
+        <div class="panel" style="padding: 20px; display: flex; flex-direction: column; gap: 18px">
+          <div role="alert" style="display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; padding: 14px 16px; border-radius: 10px; border: 2px solid #e52a30; background: #fdf0f0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+            <div style="display: flex; flex-direction: column; gap: 4px"><strong>Can't publish yet: fix 3 fields</strong><ul style="margin: 0; padding-left: 18px; line-height: 1.6" class="sm"><li><a href="#x-title" style="color: #b81f24; font-weight: 500">Title</a> is empty</li><li><a href="#x-end" style="color: #b81f24; font-weight: 500">End date</a> is before the start date</li><li><a href="#x-alt" style="color: #b81f24; font-weight: 500">Cover image</a> needs alt text</li></ul></div>
+          </div>
+          <div><label class="label" for="x-title">Title <span class="req">*</span></label><input class="input err" id="x-title" aria-invalid="true" placeholder="e.g. Workshop: AI at the Edge"><span class="error"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Add a title</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
+            <div><label class="label" for="x-start">Start date <span class="req">*</span></label><input class="input" id="x-start" value="Sat, 7 Nov 2026"></div>
+            <div><label class="label" for="x-end">End date <span class="req">*</span></label><input class="input err" id="x-end" aria-invalid="true" value="Fri, 6 Nov 2026"><span class="error"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Must be on or after 7 Nov 2026</span></div>
+          </div>
+          <div><label class="label" for="x-alt">Cover image alt text <span class="req">*</span></label><textarea class="input err" id="x-alt" aria-invalid="true" rows="2"></textarea><span class="error"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Describe the photo for people who can't see it</span></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <h2 class="ds-h">Toasts</h2>
+        <p class="muted" style="font-size: 15px">Bottom-right, 5 seconds, pause on hover. Errors stay until closed.</p>
+        <div role="status" class="toast" style="background: #1a1a1a; color: #ffffff">
+          <span style="width: 24px; height: 24px; border-radius: 50%; background: #ffffff; color: #1a1a1a; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+          <span style="flex: 1; font-weight: 500">Saved as draft</span>
+          <button type="button" style="border: 0; background: none; color: #ffffff; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer">Undo</button>
+        </div>
+        <div role="status" class="toast" style="background: #1a1a1a; color: #ffffff">
+          <span style="width: 24px; height: 24px; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+          <span style="flex: 1; font-weight: 500">Published. It's live on eestec.mk.</span>
+          <a href="/upcoming/ai-at-the-edge" style="color: #ffffff; font-weight: 700">View ↗</a>
+        </div>
+        <div role="alert" class="toast" style="background: #ffffff; color: #1a1a1a; border: 2px solid #e52a30">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+          <span style="flex: 1; display: flex; flex-direction: column"><strong>Couldn't save</strong><span class="sm muted">Check your connection. Your changes are kept on this device.</span></span>
+          <button type="button" class="btn" style="height: 32px">Retry</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1270}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

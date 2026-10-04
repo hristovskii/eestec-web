@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Members — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+.jump a{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:999px;background:#ffffff;border:1px solid #e3e3e3;color:#1a1a1a;font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap}
+.jump a:hover{border-color:#e52a30;color:#b81f24}
+.scroll-row{display:flex;gap:8px;overflow:hidden}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="desktop" active="Members" auth="{{auth}}" hint-size="100%,72px"></dc-import></div>
+  <main>
+    <section style="background: #f5f5f5">
+      <div class="container" style="padding-top: 40px; padding-bottom: 36px; display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px">
+          <div style="display: flex; flex-direction: column; gap: 14px">
+            <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Members</span></nav>
+            <h1 class="h1">Members</h1>
+            <span class="title-bar"></span>
+            <p class="body muted" style="font-size: 18px; max-width: 640px; padding-top: 4px">The students behind EESTEC LC Skopje: this year's board, the teams that run our events, and the alumni who started it all.</p>
+          </div>
+          <sc-if value="{{isVisitor}}" hint-placeholder-val="{{ true }}">
+            <div class="card" style="width: 360px; flex-shrink: 0; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+              <strong style="font-size: 16px">Are you a member?</strong>
+              <p class="small muted">Log in to see members-only profiles and keep yours up to date.</p>
+              <div style="display: flex; gap: 10px"><a href="/login?next=/members" class="btn btn-primary btn-sm">Log in</a><a href="/register" class="btn btn-quiet btn-sm">Create account</a></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{isMemberView}}" hint-placeholder-val="{{ false }}">
+            <div class="card" style="width: 360px; flex-shrink: 0; padding: 20px 22px; display: flex; align-items: center; gap: 14px">
+              <span style="width: 52px; height: 52px; border-radius: 50%; background: #fdf0f0; color: #b81f24; font-size: 17px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">MS</span>
+              <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 16px">Hi, Marija</strong><span class="small muted">Your profile is visible to members only.</span><a href="/profile" class="link small" style="margin-top: 4px">Edit my profile →</a></span>
+            </div>
+          </sc-if>
+        </div>
+        <nav aria-label="On this page" class="jump" style="display: flex; gap: 8px">
+          <a href="#board">Board 2026/2027</a><a href="#active">Active members <span class="chip" style="height: 22px; padding: 0 8px">{{activeCount}}</span></a><a href="#alumni">Alumni <span class="chip" style="height: 22px; padding: 0 8px">64</span></a>
+        </nav>
+      </div>
+    </section>
+
+    <section id="board" aria-labelledby="h-board" style="padding: 64px 0 72px">
+      <div class="container" style="display: flex; flex-direction: column; gap: 32px">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <h2 id="h-board" class="h2">{{boardTitle}}</h2>
+            <span class="title-bar"></span>
+            <p class="body muted" style="max-width: 640px">{{boardIntro}}</p>
+          </div>
+          <div style="position: relative; width: 240px; flex-shrink: 0">
+            <label for="mb-board" class="label">Show board</label>
+            <select id="mb-board" class="input select"><sc-for list="{{boardYears}}" as="y" hint-placeholder-count="4"><option>{{y}}</option></sc-for></select>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="top: 42px"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px">
+          <sc-for list="{{board}}" as="b" hint-placeholder-count="5"><li style="min-width: 0"><dc-import name="MemberCard" variant="board" member="{{b}}" hint-size="100%,330px"></dc-import></li></sc-for>
+        </ul>
+      </div>
+    </section>
+
+    <section id="active" aria-labelledby="h-active" style="padding: 64px 0 80px; border-top: 1px solid #ececec">
+      <div class="container" style="display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <h2 id="h-active" class="h2">Active members</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: grid; grid-template-columns: minmax(0, 1fr) 200px 180px; gap: 12px">
+            <div style="position: relative">
+              <label for="mb-q" class="sr-only">Search members by name</label>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 14px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+              <input id="mb-q" class="input" type="search" placeholder="Search by name" value="{{q}}" style="padding-left: 44px">
+            </div>
+            <div style="position: relative"><label for="mb-year" class="sr-only">Year joined</label><select id="mb-year" class="input select"><option>Joined: any year</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022 or earlier</option></select><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div>
+            <div style="position: relative"><label for="mb-sort" class="sr-only">Sort</label><select id="mb-sort" class="input select"><option>Name A–Z</option><option>Newest members</option><option>Longest active</option></select><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div>
+          </div>
+          <div role="group" aria-label="Filter by team" style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{teams}}" as="t" hint-placeholder-count="7"><button type="button" class="filter" aria-pressed="{{t.on}}">{{t.t}} <span class="n">{{t.n}}</span></button></sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{isResults}}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+            <p class="small muted" role="status">Showing <strong style="color: #1a1a1a">1–15</strong> of <strong style="color: #1a1a1a">{{activeCount}}</strong> members</p>
+            <sc-if value="{{isVisitor}}" hint-placeholder-val="{{ true }}">
+              <p class="small" style="display: flex; align-items: center; gap: 8px; color: #3a3a3a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>11 more members show their profile to members only. <a href="/login?next=/members" class="link">Log in to see them</a></p>
+            </sc-if>
+            <sc-if value="{{isMemberView}}" hint-placeholder-val="{{ false }}">
+              <p class="small" style="display: flex; align-items: center; gap: 8px; color: #3a3a3a"><span class="chip chip-dark" style="height: 24px">Members only</span> profiles are hidden from visitors.</p>
+            </sc-if>
+          </div>
+          <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px">
+            <sc-for list="{{members}}" as="m" hint-placeholder-count="15"><li style="min-width: 0"><dc-import name="MemberCard" variant="member" member="{{m}}" hover="{{m.hover}}" hint-size="100%,320px"></dc-import></li></sc-for>
+          </ul>
+          <nav aria-label="Pagination" style="margin-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
+            <span class="small muted">Page 1 of 3</span>
+            <div style="display: flex; align-items: center; gap: 6px">
+              <a href="#" class="page-btn" aria-disabled="true" aria-label="Previous page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></a>
+              <a href="/members?page=1#active" class="page-btn" aria-current="page">1</a><a href="/members?page=2#active" class="page-btn">2</a><a href="/members?page=3#active" class="page-btn">3</a>
+              <a href="/members?page=2#active" class="page-btn" aria-label="Next page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></a>
+            </div>
+            <a href="#active" class="link small">Back to members ↑</a>
+          </nav>
+        </sc-if>
+
+        <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+            <p class="small muted" role="status"><strong style="color: #1a1a1a">0</strong> members found</p>
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span class="tag">“Bojan”<button type="button" aria-label="Remove search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></span>
+              <span class="tag">FR team<button type="button" aria-label="Remove filter FR team"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></span>
+              <button type="button" class="link small" style="border: 0; background: transparent; height: 32px; padding: 0 6px; cursor: pointer; font-family: inherit">Clear all</button>
+            </div>
+          </div>
+          <div style="padding: 64px 32px; border: 1px dashed #c7c7c7; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+            <span style="width: 72px; height: 72px; border-radius: 50%; background: #f5f5f5; color: #6b6b6b; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM17 8l5 5M22 8l-5 5"></path></svg></span>
+            <h3 class="h3">No active members match</h3>
+            <p class="body muted" style="max-width: 540px">No one called “Bojan” in the FR team. They might have a members-only profile, or they could be an alum.</p>
+            <div style="display: flex; gap: 12px; padding-top: 8px"><button type="button" class="btn btn-primary">Clear filters</button><a href="/members?alumni=Bojan#alumni" class="btn btn-secondary">Search alumni for “Bojan”</a></div>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+
+    <section id="alumni" aria-labelledby="h-alumni" style="padding: 64px 0 80px; background: #f5f5f5">
+      <div class="container" style="display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <h2 id="h-alumni" class="h2">Alumni</h2>
+            <span class="title-bar"></span>
+            <p class="body muted" style="max-width: 640px">64 former members who built LC Skopje. Many still come back as trainers, mentors and partners.</p>
+          </div>
+          <div style="position: relative; width: 300px; flex-shrink: 0">
+            <label for="al-q" class="sr-only">Search alumni</label>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 14px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            <input id="al-q" class="input" type="search" placeholder="Search alumni" style="padding-left: 44px">
+          </div>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+          <sc-for list="{{alumni}}" as="a" hint-placeholder-count="9"><li style="min-width: 0"><dc-import name="MemberCard" variant="alumni" member="{{a}}" hint-size="100%,96px"></dc-import></li></sc-for>
+        </ul>
+        <div style="display: flex; justify-content: center"><a href="/members?alumni=all#alumni" class="btn btn-secondary">Show all 64 alumni</a></div>
+      </div>
+    </section>
+
+    <sc-if value="{{isVisitor}}" hint-placeholder-val="{{ true }}">
+      <section style="background: #e52a30; color: #ffffff">
+        <div class="container" style="padding-top: 48px; padding-bottom: 48px; display: flex; align-items: center; justify-content: space-between; gap: 32px">
+          <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; font-weight: 700">Want to see yourself on this page?</h2><p style="font-size: 17px; font-weight: 500">New members join at the start of every semester.</p></div>
+          <a href="/join" class="btn" style="background: #ffffff; color: #b81f24; border-color: #ffffff">Become an EESTECer</a>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="mobile" active="Members" auth="{{auth}}" hint-size="390px,64px"></dc-import></div>
+  <main>
+    <section style="background: #f5f5f5; padding: 24px 16px 28px; display: flex; flex-direction: column; gap: 12px">
+      <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Members</span></nav>
+      <h1 class="h1-m">Members</h1>
+      <span class="title-bar"></span>
+      <p class="body muted">This year's board, the teams that run our events, and our alumni.</p>
+      <sc-if value="{{isVisitor}}" hint-placeholder-val="{{ true }}">
+        <div class="card" style="margin-top: 8px; padding: 16px; display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 15px">Are you a member?</strong><p class="small muted">Log in to see members-only profiles.</p><a href="/login?next=/members" class="btn btn-primary btn-sm btn-block">Log in</a></div>
+      </sc-if>
+      <nav aria-label="On this page" class="jump scroll-row" style="margin-top: 8px"><a href="#board">Board</a><a href="#active">Active <span class="chip" style="height: 22px; padding: 0 8px">{{activeCount}}</span></a><a href="#alumni">Alumni <span class="chip" style="height: 22px; padding: 0 8px">64</span></a></nav>
+    </section>
+
+    <section id="board" aria-labelledby="hm-board" style="padding: 36px 16px 40px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><h2 id="hm-board" class="h2-m">{{boardTitle}}</h2><span class="title-bar"></span></div>
+      <div style="position: relative"><label for="mbm-board" class="sr-only">Show board</label><select id="mbm-board" class="input select"><sc-for list="{{boardYears}}" as="y" hint-placeholder-count="4"><option>{{y}}</option></sc-for></select><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div>
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+        <sc-for list="{{board}}" as="b" hint-placeholder-count="5"><li style="min-width: 0"><dc-import name="MemberCard" variant="board-row" member="{{b}}" hint-size="100%,108px"></dc-import></li></sc-for>
+      </ul>
+    </section>
+
+    <section id="active" aria-labelledby="hm-active" style="padding: 36px 16px 40px; border-top: 1px solid #ececec; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><h2 id="hm-active" class="h2-m">Active members</h2><span class="title-bar"></span></div>
+      <div style="position: relative"><label for="mbm-q" class="sr-only">Search members by name</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 14px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input id="mbm-q" class="input" type="search" placeholder="Search by name" value="{{q}}" style="padding-left: 44px"></div>
+      <div role="group" aria-label="Filter by team" class="scroll-row" style="margin-right: -16px">
+        <sc-for list="{{teams}}" as="t" hint-placeholder-count="7"><button type="button" class="filter" aria-pressed="{{t.on}}">{{t.t}} <span class="n">{{t.n}}</span></button></sc-for>
+      </div>
+      <sc-if value="{{isResults}}" hint-placeholder-val="{{ true }}">
+        <p class="small muted" role="status"><strong style="color: #1a1a1a">{{activeCount}}</strong> members<sc-if value="{{isVisitor}}" hint-placeholder-val="{{ true }}"> · 11 members-only profiles hidden. <a href="/login?next=/members" class="link">Log in</a></sc-if></p>
+        <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <sc-for list="{{membersM}}" as="m" hint-placeholder-count="8"><li style="min-width: 0"><dc-import name="MemberCard" variant="member" member="{{m}}" compact="{{ true }}" hint-size="100%,270px"></dc-import></li></sc-for>
+        </ul>
+        <nav aria-label="Pagination" style="margin-top: 12px; display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; align-items: center; gap: 8px">
+          <a href="#" class="page-btn" aria-disabled="true" aria-label="Previous page" style="width: 52px; height: 48px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></a>
+          <span style="text-align: center; font-size: 15px; font-weight: 500">Page 1 of 5</span>
+          <a href="/members?page=2#active" class="page-btn" aria-label="Next page" style="width: 52px; height: 48px; border-color: #e52a30; color: #e52a30"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></a>
+        </nav>
+      </sc-if>
+      <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+        <p class="small muted" role="status"><strong style="color: #1a1a1a">0</strong> members found</p>
+        <div style="padding: 36px 20px; border: 1px dashed #c7c7c7; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+          <span style="width: 64px; height: 64px; border-radius: 50%; background: #f5f5f5; color: #6b6b6b; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM17 8l5 5M22 8l-5 5"></path></svg></span>
+          <h3 class="h3-m">No active members match</h3>
+          <p class="small muted">No one called “Bojan” in the FR team. They might be an alum.</p>
+          <button type="button" class="btn btn-primary btn-block" style="margin-top: 6px">Clear filters</button>
+          <a href="/members?alumni=Bojan#alumni" class="btn btn-secondary btn-block">Search alumni</a>
+        </div>
+      </sc-if>
+    </section>
+
+    <section id="alumni" aria-labelledby="hm-alumni" style="padding: 36px 16px 40px; background: #f5f5f5; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><h2 id="hm-alumni" class="h2-m">Alumni</h2><span class="title-bar"></span><p class="body muted">64 former members who built LC Skopje.</p></div>
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{alumniM}}" as="a" hint-placeholder-count="4"><li><dc-import name="MemberCard" variant="alumni" member="{{a}}" hint-size="100%,96px"></dc-import></li></sc-for>
+      </ul>
+      <a href="/members?alumni=all#alumni" class="btn btn-secondary btn-block">Show all 64 alumni</a>
+    </section>
+
+    <sc-if value="{{isVisitor}}" hint-placeholder-val="{{ true }}">
+      <section style="background: #e52a30; color: #ffffff; padding: 32px 16px; display: flex; flex-direction: column; gap: 14px">
+        <h2 style="font-size: 22px; line-height: 1.3; font-weight: 700">Want to see yourself on this page?</h2>
+        <p style="font-size: 16px; font-weight: 500">New members join at the start of every semester.</p>
+        <a href="/join" class="btn btn-block" style="background: #ffffff; color: #b81f24; border-color: #ffffff">Become an EESTECer</a>
+      </section>
+    </sc-if>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"view":{"editor":"enum","options":["visitor","member"],"default":"visitor"},"state":{"editor":"enum","options":["results","empty"],"default":"results"},"board":{"editor":"enum","options":["current","previous"],"default":"current"},"$preview":{"width":1440,"height":3788}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const view = this.props.view ?? 'visitor';
+    const st = this.props.state ?? 'results';
+    const prev = (this.props.board ?? 'current') === 'previous';
+    const member = view === 'member';
+    const slug = (n) => '/members/' + n.toLowerCase().replace(/[^a-z ]/g, '').trim().replace(/ +/g, '-');
+    const ini = (n) => n.split(' ').map((w) => w[0]).join('').slice(0, 2);
+    const B = (name, position, mail) => ({ name, initials: ini(name), position, mail: prev ? '' : mail, href: slug(name) });
+    const board = prev ? [
+      B('Bojan Petreski', 'Chairperson'), B('Teodora Mitreva', 'Vice Chair · External'), B('Aleksandar Popov', 'Vice Chair · Internal'), B('Sara Dimova', 'Treasurer'), B('Ana Trajkovska', 'PR & media')
+    ] : [
+      B('Ana Trajkovska', 'Chairperson', 'chair@eestec.mk'), B('Ivana Kostova', 'Vice Chair · External', 'partners@eestec.mk'), B('Marko Iliev', 'Vice Chair · Internal', 'members@eestec.mk'), B('Elena Dimitrova', 'Treasurer', 'treasurer@eestec.mk'), B('Stefan Nikolovski', 'PR & media', 'pr@eestec.mk')
+    ];
+    const M = (name, teams, role, joined, photo, mo, hover) => ({ name, initials: ini(name), teams, role, joined, photo: photo !== false, membersOnly: !!mo && member, href: slug(name), hover: !!hover });
+    const all = [
+      M('Aleksandar Popov', ['HR'], 'Team lead', '2021'),
+      M('Daniel Ristov', ['Events', 'IT'], 'Member', '2024', true, false, true),
+      M('Elena Petrovska', ['Events'], 'New member', '2026', false),
+      M('Filip Angelovski', ['IT'], 'Team lead', '2022'),
+      M('Goran Spasovski', ['FR'], 'Member', '2023', true, true),
+      M('Ivana Mitrevska', ['IT'], 'New member', '2026', false),
+      M('Jana Kostovska', ['PR'], 'Member', '2025'),
+      M('Kristina Velkovska', ['PR', 'Design'], 'Member', '2024'),
+      M('Marija Stojanovska', ['Events'], 'Team lead', '2023', true, true),
+      M('Martin Stojanov', ['FR'], 'Member', '2025', false),
+      M('Nikola Jovanovski', ['IT'], 'Trainer', '2022'),
+      M('Sara Dimova', ['HR'], 'Member', '2023'),
+      M('Tamara Nikolova', ['HR'], 'Member', '2025', true, true),
+      M('Teodora Mitreva', ['FR'], 'Team lead', '2022'),
+      M('Viktor Trajanov', ['Events'], 'Member', '2025', false)
+    ];
+    const members = member ? all : all.filter((m, i) => [4, 8, 12].indexOf(i) < 0).concat([M('Biljana Ristovska', ['Events'], 'Member', '2024'), M('Damjan Velkov', ['IT'], 'New member', '2026', false), M('Emilija Trajkovska', ['PR'], 'Member', '2025')]).sort((a, b) => a.name < b.name ? -1 : 1);
+    const A = (name, years, now, highlight) => ({ name, initials: ini(name), years, now, highlight: highlight || '', href: slug(name) });
+    const alumni = [
+      A('Bojan Petreski', '2018–2023', 'Embedded engineer at Gridnova', 'Chair 2021/22'),
+      A('Aleksandra Ilievska', '2016–2021', 'PhD student, TU Delft'),
+      A('Dimitar Kocev', '2017–2022', 'Software engineer at Kodra'),
+      A('Simona Ristevska', '2015–2019', 'Product manager in Skopje', 'Board 2018/19'),
+      A('Katerina Angelova', '2019–2024', 'Hardware designer at Amperix'),
+      A('Petar Lazarov', '2013–2017', 'CTO at Voltline', 'Founding member'),
+      A('Natasha Bogdanovska', '2018–2022', 'Teaching assistant, FEEIT'),
+      A('Ljupcho Georgiev', '2014–2018', ''),
+      A('Vlatko Mitev', '2016–2020', 'Trainer, EESTEC Soft Skills')
+    ];
+    const count = member ? '48' : '37';
+    const empty = st === 'empty';
+    const teamDefs = member ? [['All', '48'], ['Events', '14'], ['IT', '11'], ['PR', '8'], ['HR', '7'], ['FR', '5'], ['Design', '3']] : [['All', '37'], ['Events', '11'], ['IT', '9'], ['PR', '6'], ['HR', '5'], ['FR', '4'], ['Design', '2']];
+    return {
+      isDesktop: device === 'desktop', isMobile: device === 'mobile',
+      isVisitor: !member, isMemberView: member, auth: member ? 'member' : 'guest',
+      isResults: !empty, isEmpty: empty,
+      q: empty ? 'Bojan' : '',
+      teams: teamDefs.map(([t, n]) => ({ t, n, on: empty ? t === 'FR' : t === 'All' })),
+      activeCount: count,
+      boardTitle: prev ? 'Board 2025/2026' : 'Board 2026/2027',
+      boardIntro: prev ? 'A past board. Position e-mails always reach the current board, so they are not shown here.' : 'Elected for one mandate year. Write to a position e-mail and it reaches whoever holds the role.',
+      boardYears: prev ? ['2025/2026', '2026/2027 (current)', '2024/2025', '2023/2024'] : ['2026/2027 (current)', '2025/2026', '2024/2025', '2023/2024'],
+      board,
+      members,
+      membersM: members.slice(0, 8).map((m) => Object.assign({}, m, { hover: false })),
+      alumni,
+      alumniM: alumni.slice(0, 4)
+    };
+  }
+}
+</script>
+</body>
+</html>

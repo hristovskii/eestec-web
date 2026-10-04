@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · sign-in states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h2,p{margin:0}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1a1a1a}
+</style>
+</helmet>
+<div style="width: 100%; background: #f5f5f5">
+  <div style="max-width: 1360px; margin: 0 auto; padding: 56px 40px 64px; display: flex; flex-direction: column; gap: 28px">
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">Sign-in states</h2><p style="color: #6b6b6b; font-size: 15px">Same panel as /admin/login, shown on its own. Errors never say which of e-mail or password was wrong. Super admins always get the 2-step step.</p></div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">1 · Wrong e-mail or password</span><div style="width: 100%; min-width: 0"><dc-import name="AdminLogin" state="error" device="card" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">2 · Forgot password</span><div style="width: 100%; min-width: 0"><dc-import name="AdminLogin" state="forgot" device="card" hint-size="100%,400px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">3 · Reset link sent</span><div style="width: 100%; min-width: 0"><dc-import name="AdminLogin" state="sent" device="card" hint-size="100%,440px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">4 · 2-step login</span><div style="width: 100%; min-width: 0"><dc-import name="AdminLogin" state="twofa" device="card" hint-size="100%,400px"></dc-import></div></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":803}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

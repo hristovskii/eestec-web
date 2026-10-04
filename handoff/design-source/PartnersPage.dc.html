@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>For Companies — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section{padding:96px 0}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2m{font-size:26px;line-height:1.25;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.eyebrow{font-size:14px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#b81f24}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.dots{background-image:radial-gradient(rgba(255,255,255,0.16) 1.5px,transparent 1.6px);background-size:22px 22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-inverse{background:#ffffff;border-color:#ffffff;color:#e52a30}
+.btn-inverse:hover{background:#f5f5f5;color:#b81f24}
+.btn-outline-white{background:transparent;border-color:#ffffff;color:#ffffff}
+.btn-outline-white:hover{background:rgba(255,255,255,0.14);color:#ffffff}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.on-red .btn:focus-visible{outline-color:#ffffff}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.ic{width:48px;height:48px;border-radius:12px;background:rgba(229,42,48,0.1);color:#e52a30;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.checks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font-size:15px;line-height:1.5}
+.pkg{display:flex;flex-direction:column;gap:18px;padding:32px 28px;border-radius:16px;background:#ffffff}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="desktop" active="" hint-size="100%,72px"></dc-import>
+  </div>
+  <main>
+    <section class="on-red dots" style="background-color: #e52a30; color: #ffffff">
+      <div class="container" style="padding-top: 80px; padding-bottom: 88px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: center">
+        <div style="display: flex; flex-direction: column; gap: 22px; align-items: flex-start">
+          <span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase">For Companies</span>
+          <h1 style="margin: 0; font-size: 56px; line-height: 1.1; font-weight: 700">Meet the engineers of tomorrow</h1>
+          <p style="font-size: 20px; line-height: 1.5; font-weight: 500; max-width: 580px">Partner with EESTEC LC Skopje to reach electrical engineering and computer science students at FEEIT and across Europe.</p>
+          <div style="display: flex; gap: 14px; padding-top: 6px; flex-wrap: wrap">
+            <a href="#contact" class="btn btn-inverse">Get in touch</a>
+            <a href="/docs/partnership-offer-2026.pdf" download="" class="btn btn-outline-white"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>Partnership offer (PDF, 2.4 MB)</a>
+          </div>
+        </div>
+        <div style="background: #ffffff; color: #1a1a1a; border-radius: 16px; padding: 28px; box-shadow: 0 24px 48px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 16px">
+          <span class="eyebrow">Who you reach</span>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+            <sc-for list="{{reach}}" as="r" hint-placeholder-count="4">
+              <div style="padding: 16px; border-radius: 12px; background: #f5f5f5; display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 30px; line-height: 1.1; color: #e52a30">{{r.v}}</strong><span class="small muted">{{r.k}}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="eyebrow">Why partner with us</span>
+          <h2 class="h2">What your company gets</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+          <sc-for list="{{why}}" as="w" hint-placeholder-count="4">
+            <div style="padding: 28px 24px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 12px">
+              <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{w.icon}}"></path></svg></span>
+              <h3 style="margin: 0; font-size: 19px; font-weight: 700">{{w.t}}</h3>
+              <p class="small muted" style="font-size: 15px">{{w.d}}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: #f5f5f5">
+      <div class="container" style="display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <span class="eyebrow">Collaboration options</span>
+            <h2 class="h2">Ways to work together</h2>
+            <span class="title-bar"></span>
+          </div>
+          <p class="body muted" style="max-width: 420px">Prices and full details are in the partnership offer. Every package can be adjusted to your goals.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch">
+          <sc-for list="{{packages}}" as="p" hint-placeholder-count="3">
+            <div class="pkg" style="border: {{p.border}}; box-shadow: {{p.shadow}}; position: relative">
+              <sc-if value="{{p.popular}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: -14px; left: 28px; height: 28px; padding: 0 12px; border-radius: 999px; background: #e52a30; color: #ffffff; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center">Most chosen</span></sc-if>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <h3 style="margin: 0; font-size: 24px; font-weight: 700">{{p.t}}</h3>
+                <p class="small muted" style="font-size: 15px">{{p.d}}</p>
+              </div>
+              <ul class="checks" style="padding-top: 16px; border-top: 1px solid #ececec">
+                <sc-for list="{{p.items}}" as="i" hint-placeholder-count="4"><li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>{{i}}</span></li></sc-for>
+              </ul>
+              <a href="#contact" class="{{p.btn}}" style="margin-top: auto">{{p.cta}}</a>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Or pick a single collaboration</h3>
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+            <sc-for list="{{singles}}" as="s" hint-placeholder-count="4">
+              <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; align-items: start; padding: 20px; border-radius: 12px; background: #ffffff">
+                <span class="ic" style="width: 44px; height: 44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.icon}}"></path></svg></span>
+                <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">{{s.t}}</strong><span class="small muted">{{s.d}}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 28px 32px; border-radius: 16px; background: #ffffff; border: 1px solid #e3e3e3">
+          <span style="width: 56px; height: 68px; border-radius: 8px; background: #e52a30; color: #ffffff; font-size: 14px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px">PDF</span>
+          <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 20px">Partnership offer 2026/27</strong><span class="body muted">All packages, prices and last year's results in one document. PDF · 2.4 MB · 14 pages</span></div>
+          <a href="/docs/partnership-offer-2026.pdf" download="" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>Download PDF</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 48px">
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center">
+          <span class="eyebrow">Our partners</span>
+          <h2 class="h2">Companies that already work with us</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="width: 100%; min-width: 0">
+          <dc-import name="PartnerLogos" variant="wall" device="desktop" hint-size="100%,820px"></dc-import>
+        </div>
+        <div style="width: 100%; padding-top: 40px; border-top: 1px solid #e3e3e3">
+          <dc-import name="PartnerLogos" variant="past" device="desktop" hint-size="100%,160px"></dc-import>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding: 0 0 96px">
+      <div class="container" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 12px">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <span class="eyebrow">Contact</span>
+            <h2 class="h2">Let's talk</h2>
+            <span class="title-bar"></span>
+          </div>
+          <p class="body" style="font-size: 18px">Tell us what you have in mind. We'll suggest the best format and send you the details.</p>
+          <div style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; align-items: center; padding: 20px; border-radius: 16px; background: #f5f5f5">
+            <span style="width: 56px; height: 56px; border-radius: 50%; background: #1a1a1a; color: #ffffff; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center">IK</span>
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <strong style="font-size: 17px">Ivana Kostova</strong>
+              <span class="small muted">Head of Fundraising, EESTEC LC Skopje</span>
+              <a href="mailto:partners@eestec.mk" class="small" style="font-weight: 500">partners@eestec.mk</a>
+            </div>
+          </div>
+        </div>
+        <dc-import name="CompanyForm" state="empty" hint-size="100%,820px"></dc-import>
+      </div>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="mobile" active="" hint-size="390px,64px"></dc-import>
+  </div>
+  <main>
+    <section class="on-red dots" style="background-color: #e52a30; color: #ffffff">
+      <div style="padding: 44px 16px 40px; display: flex; flex-direction: column; gap: 16px">
+        <span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase">For Companies</span>
+        <h1 style="margin: 0; font-size: 34px; line-height: 1.15; font-weight: 700">Meet the engineers of tomorrow</h1>
+        <p style="font-size: 18px; line-height: 1.5; font-weight: 500">Reach electrical engineering and computer science students at FEEIT and across Europe.</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 4px">
+          <a href="#m-contact" class="btn btn-inverse btn-block">Get in touch</a>
+          <a href="/docs/partnership-offer-2026.pdf" download="" class="btn btn-outline-white btn-block">Partnership offer (PDF)</a>
+        </div>
+        <div style="margin-top: 8px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <sc-for list="{{reach}}" as="r" hint-placeholder-count="4">
+            <div style="padding: 14px; border-radius: 12px; background: #ffffff; color: #1a1a1a; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 24px; line-height: 1.1; color: #e52a30">{{r.v}}</strong><span style="font-size: 13px; line-height: 1.4" class="muted">{{r.k}}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 48px 16px; display: flex; flex-direction: column; gap: 22px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">Why partner with us</span><h2 class="h2m">What your company gets</h2><span class="title-bar" style="width: 48px"></span></div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <sc-for list="{{why}}" as="w" hint-placeholder-count="4">
+          <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px">
+            <span class="ic" style="width: 44px; height: 44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{w.icon}}"></path></svg></span>
+            <div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">{{w.t}}</h3><p class="small muted">{{w.d}}</p></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="padding: 48px 16px; background: #f5f5f5; display: flex; flex-direction: column; gap: 22px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">Collaboration options</span><h2 class="h2m">Ways to work together</h2><span class="title-bar" style="width: 48px"></span></div>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <sc-for list="{{packages}}" as="p" hint-placeholder-count="3">
+          <div class="pkg" style="padding: 24px 20px; border: {{p.border}}; box-shadow: {{p.shadow}}; position: relative">
+            <sc-if value="{{p.popular}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: -14px; left: 20px; height: 28px; padding: 0 12px; border-radius: 999px; background: #e52a30; color: #ffffff; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center">Most chosen</span></sc-if>
+            <div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-size: 21px; font-weight: 700">{{p.t}}</h3><p class="small muted">{{p.d}}</p></div>
+            <ul class="checks" style="padding-top: 14px; border-top: 1px solid #ececec; gap: 10px">
+              <sc-for list="{{p.items}}" as="i" hint-placeholder-count="4"><li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>{{i}}</span></li></sc-for>
+            </ul>
+            <a href="#m-contact" class="{{p.btn}} btn-block">{{p.cta}}</a>
+          </div>
+        </sc-for>
+      </div>
+      <h3 style="margin: 8px 0 0; font-size: 18px; font-weight: 700">Or pick a single collaboration</h3>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{singles}}" as="s" hint-placeholder-count="4">
+          <div style="padding: 16px; border-radius: 12px; background: #ffffff; display: flex; flex-direction: column; gap: 8px">
+            <span class="ic" style="width: 38px; height: 38px; border-radius: 10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.icon}}"></path></svg></span>
+            <strong style="font-size: 15px">{{s.t}}</strong>
+            <span class="muted" style="font-size: 14px; line-height: 1.4">{{s.d}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; padding: 20px; border-radius: 16px; background: #ffffff; border: 1px solid #e3e3e3">
+        <div style="display: flex; gap: 14px; align-items: center">
+          <span style="width: 44px; height: 54px; border-radius: 6px; background: #e52a30; color: #ffffff; font-size: 12px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; flex-shrink: 0">PDF</span>
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px">Partnership offer 2026/27</strong><span class="small muted">PDF · 2.4 MB · 14 pages</span></div>
+        </div>
+        <a href="/docs/partnership-offer-2026.pdf" download="" class="btn btn-primary btn-block">Download PDF</a>
+      </div>
+    </section>
+
+    <section style="padding: 48px 16px; display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center"><span class="eyebrow">Our partners</span><h2 class="h2m">Companies that already work with us</h2><span class="title-bar" style="width: 48px"></span></div>
+      <dc-import name="PartnerLogos" variant="wall" device="mobile" hint-size="358px,820px"></dc-import>
+      <div style="padding-top: 28px; border-top: 1px solid #e3e3e3">
+        <dc-import name="PartnerLogos" variant="past" device="mobile" hint-size="358px,260px"></dc-import>
+      </div>
+    </section>
+
+    <section id="m-contact" style="padding: 8px 16px 56px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">Contact</span><h2 class="h2m">Let's talk</h2><span class="title-bar" style="width: 48px"></span></div>
+      <div style="display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; align-items: center; padding: 16px; border-radius: 12px; background: #f5f5f5">
+        <span style="width: 48px; height: 48px; border-radius: 50%; background: #1a1a1a; color: #ffffff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center">IK</span>
+        <div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 16px">Ivana Kostova</strong><span class="small muted">Head of Fundraising</span><a href="mailto:partners@eestec.mk" class="small" style="font-weight: 500">partners@eestec.mk</a></div>
+      </div>
+      <dc-import name="CompanyForm" state="empty" device="mobile" hint-size="358px,1000px"></dc-import>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":1440,"height":5072}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const I = {
+      users: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z',
+      star: 'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z',
+      chip: 'M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3',
+      brief: 'M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16',
+      mic: 'M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v3',
+      flag: 'M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7'
+    };
+    return {
+      isDesktop: device === 'desktop',
+      isMobile: device === 'mobile',
+      reach: [
+        { v: '1,200+', k: 'students at our events each year' },
+        { v: '80', k: 'active LC Skopje members' },
+        { v: '25+', k: 'local and international events a year' },
+        { v: '5,000+', k: 'students in the EESTEC network' }
+      ],
+      why: [
+        { icon: I.users, t: 'Reach EE & CS students', d: 'Meet motivated students of electrical engineering and computer science before they graduate.' },
+        { icon: I.star, t: 'Employer branding', d: 'Your logo and story at our events, on our website and on our social media.' },
+        { icon: I.chip, t: 'Workshops', d: 'Run a hands-on workshop or tech talk on your own technology, for students who chose to be there.' },
+        { icon: I.brief, t: 'Career events', d: 'A stand at our job fair and career day, plus job posts shared with our members.' }
+      ],
+      packages: [
+        { t: 'Partner', d: 'A simple way to support students and get visibility.', items: ['Logo on the website and at one event', 'Thank-you post on our social media', 'Invitation to our partner day'], cta: 'Ask about Partner', btn: 'btn btn-secondary', border: '1px solid #e3e3e3', shadow: 'none', popular: false },
+        { t: 'Gold partner', d: 'Regular contact with students through the year.', items: ['Everything in Partner', 'Bigger logo on the Home page', 'One company workshop or tech talk a year', 'A stand at the job fair', 'Job posts shared with members'], cta: 'Ask about Gold', btn: 'btn btn-primary', border: '2px solid #e52a30', shadow: '0 16px 40px rgba(0,0,0,0.1)', popular: true },
+        { t: 'Main partner', d: 'The strongest presence, including our international events.', items: ['Everything in Gold', 'Largest logo, first on the Home page', 'Branding at our international workshop', 'Two workshops a year and a company visit', 'Access to CVs of members who opt in'], cta: 'Ask about Main partner', btn: 'btn btn-secondary', border: '1px solid #e3e3e3', shadow: 'none', popular: false }
+      ],
+      singles: [
+        { icon: I.chip, t: 'Company workshop', d: 'A half-day or full-day hands-on session.' },
+        { icon: I.mic, t: 'Tech talk', d: 'A 45-minute talk at FEEIT with Q&A.' },
+        { icon: I.brief, t: 'Job fair stand', d: 'Meet students at our yearly job fair.' },
+        { icon: I.flag, t: 'Event sponsorship', d: 'Support one event and be seen there.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

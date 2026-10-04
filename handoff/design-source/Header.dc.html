@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Header</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 100%; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<header style="width: 100%; background: #e52a30; box-shadow: 0 1px 0 rgba(0,0,0,0.08)">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; gap: 24px; box-sizing: border-box">
+    <a href="/" aria-label="EESTEC LC Skopje — home" style="display: flex; align-items: center; flex-shrink: 0">
+      <img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje" style="height: 52px; width: auto; display: block">
+    </a>
+    <nav aria-label="Main" style="margin-left: auto">
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 2px">
+        <sc-for list="{{items}}" as="item" hint-placeholder-count="8">
+          <li>
+            <sc-if value="{{item.on}}" hint-placeholder-val="{{ false }}">
+              <a href="{{item.href}}" aria-current="page" style="display: flex; align-items: center; height: 40px; padding: 0 12px; border-radius: 8px; background: #ffffff; color: #e52a30; font-size: 15px; font-weight: 500; text-decoration: none; white-space: nowrap">{{item.label}}</a>
+            </sc-if>
+            <sc-if value="{{item.off}}" hint-placeholder-val="{{ true }}">
+              <a href="{{item.href}}" style="display: flex; align-items: center; height: 40px; padding: 0 12px; border-radius: 8px; color: #ffffff; font-size: 15px; font-weight: 500; text-decoration: none; white-space: nowrap">{{item.label}}</a>
+            </sc-if>
+          </li>
+        </sc-for>
+      </ul>
+    </nav>
+    <div role="group" aria-label="Language" style="display: flex; align-items: center; padding: 3px; border: 1px solid rgba(255,255,255,0.7); border-radius: 8px; flex-shrink: 0">
+      <button type="button" aria-pressed="true" style="height: 32px; min-width: 40px; padding: 0 8px; border: 0; border-radius: 6px; background: #ffffff; color: #e52a30; font: 500 14px Roboto, Arial, sans-serif; cursor: pointer">EN</button>
+      <button type="button" aria-pressed="false" style="height: 32px; min-width: 40px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: #ffffff; font: 500 14px Roboto, Arial, sans-serif; cursor: pointer">MK</button>
+    </div>
+    <sc-if value="{{isGuest}}" hint-placeholder-val="{{ true }}">
+      <a href="/login" style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 4px 0 2px; color: #ffffff; font-size: 15px; font-weight: 500; text-decoration: none; white-space: nowrap; flex-shrink: 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Log in</a>
+    </sc-if>
+    <sc-if value="{{isMember}}" hint-placeholder-val="{{ false }}">
+      <div style="position: relative; flex-shrink: 0">
+        <button type="button" aria-haspopup="menu" aria-expanded="{{menuOpen}}" aria-label="Account menu: {{user.name}}" style="display: flex; align-items: center; gap: 6px; height: 44px; padding: 0 6px 0 4px; border: 0; border-radius: 999px; background: {{avatarBtnBg}}; color: #ffffff; cursor: pointer">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 0 2px rgba(255,255,255,0.6); color: #b81f24; font: 700 13px Roboto, Arial, sans-serif; display: flex; align-items: center; justify-content: center">{{user.initials}}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="{{chev}}"></path></svg>
+        </button>
+        <sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
+          <div role="menu" aria-label="Account" style="position: absolute; right: 0; top: 56px; z-index: 30; width: 272px; padding: 8px; background: #ffffff; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 16px 40px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 2px">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px 14px; margin-bottom: 6px; border-bottom: 1px solid #ececec">
+              <span style="width: 40px; height: 40px; border-radius: 50%; background: #fdf0f0; color: #b81f24; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">{{user.initials}}</span>
+              <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 15px; font-weight: 700">{{user.name}}</strong><span style="font-size: 13px; color: #6b6b6b">{{user.sub}}</span></span>
+            </div>
+            <sc-for list="{{menu}}" as="m" hint-placeholder-count="3">
+          <a href="{{m.href}}" role="menuitem" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 8px; background: {{m.bg}}; color: {{m.fg}}; font-size: 15px; font-weight: 500; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{m.icon}}"></path></svg>{{m.t}}</a>
+        </sc-for>
+            <div style="height: 1px; background: #ececec; margin: 6px 0"></div>
+            <a href="/logout" role="menuitem" style="display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 8px; color: #1a1a1a; font-size: 15px; font-weight: 500; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>Log out</a>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+  </div>
+</header>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<header style="width: 100%; background: #e52a30">
+  <div style="height: 64px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 8px; box-sizing: border-box">
+    <a href="/" aria-label="EESTEC LC Skopje — home" style="display: flex; align-items: center">
+      <img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje" style="height: 46px; width: auto; display: block">
+    </a>
+    <div role="group" aria-label="Language" style="margin-left: auto; display: flex; align-items: center; padding: 2px; border: 1px solid rgba(255,255,255,0.7); border-radius: 8px">
+      <button type="button" aria-pressed="true" style="height: 36px; min-width: 38px; padding: 0 6px; border: 0; border-radius: 6px; background: #ffffff; color: #e52a30; font: 500 14px Roboto, Arial, sans-serif">EN</button>
+      <button type="button" aria-pressed="false" style="height: 36px; min-width: 38px; padding: 0 6px; border: 0; border-radius: 6px; background: transparent; color: #ffffff; font: 500 14px Roboto, Arial, sans-serif">MK</button>
+    </div>
+    <sc-if value="{{isMember}}" hint-placeholder-val="{{ false }}">
+      <a href="/profile" aria-label="My profile: {{user.name}}" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; text-decoration: none"><span style="width: 34px; height: 34px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 0 2px rgba(255,255,255,0.6); color: #b81f24; font: 700 12px Roboto, Arial, sans-serif; display: flex; align-items: center; justify-content: center">{{user.initials}}</span></a>
+    </sc-if>
+    <sc-if value="{{isClosed}}" hint-placeholder-val="{{ true }}">
+      <button type="button" aria-label="Open menu" aria-expanded="false" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: transparent; color: #ffffff; cursor: pointer">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
+      </button>
+    </sc-if>
+    <sc-if value="{{isOpen}}" hint-placeholder-val="{{ false }}">
+      <button type="button" aria-label="Close menu" aria-expanded="true" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: rgba(255,255,255,0.16); color: #ffffff; cursor: pointer">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+      </button>
+    </sc-if>
+  </div>
+  <sc-if value="{{isOpen}}" hint-placeholder-val="{{ false }}">
+    <nav aria-label="Main" style="background: #ffffff; padding: 8px 16px 24px; box-shadow: 0 12px 24px rgba(0,0,0,0.12)">
+      <sc-if value="{{isMember}}" hint-placeholder-val="{{ false }}">
+        <div style="margin: 8px 0 8px; padding: 12px; border-radius: 12px; background: #f5f5f5; display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 2px 4px 8px">
+            <span style="width: 40px; height: 40px; border-radius: 50%; background: #ffffff; color: #b81f24; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 1px solid #e3e3e3">{{user.initials}}</span>
+            <span style="display: flex; flex-direction: column"><strong style="font-size: 16px">{{user.name}}</strong><span style="font-size: 13px; color: #6b6b6b">{{user.sub}}</span></span>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <a href="/profile" style="flex: 1; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #ffffff; border: 1px solid #c7c7c7; color: #1a1a1a; font-size: 15px; font-weight: 500; text-decoration: none">My profile</a>
+            <a href="/memories/new" style="flex: 1; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #ffffff; border: 1px solid #c7c7c7; color: #1a1a1a; font-size: 15px; font-weight: 500; text-decoration: none">Create a Memory</a>
+          </div>
+        </div>
+      </sc-if>
+      <ul style="list-style: none; margin: 0; padding: 0">
+        <sc-for list="{{items}}" as="item" hint-placeholder-count="8">
+          <li style="border-bottom: 1px solid #ececec">
+            <sc-if value="{{item.on}}" hint-placeholder-val="{{ false }}">
+              <a href="{{item.href}}" aria-current="page" style="display: flex; align-items: center; justify-content: space-between; height: 52px; color: #e52a30; font-size: 18px; font-weight: 700; text-decoration: none">{{item.label}}<span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span></a>
+            </sc-if>
+            <sc-if value="{{item.off}}" hint-placeholder-val="{{ true }}">
+              <a href="{{item.href}}" style="display: flex; align-items: center; height: 52px; color: #1a1a1a; font-size: 18px; font-weight: 500; text-decoration: none">{{item.label}}</a>
+            </sc-if>
+          </li>
+        </sc-for>
+      </ul>
+      <sc-if value="{{isGuest}}" hint-placeholder-val="{{ true }}">
+      <a href="/join" style="margin-top: 20px; display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 8px; background: #e52a30; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none">Become an EESTECer</a>
+      <a href="/login" style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; border-radius: 8px; border: 2px solid #e52a30; background: #ffffff; color: #e52a30; font-size: 16px; font-weight: 500; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Member log in</a>
+      </sc-if>
+      <sc-if value="{{isMember}}" hint-placeholder-val="{{ false }}">
+        <a href="/logout" style="margin-top: 16px; display: flex; align-items: center; gap: 10px; height: 44px; color: #1a1a1a; font-size: 16px; font-weight: 500; text-decoration: none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>Log out</a>
+      </sc-if>
+    </nav>
+  </sc-if>
+</header>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["desktop","mobile","mobile-open"],"default":"desktop"},"active":{"editor":"enum","options":["Home","Events","Upcoming Events","Members","Memories","EESTEC Journey","Join Us","Contact"],"default":"Home"},"auth":{"editor":"enum","options":["guest","member","member-menu"],"default":"guest"},"admin":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":72}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const variant = this.props.variant ?? 'desktop';
+    const active = this.props.active ?? 'Home';
+    const nav = [
+      ['Home', '/'], ['Events', '/events'], ['Upcoming Events', '/upcoming'], ['Members', '/members'],
+      ['Memories', '/memories'], ['EESTEC Journey', '/journey'], ['Join Us', '/join'], ['Contact', '/contact']
+    ];
+    const items = nav.map(([label, href]) => ({ label, href, on: label === active, off: label !== active }));
+    const auth = this.props.auth ?? 'guest';
+    const isAdmin = !!this.props.admin;
+    const P = { user: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', pen: 'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z', shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' };
+    const menu = [
+      { t: 'My profile', href: '/profile', icon: P.user, bg: '#f5f5f5', fg: '#1a1a1a' },
+      { t: 'Create a Memory', href: '/memories/new', icon: P.pen, bg: 'transparent', fg: '#1a1a1a' }
+    ];
+    if (isAdmin) menu.push({ t: 'Admin panel', href: '/admin', icon: P.shield, bg: 'transparent', fg: '#1a1a1a' });
+    return {
+      isGuest: auth === 'guest',
+      isMember: auth !== 'guest',
+      menuOpen: auth === 'member-menu',
+      avatarBtnBg: auth === 'member-menu' ? 'rgba(255,255,255,0.18)' : 'transparent',
+      chev: auth === 'member-menu' ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6',
+      user: isAdmin ? { name: 'Ana Trajkovska', initials: 'AT', sub: 'Chairperson · Board 2026/2027' } : { name: 'Marija Stojanovska', initials: 'MS', sub: 'Events team · member since 2023' },
+      menu,
+      items,
+      isDesktop: variant === 'desktop',
+      isMobile: variant !== 'desktop',
+      isClosed: variant === 'mobile',
+      isOpen: variant === 'mobile-open'
+    };
+  }
+}
+</script>
+</body>
+</html>

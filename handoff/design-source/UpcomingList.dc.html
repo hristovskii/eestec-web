@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Upcoming Events — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.eyebrow{font-size:14px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#b81f24}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e5e5e5 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:12px}
+.cd{padding:10px 0 8px;border-radius:10px;background:#f5f5f5;display:flex;flex-direction:column;align-items:center}
+.cd b{font-size:30px;line-height:1.1;font-weight:700;color:#e52a30}
+.cd span{font-size:14px;font-weight:500;color:#6b6b6b}
+.ev-card:hover{box-shadow:0 0 0 2px #e52a30,0 12px 28px rgba(0,0,0,0.14)!important;transform:translateY(-4px)!important}
+.ev-card:hover h3{color:#b81f24!important}
+.ev-card:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="desktop" active="Upcoming Events" hint-size="100%,72px"></dc-import>
+  </div>
+  <main>
+    <section style="background: #f5f5f5">
+      <div class="container" style="padding-top: 40px; padding-bottom: 44px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Upcoming Events</span></nav>
+          <h1 class="h1">Upcoming Events</h1>
+          <span class="title-bar"></span>
+          <p class="body muted" style="font-size: 18px; max-width: 680px; padding-top: 4px">Apply for workshops, trainings and exchanges right here. Events abroad link to their application on eestec.net.</p>
+        </div>
+        <a href="/events" class="btn btn-secondary" style="flex-shrink: 0">Past events<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+      </div>
+    </section>
+
+    <sc-if value="{{isResults}}" hint-placeholder-val="{{ true }}">
+    <div class="container" style="padding-top: 32px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
+        <div role="group" aria-label="Filter by category" style="display: flex; gap: 8px">
+          <button type="button" class="filter" aria-pressed="true">All · 7</button>
+          <button type="button" class="filter" aria-pressed="false">Local · 4</button>
+          <button type="button" class="filter" aria-pressed="false">International · 3</button>
+        </div>
+        <span class="small muted">Soonest first</span>
+      </div>
+
+      <article style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 6fr); border-radius: 16px; overflow: hidden; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 8px 28px rgba(0,0,0,0.1)">
+        <div class="ph" style="position: relative; min-height: 460px">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+          <span class="small">Photo: dev boards and a laptop running a vision model</span>
+          <span class="chip" style="position: absolute; top: 16px; left: 16px; background: #e52a30; color: #ffffff; box-shadow: 0 1px 4px rgba(0,0,0,0.18)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #ffffff"></span>Applications open</span>
+          <span class="chip" style="position: absolute; left: 16px; bottom: 16px; background: #ffffff; color: #1a1a1a; padding-left: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.18)"><img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="" style="width: 22px; height: 22px; border-radius: 50%">Organized by LC Skopje</span>
+        </div>
+        <div style="padding: 36px 40px; display: flex; flex-direction: column; gap: 18px">
+          <span class="eyebrow">Next up</span>
+          <div style="display: flex; gap: 6px"><span class="chip" style="background: #f5f5f5">Workshop</span><span class="chip" style="border: 1px solid #d0d0d0">International</span></div>
+          <h2 style="margin: 0; font-size: 32px; line-height: 1.2; font-weight: 700">Workshop: AI at the Edge</h2>
+          <div style="display: flex; gap: 24px; flex-wrap: wrap" class="small muted">
+            <span style="display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>7–13 Nov 2026</span>
+            <span style="display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Skopje &amp; Ohrid</span>
+          </div>
+          <p class="body muted">A week of building and deploying machine-learning models on microcontrollers, for 24 students from across Europe.</p>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span class="small" style="font-weight: 500">Applications close in</span>
+            <div role="timer" aria-label="Applications close in 13 days, 5 hours, 42 minutes" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+              <div class="cd"><b>13</b><span>days</span></div>
+              <div class="cd"><b>05</b><span>hours</span></div>
+              <div class="cd"><b>42</b><span>min</span></div>
+              <div class="cd"><b>08</b><span>sec</span></div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px; margin-top: auto; padding-top: 4px">
+            <a href="/upcoming/ai-at-the-edge#apply" class="btn btn-primary">Apply now</a>
+            <a href="/upcoming/ai-at-the-edge" class="btn btn-secondary">See details</a>
+          </div>
+        </div>
+      </article>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; padding-top: 16px">
+        <h2 class="h3">More upcoming events</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+          <sc-for list="{{events}}" as="ev" hint-placeholder-count="6">
+            <dc-import name="EventCard" item="{{ev}}" hint-size="100%,500px"></dc-import>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 32px; border-radius: 16px; background: #f5f5f5; margin-top: 24px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h2 style="margin: 0; font-size: 20px; font-weight: 700">Have an idea for an event?</h2>
+          <p class="small muted">Tell the board. Good ideas often end up on this page.</p>
+        </div>
+        <a href="/submit" class="btn btn-secondary">Submit an idea</a>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+    <div class="container" style="padding-top: 40px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 24px">
+      <div style="padding: 72px 32px; border: 1px dashed #c7c7c7; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center">
+        <span style="width: 80px; height: 80px; border-radius: 50%; background: #fdf0f0; color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9.5 14.5l5 5M14.5 14.5l-5 5"></path></svg></span>
+        <h2 class="h3">No upcoming events right now</h2>
+        <p class="body muted" style="max-width: 520px">Follow us on Instagram so you don't miss the next one. New events are usually announced there first.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; padding-top: 8px">
+          <a href="https://instagram.com/eestec_skopje" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg>Follow @eestec_skopje</a>
+          <a href="/events" class="btn btn-secondary">Browse past events</a>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+        <div style="display: flex; align-items: center; gap: 20px; padding: 24px 28px; border-radius: 16px; background: #fdf0f0; border: 1px solid rgba(229,42,48,0.3)">
+          <span style="width: 52px; height: 52px; flex-shrink: 0; border-radius: 14px; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h3 style="margin: 0; font-size: 18px; font-weight: 700">Meanwhile, come to a weekly meeting</h3>
+            <p class="small muted">Every Wednesday at 18:00, room 117, FEEIT.</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px; padding: 24px 28px; border-radius: 16px; background: #f5f5f5">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
+            <h3 style="margin: 0; font-size: 18px; font-weight: 700">Have an idea for an event?</h3>
+            <p class="small muted">Tell the board what you'd like to see next.</p>
+          </div>
+          <a href="/submit" class="btn btn-secondary">Submit an idea</a>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="mobile" active="Upcoming Events" hint-size="390px,64px"></dc-import>
+  </div>
+  <main>
+    <section style="background: #f5f5f5; padding: 28px 16px; display: flex; flex-direction: column; gap: 12px">
+      <nav aria-label="Breadcrumb" class="crumbs"><a href="/" style="min-height: 32px; display: flex; align-items: center">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Upcoming Events</span></nav>
+      <h1 class="h1-m">Upcoming Events</h1>
+      <span class="title-bar" style="width: 48px"></span>
+      <p class="body muted">Apply for workshops, trainings and exchanges right here.</p>
+    </section>
+
+    <sc-if value="{{isResults}}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 20px 16px 56px; display: flex; flex-direction: column; gap: 20px">
+      <div role="group" aria-label="Filter by category" style="display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px; padding: 0 16px">
+        <button type="button" class="filter" aria-pressed="true">All · 7</button>
+        <button type="button" class="filter" aria-pressed="false">Local · 4</button>
+        <button type="button" class="filter" aria-pressed="false">International · 3</button>
+      </div>
+
+      <article style="border-radius: 16px; overflow: hidden; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.1)">
+        <div class="ph" style="position: relative; aspect-ratio: 16 / 10">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+          <span style="font-size: 13px">Photo: dev boards and a laptop</span>
+          <span class="chip" style="position: absolute; top: 12px; left: 12px; background: #e52a30; color: #ffffff; height: 28px">Applications open</span>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <span class="eyebrow">Next up</span>
+          <h2 style="margin: 0; font-size: 24px; line-height: 1.25; font-weight: 700">Workshop: AI at the Edge</h2>
+          <span class="small muted">7–13 Nov 2026 · Skopje &amp; Ohrid · International</span>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span class="small" style="font-weight: 500">Applications close in</span>
+            <div role="timer" aria-label="Applications close in 13 days, 5 hours, 42 minutes" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+              <div class="cd"><b style="font-size: 26px">13</b><span>days</span></div>
+              <div class="cd"><b style="font-size: 26px">05</b><span>hours</span></div>
+              <div class="cd"><b style="font-size: 26px">42</b><span>min</span></div>
+              <div class="cd"><b style="font-size: 26px">08</b><span>sec</span></div>
+            </div>
+          </div>
+          <a href="/upcoming/ai-at-the-edge#apply" class="btn btn-primary btn-block">Apply now</a>
+          <a href="/upcoming/ai-at-the-edge" class="link" style="align-self: center; min-height: 40px">See details</a>
+        </div>
+      </article>
+
+      <h2 style="margin: 12px 0 0; font-size: 20px; font-weight: 700">More upcoming events</h2>
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <sc-for list="{{events}}" as="ev" hint-placeholder-count="6">
+          <dc-import name="EventCard" item="{{ev}}" hint-size="358px,500px"></dc-import>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 24px 20px; border-radius: 16px; background: #f5f5f5">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 700">Have an idea for an event?</h2>
+        <p class="small muted">Tell the board. Good ideas often end up on this page.</p>
+        <a href="/submit" class="btn btn-secondary btn-block">Submit an idea</a>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 24px 16px 56px; display: flex; flex-direction: column; gap: 16px">
+      <div style="padding: 40px 20px; border: 1px dashed #c7c7c7; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+        <span style="width: 68px; height: 68px; border-radius: 50%; background: #fdf0f0; color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9.5 14.5l5 5M14.5 14.5l-5 5"></path></svg></span>
+        <h2 style="margin: 0; font-size: 20px; font-weight: 700">No upcoming events right now</h2>
+        <p class="small muted">Follow us on Instagram so you don't miss the next one.</p>
+        <a href="https://instagram.com/eestec_skopje" class="btn btn-primary btn-block" style="margin-top: 6px">Follow @eestec_skopje</a>
+        <a href="/events" class="btn btn-secondary btn-block">Browse past events</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px; padding: 20px; border-radius: 16px; background: #fdf0f0; border: 1px solid rgba(229,42,48,0.3)">
+        <span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 700">Meanwhile, come to a weekly meeting</h3>
+          <p class="small muted">Wednesdays, 18:00 · Room 117, FEEIT</p>
+        </div>
+      </div>
+      <a href="/submit" class="btn btn-secondary btn-block">Submit an idea for an event</a>
+    </div>
+    </sc-if>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"state":{"editor":"enum","options":["results","empty"],"default":"results"},"$preview":{"width":1440,"height":2741}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const state = this.props.state ?? 'results';
+    const events = [
+      { title: 'Motivational Weekend Balkan Region 2026', date: '13–15 Nov 2026', location: 'Belgrade, Serbia', type: 'Motivational Weekend', scope: 'International', status: 'closed', deadline: 'Closed on 1 Oct · selection in progress', hasImage: true, photo: 'MW participants in a circle', cta: 'View details', href: '/upcoming/mw-balkan-2026' },
+      { title: 'Soft Skills Training: Leading Teams', date: '14 Nov 2026', location: 'FEEIT, Skopje', type: 'Training / Soft Skills', scope: 'Local', status: 'closing', deadline: 'Closes in 2 days 5 h', organized: true, hasImage: true, photo: 'trainer at a flipchart', cta: 'Details & application', href: '/upcoming/leading-teams' },
+      { title: 'Hands-on: FPGA Basics', date: '21–22 Nov 2026', location: 'Lab 215, FEEIT', type: 'Workshop', scope: 'Local', status: 'full', deadline: '20 / 20 places · 7 on the waitlist', organized: true, hasImage: false, cta: 'Join the waitlist', href: '/upcoming/fpga-basics' },
+      { title: 'Exchange: Kraków Winter Edition', date: '4–8 Dec 2026', location: 'Kraków, Poland', type: 'Exchange', scope: 'International', status: 'soon', deadline: 'Applications open 15 Oct on eestec.net', hasImage: true, photo: 'Kraków old town in winter', cta: 'View details', href: '/upcoming/krakow-winter-exchange' },
+      { title: 'New Year Social 2026', date: '18 Dec 2026', location: 'Old Bazaar, Skopje', type: 'Social', scope: 'Local', status: 'open', deadline: 'Sign-ups close in 71 days', organized: true, hasImage: true, photo: 'members toasting at last year’s party', cta: 'Details & sign-up', href: '/upcoming/new-year-social-2026' },
+      { title: 'EESTech Challenge 2027 — Local Round Skopje', date: '13 Mar 2027', location: 'FEEIT, Skopje', type: 'Competition', scope: 'Local', status: 'soon', deadline: 'Registration opens 1 Feb 2027', organized: true, hasImage: true, photo: 'teams presenting to the jury', cta: 'View details', href: '/upcoming/eestech-challenge-2027' }
+    ];
+    return {
+      isDesktop: device === 'desktop',
+      isMobile: device === 'mobile',
+      isResults: state === 'results',
+      isEmpty: state === 'empty',
+      events
+    };
+  }
+}
+</script>
+</body>
+</html>

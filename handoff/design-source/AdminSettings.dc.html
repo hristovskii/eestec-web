@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · Settings</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+a{color:#b81f24}
+.a-h1{font-size:24px;line-height:1.25;font-weight:700}
+.a-h2{font-size:16px;line-height:1.35;font-weight:700}
+.muted{color:#6b6b6b}
+.sm{font-size:13px}
+.panel{background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid #ececec}
+.card-b{padding:20px;display:flex;flex-direction:column;gap:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-ghost{border-color:transparent;background:transparent}
+.btn-sm{height:30px;padding:0 10px;font-size:13px}
+.btn:disabled{background:#f0f0f0;border-color:#e3e3e3;color:#9a9a9a;cursor:not-allowed}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:2px}
+.label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:#1a1a1a}
+.input{width:100%;height:36px;padding:0 12px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.25)}
+textarea.input{height:auto;padding:10px 12px;line-height:1.5}
+.sel{appearance:none;-webkit-appearance:none;padding-right:32px}
+.ico{position:relative}.ico svg.r{position:absolute;right:10px;top:10px;pointer-events:none}
+.help{margin-top:6px;font-size:13px;color:#6b6b6b;display:flex;justify-content:space-between;gap:8px}
+.sub a{display:flex;align-items:center;height:36px;padding:0 12px;border-radius:8px;color:#3a3a3a;text-decoration:none;font-size:14px}
+.sub a:hover{background:#ececec}
+.sub a[aria-current="true"]{background:#ffffff;color:#1a1a1a;font-weight:700;box-shadow:0 0 0 1px #e3e3e3}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 10px,#e5e5e5 10px 20px)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{height:38px;padding:0 12px;font-size:12px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:#6b6b6b;text-align:left;background:#fafafa;border-bottom:1px solid #e3e3e3;white-space:nowrap}
+.tbl td{height:52px;padding:8px 12px;border-bottom:1px solid #ececec;vertical-align:middle}
+.num{display:flex;align-items:center;gap:10px;font-size:14px}
+.num input{width:80px;text-align:right}
+.tgl{position:relative;display:inline-block;width:36px;height:20px;border-radius:999px;background:#c7c7c7;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:18px}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;background:transparent;font-family:inherit;font-size:14px;color:#1a1a1a;text-align:left;cursor:pointer;width:100%}
+.meter{height:4px;border-radius:999px;background:#ececec;overflow:hidden;margin-top:6px}
+.meter span{display:block;height:100%}
+</style>
+</helmet>
+
+<div style="display: flex; width: 100%; min-height: 900px; background: #f5f5f5">
+  <div style="width: 248px; flex-shrink: 0; background: #ffffff; border-right: 1px solid #e3e3e3">
+    <div style="position: sticky; top: 0"><dc-import name="AdminSidebar" active="Settings" hint-size="248px,900px"></dc-import></div>
+  </div>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="AdminTopbar" crumbs="{{crumbs}}" hint-size="100%,60px"></dc-import>
+    <main style="padding: 28px 32px 64px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><h1 class="a-h1">Settings</h1><p class="muted">Site-wide settings. Only super admins can change these.</p></div>
+        <div style="display: flex; align-items: center; gap: 12px"><span class="sm muted">All changes saved</span><button type="button" class="btn btn-primary" disabled>Save changes</button></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: start">
+        <nav aria-label="Settings sections" class="sub" style="position: sticky; top: 16px; display: flex; flex-direction: column; gap: 2px">
+          <a href="#branding" aria-current="true">Branding</a>
+          <a href="#events">Events</a>
+          <a href="#contact">Contact &amp; legal</a>
+          <a href="#seo">SEO</a>
+          <a href="#notifications">E-mail notifications</a>
+          <a href="#languages">Languages</a>
+          <a href="#activity">Activity log</a>
+          <a href="#security">Security &amp; backups</a>
+        </nav>
+
+        <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0">
+          <section id="branding" class="panel" aria-labelledby="h-brand">
+            <div class="card-h"><h2 id="h-brand" class="a-h2">Branding</h2><span class="sm muted">Upload the provided files; they're never redrawn</span></div>
+            <div class="card-b">
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+                <sc-for list="{{logos}}" as="l" hint-placeholder-count="3">
+                  <div style="display: flex; flex-direction: column; gap: 10px">
+                    <span class="label" style="margin: 0">{{l.t}}</span>
+                    <div style="height: 132px; border-radius: 10px; border: 1px solid #e3e3e3; background: {{l.bg}}; display: flex; align-items: center; justify-content: center"><img src="{{l.src}}" alt="{{l.alt}}" style="height: {{l.h}}; width: auto; border-radius: {{l.r}}"></div>
+                    <span class="sm muted">{{l.file}}</span>
+                    <span style="display: flex; gap: 6px"><button type="button" class="btn btn-sm">Replace</button><button type="button" class="btn btn-ghost btn-sm">Download</button></span>
+                    <span class="sm muted">{{l.use}}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+                <div><label class="label" for="s-name">Site name</label><input class="input" id="s-name" value="EESTEC LC Skopje"></div>
+                <div><label class="label" for="s-foot">Footer tagline</label><input class="input" id="s-foot" value="The Skopje branch of the Electrical Engineering STudents' European assoCiation"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="events" class="panel" aria-labelledby="h-ev">
+            <div class="card-h"><h2 id="h-ev" class="a-h2">Events</h2><a href="/admin/events/types" class="sm" style="font-weight: 500; text-decoration: none">Manage event types (8) →</a></div>
+            <div class="card-b">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+                <div><span class="label">“Deadline soon” badge and red countdown</span><label class="num">Starts <input class="input" value="72" aria-label="Hours before the deadline"> hours before the application deadline</label></div>
+                <div><span class="label">“Just ended” badge in the archive</span><label class="num">Shows for <input class="input" value="14" aria-label="Days after the event ends"> days after the event ends</label></div>
+                <div><span class="label">Default max participants for new events</span><label class="num"><input class="input" value="24" aria-label="Default max participants"> places · can be changed per event</label></div>
+                <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 22px">
+                  <button type="button" role="switch" aria-checked="true" class="sw">Waitlist on by default for new events<span class="tgl on"></span></button>
+                  <button type="button" role="switch" aria-checked="true" class="sw">Move events to the archive automatically when they end<span class="tgl on"></span></button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="contact" class="panel" aria-labelledby="h-ct">
+            <div class="card-h"><h2 id="h-ct" class="a-h2">Contact &amp; legal info</h2><span class="sm muted">Used on /contact and in the footer</span></div>
+            <div class="card-b">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+                <div><label class="label" for="c-mail">Main e-mail</label><input class="input" id="c-mail" value="hello@eestec.mk"></div>
+                <div><label class="label" for="c-addr">Address</label><input class="input" id="c-addr" value="FEEIT, Rugjer Boshkovikj 18, 1000 Skopje"></div>
+                <div><label class="label" for="c-room">Office / meeting room</label><input class="input" id="c-room" value="Room 117, ground floor, FEEIT"></div>
+                <div><span class="label">Weekly meeting</span><div style="display: flex; gap: 8px; align-items: center"><span class="ico" style="flex: 1"><select class="input sel" aria-label="Day"><option>Wednesday</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span><input class="input" aria-label="Time" value="18:00" style="width: 90px"><button type="button" role="switch" aria-checked="true" aria-label="Show on Home page" class="sw" style="width: auto"><span class="sm muted">On Home</span><span class="tgl on"></span></button></div></div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 8px">
+                <span class="label" style="margin: 0">Board roles &amp; e-mails <span style="font-weight: 400; color: #6b6b6b">· drag to reorder</span></span>
+                <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid #e3e3e3; border-radius: 10px; overflow: hidden">
+                  <sc-for list="{{roles}}" as="r" hint-placeholder-count="5">
+                    <li style="display: grid; grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1fr) 36px; gap: 10px; align-items: center; padding: 8px 10px; border-bottom: 1px solid #ececec; background: {{r.bg}}; box-shadow: {{r.shadow}}">
+                      <span aria-label="Drag to reorder" style="color: #9a9a9a; display: flex; justify-content: center; cursor: grab"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg></span>
+                      <input class="input" aria-label="Role" value="{{r.role}}">
+                      <input class="input" aria-label="E-mail" value="{{r.mail}}">
+                      <button type="button" class="btn btn-ghost" aria-label="Remove {{r.role}}" style="width: 36px; padding: 0; color: #6b6b6b"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg></button>
+                    </li>
+                  </sc-for>
+                </ul>
+                <button type="button" class="btn" style="align-self: flex-start"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add role</button>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 4px; border-top: 1px solid #ececec">
+                <div style="grid-column: 1 / -1; padding-top: 14px"><label class="label" for="l-name">Full registered name</label><input class="input" id="l-name" placeholder="As written in the Central Register"></div>
+                <div><label class="label" for="l-reg">Registration no. (EMBS)</label><input class="input" id="l-reg" placeholder="0000000"></div>
+                <div><label class="label" for="l-tax">Tax no. (EDB)</label><input class="input" id="l-tax" placeholder="MK0000000000000"></div>
+                <div><label class="label" for="l-bank">Bank account</label><input class="input" id="l-bank" placeholder="000-0000000000-00"></div>
+                <div><label class="label" for="l-bname">Bank</label><input class="input" id="l-bname" placeholder="Bank name"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="seo" class="panel" aria-labelledby="h-seo" style="overflow: hidden">
+            <div class="card-h"><h2 id="h-seo" class="a-h2">SEO per page</h2><span class="sm muted">Title suffix: “ · EESTEC LC Skopje”</span></div>
+            <table class="tbl">
+              <thead><tr><th>Page</th><th>Title</th><th>Description</th><th>Share image</th><th></th></tr></thead>
+              <tbody>
+                <tr style="background: #fafafa">
+                  <td style="vertical-align: top; padding-top: 16px"><strong>Home</strong><br><span class="sm muted">/</span></td>
+                  <td colspan="4" style="padding: 16px 12px">
+                    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px">
+                      <div style="display: flex; flex-direction: column; gap: 14px">
+                        <div><label class="label" for="seo-t">Title</label><input class="input" id="seo-t" value="EESTEC LC Skopje: engineering students across Europe"><div class="meter"><span style="width: 88%; background: #1a1a1a"></span></div><span class="help"><span>Aim for 50–60 characters.</span><span>53 / 60</span></span></div>
+                        <div><label class="label" for="seo-d">Description</label><textarea class="input" id="seo-d" rows="3">Workshops, exchanges and trainings for electrical engineering and computer science students at FEEIT and across Europe. Join us on Wednesdays.</textarea><div class="meter"><span style="width: 92%; background: #1a1a1a"></span></div><span class="help"><span>Aim for 120–160 characters.</span><span>147 / 160</span></span></div>
+                      </div>
+                      <div style="display: flex; flex-direction: column; gap: 10px">
+                        <span class="label" style="margin: 0">Search preview</span>
+                        <div style="padding: 14px; border: 1px solid #e3e3e3; border-radius: 10px; background: #ffffff; display: flex; flex-direction: column; gap: 4px">
+                          <span class="sm muted">eestec.mk</span>
+                          <span style="font-size: 17px; line-height: 1.3; color: #1a1a1a; font-weight: 500">EESTEC LC Skopje: engineering students across Europe</span>
+                          <span class="sm muted" style="line-height: 1.45">Workshops, exchanges and trainings for electrical engineering and computer science students at FEEIT and across Europe. Join us on…</span>
+                        </div>
+                        <span class="label" style="margin: 0">Share image (1200 × 630)</span>
+                        <div class="ph" style="aspect-ratio: 1200 / 630; border-radius: 8px; border: 1px solid #e3e3e3"></div>
+                        <span style="display: flex; gap: 6px"><button type="button" class="btn btn-sm">Replace</button><button type="button" class="btn btn-ghost btn-sm">Done</button></span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <sc-for list="{{seo}}" as="s" hint-placeholder-count="6">
+                  <tr>
+                    <td><strong>{{s.page}}</strong><br><span class="sm muted">{{s.path}}</span></td>
+                    <td style="max-width: 300px"><span style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.title}}</span></td>
+                    <td><span class="sm" style="display: inline-flex; align-items: center; gap: 6px; color: {{s.dfg}}; font-weight: {{s.dw}}"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{s.dot}}"></span>{{s.desc}}</span></td>
+                    <td><span class="ph" style="display: block; width: 64px; height: 34px; border-radius: 4px; border: 1px solid #e3e3e3; opacity: {{s.imgOp}}"></span></td>
+                    <td style="text-align: right"><button type="button" class="btn btn-sm">Edit</button></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2670}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const seoRow = (page, path, title, desc, ok, img) => ({ page, path, title, desc, dfg: ok ? '#1a1a1a' : '#b81f24', dw: ok ? 400 : 500, dot: ok ? '#1a1a1a' : '#e52a30', imgOp: img ? 1 : 0.35 });
+    return {
+      crumbs: [{ t: 'Admin', href: '/admin' }, { t: 'Settings', href: '/admin/settings' }, { t: 'Branding' }],
+      logos: [
+        { t: 'Full-color logo', src: '/_blob/50a34c7b9e3bee5c6211c37ed7b78ae3', alt: 'Full-color logo preview', bg: '#ffffff', h: '76px', r: '0', file: 'LC_Skopje_red.png · 4167 × 2942', use: 'Used on white backgrounds.' },
+        { t: 'White logo', src: '/_blob/3c9567fae79f47c8a917e40a56fbb3eb', alt: 'White logo preview', bg: '#e52a30', h: '76px', r: '0', file: 'LC_Skopje_white.png · 4167 × 2942', use: 'Used in the red header and footer.' },
+        { t: 'Icon / favicon', src: '/_blob/8858145c0d6ab17bd53787fe90c4332b', alt: 'Icon preview', bg: '#f5f5f5', h: '72px', r: '14px', file: 'eestecredsquare.png · 4167 × 4167', use: 'Favicon, app icon and share fallback.' }
+      ],
+      roles: [
+        { role: 'Chairperson', mail: 'chair@eestec.mk', bg: '#ffffff', shadow: 'none' },
+        { role: 'External relations & partners', mail: 'partners@eestec.mk', bg: '#ffffff', shadow: 'none' },
+        { role: 'Membership & internal affairs', mail: 'members@eestec.mk', bg: '#fafafa', shadow: 'inset 0 0 0 2px #1a1a1a' },
+        { role: 'Treasurer', mail: 'treasurer@eestec.mk', bg: '#ffffff', shadow: 'none' },
+        { role: 'PR & media', mail: 'pr@eestec.mk', bg: '#ffffff', shadow: 'none' }
+      ],
+      seo: [
+        seoRow('Events', '/events', 'Events: workshops, exchanges and trainings', '151 / 160', true, true),
+        seoRow('Upcoming Events', '/upcoming', 'Upcoming events: apply now', '138 / 160', true, true),
+        seoRow('EESTEC Journey', '/journey', 'Your EESTEC journey, step by step', '144 / 160', true, false),
+        seoRow('Join Us', '/join', 'Become an EESTECer', 'Missing description', false, true),
+        seoRow('For Companies', '/partners', 'Partner with EESTEC LC Skopje', '156 / 160', true, true),
+        seoRow('Contact', '/contact', 'Contact EESTEC LC Skopje', '122 / 160', true, false)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

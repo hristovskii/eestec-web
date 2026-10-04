@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Idea / impression form</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+body{background:transparent}
+.sf .seg{display:flex;flex-wrap:wrap;gap:8px}
+.sf .seg label{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;background:#ffffff}
+.sf .seg label.on{border:2px solid #e52a30;color:#b81f24;background:#fdf0f0}
+.sf .seg.err label{border-color:#e52a30}
+.sf .seg input{position:absolute;opacity:0;width:1px;height:1px}
+.sf textarea.input{height:auto;padding:12px 14px;line-height:1.55;resize:vertical}
+.sf .stars{display:flex;gap:6px}
+.sf .stars label{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#c7c7c7}
+.sf .stars label.on{color:#e52a30}
+.sf .stars input{position:absolute;opacity:0;width:1px;height:1px}
+.sf .me{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;background:#f5f5f5}
+.sf .box{padding:14px 16px;border-radius:10px;background:#f5f5f5}
+.sf .box.on{background:#fdf0f0;border:1px solid rgba(229,42,48,0.45);padding:13px 15px}
+.sf .file{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px dashed #8c8c8c;border-radius:10px;background:#ffffff}
+.sf .thumb{position:relative;width:76px;height:76px;border-radius:8px;overflow:hidden;flex-shrink:0}
+.sf .x{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(26,26,26,0.8);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sf .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.5}
+.sf .steps li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px}
+.sf .steps b{width:26px;height:26px;border-radius:50%;background:#1a1a1a;color:#ffffff;font-size:13px;display:flex;align-items:center;justify-content:center}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+</style>
+</helmet>
+<div class="sf" style="width: 100%; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a">
+
+<sc-if value="{{showForm}}" hint-placeholder-val="{{ true }}">
+<form aria-labelledby="sf-title" aria-busy="{{busy}}" novalidate style="padding: {{pad}}; border: 1px solid #e3e3e3; border-radius: 16px; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.06); display: grid; grid-template-columns: {{cols}}; gap: 22px 20px">
+  <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px">
+    <h2 id="sf-title" style="font-size: 22px; font-weight: 700">{{formTitle}}</h2>
+    <p class="small muted">{{formSub}} Fields marked <span class="req">*</span> are required.</p>
+  </div>
+
+  <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}">
+    <div role="alert" style="grid-column: 1 / -1; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding: 16px 18px; border-radius: 10px; border: 2px solid #e52a30; background: #fdf0f0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+      <div style="display: flex; flex-direction: column; gap: 6px"><strong style="font-size: 16px">Please fix {{errCount}}</strong><ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6"><sc-for list="{{errList}}" as="e" hint-placeholder-count="2"><li><a class="link" href="{{e.href}}">{{e.t}}</a> {{e.d}}</li></sc-for></ul></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isLimited}}" hint-placeholder-val="{{ false }}">
+    <div role="alert" style="grid-column: 1 / -1; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding: 16px 18px; border-radius: 10px; border: 2px solid #e52a30; background: #fdf0f0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+      <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Too many submissions in a short time</strong><span style="font-size: 14px; line-height: 1.5">To keep this form free of spam, you can send up to 5 per hour. Please try again after 19:40. Your text is still here.</span></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{isIdea}}" hint-placeholder-val="{{ true }}">
+    <fieldset id="sf-type" style="grid-column: 1 / -1"><legend class="label">What kind of idea? <span class="req">*</span></legend>
+      <div class="{{typeCls}}"><sc-for list="{{types}}" as="t" hint-placeholder-count="5"><label class="{{t.cls}}"><input type="radio" name="sf-type" checked="{{t.on}}" disabled="{{busy}}">{{t.t}}</label></sc-for></div>
+      <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Choose what your idea is about</span></sc-if>
+    </fieldset>
+    <div style="grid-column: 1 / -1"><label class="label" for="sf-t" style="display: flex; justify-content: space-between"><span>Title <span class="req">*</span></span><span class="muted" style="font-weight: 400">{{titleCount}} / 100</span></label><input class="input" id="sf-t" value="{{v.title}}" placeholder="e.g. A beginner workshop on PCB design" disabled="{{busy}}"></div>
+    <div id="sf-desc" style="grid-column: 1 / -1">
+      <label class="label" for="sf-d" style="display: flex; justify-content: space-between"><span>Describe your idea <span class="req">*</span></span><span class="muted" style="font-weight: 400">{{descCount}} / 2000</span></label>
+      <textarea class="{{descCls}}" id="sf-d" rows="6" placeholder="What is it, who is it for, and why would it be great? A few sentences is enough." aria-invalid="{{isErrors}}" disabled="{{busy}}" value="{{v.desc}}"></textarea>
+      <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Tell us a bit more: at least 20 characters</span></sc-if>
+    </div>
+    <div style="grid-column: 1 / -1">
+      <span class="label">Attachment <span class="muted" style="font-weight: 400">· optional</span></span>
+      <sc-if value="{{hasFile}}" hint-placeholder-val="{{ false }}"><div class="file" style="border-style: solid; border-color: #e3e3e3"><span style="width: 36px; height: 44px; border-radius: 6px; background: #e52a30; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px">PDF</span><span style="flex: 1; display: flex; flex-direction: column"><strong style="font-weight: 500; font-size: 15px">pcb-workshop-plan.pdf</strong><span class="small muted">220 KB</span></span><button type="button" class="link small" style="border: 0; background: none; font-family: inherit; cursor: pointer">Remove</button></div></sc-if>
+      <sc-if value="{{noFile}}" hint-placeholder-val="{{ true }}"><label class="file" for="sf-file"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.4 11.1l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"></path></svg><span style="display: flex; flex-direction: column"><span style="font-size: 15px"><span class="link">Add a file</span> such as a plan, sketch or photo</span><span class="small muted">PDF, JPG or PNG · up to 10 MB</span></span></label><input id="sf-file" type="file" class="sr-only"></sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isImpression}}" hint-placeholder-val="{{ false }}">
+    <div id="sf-ev" style="grid-column: 1 / -1; position: relative">
+      <label class="label" for="sf-event">Which event? <span class="req">*</span></label>
+      <select class="{{eventCls}}" id="sf-event" aria-invalid="{{isErrors}}" disabled="{{busy}}"><option>{{v.event}}</option><option>Soft Skills Academy Skopje 2026</option><option>Other: not in the list</option></select>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="top: 41px"><path d="M6 9l6 6 6-6"></path></svg>
+      <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Pick the event, or “Other”</span></sc-if>
+      <sc-if value="{{eventFromLink}}" hint-placeholder-val="{{ false }}"><p class="help">Chosen for you from the event page. Change it if needed.</p></sc-if>
+    </div>
+    <fieldset style="grid-column: 1 / -1"><legend class="label">How was it? <span class="muted" style="font-weight: 400">· optional</span></legend>
+      <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap"><div class="stars" role="radiogroup" aria-label="Rating, 1 to 5 stars"><sc-for list="{{stars}}" as="s" hint-placeholder-count="5"><label class="{{s.cls}}" title="{{s.t}}"><input type="radio" name="sf-rate" checked="{{s.on}}" disabled="{{busy}}" aria-label="{{s.t}}"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"></path></svg></label></sc-for></div><span class="small" style="font-weight: 500">{{rateText}}</span></div>
+    </fieldset>
+    <div id="sf-imp" style="grid-column: 1 / -1">
+      <label class="label" for="sf-i" style="display: flex; justify-content: space-between"><span>Your impression or feedback <span class="req">*</span></span><span class="muted" style="font-weight: 400">{{descCount}} / 2000</span></label>
+      <textarea class="{{descCls}}" id="sf-i" rows="6" placeholder="What did you like? What should the organizers do differently next time?" aria-invalid="{{isErrors}}" disabled="{{busy}}" value="{{v.imp}}"></textarea>
+      <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Write at least a sentence</span></sc-if>
+    </div>
+    <div style="grid-column: 1 / -1">
+      <span class="label">Photos <span class="muted" style="font-weight: 400">· optional, up to 10</span></span>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <sc-for list="{{photos}}" as="p" hint-placeholder-count="2"><div class="thumb"><span class="ph" style="position: absolute; inset: 0; font-size: 11px">{{p}}</span><button type="button" class="x" aria-label="Remove photo {{p}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div></sc-for>
+        <label for="sf-photos" class="thumb" style="border: 2px dashed #8c8c8c; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #b81f24; font-size: 12px; font-weight: 500; cursor: pointer"><span style="font-size: 24px; line-height: 1">+</span>Add</label><input id="sf-photos" type="file" multiple accept="image/*" class="sr-only">
+      </div>
+      <p class="help">Only photos where everyone shown agreed to be shared.</p>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isGuest}}" hint-placeholder-val="{{ true }}">
+    <fieldset style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 16px; padding-top: 18px; border-top: 1px solid #ececec">
+      <legend class="label" style="float: left; width: 100%; margin-bottom: 0">About you <span class="muted" style="font-weight: 400">· optional</span></legend>
+      <sc-if value="{{showContact}}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: {{cols}}; gap: 16px 20px">
+          <div><label class="label" for="sf-n">Name</label><input class="input" id="sf-n" autocomplete="name" value="{{v.name}}" disabled="{{busy}}"></div>
+          <div><label class="label" for="sf-e">E-mail</label><input class="input" id="sf-e" type="email" autocomplete="email" value="{{v.email}}" placeholder="Only if you'd like a reply" disabled="{{busy}}"></div>
+        </div>
+        <sc-if value="{{showConsent}}" hint-placeholder-val="{{ false }}">
+          <div class="box"><label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 14px; line-height: 1.5"><input type="checkbox" class="cb" checked="{{consentOn}}" disabled="{{busy}}"><span>I agree that EESTEC LC Skopje stores my name and e-mail to reply to this, as described in the <a class="link" href="/privacy">privacy policy</a>. They are deleted after 12 months. <span class="req">*</span></span></label></div>
+        </sc-if>
+        <sc-if value="{{noConsent}}" hint-placeholder-val="{{ true }}"><p class="help" style="margin-top: -6px">If you add an e-mail, we'll ask for your consent to store it.</p></sc-if>
+      </sc-if>
+      <sc-if value="{{isIdea}}" hint-placeholder-val="{{ true }}">
+        <div class="{{anonBox}}"><label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 15px; line-height: 1.5"><input type="checkbox" class="cb" checked="{{anon}}" disabled="{{busy}}"><span><strong>Submit anonymously</strong><br><span class="small muted">{{anonHelp}}</span></span></label></div>
+      </sc-if>
+      <sc-if value="{{isImpression}}" hint-placeholder-val="{{ false }}">
+        <p class="small muted" style="display: flex; gap: 8px; align-items: flex-start"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg><span>Your feedback goes only to the board and the organizers. It's not published. Members can <a href="/login?next=/submit%3Ftab%3Dimpression" class="link">log in</a> to turn it into a Memory.</span></p>
+      </sc-if>
+    </fieldset>
+  </sc-if>
+
+  <sc-if value="{{isMember}}" hint-placeholder-val="{{ false }}">
+    <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid #ececec">
+      <sc-if value="{{showMe}}" hint-placeholder-val="{{ true }}">
+        <div class="me"><span style="width: 40px; height: 40px; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0">MS</span><span style="flex: 1; display: flex; flex-direction: column"><span class="small muted">Sending as</span><strong style="font-size: 15px">Marija Stojanovska · marija.s@students.feit.ukim.edu.mk</strong></span></div>
+      </sc-if>
+      <sc-if value="{{isIdea}}" hint-placeholder-val="{{ true }}">
+        <div class="{{anonBox}}"><label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 15px; line-height: 1.5"><input type="checkbox" class="cb" checked="{{anon}}" disabled="{{busy}}"><span><strong>Submit anonymously</strong><br><span class="small muted">{{anonHelp}}</span></span></label></div>
+      </sc-if>
+      <sc-if value="{{isImpression}}" hint-placeholder-val="{{ false }}">
+        <div class="{{memBox}}">
+          <label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 15px; line-height: 1.5"><input type="checkbox" class="cb" checked="{{asMemory}}" disabled="{{busy}}"><span><strong>Turn this into a Memories post</strong><br><span class="small muted">The board checks it first. Once approved it appears on /memories and the event page with your name and photos.</span></span></label>
+          <sc-if value="{{asMemory}}" hint-placeholder-val="{{ false }}"><div style="padding: 14px 0 0 32px"><label class="label" for="sf-mt">Title for your Memory <span class="req">*</span></label><input class="input" id="sf-mt" value="Seven days, 28 nationalities and one very long bus ride" disabled="{{busy}}"><p class="help">Want headings, a cover photo or more text? You can open it in the Memory editor after sending.</p></div></sc-if>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <div class="hp" aria-hidden="true"><label for="sf-hp">Leave this empty</label><input id="sf-hp" tabindex="-1" autocomplete="off"></div>
+
+  <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; flex-wrap: wrap">
+    <sc-if value="{{notBusy}}" hint-placeholder-val="{{ true }}"><button type="submit" class="btn btn-primary" disabled="{{isLimited}}" style="width: {{btnW}}; opacity: {{btnOpacity}}">{{submitLabel}}</button></sc-if>
+    <sc-if value="{{isBusy}}" hint-placeholder-val="{{ false }}"><button type="button" disabled aria-live="polite" class="btn btn-primary" style="background: #b81f24; border-color: #b81f24; cursor: progress; width: {{btnW}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.35)" stroke-width="3"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path></svg>Sending…</button></sc-if>
+    <span class="small muted">Protected by a spam check and a limit of 5 per hour.</span>
+  </div>
+</form>
+</sc-if>
+
+<sc-if value="{{isSuccess}}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="padding: {{pad}}; border: 1px solid #e3e3e3; border-radius: 16px; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 22px">
+    <span style="width: 64px; height: 64px; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">{{okTitle}}</h2><p class="body" style="font-size: 16px">{{okText}}</p></div>
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 12px; background: #f5f5f5">
+      <strong style="font-size: 15px">What happens next</strong>
+      <ol class="steps"><sc-for list="{{next}}" as="n" hint-placeholder-count="3"><li><b>{{n.i}}</b><span>{{n.t}}</span></li></sc-for></ol>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap"><a href="{{ok1.href}}" class="btn btn-secondary" style="height: 48px">{{ok1.t}}</a><a href="{{ok2.href}}" class="link">{{ok2.t}} →</a></div>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"tab":{"editor":"enum","options":["idea","impression"],"default":"idea"},"state":{"editor":"enum","options":["empty","filled","errors","sending","success","limited"],"default":"empty"},"auth":{"editor":"enum","options":["guest","member"],"default":"guest"},"anonymous":{"editor":"boolean","default":false},"asMemory":{"editor":"boolean","default":false},"fromEvent":{"editor":"boolean","default":false},"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":720,"height":1027}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tab = this.props.tab ?? 'idea';
+    const st = this.props.state ?? 'empty';
+    const member = (this.props.auth ?? 'guest') === 'member';
+    const anon = !!this.props.anonymous;
+    const asMemory = !!this.props.asMemory && member;
+    const fromEvent = !!this.props.fromEvent;
+    const mobile = (this.props.device ?? 'desktop') === 'mobile';
+    const idea = tab === 'idea';
+    const busy = st === 'sending';
+    const limited = st === 'limited';
+    const filled = st === 'filled' || st === 'sending' || limited;
+    const errors = st === 'errors';
+    const typePick = filled ? 'Workshop topic' : '';
+    const types = ['New event', 'Workshop topic', 'Partnership / company', 'Website improvement', 'Other'].map((t) => ({ t, on: t === typePick, cls: t === typePick ? 'on' : '' }));
+    const rate = filled ? 4 : 0;
+    const rateNames = ['Poor', 'Okay', 'Good', 'Great', 'Amazing'];
+    const v = filled
+      ? { title: 'A beginner workshop on PCB design', desc: 'Many first-years want to build hardware but have never designed a board. A two-evening workshop with KiCad, ending with a real PCB we order together, would be perfect before the EESTech Challenge.', name: member ? '' : 'Bojan Ilievski', email: member ? '' : 'bojan.i@students.feit.ukim.edu.mk', event: 'Workshop: Power Up — Renewable Grids · May 2026', imp: 'The lab day was the best part: real equipment and engineers who took time for every question. Next time, a bit more free time in Ohrid and fewer hours on the bus would be great.' }
+      : { title: errors && idea ? 'PCB workshop' : '', desc: errors && idea ? 'PCB' : '', name: '', email: '', event: fromEvent ? 'Workshop: Power Up — Renewable Grids · May 2026' : 'Choose an event…', imp: '' };
+    const okIdea = anon
+      ? { okTitle: 'Thanks! Your idea is with the board', okText: 'You sent it anonymously, so we can’t reply. Keep an eye on Upcoming Events.' }
+      : { okTitle: 'Thanks, Bojan! Your idea is with the board', okText: 'We sent a copy to bojan.i@students.feit.ukim.edu.mk.' };
+    const okImp = asMemory
+      ? { okTitle: 'Thanks, Marija! Your Memory is waiting for approval', okText: 'Your feedback went to the organizers, and the Memory to the board. You can find both in My profile.' }
+      : { okTitle: 'Thanks for your feedback on Power Up', okText: 'It goes to the organizers and the board. It isn’t published.' };
+    const nextIdea = [{ i: 1, t: 'The board reads every idea at the next weekly meeting (Wednesdays, 18:00).' }, { i: 2, t: anon ? 'Good ideas get a volunteer and become events or projects.' : 'We reply within 2 weeks, even if the answer is “not this year”.' }, { i: 3, t: 'Accepted ideas show up on Upcoming Events.' }];
+    const nextImp = asMemory
+      ? [{ i: 1, t: 'The board checks your Memory, usually within 3 days.' }, { i: 2, t: 'Want to add a cover photo or headings? Open it in the Memory editor any time before it’s approved.' }, { i: 3, t: 'We e-mail you when it’s live on /memories.' }]
+      : [{ i: 1, t: 'The organizers read all feedback after each event.' }, { i: 2, t: 'Ratings help us decide what to repeat next year.' }, { i: 3, t: 'Were you a participant? Your photos may end up in the event gallery, only with your OK.' }];
+    const errList = idea
+      ? [{ t: 'Idea type', d: 'is missing', href: '#sf-type' }, { t: 'Description', d: 'is too short', href: '#sf-desc' }]
+      : [{ t: 'Event', d: 'is missing', href: '#sf-ev' }, { t: 'Impression', d: 'is empty', href: '#sf-imp' }];
+    return Object.assign({
+      showForm: st !== 'success', isSuccess: st === 'success',
+      isIdea: idea, isImpression: !idea, isGuest: !member, isMember: member,
+      isLimited: limited, btnOpacity: limited ? 0.45 : 1,
+      showConsent: !member && !anon && !!v.email, noConsent: !member && !anon && !v.email, consentOn: filled,
+      isErrors: errors, errCount: '2 fields', errList,
+      isBusy: busy, notBusy: !busy, busy,
+      v, types, typeCls: errors ? 'seg err' : 'seg',
+      titleCount: v.title.length, descCount: (idea ? v.desc : v.imp).length,
+      descCls: errors ? 'input err' : 'input', eventCls: errors ? 'input select err' : 'input select',
+      eventFromLink: fromEvent && !errors,
+      hasFile: filled && idea, noFile: !(filled && idea),
+      stars: [1, 2, 3, 4, 5].map((n) => ({ t: n + ' star' + (n > 1 ? 's' : '') + ' · ' + rateNames[n - 1], on: n === rate, cls: n <= rate ? 'on' : '' })),
+      rateText: rate ? rate + ' of 5 · ' + rateNames[rate - 1] : 'Not rated',
+      photos: filled ? ['Lab day', 'Lake Ohrid'] : [],
+      anon, showContact: !anon, showMe: !anon,
+      anonBox: anon ? 'box on' : 'box',
+      anonHelp: anon ? 'We won’t see who you are, so we can’t reply to you.' : 'Hides your name and e-mail from the board.',
+      asMemory, memBox: asMemory ? 'box on' : 'box',
+      formTitle: idea ? 'Submit an idea' : 'Share an impression or feedback',
+      formSub: idea ? 'Ideas for events, workshop topics, companies or this website.' : 'Tell the organizers how it went.',
+      submitLabel: idea ? 'Send idea' : (asMemory ? 'Send feedback and Memory' : 'Send feedback'),
+      next: idea ? nextIdea : nextImp,
+      ok1: idea ? { t: 'Send another idea', href: '/submit' } : { t: asMemory ? 'Go to My profile' : 'Share another impression', href: asMemory ? '/profile#memories' : '/submit?tab=impression' },
+      ok2: idea ? { t: 'See upcoming events', href: '/upcoming' } : { t: 'Read Memories from Power Up', href: '/memories?event=power-up-2026' },
+      pad: mobile ? '20px' : '36px', cols: mobile ? 'minmax(0, 1fr)' : 'repeat(2, minmax(0, 1fr))', btnW: mobile ? '100%' : 'auto'
+    }, idea ? okIdea : okImp);
+  }
+}
+</script>
+</body>
+</html>

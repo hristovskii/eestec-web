@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Submit an idea or impression — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+.ptab{display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:14px 14px 0 0;border:1px solid transparent;border-bottom:0;color:#3a3a3a;text-decoration:none;font-size:17px;font-weight:500;background:transparent}
+.ptab .ic{width:40px;height:40px;border-radius:10px;background:#ffffff;color:#6b6b6b;display:flex;align-items:center;justify-content:center;border:1px solid #e3e3e3}
+.ptab[aria-selected="true"]{background:#ffffff;border-color:#e3e3e3;color:#1a1a1a;font-weight:700;box-shadow:inset 0 3px 0 #e52a30}
+.ptab[aria-selected="true"] .ic{background:#fdf0f0;color:#e52a30;border-color:#fdf0f0}
+.ptab:hover{color:#1a1a1a}
+.side{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff;padding:22px;display:flex;flex-direction:column;gap:12px}
+.side h2{font-size:18px;font-weight:700}
+.mtab{flex:1;display:flex;align-items:center;justify-content:center;height:48px;border-radius:8px;font-size:15px;font-weight:500;color:#3a3a3a;text-decoration:none;text-align:center;line-height:1.2;padding:0 8px}
+.mtab[aria-selected="true"]{background:#1a1a1a;color:#ffffff}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="desktop" active="" auth="{{auth}}" hint-size="100%,72px"></dc-import></div>
+  <main>
+    <section style="background: #f5f5f5">
+      <div class="container" style="padding-top: 40px; display: flex; flex-direction: column; gap: 14px">
+        <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Ideas &amp; impressions</span></nav>
+        <h1 class="h1">Have an idea? Been to an event?</h1>
+        <span class="title-bar"></span>
+        <p class="body muted" style="font-size: 18px; max-width: 700px; padding-top: 4px">Tell us. The board reads every idea and every piece of feedback, from members and non-members alike.</p>
+        <div role="tablist" aria-label="What would you like to send?" style="display: flex; gap: 8px; margin-top: 20px">
+          <a href="/submit?tab=idea" role="tab" class="ptab" aria-selected="{{ideaSel}}"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"></path></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><span>Submit an idea</span><span class="small muted" style="font-weight: 400">Events, topics, companies, this website</span></span></a>
+          <a href="/submit?tab=impression" role="tab" class="ptab" aria-selected="{{impSel}}"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><span>Share an impression / feedback</span><span class="small muted" style="font-weight: 400">After an event you attended</span></span></a>
+        </div>
+      </div>
+    </section>
+    <section role="tabpanel" style="padding: 48px 0 88px; border-top: 1px solid #e3e3e3">
+      <div class="container" style="display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; align-items: start">
+        <div style="min-width: 0"><dc-import name="SubmitForm" tab="{{tab}}" state="{{state}}" auth="{{auth}}" anonymous="{{anonymous}}" as-memory="{{asMemory}}" from-event="{{fromEvent}}" hint-size="100%,1000px"></dc-import></div>
+        <aside style="display: flex; flex-direction: column; gap: 16px">
+          <sc-if value="{{isIdea}}" hint-placeholder-val="{{ true }}">
+            <div class="side"><h2>The board reads every idea</h2><p class="small" style="color: #3a3a3a; line-height: 1.6">New ideas are discussed at the weekly meeting. If you leave an e-mail, we'll tell you what happened to yours.</p></div>
+            <div class="side" style="background: #f5f5f5; border-color: #f5f5f5"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #6b6b6b">Ideas that became events</span><a href="/events/robotics-2025" class="link">Robotics Workshop 2025 →</a><span class="small muted">Suggested by a first-year student</span><a href="/events/feeit-career-day-2026" class="link">FEEIT Career Day 2026 →</a><span class="small muted">Suggested by a partner company</span></div>
+            <div class="side"><h2>Want to organize it yourself?</h2><p class="small" style="color: #3a3a3a; line-height: 1.6">Members can lead their own events with help from the board.</p><a href="/join" class="link small">Become an EESTECer →</a></div>
+          </sc-if>
+          <sc-if value="{{isImp}}" hint-placeholder-val="{{ false }}">
+            <div class="side"><h2>Who sees your feedback</h2><ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.7; color: #3a3a3a"><li>The board and the event's organizers</li><li>Never public, unless you're a member and choose to turn it into a Memory</li><li>Ratings are shown to the board as an average per event</li></ul></div>
+            <div class="side" style="background: #f5f5f5; border-color: #f5f5f5"><h2>Want to write a full story?</h2><p class="small" style="color: #3a3a3a; line-height: 1.6">Members can write a Memory with headings, a cover photo and a gallery.</p><a href="/memories/new" class="link small">Write a Memory →</a></div>
+          </sc-if>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="mobile" active="" auth="{{auth}}" hint-size="390px,64px"></dc-import></div>
+  <main>
+    <section style="background: #f5f5f5; padding: 24px 16px 20px; display: flex; flex-direction: column; gap: 12px">
+      <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Ideas &amp; impressions</span></nav>
+      <h1 class="h1-m">Have an idea? Been to an event?</h1>
+      <span class="title-bar"></span>
+      <p class="body muted">The board reads every idea and every piece of feedback.</p>
+      <div role="tablist" aria-label="What would you like to send?" style="display: flex; gap: 4px; padding: 4px; margin-top: 8px; border: 1px solid #c7c7c7; border-radius: 12px; background: #ffffff">
+        <a href="/submit?tab=idea" role="tab" class="mtab" aria-selected="{{ideaSel}}">Submit an idea</a>
+        <a href="/submit?tab=impression" role="tab" class="mtab" aria-selected="{{impSel}}">Impression / feedback</a>
+      </div>
+    </section>
+    <section role="tabpanel" style="padding: 20px 16px 40px; display: flex; flex-direction: column; gap: 16px">
+      <dc-import name="SubmitForm" tab="{{tab}}" state="{{state}}" auth="{{auth}}" anonymous="{{anonymous}}" as-memory="{{asMemory}}" from-event="{{fromEvent}}" device="mobile" hint-size="358px,1100px"></dc-import>
+      <p class="small muted" style="line-height: 1.6">{{mobileNote}}</p>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"tab":{"editor":"enum","options":["idea","impression"],"default":"idea"},"state":{"editor":"enum","options":["empty","filled","errors","sending","success","limited"],"default":"empty"},"auth":{"editor":"enum","options":["guest","member"],"default":"guest"},"anonymous":{"editor":"boolean","default":false},"asMemory":{"editor":"boolean","default":false},"fromEvent":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":2008}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tab = this.props.tab ?? 'idea';
+    const device = this.props.device ?? 'desktop';
+    return {
+      isDesktop: device === 'desktop', isMobile: device === 'mobile',
+      tab, state: this.props.state ?? 'empty', auth: this.props.auth ?? 'guest',
+      anonymous: !!this.props.anonymous, asMemory: !!this.props.asMemory, fromEvent: !!this.props.fromEvent,
+      isIdea: tab === 'idea', isImp: tab === 'impression',
+      ideaSel: tab === 'idea' ? 'true' : 'false', impSel: tab === 'impression' ? 'true' : 'false',
+      mobileNote: tab === 'idea' ? 'The board discusses new ideas at the weekly meeting. Leave an e-mail if you want to hear back.' : 'Feedback goes only to the board and the organizers. It is never public unless a member turns it into a Memory.'
+    };
+  }
+}
+</script>
+</body>
+</html>

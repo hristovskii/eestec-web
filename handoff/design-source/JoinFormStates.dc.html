@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Membership form — states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+.ds-label{font-size:13px;font-weight:700;color:#1a1a1a;letter-spacing:0.06em;text-transform:uppercase}
+.cap{font-size:14px;line-height:1.5;color:#6b6b6b}
+</style>
+</helmet>
+
+<div style="width: 100%; background: #ffffff">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px 96px; display: flex; flex-direction: column; gap: 40px">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 36px; line-height: 1.2; font-weight: 700">Membership form · states</h2>
+      <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+      <p class="muted" style="font-size: 17px; color: #6b6b6b">Same fields and styles as the Upcoming Events application form. Validation runs when the form is sent and again when a field with an error is corrected.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; align-items: start">
+      <sc-for list="{{states}}" as="s" hint-placeholder-count="6">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="ds-label">{{s.label}}</span>
+          <span class="cap">{{s.cap}}</span>
+          <dc-import name="JoinForm" state="{{s.state}}" hint-size="100%,1040px"></dc-import>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 48px 40px 72px; display: flex; gap: 40px; align-items: flex-start">
+    <sc-for list="{{states}}" as="s" hint-placeholder-count="6">
+      <div style="flex: 0 0 358px; display: flex; flex-direction: column; gap: 10px">
+        <span class="ds-label">{{s.label}}</span>
+        <dc-import name="JoinForm" state="{{s.state}}" device="mobile" hint-size="358px,1300px"></dc-import>
+      </div>
+    </sc-for>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":1440,"height":3394}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    return {
+      isDesktop: device === 'desktop',
+      isMobile: device === 'mobile',
+      states: [
+        { state: 'empty', label: '1 · Empty', cap: 'Placeholders show the expected format. Nothing is pre-selected.' },
+        { state: 'filled', label: '2 · Filled', cap: 'Selected options turn red. The consent box must be ticked to send.' },
+        { state: 'errors', label: '3 · Validation errors', cap: 'A summary at the top links to each field. Each field shows its own message with an icon.' },
+        { state: 'submitting', label: '4 · Submitting', cap: 'Fields are locked and the button shows a spinner, so the form can’t be sent twice.' },
+        { state: 'success', label: '5 · Success', cap: 'Replaces the form. A confirmation e-mail is sent at the same time.' },
+        { state: 'closed', label: '6 · Applications closed', cap: 'Shown instead of the form when the board turns applications off in the Admin Panel.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

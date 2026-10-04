@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My profile — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+body{background:#f5f5f5}
+.pcard{background:#ffffff;border:1px solid #e3e3e3;border-radius:16px}
+.pcard-h{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 0}
+.pcard-b{padding:20px 28px 28px;display:flex;flex-direction:column;gap:20px}
+.pcard-h h2{font-size:22px;line-height:1.3;font-weight:700}
+.snav a{display:flex;align-items:center;justify-content:space-between;gap:10px;height:44px;padding:0 14px;border-radius:8px;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.snav a:hover{background:#ffffff}
+.snav a[aria-current="true"]{background:#ffffff;color:#b81f24;font-weight:700;box-shadow:inset 3px 0 0 #e52a30}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.prefix{display:flex;align-items:stretch;border:1px solid #8c8c8c;border-radius:8px;overflow:hidden;height:48px;background:#fff}
+.prefix span{display:flex;align-items:center;padding:0 12px;background:#f5f5f5;color:#6b6b6b;font-size:15px;border-right:1px solid #e3e3e3;white-space:nowrap}
+.prefix input{flex:1;min-width:0;border:0;padding:0 12px;font:inherit;font-size:16px;color:#1a1a1a}
+textarea.input{height:auto;padding:12px 14px;line-height:1.55;resize:vertical}
+.ro{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:8px;background:#f5f5f5}
+.ro dt{font-size:13px;color:#6b6b6b}.ro dd{margin:0;font-size:15px;font-weight:500}
+.vis{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:16px;border:1px solid #8c8c8c;border-radius:12px;cursor:pointer;background:#ffffff}
+.vis.on{border:2px solid #e52a30;background:#fdf0f0;padding:15px}
+.vis input{width:20px;height:20px;margin:2px 0 0;accent-color:#e52a30}
+.lrow{display:grid;align-items:center;gap:16px;padding:14px 0;border-top:1px solid #ececec}
+.st{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap}
+.st .d{width:7px;height:7px;border-radius:50%;background:currentColor}
+.st-ok{background:#1a1a1a;color:#ffffff}
+.st-wait{background:#fdf0f0;color:#b81f24}
+.st-neutral{background:#f5f5f5;color:#3a3a3a;border:1px solid #e3e3e3}
+.st-out{background:#ffffff;color:#1a1a1a;border:1px solid #8c8c8c}
+.st-no{background:#ffffff;color:#b81f24;border:1px solid #e52a30}
+.cons{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start;padding:18px 0;border-top:1px solid #ececec}
+.file{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 14px;border:1px solid #e3e3e3;border-radius:10px;background:#ffffff}
+.pdf{width:40px;height:48px;border-radius:6px;background:#e52a30;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.danger{border:2px solid #e52a30}
+.savebar{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:16px 28px;border-top:1px solid #ececec;background:#fafafa;border-radius:0 0 16px 16px}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #f5f5f5">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="desktop" active="" auth="member" hint-size="100%,72px"></dc-import></div>
+  <main>
+    <div class="container" style="padding-top: 40px; padding-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h1 class="h1">My profile</h1>
+        <span class="title-bar"></span>
+        <p class="body muted">Logged in as <strong style="color: #1a1a1a">marija.s@students.feit.ukim.edu.mk</strong> · <span class="chip chip-dark" style="height: 24px; vertical-align: 1px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Visible to members only</span></p>
+      </div>
+      <div style="display: flex; gap: 10px"><a href="/members/marija-stojanovska" class="btn btn-quiet btn-sm">View my public profile</a><a href="/memories/new" class="btn btn-primary btn-sm">Create a Memory</a></div>
+    </div>
+
+    <div class="container" style="padding-bottom: 96px; display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 40px; align-items: start">
+      <nav aria-label="My profile sections" class="snav" style="position: sticky; top: 96px; display: flex; flex-direction: column; gap: 2px">
+        <a href="#profile" aria-current="true">Profile</a>
+        <a href="#visibility">Visibility</a>
+        <a href="#applications">My applications <span class="chip" style="height: 22px; padding: 0 8px">3</span></a>
+        <a href="#memories">My Memories <span class="chip" style="height: 22px; padding: 0 8px">5</span></a>
+        <a href="#privacy">Privacy &amp; consent</a>
+        <a href="#account">Account</a>
+      </nav>
+
+      <div style="display: flex; flex-direction: column; gap: 24px; min-width: 0">
+
+        <section id="profile" class="pcard" aria-labelledby="h-p">
+          <div class="pcard-h"><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-p">Profile</h2><p class="small muted">Shown on your profile page and member card.</p></div></div>
+          <div class="pcard-b">
+            <div style="display: flex; align-items: center; gap: 24px">
+              <div class="ph" style="width: 120px; height: 120px; border-radius: 16px; flex-shrink: 0"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size: 12px">Your photo</span></div>
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <span class="label" style="margin: 0">Profile photo</span>
+                <div style="display: flex; gap: 8px"><label for="mp-photo" class="btn btn-quiet btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>Change photo</label><input id="mp-photo" type="file" accept="image/*" class="sr-only"><button type="button" class="btn btn-sm" style="background: transparent; color: #b81f24; padding: 0 10px">Remove</button></div>
+                <p class="small muted">JPG or PNG, up to 8 MB. You can drag to adjust the square crop after upload.</p>
+              </div>
+            </div>
+            <div class="grid2">
+              <div><label class="label" for="mp-name">Full name</label><input class="input" id="mp-name" value="Marija Stojanovska"></div>
+              <div><label class="label" for="mp-slug">Profile address</label><div class="prefix"><span>eestec.mk/members/</span><input id="mp-slug" value="marija-stojanovska"></div></div>
+            </div>
+            <div>
+              <label class="label" for="mp-bio" style="display: flex; justify-content: space-between"><span>Short bio</span><span class="muted" style="font-weight: 400">312 / 400</span></label>
+              <textarea class="input" id="mp-bio" rows="4" style="border-color: #e52a30; box-shadow: 0 0 0 3px rgba(229,42,48,0.28)">Third-year Computer Hardware student at FEEIT. I joined EESTEC for one workshop and stayed for the people. These days I lead the Events team, which means spreadsheets, room bookings, and making sure 28 people from 14 countries get on the same bus.</textarea>
+            </div>
+            <div class="grid2">
+              <div style="position: relative"><label class="label" for="mp-fac">Faculty</label><select class="input select" id="mp-fac"><option>FEEIT</option><option>FINKI</option><option>Other</option></select><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="top: 41px"><path d="M6 9l6 6 6-6"></path></svg></div>
+              <div style="position: relative"><label class="label" for="mp-year">Year of study</label><select class="input select" id="mp-year"><option>3rd year</option><option>4th year</option><option>Master's</option></select><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="top: 41px"><path d="M6 9l6 6 6-6"></path></svg></div>
+              <div><label class="label" for="mp-li">LinkedIn <span class="muted" style="font-weight: 400">· optional</span></label><input class="input" id="mp-li" type="url" value="https://linkedin.com/in/marija-stojanovska"></div>
+              <div><label class="label" for="mp-gh">GitHub <span class="muted" style="font-weight: 400">· optional</span></label><input class="input" id="mp-gh" type="url" value="https://github.com/marijas"></div>
+              <div><label class="label" for="mp-ph">Phone <span class="muted" style="font-weight: 400">· never shown publicly</span></label><input class="input" id="mp-ph" type="tel" value="070 123 456"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span class="label" style="margin: 0; display: flex; align-items: center; gap: 8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Set by the board</span>
+              <dl style="margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+                <div class="ro"><dt>Team</dt><dd>Events</dd></div><div class="ro"><dt>Role</dt><dd>Team lead</dd></div><div class="ro"><dt>Member since</dt><dd>Oct 2023</dd></div><div class="ro"><dt>Badges</dt><dd>3</dd></div>
+              </dl>
+              <p class="small muted">Something wrong here? Write to <a href="mailto:members@eestec.mk" class="link">members@eestec.mk</a>.</p>
+            </div>
+          </div>
+          <div class="savebar"><span class="small" style="display: flex; align-items: center; gap: 8px; margin-right: auto"><span style="width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span>Unsaved changes</span><button type="button" class="btn btn-quiet btn-sm">Discard</button><button type="button" class="btn btn-primary btn-sm">Save changes</button></div>
+        </section>
+
+        <section id="visibility" class="pcard" aria-labelledby="h-v">
+          <div class="pcard-h"><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-v">Who can see my profile</h2><p class="small muted">Saved as soon as you pick one.</p></div></div>
+          <div class="pcard-b">
+            <fieldset><legend class="sr-only">Profile visibility</legend>
+              <div class="grid2" style="gap: 12px">
+                <label class="vis"><input type="radio" name="mp-vis"><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Public</strong><span class="small muted">Anyone on eestec.mk sees your photo, bio, events, badges and Memories.</span></span></label>
+                <label class="vis on"><input type="radio" name="mp-vis" checked><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Members only</strong><span class="small muted">Logged-in members see everything. Visitors see only your name and team.</span></span></label>
+              </div>
+            </fieldset>
+            <a href="/members/marija-stojanovska?preview=visitor" class="link small">See what visitors see →</a>
+          </div>
+        </section>
+
+        <section id="applications" class="pcard" aria-labelledby="h-a">
+          <div class="pcard-h"><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-a">My applications</h2><p class="small muted">Events you applied to through eestec.mk.</p></div><a href="/upcoming" class="link small" style="padding-top: 6px">Upcoming events →</a></div>
+          <div class="pcard-b" style="gap: 0">
+            <sc-for list="{{apps}}" as="a" hint-placeholder-count="3">
+              <div class="lrow" style="grid-template-columns: minmax(0, 1fr) 150px 170px 110px; border-top-color: {{a.border}}">
+                <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><a href="{{a.href}}" style="color: #1a1a1a; font-weight: 500; text-decoration: none; font-size: 16px">{{a.t}}</a><span class="small muted">{{a.when}}</span></span>
+                <span class="small muted">Applied {{a.applied}}</span>
+                <span><span class="{{a.cls}}"><span class="d"></span>{{a.status}}</span></span>
+                <span style="text-align: right"><a href="{{a.href}}" class="link small">{{a.action}}</a></span>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <section id="memories" class="pcard" aria-labelledby="h-m">
+          <div class="pcard-h"><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-m">My Memories</h2><p class="small muted">Stories you wrote. The board checks new ones and changes before they go live.</p></div><a href="/memories/new" class="btn btn-secondary btn-sm">+ Create a Memory</a></div>
+          <div class="pcard-b" style="gap: 0; padding-top: 16px">
+            <div role="group" aria-label="Filter by status" style="display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 12px"><button type="button" class="filter" aria-pressed="true" style="height: 36px">All <span class="n">5</span></button><button type="button" class="filter" style="height: 36px">Drafts <span class="n">1</span></button><button type="button" class="filter" style="height: 36px">Waiting <span class="n">1</span></button><button type="button" class="filter" style="height: 36px">Not approved <span class="n">1</span></button><button type="button" class="filter" style="height: 36px">Published <span class="n">2</span></button></div>
+            <sc-for list="{{mems}}" as="m" hint-placeholder-count="5">
+              <div class="lrow" style="grid-template-columns: 64px minmax(0, 1fr) 190px 150px; border-top-color: #ececec">
+                <span class="ph" style="width: 64px; height: 48px; border-radius: 8px"></span>
+                <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-weight: 500; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.t}}</strong><span class="small muted">{{m.meta}}</span></span>
+                <span><span class="{{m.cls}}"><span class="d"></span>{{m.status}}</span></span>
+                <span style="text-align: right"><a href="{{m.href}}" class="link small" style="font-weight: {{m.weight}}">{{m.action}}</a></span>
+                <sc-if value="{{m.hasReason}}" hint-placeholder-val="{{ false }}">
+                  <div style="grid-column: 2 / -1; display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-radius: 10px; background: #fdf0f0; font-size: 14px; line-height: 1.5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-top: 2px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span><strong>Note from the board:</strong> {{m.reason}}</span></div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <section id="privacy" class="pcard" aria-labelledby="h-c">
+          <div class="pcard-h"><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-c">Privacy &amp; consent</h2><p class="small muted">You can change any of these at any time. Changes apply immediately.</p></div><a href="/privacy" class="link small" style="padding-top: 6px">Privacy policy →</a></div>
+          <div class="pcard-b" style="gap: 0">
+            <div class="cons" style="border-top: 0; padding-top: 0">
+              <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Personal data for my member account</strong><span class="small muted">Needed to have an account. Given on 12 Oct 2023. To withdraw it, delete your account below.</span></div>
+              <span class="chip">Required</span>
+            </div>
+            <div class="cons">
+              <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">E-mails about new events and calls</strong><span class="small muted">About 2 e-mails a month. Event confirmations are always sent.</span></div>
+              <button type="button" role="switch" aria-checked="true" class="sw" style="width: auto" aria-label="E-mails about new events and calls"><span class="tgl on"></span></button>
+            </div>
+            <div class="cons">
+              <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Name me in event photo galleries</strong><span class="small muted">Off: you appear in photos, but your name is not linked to them.</span></div>
+              <button type="button" role="switch" aria-checked="false" class="sw" style="width: auto" aria-label="Name me in event photo galleries"><span class="tgl"></span></button>
+            </div>
+            <div class="cons" style="grid-template-columns: minmax(0, 1fr)">
+              <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: start">
+                <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Share my CV with partner companies</strong><span class="small muted" style="max-width: 640px">Only companies in our Main partner package can see it, for internships and jobs. Off by default and separate from your account consent. Turn it off any time: partners lose access immediately and we delete the file.</span></div>
+                <button type="button" role="switch" aria-checked="true" class="sw" style="width: auto" aria-label="Share my CV with partner companies"><span class="tgl on"></span></button>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 12px; background: #f5f5f5">
+                <span class="label" style="margin: 0">My CV</span>
+                <div class="file"><span class="pdf">PDF</span><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-weight: 500">Marija_Stojanovska_CV.pdf</strong><span class="small muted">240 KB · uploaded 2 Oct 2026 · consent given 2 Oct 2026</span></span><span style="display: flex; gap: 8px"><button type="button" class="btn btn-quiet btn-sm">Replace</button><button type="button" class="btn btn-sm" style="background: transparent; color: #b81f24; padding: 0 10px">Remove</button></span></div>
+                <span class="small muted">PDF only, up to 5 MB. Partners saw your CV 3 times this year.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="account" class="pcard" aria-labelledby="h-acc">
+          <div class="pcard-h"><h2 id="h-acc">Account</h2></div>
+          <div class="pcard-b" style="gap: 0">
+            <div class="cons" style="border-top: 0; padding-top: 0"><div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">E-mail</strong><span class="small muted">marija.s@students.feit.ukim.edu.mk</span></div><button type="button" class="btn btn-quiet btn-sm">Change</button></div>
+            <div class="cons"><div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Password</strong><span class="small muted">Last changed 4 months ago</span></div><button type="button" class="btn btn-quiet btn-sm">Change</button></div>
+            <div class="cons"><div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Download my data</strong><span class="small muted">Everything we store about you, as a ZIP file.</span></div><button type="button" class="btn btn-quiet btn-sm">Download</button></div>
+            <div style="margin-top: 12px; padding: 20px; border-radius: 12px" class="danger">
+              <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center">
+                <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 16px">Delete my account</strong><span class="small muted">Removes your profile, photo, CV, applications and personal data. You choose whether your published Memories stay (without your name or photo) or are deleted too. This can't be undone.</span></div>
+                <button type="button" class="btn btn-secondary btn-sm">Delete account…</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #f5f5f5">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="mobile" active="" auth="member" hint-size="390px,64px"></dc-import></div>
+  <main>
+    <div style="padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 10px">
+      <h1 class="h1-m">My profile</h1>
+      <span class="title-bar"></span>
+      <p class="small muted">Logged in as marija.s@students.feit.ukim.edu.mk</p>
+      <div style="display: flex; gap: 8px; padding-top: 4px"><a href="/members/marija-stojanovska" class="btn btn-quiet btn-sm" style="flex: 1">View profile</a><a href="/memories/new" class="btn btn-primary btn-sm" style="flex: 1">Create a Memory</a></div>
+    </div>
+    <nav aria-label="My profile sections" style="position: sticky; top: 64px; z-index: 10; display: flex; gap: 6px; overflow: hidden; padding: 10px 16px; background: #f5f5f5; border-bottom: 1px solid #e3e3e3">
+      <a href="#profile" class="filter" aria-pressed="true" style="text-decoration: none">Profile</a><a href="#applications" class="filter" style="text-decoration: none; color: #1a1a1a">Applications</a><a href="#memories" class="filter" style="text-decoration: none; color: #1a1a1a">Memories</a><a href="#privacy" class="filter" style="text-decoration: none; color: #1a1a1a">Privacy</a>
+    </nav>
+    <div style="padding: 16px 16px 40px; display: flex; flex-direction: column; gap: 16px">
+      <section class="pcard" aria-labelledby="hm-p">
+        <div class="pcard-h" style="padding: 20px 18px 0"><h2 id="hm-p">Profile</h2></div>
+        <div class="pcard-b" style="padding: 16px 18px 20px; gap: 18px">
+          <div style="display: flex; align-items: center; gap: 16px"><div class="ph" style="width: 88px; height: 88px; border-radius: 14px; flex-shrink: 0"><span style="font-size: 12px">Photo</span></div><div style="display: flex; flex-direction: column; gap: 8px"><label for="mpm-photo" class="btn btn-quiet btn-sm">Change photo</label><input id="mpm-photo" type="file" class="sr-only"><button type="button" class="link small" style="border: 0; background: none; padding: 0; font-family: inherit; cursor: pointer">Remove photo</button></div></div>
+          <div><label class="label" for="mpm-name">Full name</label><input class="input" id="mpm-name" value="Marija Stojanovska"></div>
+          <div><label class="label" for="mpm-bio" style="display: flex; justify-content: space-between"><span>Short bio</span><span class="muted" style="font-weight: 400">312 / 400</span></label><textarea class="input" id="mpm-bio" rows="5">Third-year Computer Hardware student at FEEIT. I joined EESTEC for one workshop and stayed for the people. These days I lead the Events team…</textarea></div>
+          <div><label class="label" for="mpm-li">LinkedIn</label><input class="input" id="mpm-li" value="linkedin.com/in/marija-stojanovska"></div>
+          <div><label class="label" for="mpm-gh">GitHub</label><input class="input" id="mpm-gh" value="github.com/marijas"></div>
+          <dl style="margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px"><div class="ro"><dt>Team</dt><dd>Events</dd></div><div class="ro"><dt>Role</dt><dd>Team lead</dd></div></dl>
+          <p class="small muted">Team and role are set by the board.</p>
+        </div>
+      </section>
+      <section class="pcard" aria-labelledby="hm-v">
+        <div class="pcard-h" style="padding: 20px 18px 0"><h2 id="hm-v">Who can see my profile</h2></div>
+        <div class="pcard-b" style="padding: 16px 18px 20px; gap: 10px">
+          <label class="vis"><input type="radio" name="mpm-vis"><span style="display: flex; flex-direction: column; gap: 2px"><strong>Public</strong><span class="small muted">Anyone on eestec.mk</span></span></label>
+          <label class="vis on"><input type="radio" name="mpm-vis" checked><span style="display: flex; flex-direction: column; gap: 2px"><strong>Members only</strong><span class="small muted">Visitors see only your name and team.</span></span></label>
+        </div>
+      </section>
+      <section class="pcard" aria-labelledby="hm-a">
+        <div class="pcard-h" style="padding: 20px 18px 0"><h2 id="hm-a">My applications</h2></div>
+        <div class="pcard-b" style="padding: 8px 18px 16px; gap: 0">
+          <sc-for list="{{apps}}" as="a" hint-placeholder-count="3"><div class="lrow" style="grid-template-columns: minmax(0, 1fr); gap: 6px; border-top-color: {{a.border}}"><strong style="font-weight: 500">{{a.t}}</strong><span style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span class="{{a.cls}}"><span class="d"></span>{{a.status}}</span><a href="{{a.href}}" class="link small">{{a.action}}</a></span></div></sc-for>
+        </div>
+      </section>
+      <section class="pcard" aria-labelledby="hm-m">
+        <div class="pcard-h" style="padding: 20px 18px 0"><h2 id="hm-m">My Memories</h2></div>
+        <div class="pcard-b" style="padding: 8px 18px 18px; gap: 0">
+          <sc-for list="{{mems}}" as="m" hint-placeholder-count="3"><div class="lrow" style="grid-template-columns: minmax(0, 1fr); gap: 6px; border-top-color: {{m.border}}"><strong style="font-weight: 500">{{m.t}}</strong><span style="display: flex; align-items: center; justify-content: space-between; gap: 8px"><span class="{{m.cls}}"><span class="d"></span>{{m.status}}</span><a href="{{m.href}}" class="link small" style="font-weight: {{m.weight}}">{{m.action}}</a></span><sc-if value="{{m.hasReason}}" hint-placeholder-val="{{ false }}"><span style="display: block; padding: 10px 12px; border-radius: 10px; background: #fdf0f0; font-size: 14px; line-height: 1.5"><strong>Note from the board:</strong> {{m.reason}}</span></sc-if></div></sc-for>
+          <a href="/memories/new" class="btn btn-secondary btn-block" style="margin-top: 12px">+ Create a Memory</a>
+        </div>
+      </section>
+      <section class="pcard" aria-labelledby="hm-c">
+        <div class="pcard-h" style="padding: 20px 18px 0"><h2 id="hm-c">Privacy &amp; consent</h2></div>
+        <div class="pcard-b" style="padding: 8px 18px 20px; gap: 0">
+          <div class="cons" style="border-top: 0"><div style="display: flex; flex-direction: column; gap: 4px"><strong>E-mails about new events</strong><span class="small muted">About 2 a month</span></div><button type="button" role="switch" aria-checked="true" class="sw" style="width: auto" aria-label="E-mails about new events"><span class="tgl on"></span></button></div>
+          <div class="cons"><div style="display: flex; flex-direction: column; gap: 4px"><strong>Share my CV with partners</strong><span class="small muted">Main partners only. Off any time; we delete the file.</span></div><button type="button" role="switch" aria-checked="true" class="sw" style="width: auto" aria-label="Share my CV with partners"><span class="tgl on"></span></button></div>
+          <div class="file" style="grid-template-columns: 40px minmax(0, 1fr)"><span class="pdf">PDF</span><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Marija_Stojanovska_CV.pdf</strong><span class="small muted">240 KB · <a href="#" class="link">Replace</a> · <a href="#" class="link">Remove</a></span></span></div>
+        </div>
+      </section>
+      <section class="pcard danger" aria-labelledby="hm-d" style="padding: 20px 18px; display: flex; flex-direction: column; gap: 10px">
+        <h2 id="hm-d" style="font-size: 18px; font-weight: 700">Delete my account</h2>
+        <p class="small muted">Removes your profile, photo, CV and personal data. You choose what happens to your published Memories.</p>
+        <button type="button" class="btn btn-secondary btn-block">Delete account…</button>
+      </section>
+    </div>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":1440,"height":4306}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const apps = [
+      { t: 'Workshop: AI at the Edge', when: '7–13 Nov 2026 · Skopje & Ohrid', applied: '3 Oct', status: 'Pending review', cls: 'st st-wait', action: 'Withdraw', href: '/upcoming/ai-at-the-edge' },
+      { t: 'Hands-on: FPGA Basics', when: '21–22 Nov 2026 · FEEIT', applied: '28 Sep', status: 'Waitlist · #3', cls: 'st st-neutral', action: 'Leave waitlist', href: '/upcoming/fpga-basics' },
+      { t: 'Soft Skills Training: Leading Teams', when: '14 Nov 2026 · FEEIT', applied: '20 Sep', status: 'Accepted', cls: 'st st-ok', action: 'Event details', href: '/upcoming/leading-teams' }
+    ].map((a, i) => Object.assign(a, { border: i === 0 ? 'transparent' : '#ececec' }));
+    const mems = [
+      { t: 'Lab day at FEEIT: soldering 24 sensor boards', meta: 'Workshop: AI at the Edge · edited yesterday', status: 'Draft', cls: 'st st-out', action: 'Continue writing', href: '/memories/new?draft=lab-day' },
+      { t: 'What I learned leading my first team', meta: 'Soft Skills Academy 2026 · sent 2 days ago', status: 'Waiting for approval', cls: 'st st-wait', action: 'View', href: '/memories/what-i-learned?preview' },
+      { t: 'Kraków in the snow, part two', meta: 'Exchange: Kraków Winter Edition · checked 1 Oct', status: 'Not approved', cls: 'st st-no', action: 'Edit and resubmit', href: '/memories/krakow-part-two/edit', hasReason: true, reason: 'Lovely story! Please add a short description (alt text) to the 2 gallery photos without one, and remove the photo with people who didn’t agree to be shown.', weight: 700 },
+      { t: 'Seven days, 28 nationalities and one very long bus ride to Ohrid', meta: 'Power Up 2026 · published 2 Jun 2026 · 1,240 reads', status: 'Published', cls: 'st st-ok', action: 'View · Edit', href: '/memories/ohrid-bus-ride' },
+      { t: 'My first exchange: Kraków in the snow', meta: 'Exchange: Kraków Winter Edition · published 15 Dec 2024', status: 'Published', cls: 'st st-ok', action: 'View · Edit', href: '/memories/krakow-in-the-snow' }
+    ].map((m, i) => Object.assign({ hasReason: false, reason: '', weight: 500 }, m, { border: i === 0 ? 'transparent' : '#ececec' }));
+    return { isDesktop: device === 'desktop', isMobile: device === 'mobile', apps, mems };
+  }
+}
+</script>
+</body>
+</html>

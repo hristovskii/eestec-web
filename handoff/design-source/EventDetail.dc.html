@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Event detail · Events — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2s{font-size:28px;line-height:1.25;font-weight:700}
+.h2s-m{font-size:22px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap}
+.rich p{font-size:17px;line-height:1.7;color:#1a1a1a}
+.rich h3{font-size:22px;line-height:1.3;font-weight:700;margin-top:12px}
+.rich ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;font-size:17px;line-height:1.6}
+.rich li::marker{color:#e52a30}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e5e5e5 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:12px}
+.thumb{position:relative;display:block;width:100%;aspect-ratio:4/3;border:0;padding:0;border-radius:10px;overflow:hidden;cursor:zoom-in;transition:box-shadow .15s}
+.thumb:hover,.thumb:focus-visible{outline:none;box-shadow:0 0 0 3px #e52a30}
+.dl-row{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;align-items:start;padding:14px 0;border-top:1px solid #ececec}
+.dl-row dt{font-size:13px;font-weight:500;color:#6b6b6b;text-transform:uppercase;letter-spacing:0.06em}
+.dl-row dd{margin:2px 0 0;font-size:16px;line-height:1.45;font-weight:500}
+.logo-box{display:flex;align-items:center;justify-content:center;border:1px solid #e3e3e3;border-radius:10px;background:#ffffff;color:#6b6b6b;font-size:13px;text-decoration:none;text-align:center;padding:0 8px}
+.pn{display:flex;flex-direction:column;gap:6px;padding:20px 24px;border:1px solid #e3e3e3;border-radius:12px;text-decoration:none;color:#1a1a1a;transition:border-color .15s,box-shadow .15s}
+.pn:hover{border-color:#e52a30;box-shadow:0 0 0 1px #e52a30;color:#1a1a1a}
+.ev-card:hover{box-shadow:0 0 0 2px #e52a30,0 12px 28px rgba(0,0,0,0.14)!important;transform:translateY(-4px)!important}
+.ev-card:hover h3{color:#b81f24!important}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="desktop" active="Events" hint-size="100%,72px"></dc-import>
+  </div>
+  <main>
+    <div class="container" style="padding-top: 24px; padding-bottom: 20px">
+      <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/events">Events</a><span aria-hidden="true">/</span><a href="{{ev.catHref}}">{{ev.cat}}</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">{{ev.crumb}}</span></nav>
+    </div>
+    <div class="container">
+      <div class="ph" style="width: 100%; aspect-ratio: 21 / 9; border-radius: 16px">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+        <span class="small">Cover photo: {{ev.cover}}</span>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top: 40px; padding-bottom: 96px; display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 56px; align-items: start">
+      <article style="display: flex; flex-direction: column; gap: 56px; min-width: 0">
+        <header style="display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-if value="{{isEnded}}" hint-placeholder-val="{{ false }}"><span class="chip" style="background: #1a1a1a; color: #ffffff">Just ended</span></sc-if>
+            <span class="chip" style="background: #f5f5f5">{{ev.type}}</span>
+            <span class="chip" style="border: 1px solid #d0d0d0">{{ev.scope}}</span>
+            <sc-if value="{{ev.organized}}" hint-placeholder-val="{{ true }}"><span class="chip" style="background: #ffffff; border: 1px solid #e3e3e3; padding-left: 4px"><img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="" style="width: 22px; height: 22px; border-radius: 50%">Organized by LC Skopje</span></sc-if>
+          </div>
+          <h1 class="h1">{{ev.title}}</h1>
+          <p class="muted" style="font-size: 20px; line-height: 1.5">{{ev.lead}}</p>
+        </header>
+
+        <sc-if value="{{isEnded}}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="display: flex; flex-direction: column; gap: 18px; padding: 28px 32px; border-radius: 16px; background: #f5f5f5">
+            <div style="display: flex; gap: 16px; align-items: flex-start">
+              <span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; background: #1a1a1a; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <div style="display: flex; flex-direction: column; gap: 4px">
+                <h2 style="margin: 0; font-size: 20px; font-weight: 700">This event ended on 13 Nov 2026</h2>
+                <p class="body muted">Thanks to all 24 participants. Applications are closed and the event is now part of the archive. Photos and the aftermovie will appear here once the organizers upload them.</p>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px; padding-left: 60px; flex-wrap: wrap">
+              <a href="/submit?event=ai-at-the-edge" class="btn btn-primary">Were you there? Share your impression</a>
+              <a href="/upcoming" class="link small">See what's next</a>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isFull}}" hint-placeholder-val="{{ true }}">
+        <section aria-labelledby="about-h" class="rich" style="display: flex; flex-direction: column; gap: 16px">
+          <h2 id="about-h" class="h2s">About the workshop</h2>
+          <span class="title-bar" style="margin-bottom: 4px"></span>
+          <p>Power Up brought 24 students from 14 countries to Skopje for a week of lectures, lab work and field visits. Professors from FEEIT explained how a national grid balances supply and demand, and engineers from local energy companies showed what that looks like in practice.</p>
+          <h3>What we did</h3>
+          <ul>
+            <li>A full lab day in the FEEIT high-voltage laboratory</li>
+            <li>A visit to a 10 MW solar plant outside Skopje</li>
+            <li>A team challenge: keep a simulated grid stable through a cloudy afternoon</li>
+            <li>An international night and a weekend in Ohrid</li>
+          </ul>
+          <p>The workshop was organized by a team of 16 LC Skopje members. Most of them were organizing an international event for the first time.</p>
+        </section>
+        </sc-if>
+
+        <sc-if value="{{isMinimal}}" hint-placeholder-val="{{ false }}">
+        <section aria-labelledby="about-hmin" class="rich" style="display: flex; flex-direction: column; gap: 16px">
+          <h2 id="about-hmin" class="h2s">About the lecture</h2>
+          <span class="title-bar" style="margin-bottom: 4px"></span>
+          <p>Every second, the power grid has to produce exactly as much electricity as the country uses. In this evening lecture, an engineer from the national transmission operator explained how that balance is kept, what happens when a power plant suddenly trips, and why more solar power makes the job harder.</p>
+          <p>The lecture was open to all FEEIT students and was followed by questions and a short tour of the faculty's power systems lab.</p>
+        </section>
+        </sc-if>
+
+        <sc-if value="{{isEnded}}" hint-placeholder-val="{{ false }}">
+        <section aria-labelledby="about-hend" class="rich" style="display: flex; flex-direction: column; gap: 16px">
+          <h2 id="about-hend" class="h2s">About the workshop</h2>
+          <span class="title-bar" style="margin-bottom: 4px"></span>
+          <p>Most AI runs in big data centres. This workshop was about the opposite: small models that run on a €10 board, with no internet connection. Participants trained models, squeezed them onto microcontrollers and built working prototypes in teams of four.</p>
+          <p>Lectures were given by FEEIT professors and engineers from local companies, with a lab day, a company visit and a day trip to Ohrid.</p>
+        </section>
+        </sc-if>
+
+        <sc-if value="{{isFull}}" hint-placeholder-val="{{ true }}">
+        <section aria-labelledby="video-h" style="display: flex; flex-direction: column; gap: 16px">
+          <h2 id="video-h" class="h2s">Aftermovie</h2>
+          <button type="button" aria-label="Play video: Power Up 2026 aftermovie" style="position: relative; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; border-radius: 16px; overflow: hidden; background: #1a1a1a; cursor: pointer; display: flex; align-items: center; justify-content: center">
+            <span style="position: absolute; left: 20px; bottom: 16px; color: #ffffff; font-size: 15px; font-weight: 500">Power Up 2026 · Aftermovie · 2:48</span>
+            <span style="width: 80px; height: 80px; border-radius: 50%; background: #e52a30; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.35)"><svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg></span>
+          </button>
+        </section>
+
+        <section aria-labelledby="gallery-h" style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between">
+            <h2 id="gallery-h" class="h2s">Photo gallery</h2>
+            <span class="small muted">24 photos</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+            <sc-for list="{{gallery}}" as="g" hint-placeholder-count="7">
+              <button type="button" class="thumb" aria-label="Open photo: {{g.caption}}">
+                <span class="ph" style="position: absolute; inset: 0; font-size: 12px; line-height: 1.35">{{g.caption}}</span>
+              </button>
+            </sc-for>
+            <button type="button" class="thumb" aria-label="Open gallery, 16 more photos">
+              <span class="ph" style="position: absolute; inset: 0"></span>
+              <span style="position: absolute; inset: 0; background: rgba(26,26,26,0.72); color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 22px; font-weight: 700">+16<span style="font-size: 14px; font-weight: 500">more photos</span></span>
+            </button>
+          </div>
+        </section>
+        </sc-if>
+
+        <section aria-labelledby="mem-h" style="display: flex; flex-direction: column; gap: 20px">
+          <sc-if value="{{isFull}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; align-items: baseline; justify-content: space-between">
+              <h2 id="mem-h" class="h2s">Memories from this event</h2>
+              <a href="/memories?event=power-up-2026" class="link small">All 2 stories</a>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+              <sc-for list="{{memories}}" as="m" hint-placeholder-count="2">
+                <dc-import name="EventCard" item="{{m}}" hint-size="100%,460px"></dc-import>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{notEnded}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; align-items: center; gap: 24px; padding: 28px 32px; border-radius: 16px; background: #f5f5f5">
+              <span style="width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5z"></path></svg></span>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
+                <h3 style="margin: 0; font-size: 20px; font-weight: 700">Were you there?</h3>
+                <p class="small muted">Share a photo or a few words. Approved stories show up here and in Memories.</p>
+              </div>
+              <a href="/submit" class="btn btn-primary" style="flex-shrink: 0">Share your impression</a>
+            </div>
+          </sc-if>
+        </section>
+      </article>
+
+      <aside aria-label="Event details" style="position: sticky; top: 96px; display: flex; flex-direction: column; gap: 20px">
+        <div style="padding: 24px; border: 1px solid #e3e3e3; border-radius: 16px; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.04)">
+          <h2 style="margin: 0 0 8px; font-size: 20px; font-weight: 700">Event details</h2>
+          <dl style="margin: 0">
+            <sc-for list="{{details}}" as="d" hint-placeholder-count="5">
+              <div class="dl-row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.icon}}"></path></svg><div><dt>{{d.label}}</dt><dd>{{d.value}}</dd></div></div>
+            </sc-for>
+          </dl>
+        </div>
+        <sc-if value="{{isFull}}" hint-placeholder-val="{{ true }}">
+          <div style="padding: 24px; border: 1px solid #e3e3e3; border-radius: 16px; display: flex; flex-direction: column; gap: 14px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 700">Event partners</h2>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+              <a href="#" class="logo-box" style="height: 64px">Partner logo</a>
+              <a href="#" class="logo-box" style="height: 64px">Partner logo</a>
+              <a href="#" class="logo-box" style="height: 64px">FEEIT</a>
+            </div>
+          </div>
+        </sc-if>
+        <a href="{{ev.catHref}}" class="link small" style="padding-left: 4px">← Back to {{ev.cat}} Events</a>
+      </aside>
+    </div>
+
+    <nav aria-label="More events" style="border-top: 1px solid #e3e3e3">
+      <div class="container" style="padding-top: 40px; padding-bottom: 72px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+        <a href="{{ev.prevHref}}" class="pn">
+          <span class="small muted" style="display: flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>Previous event</span>
+          <span style="font-size: 20px; font-weight: 700">{{ev.prev}}</span>
+          <span class="small muted">{{ev.prevMeta}}</span>
+        </a>
+        <sc-if value="{{ev.hasNext}}" hint-placeholder-val="{{ true }}">
+        <a href="{{ev.nextHref}}" class="pn" style="align-items: flex-end; text-align: right">
+          <span class="small muted" style="display: flex; align-items: center; gap: 6px">Next event<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></span>
+          <span style="font-size: 20px; font-weight: 700">{{ev.next}}</span>
+          <span class="small muted">{{ev.nextMeta}}</span>
+        </a>
+        </sc-if>
+        <sc-if value="{{ev.noNext}}" hint-placeholder-val="{{ false }}">
+        <a href="/upcoming" class="pn" style="align-items: flex-end; text-align: right; background: #f5f5f5; border-color: #f5f5f5">
+          <span class="small muted">This is the newest event in the archive</span>
+          <span style="font-size: 20px; font-weight: 700">See upcoming events →</span>
+        </a>
+        </sc-if>
+      </div>
+    </nav>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="mobile" active="Events" hint-size="390px,64px"></dc-import>
+  </div>
+  <main>
+    <div style="padding: 6px 8px">
+      <a href="{{ev.catHref}}" class="link small" style="min-height: 44px; padding: 0 8px">← {{ev.cat}} Events</a>
+    </div>
+    <div class="ph" style="width: 100%; aspect-ratio: 4 / 3">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+      <span class="small">Cover photo: {{ev.cover}}</span>
+    </div>
+    <article style="padding: 24px 16px 56px; display: flex; flex-direction: column; gap: 40px">
+      <header style="display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; flex-wrap: wrap; gap: 6px">
+          <sc-if value="{{isEnded}}" hint-placeholder-val="{{ false }}"><span class="chip" style="background: #1a1a1a; color: #ffffff">Just ended</span></sc-if>
+          <span class="chip" style="background: #f5f5f5">{{ev.type}}</span>
+          <span class="chip" style="border: 1px solid #d0d0d0">{{ev.scope}}</span>
+          <sc-if value="{{ev.organized}}" hint-placeholder-val="{{ true }}"><span class="chip" style="border: 1px solid #e3e3e3; padding-left: 4px"><img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="" style="width: 22px; height: 22px; border-radius: 50%">Organized by LC Skopje</span></sc-if>
+        </div>
+        <h1 class="h1-m">{{ev.title}}</h1>
+        <p class="muted" style="font-size: 17px; line-height: 1.5">{{ev.lead}}</p>
+        <sc-if value="{{isEnded}}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 12px; background: #f5f5f5; margin-top: 4px">
+            <div style="display: flex; align-items: center; gap: 12px">
+              <span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: #1a1a1a; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <h2 style="margin: 0; font-size: 17px; font-weight: 700">This event ended on 13 Nov 2026</h2>
+            </div>
+            <p class="small muted">Applications are closed. Photos and the aftermovie will appear here once the organizers upload them.</p>
+            <a href="/submit?event=ai-at-the-edge" class="btn btn-primary btn-block">Share your impression</a>
+          </div>
+        </sc-if>
+        <dl style="margin: 8px 0 0; padding: 4px 16px; border-radius: 12px; border: 1px solid #e3e3e3">
+          <sc-for list="{{details}}" as="d" hint-placeholder-count="4">
+            <div class="dl-row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{d.icon}}"></path></svg><div><dt>{{d.label}}</dt><dd>{{d.value}}</dd></div></div>
+          </sc-for>
+        </dl>
+      </header>
+
+      <section aria-label="About" class="rich" style="display: flex; flex-direction: column; gap: 14px">
+        <h2 class="h2s-m">{{ev.aboutTitle}}</h2>
+        <span class="title-bar" style="width: 48px"></span>
+        <p style="font-size: 16px">{{ev.aboutShort}}</p>
+      </section>
+
+      <sc-if value="{{isFull}}" hint-placeholder-val="{{ true }}">
+      <section aria-labelledby="video-hm" style="display: flex; flex-direction: column; gap: 14px">
+        <h2 id="video-hm" class="h2s-m">Aftermovie</h2>
+        <button type="button" aria-label="Play video: Power Up 2026 aftermovie" style="position: relative; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; border-radius: 12px; overflow: hidden; background: #1a1a1a; display: flex; align-items: center; justify-content: center">
+          <span style="position: absolute; left: 14px; bottom: 10px; color: #ffffff; font-size: 14px; font-weight: 500">Aftermovie · 2:48</span>
+          <span style="width: 60px; height: 60px; border-radius: 50%; background: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg></span>
+        </button>
+      </section>
+
+      <section aria-labelledby="gallery-hm" style="display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; align-items: baseline; justify-content: space-between">
+          <h2 id="gallery-hm" class="h2s-m">Photo gallery</h2>
+          <span class="small muted">24 photos</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{galleryM}}" as="g" hint-placeholder-count="5">
+            <button type="button" class="thumb" aria-label="Open photo: {{g.caption}}" style="border-radius: 8px">
+              <span class="ph" style="position: absolute; inset: 0; font-size: 12px; line-height: 1.35">{{g.caption}}</span>
+            </button>
+          </sc-for>
+          <button type="button" class="thumb" aria-label="Open gallery, 18 more photos" style="border-radius: 8px">
+            <span class="ph" style="position: absolute; inset: 0"></span>
+            <span style="position: absolute; inset: 0; background: rgba(26,26,26,0.72); color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 20px; font-weight: 700">+18<span style="font-size: 14px; font-weight: 500">more</span></span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-secondary btn-block">View all 24 photos</button>
+      </section>
+
+      <section aria-labelledby="mem-hm" style="display: flex; flex-direction: column; gap: 14px">
+        <h2 id="mem-hm" class="h2s-m">Memories from this event</h2>
+        <div style="display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -16px; padding: 4px 16px 16px">
+          <sc-for list="{{memories}}" as="m" hint-placeholder-count="2">
+            <div style="flex: 0 0 300px; scroll-snap-align: start">
+              <dc-import name="EventCard" item="{{m}}" hint-size="300px,460px"></dc-import>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{notEnded}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 24px 20px; border-radius: 16px; background: #f5f5f5">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5z"></path></svg></span>
+            <h3 style="margin: 0; font-size: 19px; font-weight: 700">Were you there?</h3>
+          </div>
+          <p class="small muted">Share a photo or a few words. Approved stories show up here and in Memories.</p>
+          <a href="/submit" class="btn btn-primary btn-block">Share your impression</a>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{isFull}}" hint-placeholder-val="{{ true }}">
+      <section aria-labelledby="partners-hm" style="display: flex; flex-direction: column; gap: 12px">
+        <h2 id="partners-hm" style="margin: 0; font-size: 16px; font-weight: 700">Event partners</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <a href="#" class="logo-box" style="height: 56px">Partner</a>
+          <a href="#" class="logo-box" style="height: 56px">Partner</a>
+          <a href="#" class="logo-box" style="height: 56px">FEEIT</a>
+        </div>
+      </section>
+      </sc-if>
+
+      <nav aria-label="More events" style="display: flex; flex-direction: column; gap: 10px">
+        <a href="{{ev.prevHref}}" class="pn" style="padding: 16px 18px">
+          <span class="small muted">← Previous event</span>
+          <span style="font-size: 17px; font-weight: 700">{{ev.prev}}</span>
+        </a>
+        <sc-if value="{{ev.hasNext}}" hint-placeholder-val="{{ true }}">
+        <a href="{{ev.nextHref}}" class="pn" style="padding: 16px 18px; align-items: flex-end; text-align: right">
+          <span class="small muted">Next event →</span>
+          <span style="font-size: 17px; font-weight: 700">{{ev.next}}</span>
+        </a>
+        </sc-if>
+        <sc-if value="{{ev.noNext}}" hint-placeholder-val="{{ false }}">
+        <a href="/upcoming" class="pn" style="padding: 16px 18px; align-items: flex-end; text-align: right; background: #f5f5f5; border-color: #f5f5f5">
+          <span class="small muted">Newest event in the archive</span>
+          <span style="font-size: 17px; font-weight: 700">See upcoming events →</span>
+        </a>
+        </sc-if>
+      </nav>
+    </article>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"variant":{"editor":"enum","options":["full","minimal","ended"],"default":"full"},"$preview":{"width":1440,"height":3817}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const variant = this.props.variant ?? 'full';
+    const I = {
+      cal: 'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM16 2v4M8 2v4M3 10h18',
+      pin: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
+      type: 'M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3',
+      flag: 'M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7',
+      users: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z'
+    };
+    const V = {
+      full: {
+        title: 'Power Up — Renewable Grids', crumb: 'Power Up — Renewable Grids', cat: 'International', catHref: '/events?tab=international',
+        type: 'Workshop', scope: 'International', organized: true, cover: 'all 24 participants in front of FEEIT on day one',
+        lead: 'Seven days in Skopje and Ohrid about how power grids change when most of the energy comes from the sun and the wind.',
+        aboutTitle: 'About the workshop', aboutShort: 'Power Up brought 24 students from 14 countries to Skopje for a week of lectures, lab work and field visits, with professors from FEEIT and engineers from local energy companies.',
+        details: [['cal', 'Dates', '18–24 May 2026 · 7 days'], ['pin', 'Location', 'Skopje & Ohrid, North Macedonia'], ['type', 'Type', 'Workshop · International'], ['flag', 'Organized by', 'LC Skopje'], ['users', 'Participants', '24 students from 14 countries']],
+        prev: 'Exchange: Delft by Bike', prevMeta: '14–18 Apr 2026 · Delft, Netherlands', prevHref: '/events/delft-by-bike',
+        next: 'Motivational Weekend Balkan Region', nextMeta: '3–5 Jul 2026 · Niš, Serbia', nextHref: '/events/mw-balkan-2026'
+      },
+      minimal: {
+        title: 'Lecture evening: How the Macedonian power grid keeps the lights on', crumb: 'Lecture evening: the power grid', cat: 'Local', catHref: '/events?tab=local',
+        type: 'Other', scope: 'Local', organized: false, cover: 'lecture hall at FEEIT',
+        lead: 'An evening lecture for FEEIT students about how the national grid balances supply and demand every second.',
+        aboutTitle: 'About the lecture', aboutShort: 'An engineer from the national transmission operator explained how the grid stays balanced every second, and why more solar power makes the job harder.',
+        details: [['cal', 'Date', 'Mon 9 Dec 2024, 18:00'], ['pin', 'Location', 'Amphitheatre 1, FEEIT, Skopje'], ['type', 'Type', 'Other · Local'], ['flag', 'Organized by', 'FEEIT Student Parliament, with LC Skopje']],
+        prev: 'Local workshop: Arduino for Beginners', prevMeta: '23 Nov 2024 · Lab 215, FEEIT', prevHref: '/events/arduino-beginners',
+        next: 'Public Speaking Bootcamp', nextMeta: '25 Jan 2025 · FEEIT, Skopje', nextHref: '/events/public-speaking-bootcamp'
+      },
+      ended: {
+        title: 'Workshop: AI at the Edge', crumb: 'Workshop: AI at the Edge', cat: 'International', catHref: '/events?tab=international',
+        type: 'Workshop', scope: 'International', organized: true, cover: 'dev boards and a laptop running a vision model',
+        lead: 'A week of building and deploying machine-learning models on microcontrollers, in Skopje and Ohrid, for 24 students from across Europe.',
+        aboutTitle: 'About the workshop', aboutShort: 'Small AI models that run on a €10 board with no internet connection. Participants trained models, deployed them to microcontrollers and built prototypes in teams.',
+        details: [['cal', 'Dates', '7–13 Nov 2026 · 7 days'], ['pin', 'Location', 'Skopje & Ohrid, North Macedonia'], ['type', 'Type', 'Workshop · International'], ['flag', 'Organized by', 'LC Skopje'], ['users', 'Participants', '24 students from 13 countries']],
+        prev: 'Soft Skills Academy Skopje 2026', prevMeta: '12–14 Sep 2026 · FEEIT, Skopje', prevHref: '/events/soft-skills-academy-2026',
+        next: '', nextMeta: '', nextHref: ''
+      }
+    };
+    const v = V[variant] || V.full;
+    const ev = Object.assign({}, v, { hasNext: !!v.next, noNext: !v.next });
+    const captions = ['Opening session at FEEIT', 'High-voltage lab day', 'Solar plant visit', 'Grid simulation challenge', 'Team presentations', 'International night', 'Ohrid old town walk'];
+    return {
+      isDesktop: device === 'desktop',
+      isMobile: device === 'mobile',
+      isFull: variant === 'full',
+      isMinimal: variant === 'minimal',
+      isEnded: variant === 'ended',
+      notEnded: variant !== 'ended',
+      ev,
+      details: v.details.map(([k, label, value]) => ({ icon: I[k], label, value })),
+      gallery: captions.map((caption) => ({ caption })),
+      galleryM: captions.slice(0, 5).map((caption) => ({ caption })),
+      memories: [
+        { kind: 'memory', title: 'Seven days, 28 nationalities and one very long bus ride to Ohrid', date: '2 Jun 2026', type: 'Workshop', hasImage: true, photo: 'group selfie on the Ohrid lake shore', excerpt: 'What I expected from my first workshop as an organizer, and what actually happened when everyone arrived at once.', author: 'Marija Stojanovska', initials: 'MS', href: '/memories/ohrid-bus-ride' },
+        { kind: 'memory', title: 'I came for the lab, I stayed for the people', date: '29 May 2026', type: 'Workshop', hasImage: false, excerpt: 'A participant from Kraków on why the high-voltage lab day was only the second-best part of Power Up.', author: 'Kasia Nowak', initials: 'KN', href: '/memories/came-for-the-lab' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

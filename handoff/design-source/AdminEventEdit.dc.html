@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · Edit event</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+a{color:#b81f24}
+.a-h1{font-size:20px;line-height:1.25;font-weight:700}
+.a-h2{font-size:16px;line-height:1.35;font-weight:700}
+.muted{color:#6b6b6b}
+.sm{font-size:13px}
+.panel{background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid #ececec}
+.card-b{padding:20px;display:flex;flex-direction:column;gap:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-ghost{border-color:transparent;background:transparent}
+.btn-ghost:hover{background:#f5f5f5;border-color:transparent}
+.btn-danger{border-color:#e52a30;color:#b81f24}
+.btn-sm{height:30px;padding:0 10px;font-size:13px}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:2px}
+.label{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:13px;font-weight:500;margin-bottom:6px;color:#1a1a1a}
+.label .opt{font-weight:400;color:#6b6b6b}
+.req{color:#b81f24}
+.input{width:100%;height:38px;padding:0 12px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px}
+.input::placeholder{color:#6b6b6b}
+.input:focus,.input.focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.25)}
+textarea.input{height:auto;padding:10px 12px;line-height:1.5;resize:vertical}
+.sel{appearance:none;-webkit-appearance:none;padding-right:32px}
+.ico{position:relative}
+.ico svg.r{position:absolute;right:11px;top:11px;pointer-events:none}
+.help{margin-top:6px;font-size:13px;color:#6b6b6b;display:flex;justify-content:space-between;gap:8px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.b-draft{border:1px solid #8c8c8c;color:#3a3a3a;background:#ffffff}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #8c8c8c;border-radius:999px;background:#fff;font-family:inherit;font-size:13px;font-weight:500;color:#1a1a1a;cursor:pointer}
+.chip.on{border:2px solid #e52a30;color:#b81f24;background:#fdf0f0}
+.chip.add{border-style:dashed;color:#6b6b6b}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;background:transparent;font-family:inherit;font-size:14px;color:#1a1a1a;text-align:left;cursor:pointer;width:100%}
+.tgl{position:relative;display:inline-block;width:36px;height:20px;border-radius:999px;background:#c7c7c7;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:18px}
+.seg{display:flex;padding:3px;border:1px solid #d0d0d0;border-radius:8px;background:#ffffff}
+.seg button{flex:1;height:30px;border:0;border-radius:6px;background:transparent;font-family:inherit;font-size:13px;font-weight:500;color:#3a3a3a;cursor:pointer}
+.seg button[aria-pressed="true"]{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 10px,#e5e5e5 10px 20px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.tb{width:32px;height:32px;border:0;border-radius:6px;background:transparent;color:#1a1a1a;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700}
+.tb:hover{background:#f5f5f5}
+.tb.on{background:#ececec}
+.tbsep{width:1px;height:20px;background:#e3e3e3;margin:0 4px}
+.rte h3{font-size:18px;margin:0 0 8px}
+.rte p{margin:0 0 12px;line-height:1.65}
+.rte ul{margin:0 0 12px;padding-left:22px;line-height:1.65}
+.radio{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer}
+.radio input{width:18px;height:18px;margin:0;accent-color:#e52a30}
+</style>
+</helmet>
+
+<div style="display: flex; width: 100%; min-height: 900px; background: #f5f5f5">
+  <div style="width: 248px; flex-shrink: 0; background: #ffffff; border-right: 1px solid #e3e3e3">
+    <div style="position: sticky; top: 0"><dc-import name="AdminSidebar" active="Events" hint-size="248px,900px"></dc-import></div>
+  </div>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="AdminTopbar" crumbs="{{crumbs}}" hint-size="100%,60px"></dc-import>
+
+    <div style="position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 14px; padding: 12px 32px; background: #ffffff; border-bottom: 1px solid #e3e3e3">
+      <a href="/admin/events" class="btn btn-ghost" style="width: 36px; padding: 0" aria-label="Back to events"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></a>
+      <div style="display: flex; flex-direction: column; min-width: 0">
+        <span style="display: flex; align-items: center; gap: 10px"><h1 class="a-h1">Workshop: AI at the Edge</h1><span class="badge b-draft"><span class="dot"></span>Draft</span></span>
+        <span class="sm muted">Upcoming event · last saved 4 min ago by Ana Trajkovska</span>
+      </div>
+      <span role="status" style="margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: #1a1a1a"><span style="width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span>Unsaved changes</span>
+      <a href="/upcoming/ai-at-the-edge?preview=1" class="btn btn-ghost"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview</a>
+      <button type="button" class="btn">Save draft</button>
+      <button type="button" class="btn btn-primary">Publish</button>
+    </div>
+
+    <main style="padding: 24px 32px 64px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0">
+
+        <section class="panel" aria-labelledby="s-basic">
+          <div class="card-h"><h2 id="s-basic" class="a-h2">Basic info</h2></div>
+          <div class="card-b">
+            <div><label class="label" for="e-title"><span>Title <span class="req">*</span></span></label><input class="input" id="e-title" value="Workshop: AI at the Edge"><span class="help"><span>Shown on cards and as the page title.</span><span>24 / 90</span></span></div>
+            <div>
+              <label class="label" for="e-slug"><span>Page address</span></label>
+              <div style="display: flex; align-items: stretch; border: 1px solid #8c8c8c; border-radius: 8px; overflow: hidden"><span style="display: flex; align-items: center; padding: 0 12px; background: #f5f5f5; color: #6b6b6b; border-right: 1px solid #d0d0d0; white-space: nowrap">eestec.mk/upcoming/</span><input id="e-slug" value="ai-at-the-edge" style="flex: 1; height: 36px; padding: 0 12px; border: 0; font-family: inherit; font-size: 14px; outline: none"></div>
+              <span class="help"><span>Changing it after publishing creates a redirect from the old address.</span></span>
+            </div>
+            <div class="focus-demo"><label class="label" for="e-short"><span>Short description <span class="req">*</span></span></label><textarea class="input focus" id="e-short" rows="2">A week of building and deploying machine-learning models on microcontrollers, in Skopje and Ohrid, for 24 students from across Europe.</textarea><span class="help"><span>Used on cards and as the SEO description.</span><span>142 / 160</span></span></div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-when">
+          <div class="card-h"><h2 id="s-when" class="a-h2">Date &amp; place</h2></div>
+          <div class="card-b">
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr 1.4fr 1fr; gap: 14px">
+              <div><label class="label" for="e-sd"><span>Start date <span class="req">*</span></span></label><div class="ico"><input class="input" id="e-sd" value="Sat, 7 Nov 2026"><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></div></div>
+              <div><label class="label" for="e-st"><span>Start time</span></label><div class="ico"><input class="input" id="e-st" value="10:00"><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></div></div>
+              <div><label class="label" for="e-ed"><span>End date <span class="req">*</span></span></label><div class="ico"><input class="input" id="e-ed" value="Fri, 13 Nov 2026"><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></div></div>
+              <div><label class="label" for="e-et"><span>End time</span></label><div class="ico"><input class="input" id="e-et" value="14:00"><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></div></div>
+            </div>
+            <button type="button" role="switch" aria-checked="false" class="sw" style="width: auto; justify-content: flex-start"><span class="tgl"></span>All-day event</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
+              <div><label class="label" for="e-loc"><span>Location <span class="req">*</span></span></label><input class="input" id="e-loc" value="Skopje &amp; Ohrid, North Macedonia"></div>
+              <div><label class="label" for="e-org"><span>Organizing committee</span></label><div class="ico"><select class="input sel" id="e-org"><option>LC Skopje</option><option>Other committee…</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-desc">
+          <div class="card-h"><h2 id="s-desc" class="a-h2">Description</h2><span class="sm muted">Rich text</span></div>
+          <div style="padding: 20px">
+            <div style="border: 1px solid #8c8c8c; border-radius: 8px; overflow: hidden">
+              <div role="toolbar" aria-label="Formatting" style="display: flex; align-items: center; gap: 2px; padding: 6px 8px; background: #fafafa; border-bottom: 1px solid #e3e3e3; flex-wrap: wrap">
+                <span class="ico" style="width: 130px"><select class="input sel" aria-label="Text style" style="height: 30px; font-size: 13px; border-color: #d0d0d0"><option>Paragraph</option><option>Heading 2</option><option>Heading 3</option></select><svg class="r" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="top: 8px"><path d="M6 9l6 6 6-6"></path></svg></span>
+                <span class="tbsep"></span>
+                <button type="button" class="tb on" aria-label="Bold" aria-pressed="true">B</button>
+                <button type="button" class="tb" aria-label="Italic" style="font-style: italic; font-weight: 500">I</button>
+                <button type="button" class="tb" aria-label="Link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.8 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path></svg></button>
+                <span class="tbsep"></span>
+                <button type="button" class="tb" aria-label="Bulleted list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"></path></svg></button>
+                <button type="button" class="tb" aria-label="Numbered list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg></button>
+                <button type="button" class="tb" aria-label="Quote"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5H3v7h4c0 3-1 5-4 5zM14 21c3 0 7-1 7-8V5h-7v7h4c0 3-1 5-4 5z"></path></svg></button>
+                <button type="button" class="tb" aria-label="Insert image"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M21 15l-5-5L5 21"></path></svg></button>
+                <span class="tbsep"></span>
+                <button type="button" class="tb" aria-label="Undo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6M21 17a9 9 0 0 0-15-6.7L3 13"></path></svg></button>
+                <button type="button" class="tb" aria-label="Redo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7v6h-6M3 17a9 9 0 0 1 15-6.7L21 13"></path></svg></button>
+              </div>
+              <div class="rte" role="textbox" aria-multiline="true" aria-label="Description" style="padding: 18px 20px; min-height: 220px; font-size: 15px">
+                <h3>About the workshop</h3>
+                <p>Most AI runs in big data centres. This workshop is about the opposite: <strong>small models that run on a €10 board</strong>, with no internet connection. You will train a model, squeeze it onto a microcontroller and build a working prototype with your team.</p>
+                <ul><li>Lectures by FEEIT professors and engineers from local companies</li><li>A full lab day and a company visit</li><li>A team challenge and a day trip to Ohrid</li></ul>
+                <p>No prior machine-learning experience is needed. Read the <a href="#">full programme</a>.</p>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 14px; border-top: 1px solid #ececec; background: #fafafa" class="sm muted"><span>Paste from Word or Google Docs keeps headings, bold and lists.</span><span>96 words</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-topics">
+          <div class="card-h"><h2 id="s-topics" class="a-h2">Topics</h2><span class="sm muted">Pick any · used for filters</span></div>
+          <div class="card-b" style="flex-direction: row; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{topics}}" as="t" hint-placeholder-count="7">
+              <button type="button" class="{{t.cls}}" aria-pressed="{{t.pressed}}"><sc-if value="{{t.on}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>{{t.t}}</button>
+            </sc-for>
+            <button type="button" class="chip add"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New topic</button>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-cover">
+          <div class="card-h"><h2 id="s-cover" class="a-h2">Cover image <span class="req">*</span></h2><span class="sm muted">Shown on cards and at the top of the page</span></div>
+          <div class="card-b" style="display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start">
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div class="ph" style="position: relative; aspect-ratio: 16 / 10; border-radius: 10px; border: 1px solid #e3e3e3">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+                <span class="sm">Cover preview</span>
+                <span style="position: absolute; left: 8px; bottom: 8px; display: flex; gap: 6px"><button type="button" class="btn btn-sm" style="background: rgba(255,255,255,0.95)">Replace</button><button type="button" class="btn btn-sm" style="background: rgba(255,255,255,0.95)">Crop</button></span>
+                <button type="button" class="btn btn-sm" aria-label="Remove cover image" style="position: absolute; right: 8px; top: 8px; width: 30px; padding: 0; background: rgba(255,255,255,0.95)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+              </div>
+              <span class="sm muted">cover-ai-edge.jpg · 1920 × 1200 · 284 KB (compressed from 2.1 MB)</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <div><label class="label" for="e-alt"><span>Alt text <span class="req">*</span></span></label><textarea class="input" id="e-alt" rows="3">Two students at a lab bench at FEEIT, connecting a camera module to a small development board.</textarea><span class="help"><span>Describe what's in the photo for people who can't see it.</span><span>96 / 160</span></span></div>
+              <div><label class="label" for="e-credit"><span>Photo credit <span class="opt">Optional</span></span></label><input class="input" id="e-credit" placeholder="e.g. Marija Stojanovska"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-gal">
+          <div class="card-h"><h2 id="s-gal" class="a-h2">Photo gallery</h2><span class="sm muted">8 photos · drag to reorder</span></div>
+          <div class="card-b">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 14px; padding: 22px; border: 1.5px dashed #8c8c8c; border-radius: 10px; background: #fafafa">
+              <span style="width: 44px; height: 44px; border-radius: 10px; background: #ffffff; border: 1px solid #e3e3e3; color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg></span>
+              <span style="display: flex; flex-direction: column"><span><strong>Drag photos here</strong> or <button type="button" style="border: 0; background: none; padding: 0; color: #b81f24; font: inherit; font-weight: 500; cursor: pointer">browse</button></span><span class="sm muted">JPG, PNG or WebP · up to 15 MB each · compressed automatically</span></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <sc-for list="{{uploads}}" as="u" hint-placeholder-count="2">
+                <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 12px; border: 1px solid #ececec; border-radius: 8px">
+                  <span class="ph" style="width: 40px; height: 30px; border-radius: 4px"></span>
+                  <span style="display: flex; flex-direction: column; gap: 6px"><span class="sm" style="display: flex; justify-content: space-between"><span>{{u.name}}</span><span class="muted">{{u.pct}}%</span></span><span style="height: 4px; border-radius: 999px; background: #ececec; overflow: hidden"><span style="display: block; height: 100%; width: {{u.pct}}%; background: #1a1a1a"></span></span></span>
+                  <button type="button" class="btn btn-ghost btn-sm" aria-label="Cancel upload {{u.name}}">Cancel</button>
+                </div>
+              </sc-for>
+            </div>
+            <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px">
+              <sc-for list="{{gallery}}" as="g" hint-placeholder-count="8">
+                <li style="display: flex; flex-direction: column; gap: 6px; transform: {{g.tf}}; z-index: {{g.z}}; position: relative">
+                  <div class="ph" style="position: relative; aspect-ratio: 4 / 3; border-radius: 8px; border: {{g.border}}; box-shadow: {{g.shadow}}; background-color: {{g.bgc}}; opacity: {{g.op}}">
+                    <span class="sm">{{g.label}}</span>
+                    <span aria-hidden="true" style="position: absolute; left: 6px; top: 6px; width: 24px; height: 24px; border-radius: 6px; background: rgba(255,255,255,0.95); color: #6b6b6b; display: flex; align-items: center; justify-content: center; cursor: grab"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg></span>
+                    <span style="position: absolute; right: 6px; top: 6px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1a1a1a; color: #ffffff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{g.n}}</span>
+                  </div>
+                  <sc-if value="{{g.hasAlt}}" hint-placeholder-val="{{ true }}"><span class="sm" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{g.alt}}</span></sc-if>
+                  <sc-if value="{{g.noAlt}}" hint-placeholder-val="{{ false }}"><button type="button" class="sm" style="display: flex; align-items: center; gap: 4px; border: 0; background: none; padding: 0; color: #b81f24; font: inherit; font-weight: 500; cursor: pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Add alt text</button></sc-if>
+                </li>
+              </sc-for>
+            </ul>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-docs">
+          <div class="card-h"><h2 id="s-docs" class="a-h2">Documents &amp; video</h2></div>
+          <div class="card-b">
+            <div>
+              <span class="label"><span>Info pack (PDF) <span class="opt">Optional</span></span></span>
+              <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid #e3e3e3; border-radius: 8px">
+                <span style="width: 32px; height: 40px; border-radius: 4px; background: #e52a30; color: #ffffff; font-size: 10px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px">PDF</span>
+                <span style="flex: 1; display: flex; flex-direction: column"><strong style="font-weight: 500">AI-at-the-Edge-info-pack.pdf</strong><span class="sm muted">1.8 MB · uploaded 2 Oct by Ana Trajkovska</span></span>
+                <button type="button" class="btn btn-sm">Replace</button>
+                <button type="button" class="btn btn-ghost btn-sm" style="color: #b81f24">Remove</button>
+              </div>
+              <span class="help"><span>PDF only, up to 20 MB. Shown as a download button on the event page.</span></span>
+            </div>
+            <div><label class="label" for="e-yt"><span>Video link <span class="opt">Optional</span></span></label><input class="input" id="e-yt" placeholder="https://www.youtube.com/watch?v=…"><span class="help"><span>YouTube or Vimeo. The video section is hidden while this is empty.</span></span></div>
+          </div>
+        </section>
+
+        <section class="panel" style="border-color: rgba(229,42,48,0.35)" aria-labelledby="s-danger">
+          <div class="card-b" style="flex-direction: row; align-items: center; justify-content: space-between">
+            <div style="display: flex; flex-direction: column; gap: 2px"><h2 id="s-danger" class="a-h2">Delete event</h2><span class="sm muted">Removes the event, its gallery and 38 applications. This can't be undone.</span></div>
+            <button type="button" class="btn btn-danger">Delete event…</button>
+          </div>
+        </section>
+      </div>
+
+      <aside style="display: flex; flex-direction: column; gap: 20px; position: sticky; top: 76px">
+        <section class="panel" aria-labelledby="s-pub">
+          <div class="card-h"><h2 id="s-pub" class="a-h2">Publishing</h2></div>
+          <div class="card-b" style="gap: 16px">
+            <div><label class="label" for="e-status"><span>Status</span></label><div class="ico"><select class="input sel" id="e-status"><option>Draft</option><option>Published</option><option>Hidden</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div><span class="help"><span>Draft: only admins see it. Hidden: reachable by link, not listed.</span></span></div>
+            <div><label class="label" for="e-sched"><span>Publish on <span class="opt">Optional</span></span></label><div class="ico"><input class="input" id="e-sched" placeholder="Publish immediately"><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></div></div>
+            <button type="button" role="switch" aria-checked="true" class="sw">Show as “Next up” on Home<span class="tgl on"></span></button>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-cat">
+          <div class="card-h"><h2 id="s-cat" class="a-h2">Category &amp; type</h2></div>
+          <div class="card-b" style="gap: 16px">
+            <div><span class="label"><span>Category <span class="req">*</span></span></span><div class="seg" role="group" aria-label="Category"><button type="button" aria-pressed="false">Local</button><button type="button" aria-pressed="true">International</button></div></div>
+            <div><label class="label" for="e-type"><span>Type <span class="req">*</span></span></label><div class="ico"><select class="input sel" id="e-type"><option>Workshop</option><option>Exchange</option><option>Motivational Weekend</option><option>Training / Soft Skills</option><option>Competition</option><option>Conference / Statutory</option><option>Social</option><option>Other</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div></div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="s-app">
+          <div class="card-h"><h2 id="s-app" class="a-h2">Applications</h2><button type="button" role="switch" aria-checked="true" aria-label="Accept applications" class="sw" style="width: auto"><span class="sm muted">Accept</span><span class="tgl on"></span></button></div>
+          <div class="card-b" style="gap: 16px">
+            <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+              <legend class="label" style="padding: 0; margin-bottom: 8px">Apply via</legend>
+              <label class="radio"><input type="radio" name="via" checked>Form on this site</label>
+              <label class="radio"><input type="radio" name="via">External link (e.g. eestec.net)</label>
+            </fieldset>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+              <div><label class="label" for="e-open"><span>Opens</span></label><input class="input" id="e-open" value="1 Oct 2026"></div>
+              <div><label class="label" for="e-dl"><span>Deadline <span class="req">*</span></span></label><input class="input" id="e-dl" value="18 Oct, 23:59"></div>
+            </div>
+            <div><label class="label" for="e-max"><span>Max participants</span></label><input class="input" id="e-max" type="number" value="24" style="width: 120px"></div>
+            <button type="button" role="switch" aria-checked="true" class="sw">Waitlist when full<span class="tgl on"></span></button>
+            <a href="/admin/applications/ai-at-the-edge/form" class="btn" style="justify-content: space-between">Edit application form <span class="muted sm" style="font-weight: 400">6 fields →</span></a>
+          </div>
+        </section>
+
+        <section class="panel">
+          <button type="button" aria-expanded="false" class="sw" style="padding: 16px 20px"><strong class="a-h2">SEO &amp; sharing</strong><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+        </section>
+      </aside>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3004}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const on = ['Hardware', 'AI & data'];
+    const topics = ['Hardware', 'AI & data', 'Software', 'Power & energy', 'Telecom', 'Soft skills', 'Career'].map((t) => ({ t, on: on.indexOf(t) >= 0, cls: on.indexOf(t) >= 0 ? 'chip on' : 'chip', pressed: on.indexOf(t) >= 0 ? 'true' : 'false' }));
+    const alts = ['Opening session in the FEEIT amphitheatre', 'Students wiring a sensor to a dev board', '', 'Team presenting their prototype', 'Lab bench with oscilloscopes', 'Group photo at Lake Ohrid', 'International night buffet', 'Closing ceremony certificates'];
+    const gallery = alts.map((alt, i) => {
+      const dragging = i === 4;
+      const slot = i === 2;
+      return {
+        n: i + 1, alt, hasAlt: !!alt, noAlt: !alt,
+        label: dragging ? 'Dragging…' : 'Photo ' + (i + 1),
+        tf: dragging ? 'rotate(-2deg) translate(6px, -6px)' : 'none',
+        z: dragging ? 2 : 1,
+        shadow: dragging ? '0 14px 30px rgba(0,0,0,0.22)' : 'none',
+        border: dragging ? '2px solid #1a1a1a' : '1px solid #e3e3e3',
+        bgc: '#ececec',
+        op: 1
+      };
+    });
+    return {
+      crumbs: [{ t: 'Admin', href: '/admin' }, { t: 'Events', href: '/admin/events' }, { t: 'Workshop: AI at the Edge' }],
+      topics,
+      uploads: [{ name: 'IMG_4471.jpg', pct: 64 }, { name: 'IMG_4472.jpg', pct: 18 }],
+      gallery
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EESTEC Journey — interaction states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.ds-label{font-size:13px;font-weight:700;color:#1a1a1a;letter-spacing:0.06em;text-transform:uppercase}
+.cap{font-size:14px;line-height:1.5;color:#6b6b6b}
+.nd{width:76px;height:76px;border-radius:50%;border:3px solid #e52a30;display:flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+
+<div style="width: 100%; background: #ffffff">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px 96px; display: flex; flex-direction: column; gap: 80px">
+
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Step node</h2>
+        <span class="title-bar"></span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+          <div style="height: 110px; display: flex; align-items: center"><span class="nd" style="background: #ffffff; color: #e52a30"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"></path></svg></span></div>
+          <span class="ds-label">Not reached yet</span><span class="cap">Below the scroll position. Line before it is grey and dashed.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+          <div style="height: 110px; display: flex; align-items: center"><span class="nd" style="background: #e52a30; color: #ffffff; box-shadow: 0 6px 16px rgba(229,42,48,0.25)"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"></path></svg></span></div>
+          <span class="ds-label">Reached</span><span class="cap">Scrolled past. Line up to it is solid red.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+          <div style="height: 110px; display: flex; align-items: center; position: relative"><span style="position: absolute; left: 50%; top: 50%; width: 104px; height: 104px; margin: -52px 0 0 -52px; border-radius: 50%; background: rgba(229,42,48,0.16)"></span><span class="nd" style="position: relative; background: #e52a30; color: #ffffff; box-shadow: 0 6px 16px rgba(229,42,48,0.25)"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"></path></svg></span></div>
+          <span class="ds-label">Current</span><span class="cap">The step in the middle of the screen gets a soft red halo.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+          <div style="height: 110px; display: flex; align-items: center"><span class="nd" style="background: #e52a30; color: #ffffff; transform: scale(1.1); box-shadow: 0 10px 24px rgba(229,42,48,0.4)"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"></path></svg></span></div>
+          <span class="ds-label">Card hovered</span><span class="cap">Node grows 10% while its card is hovered.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+          <div style="height: 110px; display: flex; align-items: center"><span class="nd" style="background: #e52a30; color: #ffffff; outline: 3px solid #1a1a1a; outline-offset: 4px"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"></path></svg></span></div>
+          <span class="ds-label">Keyboard focus</span><span class="cap">Focus ring when tabbing to the step's “Show more” button.</span>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Step card · desktop</h2>
+        <span class="title-bar"></span>
+        <p class="muted" style="font-size: 17px">Hover only highlights the card. Clicking the card or “Show more” expands it, and it stays open until “Show less” is clicked, so nothing jumps while people scroll.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Default</span><dc-import name="JourneyStep" step="{{s5}}" hint-size="100%,260px"></dc-import></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Hover</span><dc-import name="JourneyStep" step="{{s5}}" state="hover" hint-size="100%,260px"></dc-import></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; max-width: 660px"><span class="ds-label">Expanded · benefits, photo, quote</span><dc-import name="JourneyStep" step="{{s5}}" expanded="{{ true }}" hint-size="100%,640px"></dc-import></div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Scroll animation</h2>
+        <span class="title-bar"></span>
+        <p class="muted" style="font-size: 17px">Each step fades in and slides up 32 px over 400 ms as it enters the screen, and the red line draws down to its node. With “reduce motion” turned on, everything is shown at once.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">1 · Below the screen</span>
+          <div style="display: flex; gap: 16px; align-items: flex-start">
+            <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0"><span style="height: 60px; border-left: 4px dashed #c7c7c7"></span><span class="nd" style="width: 48px; height: 48px; background: #ffffff; border-color: #c7c7c7"></span></div>
+            <div style="flex: 1; padding-top: 30px"><dc-import name="JourneyStep" step="{{s2}}" state="hidden" hint-size="100%,260px"></dc-import></div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">2 · Entering</span>
+          <div style="display: flex; gap: 16px; align-items: flex-start">
+            <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0"><span style="height: 30px; border-left: 4px solid #e52a30"></span><span style="height: 30px; border-left: 4px dashed #c7c7c7"></span><span class="nd" style="width: 48px; height: 48px; background: #ffffff"></span></div>
+            <div style="flex: 1; padding-top: 30px"><dc-import name="JourneyStep" step="{{s2}}" state="entering" hint-size="100%,260px"></dc-import></div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">3 · In view</span>
+          <div style="display: flex; gap: 16px; align-items: flex-start">
+            <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0"><span style="height: 60px; border-left: 4px solid #e52a30"></span><span class="nd" style="width: 48px; height: 48px; background: #e52a30"></span></div>
+            <div style="flex: 1; padding-top: 30px"><dc-import name="JourneyStep" step="{{s2}}" hint-size="100%,260px"></dc-import></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Step card · mobile tap</h2>
+        <span class="title-bar"></span>
+        <p class="muted" style="font-size: 17px">Tapping the card or “Show more” toggles it. Only one step is open at a time on mobile.</p>
+      </div>
+      <div style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap">
+        <div style="width: 358px; display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Collapsed</span><dc-import name="JourneyStep" step="{{s3}}" device="mobile" hint-size="358px,240px"></dc-import></div>
+        <div style="width: 358px; display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Pressed</span><dc-import name="JourneyStep" step="{{s3}}" device="mobile" state="hover" hint-size="358px,240px"></dc-import></div>
+        <div style="width: 358px; display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Expanded</span><dc-import name="JourneyStep" step="{{s3}}" device="mobile" expanded="{{ true }}" hint-size="358px,720px"></dc-import></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3460}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      s2: { n: '02', title: 'Participate', text: 'Attend local workshops, trainings and socials.', cta: 'Upcoming Events', href: '/upcoming', bullets: [], photo: '', quote: '', author: '' },
+      s3: { n: '03', title: 'Volunteer & Organize', text: 'Join a team and help organize events.', cta: 'Meet the teams', href: '/members#teams',
+        bullets: ['Teams for IT, PR, HR, fundraising and events', 'Learn project management by doing', 'Organize your first event with a mentor'],
+        photo: 'organizing team planning on a whiteboard', quote: 'Organizing a workshop for 24 people is the best crash course in teamwork.', author: 'Marija Stojanovska · Power Up organizer' },
+      s5: { n: '05', title: 'Lead', text: 'Become a coordinator, board member or join international teams, ECM and Congress.', cta: 'How to get involved', href: '/join',
+        bullets: ['Coordinate a team or a project', 'Run for the LC Skopje board', 'Represent Skopje at ECM and Congress'],
+        photo: 'LC Skopje delegation at Congress', quote: 'Leading the board taught me to make decisions with 80 people watching.', author: 'Ana Trajkovska · chairperson 2025' }
+    };
+  }
+}
+</script>
+</body>
+</html>

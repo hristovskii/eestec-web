@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Committee map</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="position: relative; width: 100%; aspect-ratio: 1200 / 910; border-radius: 12px; overflow: hidden; border: 1px solid #dedede; background: #eef0f2; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a; box-sizing: border-box">
+  <img src="/_blob/ed3ea9c77eba11d47d93eebd3411a326" alt="Map of Europe with a pin for every EESTEC committee" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+
+  <sc-for list="{{pins}}" as="p" hint-placeholder-count="34">
+    <button type="button" aria-label="{{p.label}}" title="{{p.label}}" style="position: absolute; left: {{p.x}}%; top: {{p.y}}%; width: {{p.size}}px; height: {{p.size}}px; transform: translate(-50%, -50%); padding: 0; border-radius: 50%; background: {{p.fill}}; border: {{p.bw}}px solid {{p.stroke}}; box-shadow: 0 1px 3px rgba(0,0,0,0.25); cursor: pointer; box-sizing: border-box"></button>
+  </sc-for>
+
+  <span aria-hidden="true" style="position: absolute; left: 58.95%; top: 77.12%; width: {{halo}}px; height: {{halo}}px; transform: translate(-50%, -50%); border-radius: 50%; background: rgba(229,42,48,0.22)"></span>
+  <button type="button" aria-label="LC Skopje — Skopje, North Macedonia (selected)" style="position: absolute; left: 58.95%; top: 77.12%; width: {{skSize}}px; height: {{skSize}}px; transform: translate(-50%, -50%); padding: 0; border-radius: 50%; background: #e52a30; border: 3px solid #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer; box-sizing: border-box"></button>
+
+  <sc-if value="{{showPopup}}" hint-placeholder-val="{{ true }}">
+    <div role="dialog" aria-label="LC Skopje" style="position: absolute; left: 58.95%; top: 77.12%; transform: translate(-50%, calc(-100% - 22px)); width: 260px; background: #ffffff; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.18); padding: 16px 16px 14px; box-sizing: border-box">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 18px; font-weight: 700">LC Skopje</span>
+          <span style="font-size: 14px; color: #6b6b6b">Skopje, North Macedonia</span>
+        </div>
+        <button type="button" aria-label="Close" style="width: 32px; height: 32px; margin: -6px -6px 0 0; border: 0; background: transparent; color: #6b6b6b; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 12px">
+        <span style="display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; background: #f5f5f5; font-size: 13px; font-weight: 500">Local Committee</span>
+        <a href="https://eestec.mk" style="font-size: 14px; font-weight: 500; color: #b81f24">eestec.mk ↗</a>
+      </div>
+      <span aria-hidden="true" style="position: absolute; left: 50%; bottom: -7px; width: 14px; height: 14px; background: #ffffff; transform: translateX(-50%) rotate(45deg); box-shadow: 3px 3px 6px rgba(0,0,0,0.06)"></span>
+    </div>
+  </sc-if>
+
+  <div style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; background: #ffffff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.18); overflow: hidden">
+    <button type="button" aria-label="Zoom in" style="width: {{zoomSize}}px; height: {{zoomSize}}px; border: 0; border-bottom: 1px solid #e3e3e3; background: #ffffff; color: #1a1a1a; font-size: 20px; line-height: 1; cursor: pointer">+</button>
+    <button type="button" aria-label="Zoom out" style="width: {{zoomSize}}px; height: {{zoomSize}}px; border: 0; background: #ffffff; color: #1a1a1a; font-size: 20px; line-height: 1; cursor: pointer">−</button>
+  </div>
+
+  <sc-if value="{{showLegend}}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; left: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; background: #ffffff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.15); font-size: 13px">
+      <span style="display: flex; align-items: center; gap: 10px"><span style="width: 14px; height: 14px; border-radius: 50%; background: #e52a30; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #e52a30; box-sizing: border-box"></span>LC Skopje</span>
+      <span style="display: flex; align-items: center; gap: 10px"><span style="width: 12px; height: 12px; border-radius: 50%; background: #2b2b2b; margin: 0 1px"></span>Local Committee</span>
+      <span style="display: flex; align-items: center; gap: 10px"><span style="width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 2.5px solid #2b2b2b; margin: 0 1px; box-sizing: border-box"></span>Observer</span>
+      <span style="display: flex; align-items: center; gap: 10px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2b2b2b; margin: 0 3px"></span>JLC (Junior Local Committee)</span>
+    </div>
+  </sc-if>
+
+  <span style="position: absolute; right: 0; bottom: 0; padding: 2px 8px; background: rgba(255,255,255,0.85); font-size: 11px; color: #4a4a4a">Leaflet | © OpenStreetMap contributors</span>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"compact":{"editor":"boolean","default":false},"showPopup":{"editor":"boolean","default":true},"$preview":{"width":1200,"height":910}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const compact = this.props.compact ?? false;
+    const showPopup = this.props.showPopup ?? true;
+    const data = [
+      ['Belgrade','Serbia','LC',57.19,67.92],['Novi Sad','Serbia','LC',56.06,66.29],['Niš','Serbia','LC',59.81,72.81],
+      ['Zagreb','Croatia','LC',49.06,64.42],['Ljubljana','Slovenia','LC',46.37,63.58],['Sarajevo','Bosnia and Herzegovina','LC',53.48,71.04],
+      ['Tuzla','Bosnia and Herzegovina','LC',53.94,68.76],['Podgorica','Montenegro','Observer',55.02,75.69],['Sofia','Bulgaria','JLC',62.40,74.85],
+      ['Bucharest','Romania','LC',67.46,69.14],['Cluj-Napoca','Romania','Observer',62.95,61.10],['Budapest','Hungary','LC',54.62,58.54],
+      ['Athens','Greece','LC',63.14,89.69],['Patras','Greece','LC',59.52,88.89],['Thessaloniki','Greece','Observer',61.72,81.46],
+      ['Istanbul','Türkiye','LC',72.69,80.29],['Ankara','Türkiye','Observer',79.75,83.68],['Delft','Netherlands','LC',27.92,41.77],
+      ['Eindhoven','Netherlands','LC',29.95,43.98],['Aachen','Germany','LC',31.06,46.52],['Karlsruhe','Germany','JLC',35.28,53.10],
+      ['Munich','Germany','LC',41.05,56.25],['Zurich','Switzerland','LC',35.53,58.97],['Lausanne','Switzerland','Observer',32.06,61.98],
+      ['Milan','Italy','JLC',36.71,65.62],['Madrid','Spain','Observer',13.27,82.16],['Lisbon','Portugal','LC',3.38,87.44],
+      ['Kraków','Poland','LC',56.26,49.19],['Gliwice','Poland','LC',53.94,48.34],['Warsaw','Poland','Observer',58.20,40.92],
+      ['Riga','Latvia','LC',63.83,21.36],['Tallinn','Estonia','JLC',65.01,10.04],['Kyiv','Ukraine','LC',75.50,47.75],
+      ['Kharkiv','Ukraine','Observer',85.87,49.46]
+    ];
+    const statusName = { LC: 'Local Committee', Observer: 'Observer', JLC: 'Junior Local Committee' };
+    const pins = data.map(([city, country, kind, x, y]) => {
+      const lc = kind === 'LC', obs = kind === 'Observer';
+      const size = kind === 'JLC' ? (compact ? 6 : 9) : (compact ? 8 : 13);
+      return {
+        x, y, size,
+        label: (lc ? 'LC ' : kind + ' ') + city + ' — ' + country + ', ' + statusName[kind],
+        fill: obs ? '#ffffff' : '#2b2b2b',
+        stroke: obs ? '#2b2b2b' : '#ffffff',
+        bw: obs ? (compact ? 2 : 2.5) : (compact ? 1 : 2)
+      };
+    });
+    return {
+      pins,
+      showPopup: showPopup && !compact,
+      showLegend: !compact,
+      skSize: compact ? 14 : 22,
+      halo: compact ? 30 : 48,
+      zoomSize: compact ? 32 : 36
+    };
+  }
+}
+</script>
+</body>
+</html>

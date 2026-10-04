@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My profile · states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.pcard{background:#ffffff;border:1px solid #e3e3e3;border-radius:16px}
+.file{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 14px;border:1px solid #e3e3e3;border-radius:10px;background:#ffffff}
+.pdf{width:40px;height:48px;border-radius:6px;background:#e52a30;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.stage{position:relative;height:520px;border-radius:16px;overflow:hidden;background:#f5f5f5;border:1px solid #e3e3e3}
+.scrim{position:absolute;inset:0;background:rgba(26,26,26,0.55);display:flex;align-items:center;justify-content:center;padding:24px}
+.modal{width:100%;max-width:480px;background:#ffffff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,0.3);padding:28px;display:flex;flex-direction:column;gap:16px}
+.cv-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start}
+.toast{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:#1a1a1a;color:#ffffff;box-shadow:0 12px 32px rgba(0,0,0,0.2);font-size:15px}
+</style>
+</helmet>
+<div style="width: 100%; background: #ffffff; padding: 56px 0 72px">
+  <div style="max-width: 1360px; margin: 0 auto; padding: 0 40px; display: flex; flex-direction: column; gap: 40px">
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">My profile · states</h2><p class="muted" style="font-size: 15px; line-height: 1.5; max-width: 900px">Pending account, CV sharing from off to on, upload errors, photo crop, saving, and the two confirmations that remove data.</p></div>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">1 · Account still waiting for board approval</span>
+        <div role="status" style="display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 20px 22px; border-radius: 16px; background: #1a1a1a; color: #ffffff">
+          <span style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 16px">Your account is waiting for board approval</strong><span style="font-size: 14px; line-height: 1.5; color: #e3e3e3">Finish your profile now. Nobody else can see it until the board approves you, usually within 3 days. Applications and Memories open after approval.</span></span>
+          <a href="/contact?subject=membership" style="color: #ffffff; font-size: 14px; font-weight: 500">Questions?</a>
+        </div>
+        <p class="small muted">Shown at the top of /profile. Visibility, applications and Memories sections are greyed out with “Available after approval”.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">2 · Saved</span>
+        <div role="status" class="toast"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span style="flex: 1">Profile saved</span><a href="/members/marija-stojanovska" style="color: #ffffff; font-weight: 500">View</a></div>
+        <div role="alert" class="toast" style="background: #ffffff; color: #1a1a1a; border: 2px solid #e52a30"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg><span style="flex: 1">Couldn't save. Your changes are kept here.</span><button type="button" class="btn btn-quiet btn-sm" style="height: 34px">Retry</button></div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <span class="ds-label">3 · CV for partners: from off to on</span>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start">
+        <div class="pcard" style="padding: 22px; display: flex; flex-direction: column; gap: 14px">
+          <span class="chip" style="align-self: flex-start">a · Off (default)</span>
+          <div class="cv-row"><div style="display: flex; flex-direction: column; gap: 4px"><strong>Share my CV with partner companies</strong><span class="small muted">Only Main partners can see it. Off by default.</span></div><button type="button" role="switch" aria-checked="false" class="sw" style="width: auto" aria-label="Share my CV with partner companies"><span class="tgl"></span></button></div>
+          <p class="small muted">No CV is stored while this is off.</p>
+        </div>
+        <div class="pcard" style="padding: 22px; display: flex; flex-direction: column; gap: 14px">
+          <span class="chip" style="align-self: flex-start">b · Turned on, no CV yet</span>
+          <div class="cv-row"><div style="display: flex; flex-direction: column; gap: 4px"><strong>Share my CV with partner companies</strong><span class="small muted">Consent saved 4 Oct 2026, 18:42.</span></div><button type="button" role="switch" aria-checked="true" class="sw" style="width: auto" aria-label="Share my CV with partner companies"><span class="tgl on"></span></button></div>
+          <label for="cv-up" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 16px; border: 2px dashed #c7c7c7; border-radius: 12px; text-align: center; cursor: pointer">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>
+            <span style="font-size: 15px"><strong>Drop your CV here</strong> or <span class="link">browse</span></span>
+            <span class="small muted">PDF only, up to 5 MB</span>
+          </label><input id="cv-up" type="file" accept="application/pdf" class="sr-only">
+          <p class="small" style="color: #3a3a3a">Partners can't see anything until you upload a CV.</p>
+        </div>
+        <div class="pcard" style="padding: 22px; display: flex; flex-direction: column; gap: 14px">
+          <span class="chip" style="align-self: flex-start">c · Upload problem</span>
+          <div class="file" style="border: 2px solid #e52a30; background: #fdf0f0"><span class="pdf" style="background: #8c8c8c">DOC</span><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><strong style="font-weight: 500">CV_Marija_2026.docx</strong><span class="small" style="color: #b81f24; font-weight: 500">Only PDF files work. Save it as PDF and try again.</span></span><button type="button" class="btn btn-quiet btn-sm">Choose file</button></div>
+          <div class="file"><span class="pdf">PDF</span><span style="display: flex; flex-direction: column; gap: 6px; min-width: 0"><strong style="font-weight: 500">Marija_Stojanovska_CV.pdf</strong><span style="display: block; height: 6px; border-radius: 3px; background: #ececec; overflow: hidden"><span style="display: block; width: 62%; height: 100%; background: #1a1a1a"></span></span></span><span class="small muted">62%</span></div>
+          <p class="small muted">Upload in progress, then the file row from the main screen.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px">
+      <span class="ds-label">4 · Dialogs</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+        <div class="stage"><div class="scrim"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="dg-crop">
+          <h3 id="dg-crop" style="font-size: 20px; font-weight: 700">Adjust your photo</h3>
+          <div style="position: relative; height: 220px; border-radius: 12px; overflow: hidden" class="ph"><span>Uploaded photo</span><span aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 180px; height: 180px; margin: -90px 0 0 -90px; border: 3px solid #ffffff; border-radius: 16px; box-shadow: 0 0 0 999px rgba(26,26,26,0.45)"></span></div>
+          <label style="display: flex; align-items: center; gap: 12px; font-size: 14px"><span>Zoom</span><input type="range" value="40" style="flex: 1; accent-color: #e52a30" aria-label="Zoom"></label>
+          <div style="display: flex; justify-content: flex-end; gap: 10px"><button type="button" class="btn btn-quiet btn-sm">Cancel</button><button type="button" class="btn btn-primary btn-sm">Use photo</button></div>
+        </div></div></div>
+        <div class="stage"><div class="scrim"><div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="dg-cv">
+          <h3 id="dg-cv" style="font-size: 20px; font-weight: 700">Stop sharing your CV?</h3>
+          <p class="body muted">Partners lose access right away and we delete Marija_Stojanovska_CV.pdf. You can turn sharing on again later and upload a new CV.</p>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 4px"><button type="button" class="btn btn-quiet btn-sm">Keep sharing</button><button type="button" class="btn btn-primary btn-sm">Stop sharing and delete CV</button></div>
+        </div></div></div>
+        <div class="stage" style="height: 680px"><div class="scrim"><div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="dg-del">
+          <h3 id="dg-del" style="font-size: 20px; font-weight: 700">Delete your account?</h3>
+          <p class="small" style="line-height: 1.5">This permanently removes:</p>
+          <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.7"><li>Your profile, photo and bio</li><li>Your CV and all consents</li><li>Your applications to upcoming events</li><li>Drafts and Memories waiting for approval</li><li>Your name and photo on everything you wrote</li></ul>
+          <div style="padding: 12px 14px; border-radius: 10px; background: #f5f5f5; display: flex; flex-direction: column; gap: 6px">
+            <label style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; cursor: pointer"><input type="checkbox" class="cb"><span><strong>Also delete my Memories</strong> (2 published)</span></label>
+            <span class="small muted" style="padding-left: 30px">Unchecked: they stay on the site as “by a former member”, with no name or photo.</span>
+          </div>
+          <div><label class="label" for="dg-pw">Enter your password to confirm</label><input class="input" id="dg-pw" type="password" value="lake-ohrid-2026" style="border-color: #e52a30; box-shadow: 0 0 0 3px rgba(229,42,48,0.28)"></div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px"><button type="button" class="btn btn-quiet btn-sm">Cancel</button><button type="button" class="btn btn-sm" style="background: #b81f24; border-color: #b81f24; color: #ffffff">Delete my account</button></div>
+        </div></div></div>
+        <div class="stage" style="height: 680px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; padding: 24px">
+          <div class="pcard" role="status" style="max-width: 440px; padding: 32px; display: flex; flex-direction: column; gap: 14px; text-align: center; align-items: center">
+            <span style="width: 64px; height: 64px; border-radius: 50%; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            <h3 style="font-size: 24px; font-weight: 700">Your account is deleted</h3>
+            <p class="body muted">We removed your personal data. A confirmation is on its way to your e-mail. Thanks for everything, Marija.</p>
+            <a href="/" class="btn btn-primary">Go to the home page</a>
+          </div>
+          <span class="ds-label" style="position: absolute; top: 16px; left: 20px; color: #6b6b6b">After deleting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2108}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

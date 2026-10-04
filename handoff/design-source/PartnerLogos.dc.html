@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Partner logos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+@keyframes plMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.pl-track{animation:plMarquee 45s linear infinite}
+.pl-mask:hover .pl-track,.pl-mask:focus-within .pl-track{animation-play-state:paused}
+@media (prefers-reduced-motion: reduce){.pl-track{animation:none}}
+</style>
+</helmet>
+<div style="width: 100%; max-width: 100%; min-width: 0; display: flex; flex-direction: column; gap: {{gap}}; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a">
+
+  <sc-for list="{{tiers}}" as="t" hint-placeholder-count="5">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%">
+        <h3 style="margin: 0; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #6b6b6b">{{t.label}}</h3>
+        <sc-if value="{{t.carousel}}" hint-placeholder-val="{{ false }}">
+          <button type="button" aria-label="Pause scrolling logos" style="width: 32px; height: 32px; border: 1px solid #d0d0d0; border-radius: 50%; background: #ffffff; color: #1a1a1a; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1"></rect><rect x="14" y="4" width="5" height="16" rx="1"></rect></svg></button>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{t.static}}" hint-placeholder-val="{{ true }}">
+        <ul style="list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: {{t.cellGap}}">
+          <sc-for list="{{t.logos}}" as="l" hint-placeholder-count="3">
+            <li style="width: {{l.cellW}}; display: flex; flex-direction: column; gap: 6px; text-align: center">
+              <dc-import name="PartnerLogo" logo="{{l}}" cell-h="{{l.cellH}}" max-w="{{l.maxW}}" area="{{l.area}}" hint-size="100%,88px"></dc-import>
+              <sc-if value="{{l.hasYears}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #6b6b6b">{{l.years}}</span></sc-if>
+            </li>
+          </sc-for>
+        </ul>
+      </sc-if>
+
+      <sc-if value="{{t.carousel}}" hint-placeholder-val="{{ false }}">
+        <div class="pl-mask" style="width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%)">
+          <ul class="pl-track" style="list-style: none; margin: 0; padding: 4px 0; display: flex; gap: {{t.cellGap}}; width: max-content">
+            <sc-for list="{{t.loop}}" as="l" hint-placeholder-count="8">
+              <li aria-hidden="{{l.dup}}" style="width: {{l.cellW}}; flex-shrink: 0">
+                <dc-import name="PartnerLogo" logo="{{l}}" cell-h="{{l.cellH}}" max-w="{{l.maxW}}" area="{{l.area}}" hint-size="176px,88px"></dc-import>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+      </sc-if>
+    </div>
+  </sc-for>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["home","wall","past"],"default":"home"},"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":1152,"height":838}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const variant = this.props.variant ?? 'home';
+    const mobile = (this.props.device ?? 'desktop') === 'mobile';
+    const B = (id) => '/_blob/' + id;
+    const L = {
+      voltline: { name: 'Voltline', src: B('7a12a1763bab8b1a3821ee95a91a5805'), ratio: 4 },
+      gridnova: { name: 'Gridnova', src: B('6117ecffb92639bb4c836107652a59c9'), ratio: 3 },
+      kodra: { name: 'Kodra', src: B('d891a0f896e96a9eafb63f0ffa76d83d'), ratio: 1 },
+      amperix: { name: 'Amperix Systems', src: B('4aab40b95035c37c029d7839d3e8ea90'), ratio: 0.75 },
+      circuitlab: { name: 'Circuitlab', src: B('c2cd911c9bf79ee393608046e4d80b69'), ratio: 2.5 },
+      quarkwave: { name: 'Quark Wave Technologies', src: B('d4fce4b777c43746c3acef3b831d2d86'), ratio: 2 },
+      ferrolux: { name: 'Ferrolux', src: B('2757e1be48c9788f712b2697b967bc4d'), ratio: 3.5 },
+      bitforge: { name: 'Bitforge', src: B('7eb55dfb6607d0125c5d4ca0beccbd64'), ratio: 1 },
+      lumenix: { name: 'Lumenix', src: B('15318886b0ded590987abb3385534840'), ratio: 2 },
+      teravolt: { name: 'Teravolt', src: B('021a930dc15c09f6c738e265c8cf60f8'), ratio: 3 },
+      datanest: { name: 'Datanest', src: B('f1efa3a5ecc5acfbdc9853c341131e4f'), ratio: 1.6 },
+      signalpost: { name: 'Signalpost', src: B('7a13dbe91b953d9a3be9a10ed23d066e'), ratio: 2 },
+      campusfm: { name: 'Campus FM 98', src: B('5b4d936d7d175cf5496f61e527e8def6'), ratio: 1 },
+      techwire: { name: 'Techwire Daily', src: B('01fa79a9a2a2ba4488c5f6b4b27046f5'), ratio: 3 },
+      orbitel: { name: 'Orbitel', src: B('721e9285b31e0f9f5be11cf857d0f94b'), ratio: 2.2 },
+      hexacore: { name: 'Hexacore', src: B('b578692771a91011ca3ba3df779254ac'), ratio: 1 },
+      polaris: { name: 'Polaris Instruments', src: B('56bb6d26314b0ff792202c2317736df4'), ratio: 0.8 },
+      nexagrid: { name: 'Nexa Grid', src: B('165ef0fc7a7c8b3198809622f145fa9f'), ratio: 3 },
+      feeit: { name: 'FEEIT', sub: 'Logo placeholder' },
+      ukim: { name: 'UKIM', sub: 'Logo placeholder' }
+    };
+    const d = mobile
+      ? { main: ['100%', 120, 260, 9000], gold: ['calc((100% - 20px) / 3)', 84, 92, 2600], std: ['calc((100% - 20px) / 3)', 72, 92, 1800], acad: ['calc((100% - 10px) / 2)', 72, 140, 1800], car: ['132px', 72, 104, 1800], gap: '10px' }
+      : { main: ['360px', 140, 300, 12000], gold: ['240px', 112, 192, 6000], std: ['176px', 88, 140, 3000], acad: ['176px', 88, 140, 3000], car: ['176px', 88, 140, 3000], gap: '16px' };
+    if (variant === 'wall' && !mobile) { d.std = ['calc((100% - 80px) / 6)', 88, 140, 3000]; }
+    const mk = (key, size, extra) => Object.assign({ url: '#' }, L[key], { cellW: size[0], cellH: size[1], maxW: size[2], area: size[3] }, extra || {});
+    const tier = (label, keys, size, opts) => {
+      const o = opts || {};
+      const logos = keys.map((k) => mk(k, size, o.years ? { years: o.years[k], hasYears: true } : {}));
+      const carousel = !!o.carousel;
+      return {
+        label, logos, carousel, static: !carousel, cellGap: d.gap,
+        loop: carousel ? logos.map((l) => Object.assign({}, l, { dup: 'false' })).concat(logos.map((l) => Object.assign({}, l, { dup: 'true' }))) : []
+      };
+    };
+    const partnersKeys = ['circuitlab', 'quarkwave', 'ferrolux', 'bitforge', 'lumenix', 'teravolt', 'datanest'];
+    let tiers;
+    if (variant === 'past') {
+      tiers = [tier('Past partners', ['orbitel', 'hexacore', 'polaris', 'nexagrid'], d.std, { years: { orbitel: '2018–2022', hexacore: '2020–2023', polaris: '2016–2021', nexagrid: '2019–2024' } })];
+    } else {
+      const all = [
+        tier('Main partner', ['voltline'], d.main),
+        tier('Gold partners', ['gridnova', 'kodra', 'amperix'], d.gold),
+        tier('Silver partners', [], d.gold),
+        tier('Partners', partnersKeys, variant === 'home' ? d.car : d.std, { carousel: variant === 'home' }),
+        tier('Media partners', ['signalpost', 'campusfm', 'techwire'], d.std),
+        tier('Academic partners', ['feeit', 'ukim'], d.acad)
+      ];
+      tiers = all.filter((t) => t.logos.length > 0);
+    }
+    return { tiers, gap: mobile ? '28px' : '36px' };
+  }
+}
+</script>
+</body>
+</html>

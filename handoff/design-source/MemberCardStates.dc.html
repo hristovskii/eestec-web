@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Member cards · variants &amp; states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h2,p{margin:0}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.cell{display:flex;flex-direction:column;gap:10px;min-width:0}
+.note{font-size:13px;line-height:1.45;color:#6b6b6b}
+</style>
+</helmet>
+<div style="padding: 56px 40px 64px; display: flex; flex-direction: column; gap: 36px">
+  <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">Member cards · variants &amp; states</h2><p class="note" style="font-size: 15px; max-width: 900px">One component, four variants: member, board, board-row (mobile) and alumni. Members without a photo get their initials. The “Members only” badge is only ever shown to logged-in members.</p></div>
+  <div style="display: grid; grid-template-columns: repeat(5, 220px); gap: 28px; align-items: start">
+    <div class="cell"><span class="ds-label">Member · default</span><dc-import name="MemberCard" variant="member" member="{{a}}" hint-size="220px,320px"></dc-import></div>
+    <div class="cell"><span class="ds-label">Hover / focus</span><dc-import name="MemberCard" variant="member" member="{{a}}" hover="{{ true }}" hint-size="220px,320px"></dc-import></div>
+    <div class="cell"><span class="ds-label">No photo</span><dc-import name="MemberCard" variant="member" member="{{b}}" hint-size="220px,320px"></dc-import></div>
+    <div class="cell"><span class="ds-label">Members only (logged in)</span><dc-import name="MemberCard" variant="member" member="{{c}}" hint-size="220px,320px"></dc-import><p class="note">Visitors never see this card. They see a line with the number of hidden profiles.</p></div>
+    <div class="cell"><span class="ds-label">Mobile · compact</span><div style="width: 171px"><dc-import name="MemberCard" variant="member" member="{{b}}" compact="{{ true }}" hint-size="171px,270px"></dc-import></div></div>
+  </div>
+  <div style="display: grid; grid-template-columns: 220px 220px minmax(0, 1fr); gap: 28px; align-items: start">
+    <div class="cell"><span class="ds-label">Board · current</span><dc-import name="MemberCard" variant="board" member="{{bd}}" hint-size="220px,340px"></dc-import></div>
+    <div class="cell"><span class="ds-label">Board · previous year</span><dc-import name="MemberCard" variant="board" member="{{bp}}" hint-size="220px,320px"></dc-import><p class="note">No e-mail: position addresses always reach the current board.</p></div>
+    <div class="cell"><span class="ds-label">Board row (mobile) &amp; alumni</span>
+      <div style="width: 358px"><dc-import name="MemberCard" variant="board-row" member="{{bd}}" hint-size="358px,108px"></dc-import></div>
+      <div style="width: 380px; padding-top: 8px"><dc-import name="MemberCard" variant="alumni" member="{{al}}" hint-size="380px,96px"></dc-import></div>
+      <div style="width: 380px"><dc-import name="MemberCard" variant="alumni" member="{{al2}}" hint-size="380px,80px"></dc-import></div>
+      <p class="note">Alumni: years active, an optional highlight (e.g. a board role) and an optional current position.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1069}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      a: { name: 'Daniel Ristov', initials: 'DR', teams: ['Events', 'IT'], role: 'Member', joined: '2024', href: '/members/daniel-ristov' },
+      b: { name: 'Elena Petrovska', initials: 'EP', teams: ['Events'], role: 'New member', joined: '2026', photo: false, href: '/members/elena-petrovska' },
+      c: { name: 'Marija Stojanovska', initials: 'MS', teams: ['Events'], role: 'Team lead', joined: '2023', membersOnly: true, href: '/members/marija-stojanovska' },
+      bd: { name: 'Ana Trajkovska', initials: 'AT', position: 'Chairperson', mail: 'chair@eestec.mk', href: '/members/ana-trajkovska' },
+      bp: { name: 'Bojan Petreski', initials: 'BP', position: 'Chairperson', mail: '', href: '/members/bojan-petreski' },
+      al: { name: 'Bojan Petreski', initials: 'BP', years: '2018–2023', highlight: 'Chair 2021/22', now: 'Embedded engineer at Gridnova', href: '/members/bojan-petreski' },
+      al2: { name: 'Ljupcho Georgiev', initials: 'LG', years: '2014–2018', now: '', href: '/members/ljupcho-georgiev' }
+    };
+  }
+}
+</script>
+</body>
+</html>

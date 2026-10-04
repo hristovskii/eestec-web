@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Member card</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.mc-photo{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;color:#6b6b6b;text-align:center;background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px)}
+</style>
+</helmet>
+<div style="width: 100%; height: 100%; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a; box-sizing: border-box">
+
+<sc-if value="{{isBoard}}" hint-placeholder-val="{{ false }}">
+  <div style="width: 100%; height: 100%; display: flex; flex-direction: column; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08); box-sizing: border-box">
+    <a href="{{m.href}}" style="position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; background: #e9e9e9" aria-label="{{m.name}}, profile">
+      <div class="mc-photo"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size: 13px">Portrait: {{m.name}}</span></div>
+    </a>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px">
+      <span style="font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #b81f24">{{m.position}}</span>
+      <a href="{{m.href}}" style="font-size: 18px; line-height: 1.3; font-weight: 700; color: #1a1a1a; text-decoration: none">{{m.name}}</a>
+      <sc-if value="{{hasMail}}" hint-placeholder-val="{{ true }}">
+        <a href="mailto:{{m.mail}}" style="margin-top: auto; padding-top: 6px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #b81f24; text-decoration: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6"></path></svg>{{m.mail}}</a>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{isMember}}" hint-placeholder-val="{{ true }}">
+  <a href="{{m.href}}" style="width: 100%; height: 100%; display: flex; flex-direction: column; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: {{shadow}}; transform: {{lift}}; color: #1a1a1a; text-decoration: none; box-sizing: border-box; transition: box-shadow .15s, transform .15s">
+    <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; background: #e9e9e9">
+      <sc-if value="{{hasPhoto}}" hint-placeholder-val="{{ true }}">
+        <div class="mc-photo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span style="font-size: 12px">Photo</span></div>
+      </sc-if>
+      <sc-if value="{{noPhoto}}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #fdf0f0; color: #b81f24; font-size: 40px; font-weight: 700">{{m.initials}}</div>
+      </sc-if>
+      <sc-if value="{{membersOnly}}" hint-placeholder-val="{{ false }}">
+        <span title="Only logged-in members see this profile" style="position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 999px; background: #1a1a1a; color: #ffffff; font-size: 12px; font-weight: 500"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Members only</span>
+      </sc-if>
+    </div>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 8px; padding: {{pad}}">
+      <h3 style="margin: 0; font-size: {{nameSize}}; line-height: 1.3; font-weight: 700; color: {{nameColor}}; text-decoration: {{nameDeco}}">{{m.name}}</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <sc-for list="{{m.teams}}" as="t" hint-placeholder-count="1"><span style="display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 999px; background: #f5f5f5; font-size: 13px; font-weight: 500">{{t}}</span></sc-for>
+      </div>
+      <sc-if value="{{notCompact}}" hint-placeholder-val="{{ true }}"><span style="margin-top: auto; font-size: 13px; color: #6b6b6b">{{m.role}} · since {{m.joined}}</span></sc-if>
+      <sc-if value="{{isCompact}}" hint-placeholder-val="{{ false }}"><span style="margin-top: auto; display: flex; flex-direction: column; font-size: 13px; color: #6b6b6b; white-space: nowrap"><span>{{m.role}}</span><span>Since {{m.joined}}</span></span></sc-if>
+    </div>
+  </a>
+</sc-if>
+
+<sc-if value="{{isBoardRow}}" hint-placeholder-val="{{ false }}">
+  <div style="width: 100%; display: flex; align-items: center; gap: 14px; padding: 12px; background: #ffffff; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08); box-sizing: border-box">
+    <a href="{{m.href}}" aria-label="{{m.name}}, profile" style="position: relative; width: 84px; height: 84px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #e9e9e9"><span class="mc-photo" style="padding: 4px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span></a>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #b81f24">{{m.position}}</span>
+      <a href="{{m.href}}" style="font-size: 17px; line-height: 1.3; font-weight: 700; color: #1a1a1a; text-decoration: none">{{m.name}}</a>
+      <sc-if value="{{hasMail}}" hint-placeholder-val="{{ true }}"><a href="mailto:{{m.mail}}" style="display: inline-flex; align-items: center; gap: 6px; min-height: 28px; font-size: 14px; font-weight: 500; color: #b81f24; text-decoration: none; white-space: nowrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6"></path></svg>{{m.mail}}</a></sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{isAlumni}}" hint-placeholder-val="{{ false }}">
+  <a href="{{m.href}}" style="width: 100%; height: 100%; display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #ffffff; border: 1px solid #e3e3e3; border-radius: 12px; color: #1a1a1a; text-decoration: none; box-sizing: border-box">
+    <span style="width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; background: #f5f5f5; color: #3a3a3a; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 1px solid #e3e3e3">{{m.initials}}</span>
+    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+      <strong style="font-size: 16px; font-weight: 700">{{m.name}}</strong>
+      <span style="font-size: 14px; color: #3a3a3a">Active {{m.years}}<sc-if value="{{hasHighlight}}" hint-placeholder-val="{{ false }}"> · {{m.highlight}}</sc-if></span>
+      <sc-if value="{{hasNow}}" hint-placeholder-val="{{ true }}"><span style="font-size: 14px; color: #6b6b6b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Now: {{m.now}}</span></sc-if>
+    </span>
+  </a>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["member","board","board-row","alumni"],"default":"member"},"member":{"editor":null,"tsType":"{name: string, initials?: string, href?: string, position?: string, mail?: string, teams?: string[], role?: string, joined?: string, years?: string, now?: string, highlight?: string, photo?: boolean, membersOnly?: boolean}"},"hover":{"editor":"boolean","default":false},"compact":{"editor":"boolean","default":false},"$preview":{"width":270,"height":379}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const v = this.props.variant ?? 'member';
+    const base = { name: 'Stefan Nikolovski', initials: 'SN', href: '/members/stefan-nikolovski', position: 'PR & media', mail: 'pr@eestec.mk', teams: ['PR'], role: 'Team lead', joined: '2023', years: '2017–2022', now: 'Hardware engineer at Voltline', highlight: '', photo: true, membersOnly: false };
+    const m = Object.assign({}, base, this.props.member || {});
+    const hover = !!this.props.hover;
+    const compact = !!this.props.compact;
+    return {
+      m,
+      isBoard: v === 'board', isBoardRow: v === 'board-row', isMember: v === 'member', isAlumni: v === 'alumni',
+      hasMail: !!m.mail,
+      hasPhoto: m.photo !== false, noPhoto: m.photo === false,
+      membersOnly: !!m.membersOnly,
+      hasNow: !!m.now, hasHighlight: !!m.highlight,
+      shadow: hover ? '0 0 0 2px #e52a30, 0 8px 24px rgba(0,0,0,0.12)' : '0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08)',
+      lift: hover ? 'translateY(-2px)' : 'none',
+      nameColor: hover ? '#b81f24' : '#1a1a1a',
+      nameDeco: hover ? 'underline' : 'none',
+      pad: compact ? '12px 12px 14px' : '14px 16px 16px',
+      isCompact: compact, notCompact: !compact,
+      nameSize: compact ? '15px' : '17px'
+    };
+  }
+}
+</script>
+</body>
+</html>

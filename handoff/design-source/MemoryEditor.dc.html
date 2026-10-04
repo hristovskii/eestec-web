@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Write a Memory — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+body{background:#f5f5f5}
+.ecard{background:#ffffff;border:1px solid #e3e3e3;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:22px}
+.ecard h2{font-size:20px;line-height:1.3;font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.rte{border:1px solid #8c8c8c;border-radius:10px;overflow:hidden;background:#ffffff}
+.rte.focus{border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.tb{display:flex;align-items:center;gap:2px;padding:6px 8px;border-bottom:1px solid #e3e3e3;background:#fafafa;flex-wrap:wrap}
+.tb button{width:38px;height:38px;border:0;border-radius:6px;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;font-size:15px;font-weight:700}
+.tb button[aria-pressed="true"]{background:#ececec}
+.tb .sep{width:1px;height:22px;background:#e3e3e3;margin:0 6px}
+.rte-body{padding:20px 22px;font-size:17px;line-height:1.7;display:flex;flex-direction:column;gap:14px;min-height:260px}
+.rte-body h3{font-size:22px;line-height:1.3;font-weight:700}
+.rte-body ul{margin:0;padding-left:22px}
+.rte-foot{display:flex;justify-content:space-between;padding:8px 14px;border-top:1px solid #ececec;font-size:13px;color:#6b6b6b}
+.drop{display:flex;align-items:center;justify-content:center;gap:14px;padding:22px;border:2px dashed #c7c7c7;border-radius:12px;background:#fafafa;text-align:left}
+.gthumb{position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden}
+.gthumb .num{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:#1a1a1a;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.gthumb .drag{position:absolute;top:8px;left:8px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;color:#1a1a1a}
+.side{background:#ffffff;border:1px solid #e3e3e3;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.side h2{font-size:16px;font-weight:700}
+.chk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.4}
+.chk li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start}
+.flow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.flow li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding-bottom:14px;position:relative;font-size:14px;line-height:1.4}
+.flow li:not(:last-child)::before{content:"";position:absolute;left:12px;top:26px;bottom:0;width:2px;background:#e3e3e3}
+.flow .d{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;position:relative;z-index:1}
+.abar{position:sticky;top:72px;z-index:15;background:#ffffff;border-bottom:1px solid #e3e3e3}
+.banner{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:14px;align-items:start;padding:18px 20px;border-radius:14px}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #f5f5f5">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="desktop" active="Memories" auth="member" hint-size="100%,72px"></dc-import></div>
+  <div class="abar">
+    <div class="container" style="height: 72px; display: flex; align-items: center; gap: 16px">
+      <a href="/profile#memories" aria-label="Back to My Memories" style="width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #1a1a1a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></a>
+      <div style="display: flex; flex-direction: column; min-width: 0"><span style="display: flex; align-items: center; gap: 10px"><strong style="font-size: 18px">{{pageTitle}}</strong><span class="{{statusCls}}" style="height: 24px">{{statusLabel}}</span></span><span class="small muted">{{saveText}}</span></div>
+      <span style="flex: 1"></span>
+      <sc-if value="{{showEditBtns}}" hint-placeholder-val="{{ true }}">
+        <a href="/memories/ohrid-bus-ride?preview" class="btn btn-quiet btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview</a>
+        <button type="button" class="btn btn-secondary btn-sm">Save draft</button>
+        <button type="button" class="btn btn-primary btn-sm">{{submitLabel}}</button>
+      </sc-if>
+    </div>
+  </div>
+  <main class="container" style="padding-top: 32px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 24px">
+
+    <sc-if value="{{isRejected}}" hint-placeholder-val="{{ false }}">
+      <div class="banner" role="alert" style="border: 2px solid #e52a30; background: #fdf0f0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-top: 1px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px"><strong style="font-size: 17px">Not approved yet: the board asked for changes</strong><p class="body" style="font-size: 15px">“Lovely story! Please add a short description (alt text) to the 2 gallery photos without one, and remove the photo with people who didn't agree to be shown.”</p><span class="small muted">Ivana Kostova, Board · 1 Oct 2026. Fix it below and resubmit; it goes back to the same reviewer.</span></div>
+        <a href="/contact?subject=memories" class="link small" style="white-space: nowrap">Ask a question</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{isLiveEdit}}" hint-placeholder-val="{{ false }}">
+      <div class="banner" role="status" style="border: 1px solid #e3e3e3; background: #ffffff">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">This Memory is live</strong><p class="small" style="color: #3a3a3a">Published 2 Jun 2026 · 1,240 reads. Your changes go to the board first; the live version stays as it is until they approve them.</p></div>
+        <a href="/memories/ohrid-bus-ride" class="link small" style="white-space: nowrap">View live version</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}">
+      <div class="banner" role="alert" style="border: 2px solid #e52a30; background: #fdf0f0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 6px"><strong style="font-size: 17px">Almost there: fix 2 things before submitting</strong><ul style="margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.6"><li><a href="#me-title" class="link">Title</a> is empty</li><li><a href="#me-gallery" class="link">2 gallery photos</a> need alt text</li></ul><span class="small muted">Your draft is saved. Save draft always works.</span></div>
+        <span></span>
+      </div>
+    </sc-if>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 32px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 24px; min-width: 0">
+        <section class="ecard" aria-labelledby="me-h1">
+          <h2 id="me-h1">Your story</h2>
+          <div>
+            <label class="label" for="me-title" style="display: flex; justify-content: space-between"><span>Title <span class="req">*</span></span><span class="muted" style="font-weight: 400">{{titleCount}} / 90</span></label>
+            <input class="{{titleCls}}" id="me-title" value="{{titleVal}}" placeholder="e.g. Five days in Delft, zero days of sun" aria-invalid="{{isErrors}}">
+            <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Give your Memory a title</span></sc-if>
+          </div>
+          <div style="position: relative">
+            <label class="label" for="me-event">Linked event <span class="req">*</span></label>
+            <select class="input select" id="me-event"><option>Workshop: Power Up — Renewable Grids · May 2026</option><option>Other: not in the list</option></select>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="top: 41px"><path d="M6 9l6 6 6-6"></path></svg>
+            <p class="help">Type to search past events. Pick “Other” for a trip or event that isn't on the site.</p>
+          </div>
+          <div class="grid3">
+            <div><label class="label" for="me-city">City <span class="req">*</span></label><input class="input" id="me-city" value="Ohrid"></div>
+            <div><label class="label" for="me-country">Country <span class="req">*</span></label><input class="input" id="me-country" value="North Macedonia"></div>
+            <div style="position: relative"><label class="label" for="me-date">Date</label><input class="input" id="me-date" value="Sun, 24 May 2026" style="padding-right: 44px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; right: 14px; top: 41px"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></div>
+          </div>
+          <p class="help" style="margin-top: -12px">City, country and date were filled in from the event. Change them if your story happened somewhere else.</p>
+          <div>
+            <span class="label" id="me-text-l">Text <span class="req">*</span></span>
+            <div class="rte focus" role="group" aria-labelledby="me-text-l">
+              <div class="tb" role="toolbar" aria-label="Formatting">
+                <button type="button" aria-label="Heading" aria-pressed="false" style="width: auto; padding: 0 10px; font-size: 14px">H2</button>
+                <span class="sep"></span>
+                <button type="button" aria-label="Bold" aria-pressed="true">B</button>
+                <button type="button" aria-label="Italic" aria-pressed="false" style="font-style: italic; font-weight: 500">I</button>
+                <button type="button" aria-label="Link" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>
+                <span class="sep"></span>
+                <button type="button" aria-label="Bulleted list" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"></path></svg></button>
+                <button type="button" aria-label="Numbered list" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg></button>
+                <button type="button" aria-label="Quote" aria-pressed="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 7h4v4c0 3-1.5 5-4 6l-.5-1.2C8 15 8.6 13.8 8.7 12H7zM14 7h4v4c0 3-1.5 5-4 6l-.5-1.2c1.5-.8 2.1-2 2.2-3.8H14z"></path></svg></button>
+                <span class="sep"></span>
+                <button type="button" aria-label="Undo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></button>
+                <button type="button" aria-label="Redo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7v6h-6M21 13a9 9 0 1 1-3-7.7L21 8"></path></svg></button>
+              </div>
+              <div class="rte-body" contenteditable="true" aria-label="Text">
+                <p>When I signed up to organize Power Up, I thought the hardest part would be the high-voltage lab day. It wasn't. It was the bus to Ohrid on day six.</p>
+                <h3>Day one: everyone arrives at once</h3>
+                <p>Two flights landed early and one landed late, and suddenly the whole Events team was at the airport with <strong>handwritten name signs</strong> and a bag of burek.</p>
+                <ul><li>12 participants arrived within the same hour</li><li>3 suitcases went to Vienna instead</li></ul>
+              </div>
+              <div class="rte-foot"><span>Paste from Google Docs or Word keeps headings, bold and lists.</span><span>412 words · about 6 min read</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="ecard" aria-labelledby="me-h2">
+          <div style="display: flex; flex-direction: column; gap: 4px"><h2 id="me-h2">Photos</h2><p class="small muted">Only upload photos where everyone shown agreed to be on the site. Large photos are compressed automatically.</p></div>
+          <div style="display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 24px; align-items: start">
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span class="label" style="margin: 0">Cover photo <span class="req">*</span></span>
+              <div class="ph" style="position: relative; aspect-ratio: 16 / 9; border-radius: 12px">Group selfie on the Ohrid lake shore<span style="position: absolute; left: 10px; bottom: 10px; display: flex; gap: 6px"><button type="button" class="btn btn-quiet btn-sm" style="height: 34px; padding: 0 12px">Replace</button><button type="button" class="btn btn-quiet btn-sm" style="height: 34px; padding: 0 12px">Crop</button></span></div>
+              <span class="small muted">ohrid-shore.jpg · 1920 × 1080 · 410 KB</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <div><label class="label" for="me-alt" style="display: flex; justify-content: space-between"><span>Alt text <span class="req">*</span></span><span class="muted" style="font-weight: 400">86 / 160</span></label><textarea class="input" id="me-alt" rows="2" style="height: auto; padding: 12px 14px; line-height: 1.5">28 students smiling on the shore of Lake Ohrid at sunset, the old fortress behind them.</textarea><p class="help">Describe the photo for people who can't see it.</p></div>
+              <div><label class="label" for="me-credit">Photo credit <span class="muted" style="font-weight: 400">· optional</span></label><input class="input" id="me-credit" value="Daniel Ristov"></div>
+            </div>
+          </div>
+          <div id="me-gallery" style="display: flex; flex-direction: column; gap: 12px; padding-top: 6px; border-top: 1px solid #ececec">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 16px"><span class="label" style="margin: 0">Gallery</span><span class="small muted">6 of 30 photos · drag to reorder</span></div>
+            <label class="drop" for="me-files"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg><span style="display: flex; flex-direction: column"><span style="font-size: 15px"><strong>Drop photos here</strong> or <span class="link">browse</span></span><span class="small muted">JPG, PNG or WebP · up to 15 MB each · several at once</span></span></label><input id="me-files" type="file" multiple accept="image/*" class="sr-only">
+            <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+              <sc-for list="{{photos}}" as="p" hint-placeholder-count="6">
+                <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+                  <div class="gthumb" style="box-shadow: {{p.ring}}"><span class="ph" style="position: absolute; inset: 0; font-size: 12px; padding: 8px">{{p.t}}</span><span class="drag" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg></span><span class="num">{{p.n}}</span></div>
+                  <span class="small" style="color: {{p.fg}}; font-weight: {{p.w}}; display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{p.alt}}</span>
+                </div>
+              </sc-for>
+              <div style="display: flex; flex-direction: column; gap: 6px"><div class="gthumb" style="background: #fafafa; border: 1px solid #e3e3e3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px"><span class="small" style="font-weight: 500">IMG_2231.jpg</span><span style="display: block; width: 100%; height: 6px; border-radius: 3px; background: #ececec; overflow: hidden"><span style="display: block; width: 58%; height: 100%; background: #1a1a1a"></span></span><span class="small muted">Uploading 58%</span></div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside style="display: flex; flex-direction: column; gap: 16px; position: sticky; top: 168px">
+        <div class="side">
+          <h2>Before you submit</h2>
+          <ul class="chk">
+            <sc-for list="{{checks}}" as="c" hint-placeholder-count="5"><li style="color: {{c.fg}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{c.icon}}"></path></svg><span>{{c.t}}</span></li></sc-for>
+          </ul>
+        </div>
+        <div class="side">
+          <h2>What happens next</h2>
+          <ol class="flow">
+            <sc-for list="{{flow}}" as="f" hint-placeholder-count="3"><li><span class="d" style="background: {{f.bg}}; color: {{f.fg}}; border: {{f.border}}">{{f.n}}</span><span><strong>{{f.t}}</strong><br><span class="muted">{{f.d}}</span></span></li></sc-for>
+          </ol>
+        </div>
+        <div class="side" style="background: #fafafa">
+          <h2>Tips for a good Memory</h2>
+          <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: #3a3a3a"><li>Start with a moment, not the schedule</li><li>300–800 words is plenty</li><li>5–15 photos, your best first</li><li>Mention people by first name only</li></ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="position: relative; width: 390px; background: #f5f5f5">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="mobile" active="Memories" auth="member" hint-size="390px,64px"></dc-import></div>
+  <div style="background: #ffffff; border-bottom: 1px solid #e3e3e3; padding: 10px 12px; display: flex; align-items: center; gap: 8px">
+    <a href="/profile#memories" aria-label="Back to My Memories" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #1a1a1a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></a>
+    <span style="flex: 1; display: flex; flex-direction: column"><strong>{{pageTitle}}</strong><span class="small muted">{{saveText}}</span></span>
+    <a href="/memories/ohrid-bus-ride?preview" class="btn btn-quiet btn-sm">Preview</a>
+  </div>
+  <main style="padding: 16px 16px 120px; display: flex; flex-direction: column; gap: 16px">
+    <sc-if value="{{isRejected}}" hint-placeholder-val="{{ false }}">
+      <div role="alert" style="padding: 14px 16px; border: 2px solid #e52a30; border-radius: 12px; background: #fdf0f0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.5"><strong style="font-size: 16px">The board asked for changes</strong><span>“Please add alt text to the 2 gallery photos without one, and remove the photo with people who didn't agree to be shown.”</span><span class="muted">Ivana Kostova, Board · 1 Oct</span></div>
+    </sc-if>
+    <section class="ecard" style="padding: 20px 18px; gap: 18px" aria-labelledby="mem-h1">
+      <h2 id="mem-h1">Your story</h2>
+      <div><label class="label" for="mem-title">Title <span class="req">*</span></label><input class="input" id="mem-title" value="{{titleVal}}"></div>
+      <div style="position: relative"><label class="label" for="mem-event">Linked event <span class="req">*</span></label><select class="input select" id="mem-event"><option>Power Up — Renewable Grids · May 2026</option></select><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="top: 41px"><path d="M6 9l6 6 6-6"></path></svg></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px"><div><label class="label" for="mem-city">City <span class="req">*</span></label><input class="input" id="mem-city" value="Ohrid"></div><div><label class="label" for="mem-country">Country <span class="req">*</span></label><input class="input" id="mem-country" value="N. Macedonia"></div></div>
+      <div><span class="label">Text <span class="req">*</span></span><div class="rte"><div class="tb" role="toolbar" aria-label="Formatting" style="overflow: hidden; flex-wrap: nowrap"><button type="button" aria-label="Heading" style="width: auto; padding: 0 8px; font-size: 14px">H2</button><button type="button" aria-label="Bold" aria-pressed="true">B</button><button type="button" aria-label="Italic" style="font-style: italic; font-weight: 500">I</button><button type="button" aria-label="Link"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button><button type="button" aria-label="Bulleted list"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"></path></svg></button><button type="button" aria-label="Numbered list"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2"></path></svg></button><button type="button" aria-label="Undo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 7v6h6M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></button></div><div class="rte-body" style="font-size: 16px; padding: 14px 16px; min-height: 200px"><p>When I signed up to organize Power Up, I thought the hardest part would be the high-voltage lab day. It wasn't…</p></div><div class="rte-foot"><span>412 words</span></div></div></div>
+    </section>
+    <section class="ecard" style="padding: 20px 18px; gap: 16px" aria-labelledby="mem-h2">
+      <h2 id="mem-h2">Photos</h2>
+      <span class="label" style="margin: 0">Cover photo <span class="req">*</span></span>
+      <div class="ph" style="aspect-ratio: 16 / 9; border-radius: 12px">Cover photo</div>
+      <div><label class="label" for="mem-alt">Alt text <span class="req">*</span></label><input class="input" id="mem-alt" value="28 students smiling on the shore of Lake Ohrid"></div>
+      <span class="label" style="margin: 0">Gallery · 6 photos</span>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px"><sc-for list="{{photosM}}" as="p" hint-placeholder-count="5"><div class="gthumb" style="box-shadow: {{p.ring}}"><span class="ph" style="position: absolute; inset: 0"></span><span class="num">{{p.n}}</span></div></sc-for><label for="mem-files" class="gthumb" style="border: 2px dashed #c7c7c7; display: flex; align-items: center; justify-content: center; color: #b81f24; font-size: 28px">+</label><input id="mem-files" type="file" multiple class="sr-only"></div>
+      <span class="small" style="color: #b81f24; font-weight: 500">2 photos need alt text. Tap a photo to add it.</span>
+    </section>
+  </main>
+  <div style="position: sticky; bottom: 0; z-index: 15; display: flex; gap: 8px; padding: 12px 16px 24px; background: #ffffff; border-top: 1px solid #e3e3e3; box-shadow: 0 -6px 16px rgba(0,0,0,0.06)">
+    <button type="button" class="btn btn-secondary" style="flex: 1">Save draft</button>
+    <button type="button" class="btn btn-primary" style="flex: 1.4">{{submitLabel}}</button>
+  </div>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"state":{"editor":"enum","options":["draft","errors","rejected","live-edit"],"default":"draft"},"$preview":{"width":1440,"height":2466}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const st = this.props.state ?? 'draft';
+    const rejected = st === 'rejected', live = st === 'live-edit', errors = st === 'errors';
+    const ok = 'M20 6 9 17l-5-5', warn = 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v4M12 16h.01';
+    const C = (t, good) => ({ t, icon: good ? ok : warn, fg: good ? '#1a1a1a' : '#b81f24' });
+    const altMissing = !live;
+    const photos = [
+      ['Welcome dinner in Skopje', true], ['High-voltage lab at FEEIT', true], ['Team challenge presentations', !altMissing], ['Bus to Ohrid, day six', true], ['Sunset at the Ohrid fortress', !altMissing], ['Closing ceremony', true]
+    ].map(([t, good], i) => ({ t, n: i + 1, alt: good ? t : 'Add alt text', fg: good ? '#3a3a3a' : '#b81f24', w: good ? 400 : 500, ring: good ? 'none' : '0 0 0 2px #e52a30' }));
+    const done = { bg: '#1a1a1a', fg: '#ffffff', border: '0' };
+    const now = { bg: '#e52a30', fg: '#ffffff', border: '0' };
+    const todo = { bg: '#ffffff', fg: '#6b6b6b', border: '2px solid #c7c7c7' };
+    const flow = rejected
+      ? [Object.assign({ n: '✓', t: 'Submitted', d: '28 Sep' }, done), Object.assign({ n: '!', t: 'Not approved', d: 'Fix and resubmit' }, now), Object.assign({ n: '3', t: 'Published', d: 'On /memories and the event page' }, todo)]
+      : live
+        ? [Object.assign({ n: '✓', t: 'Published', d: '2 Jun 2026' }, done), Object.assign({ n: '2', t: 'Board checks your changes', d: 'Usually within 3 days' }, now), Object.assign({ n: '3', t: 'Changes go live', d: 'We e-mail you' }, todo)]
+        : [Object.assign({ n: '1', t: 'Draft', d: 'Only you can see it' }, now), Object.assign({ n: '2', t: 'Board review', d: 'Usually within 3 days' }, todo), Object.assign({ n: '3', t: 'Published', d: 'On /memories and the event page' }, todo)];
+    return {
+      isDesktop: device === 'desktop', isMobile: device === 'mobile',
+      isRejected: rejected, isLiveEdit: live, isErrors: errors, showEditBtns: true,
+      pageTitle: live ? 'Edit Memory' : (rejected ? 'Edit Memory' : 'New Memory'),
+      statusLabel: rejected ? 'Not approved' : (live ? 'Published' : 'Draft'),
+      statusCls: rejected ? 'chip chip-red' : (live ? 'chip chip-dark' : 'chip chip-out'),
+      saveText: errors ? 'Draft saved just now' : (live ? 'Unsaved changes' : 'Draft saved at 18:42'),
+      submitLabel: rejected ? 'Resubmit for review' : (live ? 'Submit changes' : 'Submit for review'),
+      titleVal: errors ? '' : 'Seven days, 28 nationalities and one very long bus ride to Ohrid',
+      titleCount: errors ? 0 : 63,
+      titleCls: errors ? 'input err' : 'input',
+      photos, photosM: photos.slice(0, 5),
+      checks: [C(errors ? 'Title is missing' : 'Title', !errors), C('Linked event and place', true), C('Text: 412 words', true), C('Cover photo with alt text', true), C(altMissing ? '2 gallery photos need alt text' : 'Alt text on all photos', !altMissing)],
+      flow
+    };
+  }
+}
+</script>
+</body>
+</html>

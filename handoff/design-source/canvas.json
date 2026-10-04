@@ -1,0 +1,1301 @@
+{
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "AdminApprovals.dc.html": {
+   "expand": "fill",
+   "h": 1066,
+   "title": "Admin · Approval queue · Memories",
+   "w": 1440,
+   "x": 6080,
+   "y": 101008
+  },
+  "AdminDashboard-Tablet.dc.html": {
+   "h": 1672,
+   "title": "Admin · Dashboard · Tablet (icon rail)",
+   "w": 1024,
+   "x": 5030,
+   "y": 99216
+  },
+  "AdminDashboard.dc.html": {
+   "expand": "fill",
+   "h": 1196,
+   "title": "Admin · Dashboard · Desktop",
+   "w": 1440,
+   "x": 3510,
+   "y": 99216
+  },
+  "AdminDialogs.dc.html": {
+   "h": 1379,
+   "title": "Admin · Dialogs · delete, reject, unsaved changes, invite",
+   "w": 1440,
+   "x": 3040,
+   "y": 104132
+  },
+  "AdminEditStates.dc.html": {
+   "h": 1270,
+   "title": "Admin · Edit form · save bar, validation & toasts",
+   "w": 1440,
+   "x": 4560,
+   "y": 101008
+  },
+  "AdminEventEdit.dc.html": {
+   "expand": "fill",
+   "h": 3004,
+   "title": "Admin · Edit event · all field types",
+   "w": 1440,
+   "x": 3040,
+   "y": 101008
+  },
+  "AdminEvents-Empty.dc.html": {
+   "expand": "fill",
+   "h": 983,
+   "title": "Admin · Events list · No results",
+   "w": 1440,
+   "x": 1520,
+   "y": 101008
+  },
+  "AdminEvents.dc.html": {
+   "expand": "fill",
+   "h": 1095,
+   "title": "Admin · Events list · filters, bulk actions, pagination",
+   "w": 1440,
+   "x": 0,
+   "y": 101008
+  },
+  "AdminInbox.dc.html": {
+   "expand": "fill",
+   "h": 983,
+   "title": "Admin · Inbox · read/unread & CSV export",
+   "w": 1440,
+   "x": 7600,
+   "y": 101008
+  },
+  "AdminLogin-Mobile.dc.html": {
+   "h": 844,
+   "title": "Admin · Sign in · Mobile",
+   "w": 390,
+   "x": 3040,
+   "y": 99216
+  },
+  "AdminLogin.dc.html": {
+   "expand": "fill",
+   "h": 900,
+   "title": "Admin · Sign in · /admin/login",
+   "w": 1440,
+   "x": 0,
+   "y": 99216
+  },
+  "AdminLoginStates.dc.html": {
+   "h": 803,
+   "title": "Admin · Sign-in states (error, forgot password, link sent, 2-step)",
+   "w": 1440,
+   "x": 1520,
+   "y": 99216
+  },
+  "AdminMobile.dc.html": {
+   "h": 844,
+   "title": "Component · Admin mobile screen",
+   "w": 390,
+   "x": 9712,
+   "y": 756
+  },
+  "AdminMobileViews.dc.html": {
+   "h": 1088,
+   "title": "Admin · Mobile (drawer menu, cards, approve bar)",
+   "w": 1744,
+   "x": 6134,
+   "y": 99216
+  },
+  "AdminSettings.dc.html": {
+   "expand": "fill",
+   "h": 2670,
+   "title": "Admin · Settings · branding, events, contact & legal, SEO",
+   "w": 1440,
+   "x": 0,
+   "y": 104132
+  },
+  "AdminSidebar.dc.html": {
+   "h": 984,
+   "title": "Component · Admin sidebar",
+   "w": 248,
+   "x": 8112,
+   "y": 756
+  },
+  "AdminTopbar.dc.html": {
+   "h": 60,
+   "title": "Component · Admin top bar",
+   "w": 1192,
+   "x": 8440,
+   "y": 756
+  },
+  "AdminUsers.dc.html": {
+   "expand": "fill",
+   "h": 1287,
+   "title": "Admin · Users & roles",
+   "w": 1440,
+   "x": 1520,
+   "y": 104132
+  },
+  "ApplyBox.dc.html": {
+   "h": 383,
+   "title": "Component · Application box",
+   "w": 380,
+   "x": 3260,
+   "y": 756
+  },
+  "AuthForm.dc.html": {
+   "h": 485,
+   "title": "Component · Member log in / sign-up card",
+   "w": 480,
+   "x": 10532,
+   "y": 756
+  },
+  "AuthPage-Login-Mobile.dc.html": {
+   "h": 1397,
+   "title": "Log in · Mobile",
+   "w": 390,
+   "x": 5500,
+   "y": 45337
+  },
+  "AuthPage-Register-Errors.dc.html": {
+   "expand": "fill",
+   "h": 1884,
+   "title": "Sign up · validation errors",
+   "w": 1440,
+   "x": 7960,
+   "y": 45337
+  },
+  "AuthPage-Register-Mobile.dc.html": {
+   "h": 2460,
+   "title": "Sign up · Mobile",
+   "w": 390,
+   "x": 7490,
+   "y": 45337
+  },
+  "AuthPage-Register.dc.html": {
+   "expand": "fill",
+   "h": 1690,
+   "title": "Sign up · Desktop · /register",
+   "w": 1440,
+   "x": 5970,
+   "y": 45337
+  },
+  "AuthPage.dc.html": {
+   "expand": "fill",
+   "h": 1159,
+   "title": "Log in · Desktop · /login",
+   "w": 1440,
+   "x": 3980,
+   "y": 45337
+  },
+  "AuthStates.dc.html": {
+   "h": 2394,
+   "title": "Log in & sign-up · all states",
+   "w": 1760,
+   "x": 9480,
+   "y": 45337
+  },
+  "CommitteeMap.dc.html": {
+   "h": 910,
+   "title": "Component · Committee map",
+   "w": 1200,
+   "x": 1980,
+   "y": 756
+  },
+  "CompanyForm.dc.html": {
+   "h": 768,
+   "title": "Component · Partnership inquiry form",
+   "w": 640,
+   "x": 6632,
+   "y": 756
+  },
+  "ContactForm.dc.html": {
+   "h": 778,
+   "title": "Component · Contact form",
+   "w": 680,
+   "x": 7352,
+   "y": 756
+  },
+  "ContactPage-Mobile.dc.html": {
+   "h": 4297,
+   "title": "Contact · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 94199
+  },
+  "ContactPage.dc.html": {
+   "expand": "fill",
+   "h": 2826,
+   "title": "Contact · Desktop",
+   "w": 1440,
+   "x": 0,
+   "y": 94199
+  },
+  "ContactStates-Mobile.dc.html": {
+   "h": 1275,
+   "title": "Contact form · states · Mobile",
+   "w": 2030,
+   "x": 1990,
+   "y": 97201
+  },
+  "ContactStates.dc.html": {
+   "h": 2882,
+   "title": "Contact form · states & subject menu",
+   "w": 1440,
+   "x": 1990,
+   "y": 94199
+  },
+  "EventCard.dc.html": {
+   "h": 431,
+   "title": "Component · Card (event / memory)",
+   "w": 380,
+   "x": 1520,
+   "y": 756
+  },
+  "EventDetail-Ended-Mobile.dc.html": {
+   "h": 2620,
+   "title": "After the event · Mobile",
+   "w": 390,
+   "x": 5500,
+   "y": 35544
+  },
+  "EventDetail-Ended.dc.html": {
+   "expand": "fill",
+   "h": 2250,
+   "title": "After the event · Desktop · /events/ai-at-the-edge",
+   "w": 1440,
+   "x": 3980,
+   "y": 35544
+  },
+  "EventDetail-Minimal.dc.html": {
+   "expand": "fill",
+   "h": 2232,
+   "title": "Event detail · Desktop · Minimal content",
+   "w": 1440,
+   "x": 3980,
+   "y": 24856
+  },
+  "EventDetail-Mobile.dc.html": {
+   "h": 4186,
+   "title": "Event detail · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 24856
+  },
+  "EventDetail.dc.html": {
+   "expand": "fill",
+   "h": 3817,
+   "title": "Event detail · Desktop",
+   "w": 1440,
+   "x": 0,
+   "y": 24856
+  },
+  "EventsList-Empty.dc.html": {
+   "expand": "fill",
+   "h": 1638,
+   "title": "Events · Desktop · No results",
+   "w": 1440,
+   "x": 1520,
+   "y": 17363
+  },
+  "EventsList-Loading.dc.html": {
+   "expand": "fill",
+   "h": 2097,
+   "title": "Events · Desktop · Loading",
+   "w": 1440,
+   "x": 3040,
+   "y": 17363
+  },
+  "EventsList-Mobile-Empty.dc.html": {
+   "h": 1812,
+   "title": "Events · Mobile · No results",
+   "w": 390,
+   "x": 5030,
+   "y": 17363
+  },
+  "EventsList-Mobile-Filters.dc.html": {
+   "h": 844,
+   "title": "Events · Mobile · Filters sheet",
+   "w": 390,
+   "x": 5970,
+   "y": 17363
+  },
+  "EventsList-Mobile-Loading.dc.html": {
+   "h": 2745,
+   "title": "Events · Mobile · Loading",
+   "w": 390,
+   "x": 5500,
+   "y": 17363
+  },
+  "EventsList-Mobile.dc.html": {
+   "h": 6773,
+   "title": "Events · Mobile · Results",
+   "w": 390,
+   "x": 4560,
+   "y": 17363
+  },
+  "EventsList.dc.html": {
+   "expand": "fill",
+   "h": 3089,
+   "title": "Events · Desktop · Results",
+   "w": 1440,
+   "x": 0,
+   "y": 17363
+  },
+  "Footer.dc.html": {
+   "h": 444,
+   "title": "Component · Footer",
+   "w": 1440,
+   "x": 1520,
+   "y": 192
+  },
+  "Header.dc.html": {
+   "h": 72,
+   "title": "Component · Header",
+   "w": 1440,
+   "x": 1520,
+   "y": 0
+  },
+  "HeaderStates.dc.html": {
+   "h": 1711,
+   "title": "Header · logged out, logged in, account menu",
+   "w": 1440,
+   "x": 5500,
+   "y": 40676
+  },
+  "Home-Desktop.dc.html": {
+   "expand": "fill",
+   "h": 7998,
+   "title": "Home · Desktop",
+   "w": 1440,
+   "x": 0,
+   "y": 8720
+  },
+  "Home-Mobile.dc.html": {
+   "h": 8000,
+   "title": "Home · Mobile (first 8000px)",
+   "w": 390,
+   "x": 1520,
+   "y": 8720
+  },
+  "JoinForm.dc.html": {
+   "h": 884,
+   "title": "Component · Membership form",
+   "w": 640,
+   "x": 4360,
+   "y": 756
+  },
+  "JoinFormStates-Mobile.dc.html": {
+   "h": 1696,
+   "title": "Membership form · all states · Mobile",
+   "w": 2428,
+   "x": 1990,
+   "y": 81471
+  },
+  "JoinFormStates.dc.html": {
+   "h": 3394,
+   "title": "Membership form · all states · Desktop",
+   "w": 1440,
+   "x": 1990,
+   "y": 77957
+  },
+  "JoinPage-Mobile.dc.html": {
+   "h": 8000,
+   "title": "Join Us · Mobile (first 8000px)",
+   "w": 390,
+   "x": 1520,
+   "y": 77957
+  },
+  "JoinPage.dc.html": {
+   "expand": "fill",
+   "h": 5947,
+   "title": "Join Us · Desktop",
+   "w": 1440,
+   "x": 0,
+   "y": 77957
+  },
+  "Journey-Mobile.dc.html": {
+   "h": 4195,
+   "title": "EESTEC Journey · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 72735
+  },
+  "Journey.dc.html": {
+   "expand": "fill",
+   "h": 4502,
+   "title": "EESTEC Journey · Desktop",
+   "w": 1440,
+   "x": 0,
+   "y": 72735
+  },
+  "JourneyStates.dc.html": {
+   "h": 3460,
+   "title": "EESTEC Journey · Interaction states",
+   "w": 1440,
+   "x": 1990,
+   "y": 72735
+  },
+  "JourneyStep.dc.html": {
+   "h": 221,
+   "title": "Component · Journey step card",
+   "w": 560,
+   "x": 3720,
+   "y": 756
+  },
+  "Lightbox-Mobile.dc.html": {
+   "h": 844,
+   "title": "Gallery lightbox · Mobile",
+   "w": 390,
+   "x": 3510,
+   "y": 24856
+  },
+  "Lightbox.dc.html": {
+   "h": 900,
+   "title": "Gallery lightbox · Desktop",
+   "w": 1440,
+   "x": 1990,
+   "y": 24856
+  },
+  "Main.dc.html": {
+   "expand": "fill",
+   "h": 8000,
+   "title": "Design System (first 8000px)",
+   "w": 1440,
+   "x": 0,
+   "y": 0
+  },
+  "MemberCard.dc.html": {
+   "h": 379,
+   "title": "Component · Member card",
+   "w": 270,
+   "x": 10182,
+   "y": 756
+  },
+  "MemberCardStates.dc.html": {
+   "h": 1069,
+   "title": "Member cards · variants & states",
+   "w": 1440,
+   "x": 5500,
+   "y": 42507
+  },
+  "MemberProfile-Mobile.dc.html": {
+   "h": 3034,
+   "title": "Member profile · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 45337
+  },
+  "MemberProfile-Restricted-Mobile.dc.html": {
+   "h": 1670,
+   "title": "Member profile · members-only · Mobile",
+   "w": 390,
+   "x": 3510,
+   "y": 45337
+  },
+  "MemberProfile-Restricted.dc.html": {
+   "expand": "fill",
+   "h": 1347,
+   "title": "Member profile · members-only, seen by a visitor",
+   "w": 1440,
+   "x": 1990,
+   "y": 45337
+  },
+  "MemberProfile.dc.html": {
+   "expand": "fill",
+   "h": 2468,
+   "title": "Member profile · Desktop · public",
+   "w": 1440,
+   "x": 0,
+   "y": 45337
+  },
+  "MembersPage-Empty.dc.html": {
+   "expand": "fill",
+   "h": 3079,
+   "title": "Members · Desktop · no results",
+   "w": 1440,
+   "x": 3510,
+   "y": 40676
+  },
+  "MembersPage-Member.dc.html": {
+   "expand": "fill",
+   "h": 3633,
+   "title": "Members · Desktop · logged-in member (members-only profiles shown)",
+   "w": 1440,
+   "x": 1990,
+   "y": 40676
+  },
+  "MembersPage-Mobile-Empty.dc.html": {
+   "h": 3602,
+   "title": "Members · Mobile · no results",
+   "w": 390,
+   "x": 5030,
+   "y": 40676
+  },
+  "MembersPage-Mobile.dc.html": {
+   "h": 4541,
+   "title": "Members · Mobile · visitor",
+   "w": 390,
+   "x": 1520,
+   "y": 40676
+  },
+  "MembersPage.dc.html": {
+   "expand": "fill",
+   "h": 3788,
+   "title": "Members · Desktop · visitor",
+   "w": 1440,
+   "x": 0,
+   "y": 40676
+  },
+  "MemoriesList-Empty.dc.html": {
+   "expand": "fill",
+   "h": 1560,
+   "title": "Memories · Desktop · no results",
+   "w": 1440,
+   "x": 1990,
+   "y": 55386
+  },
+  "MemoriesList-Map.dc.html": {
+   "expand": "fill",
+   "h": 1749,
+   "title": "Memories · map view · Phase 2 · after launch",
+   "w": 1440,
+   "x": 1990,
+   "y": 53517
+  },
+  "MemoriesList-Mobile-Empty.dc.html": {
+   "h": 1702,
+   "title": "Memories · Mobile · no results",
+   "w": 390,
+   "x": 3510,
+   "y": 53517
+  },
+  "MemoriesList-Mobile.dc.html": {
+   "h": 4312,
+   "title": "Memories · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 53517
+  },
+  "MemoriesList.dc.html": {
+   "expand": "fill",
+   "h": 3597,
+   "title": "Memories · Desktop · cards (launch: no map toggle)",
+   "w": 1440,
+   "x": 0,
+   "y": 53517
+  },
+  "MemoryEditor-Errors.dc.html": {
+   "expand": "fill",
+   "h": 2654,
+   "title": "Write a Memory · submit with errors",
+   "w": 1440,
+   "x": 1990,
+   "y": 62272
+  },
+  "MemoryEditor-LiveEdit.dc.html": {
+   "expand": "fill",
+   "h": 2573,
+   "title": "Write a Memory · editing a published Memory",
+   "w": 1440,
+   "x": 5030,
+   "y": 62272
+  },
+  "MemoryEditor-Mobile.dc.html": {
+   "h": 2475,
+   "title": "Write a Memory · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 62272
+  },
+  "MemoryEditor-Rejected.dc.html": {
+   "expand": "fill",
+   "h": 2631,
+   "title": "Write a Memory · not approved → edit and resubmit",
+   "w": 1440,
+   "x": 3510,
+   "y": 62272
+  },
+  "MemoryEditor.dc.html": {
+   "expand": "fill",
+   "h": 2466,
+   "title": "Write a Memory · Desktop · draft",
+   "w": 1440,
+   "x": 0,
+   "y": 62272
+  },
+  "MemoryLightbox-Mobile.dc.html": {
+   "h": 844,
+   "title": "Memory gallery · lightbox · Mobile",
+   "w": 390,
+   "x": 3510,
+   "y": 58969
+  },
+  "MemoryLightbox.dc.html": {
+   "h": 900,
+   "title": "Memory gallery · lightbox (reused)",
+   "w": 1440,
+   "x": 3510,
+   "y": 57949
+  },
+  "MemoryPost-Former.dc.html": {
+   "expand": "fill",
+   "h": 3684,
+   "title": "Memory post · by a former member",
+   "w": 1440,
+   "x": 1990,
+   "y": 57949
+  },
+  "MemoryPost-Mobile.dc.html": {
+   "h": 4203,
+   "title": "Memory post · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 57949
+  },
+  "MemoryPost-Preview.dc.html": {
+   "expand": "fill",
+   "h": 3748,
+   "title": "Memory post · preview before submitting",
+   "w": 1440,
+   "x": 5030,
+   "y": 57949
+  },
+  "MemoryPost.dc.html": {
+   "expand": "fill",
+   "h": 3684,
+   "title": "Memory post · Desktop",
+   "w": 1440,
+   "x": 0,
+   "y": 57949
+  },
+  "MemoryStates.dc.html": {
+   "h": 1525,
+   "title": "Memories · status flow, editor states & e-mails",
+   "w": 1440,
+   "x": 3980,
+   "y": 53517
+  },
+  "MyProfile-Mobile.dc.html": {
+   "h": 3844,
+   "title": "My profile · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 48491
+  },
+  "MyProfile.dc.html": {
+   "expand": "fill",
+   "h": 4306,
+   "title": "My profile · Desktop · /profile",
+   "w": 1440,
+   "x": 0,
+   "y": 48491
+  },
+  "MyProfileStates.dc.html": {
+   "h": 2108,
+   "title": "My profile · pending, CV, upload, dialogs",
+   "w": 1440,
+   "x": 1990,
+   "y": 48491
+  },
+  "PartnerLogo.dc.html": {
+   "h": 112,
+   "title": "Component · Partner logo cell",
+   "w": 240,
+   "x": 5080,
+   "y": 756
+  },
+  "PartnerLogos.dc.html": {
+   "h": 838,
+   "title": "Component · Partner logos by tier",
+   "w": 1152,
+   "x": 5400,
+   "y": 756
+  },
+  "PartnersPage-Mobile.dc.html": {
+   "h": 6802,
+   "title": "For Companies · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 86677
+  },
+  "PartnersPage.dc.html": {
+   "expand": "fill",
+   "h": 5072,
+   "title": "For Companies · Desktop",
+   "w": 1440,
+   "x": 0,
+   "y": 86677
+  },
+  "PartnersStates-Mobile.dc.html": {
+   "h": 1412,
+   "title": "Partnership inquiry · states · Mobile",
+   "w": 1712,
+   "x": 1990,
+   "y": 90482
+  },
+  "PartnersStates.dc.html": {
+   "h": 3685,
+   "title": "Partners · logo rules, empty tier & inquiry form states",
+   "w": 1440,
+   "x": 1990,
+   "y": 86677
+  },
+  "UpcomingDetail-Mobile-Viewport.dc.html": {
+   "h": 844,
+   "title": "Upcoming detail · Mobile · First screen + sticky apply bar",
+   "w": 390,
+   "x": 1990,
+   "y": 35544
+  },
+  "UpcomingDetail-Mobile.dc.html": {
+   "h": 4412,
+   "title": "Upcoming detail · Mobile",
+   "w": 390,
+   "x": 1520,
+   "y": 35544
+  },
+  "UpcomingDetail.dc.html": {
+   "expand": "fill",
+   "h": 3827,
+   "title": "Upcoming detail · Desktop · Applications open",
+   "w": 1440,
+   "x": 0,
+   "y": 35544
+  },
+  "UpcomingList-Empty.dc.html": {
+   "expand": "fill",
+   "h": 1453,
+   "title": "Upcoming · Desktop · No upcoming events",
+   "w": 1440,
+   "x": 1520,
+   "y": 29762
+  },
+  "UpcomingList-Mobile-Empty.dc.html": {
+   "h": 1738,
+   "title": "Upcoming · Mobile · No upcoming events",
+   "w": 390,
+   "x": 3510,
+   "y": 29762
+  },
+  "UpcomingList-Mobile.dc.html": {
+   "h": 5062,
+   "title": "Upcoming · Mobile · List",
+   "w": 390,
+   "x": 3040,
+   "y": 29762
+  },
+  "UpcomingList.dc.html": {
+   "expand": "fill",
+   "h": 2741,
+   "title": "Upcoming · Desktop · List",
+   "w": 1440,
+   "x": 0,
+   "y": 29762
+  },
+  "UpcomingStates.dc.html": {
+   "h": 3853,
+   "title": "Upcoming · Application states & lifecycle",
+   "w": 1440,
+   "x": 2460,
+   "y": 35544
+  },
+  "MemoryPost-ChangesWaiting.dc.html": {
+   "x": 6550,
+   "y": 57949,
+   "w": 1440,
+   "h": 3754,
+   "title": "Memory post · author sees “Changes waiting for review”",
+   "expand": "fill"
+  },
+  "MemoryPost-ChangesWaiting-Mobile.dc.html": {
+   "x": 8070,
+   "y": 57949,
+   "w": 390,
+   "h": 4333,
+   "title": "Memory post · changes waiting · Mobile"
+  },
+  "SubmitForm.dc.html": {
+   "x": 11092,
+   "y": 756,
+   "w": 720,
+   "h": 1027,
+   "title": "Component · Idea / impression form"
+  },
+  "SubmitPage.dc.html": {
+   "x": 0,
+   "y": 65646,
+   "w": 1440,
+   "h": 2008,
+   "title": "Submit · Desktop · idea (visitor) · /submit",
+   "expand": "fill"
+  },
+  "SubmitPage-Mobile.dc.html": {
+   "x": 1520,
+   "y": 65646,
+   "w": 390,
+   "h": 2582,
+   "title": "Submit · Mobile · idea"
+  },
+  "SubmitPage-Impression.dc.html": {
+   "x": 1990,
+   "y": 65646,
+   "w": 1440,
+   "h": 2097,
+   "title": "Submit · Desktop · impression (member, from an event link) · /submit?tab=impression",
+   "expand": "fill"
+  },
+  "SubmitPage-Mobile-Impression.dc.html": {
+   "x": 3510,
+   "y": 65646,
+   "w": 390,
+   "h": 2604,
+   "title": "Submit · Mobile · impression (visitor)"
+  },
+  "SubmitStates.dc.html": {
+   "x": 3980,
+   "y": 65646,
+   "w": 1440,
+   "h": 6369,
+   "title": "Ideas & impressions · all form states"
+  },
+  "AdminIdeas.dc.html": {
+   "x": 0,
+   "y": 68305,
+   "w": 1440,
+   "h": 983,
+   "title": "Admin · Ideas & Feedback · Ideas",
+   "expand": "fill"
+  },
+  "AdminIdeas-Feedback.dc.html": {
+   "x": 1520,
+   "y": 68305,
+   "w": 1440,
+   "h": 983,
+   "title": "Admin · Ideas & Feedback · Event feedback",
+   "expand": "fill"
+  },
+  "AdminIdeas-Ratings.dc.html": {
+   "x": 0,
+   "y": 69408,
+   "w": 1440,
+   "h": 983,
+   "title": "Admin · Ideas & Feedback · Ratings per event",
+   "expand": "fill"
+  },
+  "AdminIdeas-Settings.dc.html": {
+   "x": 1520,
+   "y": 69408,
+   "w": 1440,
+   "h": 983,
+   "title": "Admin · /submit form settings",
+   "expand": "fill"
+  },
+  "Main-Continued.dc.html": {
+   "x": 1520,
+   "y": 2000,
+   "w": 1440,
+   "h": 2236,
+   "title": "Design System · continued (end of the page)"
+  },
+  "Home-Mobile-Continued.dc.html": {
+   "x": 1990,
+   "y": 8720,
+   "w": 390,
+   "h": 1871,
+   "title": "Home · Mobile · continued (partners + footer)"
+  },
+  "JoinPage-Mobile-Continued.dc.html": {
+   "x": 1990,
+   "y": 83287,
+   "w": 390,
+   "h": 2500,
+   "title": "Join Us · Mobile · continued (form + footer)"
+  },
+  "DevHandoff-1.dc.html": {
+   "x": 0,
+   "y": -4770,
+   "w": 1440,
+   "h": 3926,
+   "title": "Developer handoff 1/3 · overview, phases & routes"
+  },
+  "DevHandoff-2.dc.html": {
+   "x": 1520,
+   "y": -4770,
+   "w": 1440,
+   "h": 3419,
+   "title": "Developer handoff 2/3 · components, rules & settings"
+  },
+  "DevHandoff-3.dc.html": {
+   "x": 3040,
+   "y": -4770,
+   "w": 1440,
+   "h": 4050,
+   "title": "Developer handoff 3/3 · data model for Supabase"
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-10-04T18:20:00Z",
+  "v": 1
+ },
+ "designSystems": [],
+ "launch": {
+  "view": "canvas"
+ },
+ "notes": {
+  "s1": {
+   "fill": "gray",
+   "text": "When the end date passes (automatic, same database row):\n• /upcoming/ai-at-the-edge → 301 redirect to /events/ai-at-the-edge\n• The card leaves /upcoming and is first in Events › International with a ‘Just ended’ badge (default 14 days, admin setting)\n• Countdown, application form and Apply button disappear\n• ‘Share your impression’ moves to the top\n• Gallery, aftermovie and Memories appear only once content exists",
+   "w": 380,
+   "x": 5970,
+   "y": 35544
+  },
+  "s10": {
+   "fill": "blue",
+   "text": "CONTENT FROM THE ADMIN PANEL (Members)\n• Approvals › Member registrations: approve or reject new accounts (optional reason, e-mailed). Accounts stay ‘Pending approval’ until then.\n• Content › Members: edit any member’s team(s), role, status (active / alumni / inactive), badges and alumni ‘Now’ line; hide or remove a profile.\n• Board per mandate year: positions in order + linked member. Position e-mails come from Settings › Contact & legal (board roles list). Past boards are kept for the dropdown.\n• Teams list and badges list are editable.\n• Photo, bio, links, visibility, consents and CV are edited only by the member in /profile. Admins can hide a photo or bio that breaks the rules.\n• CV files are visible only to Main-package partners; every view is logged and the member sees the count.\nAll names, numbers and photos shown are sample data.",
+   "w": 420,
+   "x": 7020,
+   "y": 40676
+  },
+  "s11": {
+   "fill": "gray",
+   "text": "FOR THE DEVELOPER\n• One login system (Supabase Auth) for members and admins, with roles. A board member can be both; the account menu then shows ‘Admin panel’.\n• ‘Members only’ must be enforced in the database (row-level security), not only in the UI. Visitors get name + team + lock.\n• Sign-up: create account → confirm e-mail (link 24 h) → board approval. Reset links last 30 min.\n• ‘Log in with eestec.net’ is hidden. Design kept on the canvas as a future option, only if EESTEC International offers SSO.\n• Delete account removes personal data, CV, applications and drafts. The member chooses with ‘Also delete my Memories’: unchecked (default) keeps published Memories as ‘by a former member’ with no name or photo; checked deletes them.\n• Lists keep filters and page in the URL, e.g. /members?team=it&page=2.",
+   "w": 420,
+   "x": 7020,
+   "y": 41436
+  },
+  "s12": {
+   "fill": "blue",
+   "text": "CONTENT FROM THE ADMIN PANEL (Memories)\n• Approvals › Memories: preview, approve, reject with a note (e-mailed and shown on the author's /profile), or edit before publishing. Edits to a published Memory come here too; the live version stays until they're approved.\n• Content › Memories: edit, unpublish or delete any Memory; feature one on the Home page.\n• The ‘Linked event’ picker lists events from Content › Events; city, country and date are filled in from the event.\n• Stats on /memories (stories, events, cities) and map pins are counted automatically from published Memories.\n• Likes/reactions and comments: left out for now (the board has no time to moderate comments).\nAll names, stories and photos are sample data.",
+   "w": 420,
+   "x": 5500,
+   "y": 53517
+  },
+  "s13": {
+   "fill": "gray",
+   "text": "FOR THE DEVELOPER\n• Statuses: draft → waiting for approval → published; or not approved (with reason) → edit → waiting again. Editing a published Memory creates a pending revision; the live one stays.\n• Visitors clicking ‘Share your memory’ get a choice: log in, or send a quick impression via /submit.\n• Author deleted their account: Memories they kept show ‘A former member’, no name, photo or profile link.\n• Gallery opens the same lightbox component as event galleries (title, caption, count are props).\n• Filters and page live in the URL, e.g. /memories?city=krakow&page=2.\n• Launch: cards only, no Cards/Map toggle. Map view is Phase 2 · after launch.\n• Editing a published Memory: the author sees ‘Changes waiting for review’ on the post until approved.\n• Likes and comments: not planned for now (no moderation capacity).",
+   "w": 420,
+   "x": 5500,
+   "y": 54217
+  },
+  "s2": {
+   "fill": "blue",
+   "text": "ADMIN SETTINGS (for the developer)\nAdmin Panel → Settings → Events, editable by the board:\n• ‘Deadline soon’ starts X hours before the deadline (default 72)\n• ‘Just ended’ badge shows for X days (default 14)\nPer event, in the event form:\n• Max participants\n• Waitlist on/off. With the waitlist off, a full event shows ‘Full’ with a disabled button instead of ‘Join the waitlist’.",
+   "w": 380,
+   "x": 5970,
+   "y": 36144
+  },
+  "s3": {
+   "fill": "blue",
+   "text": "CONTENT FROM THE ADMIN PANEL\nSteps (icon, title, text, expanded benefits, photo, button label and link), member quotes (text, author, linked member), team names and the final call to action are all edited by the board.\nNames, quotes and photos shown here are sample data.\n\nInteraction: hover only highlights a card. Click/tap expands it; it stays open until closed. On mobile, one step is open at a time.",
+   "w": 380,
+   "x": 3510,
+   "y": 72735
+  },
+  "s4": {
+   "fill": "blue",
+   "text": "CONTENT FROM THE ADMIN PANEL\nAll section texts, benefit cards, steps, rules, FAQ items (add, edit, reorder), PDF documents and the membership fee.\nApplications open/closed is a switch in the admin; when closed, the board edits the ‘next round’ text.\nEach application goes to the membership applications list (new / contacted / accepted / rejected, CSV export) and triggers the confirmation e-mail.",
+   "w": 380,
+   "x": 3510,
+   "y": 77957
+  },
+  "s5": {
+   "fill": "blue",
+   "text": "CONTENT FROM THE ADMIN PANEL\nSponsors: name, logo (SVG or PNG), website, tier, active from/to dates, display order, active on/off. The site reads each logo's proportions and sizes it automatically.\nTiers: names and order are editable. A tier with no active partners is hidden everywhere. A partner whose ‘active to’ date has passed moves to Past partners.\n/partners page: all texts, benefits, packages and single collaborations, the partnership offer PDF, and the contact person.\nInquiries go to the company inquiries inbox with a status (new / in progress / done) and trigger a confirmation e-mail.\nAll company names and logos shown are fictional sample data.",
+   "w": 400,
+   "x": 3510,
+   "y": 86677
+  },
+  "s6": {
+   "fill": "blue",
+   "text": "CV ACCESS (Main partner package)\nOnly CVs of members who explicitly opt in on their profile are shared. Opt-in is off by default and separate from the general consent.\nMembers can withdraw consent at any time in their profile; their CV is then removed from partner access immediately.\nThe package checklist item itself is edited in the admin, so the board can remove this perk.",
+   "w": 400,
+   "x": 3510,
+   "y": 87290
+  },
+  "s7": {
+   "fill": "blue",
+   "text": "CONTENT FROM THE ADMIN PANEL\nMain e-mail, board role e-mails, address, office/meeting room, social links and all legal info (full registered name, registration no., tax no., bank account, seat). The footer reads the same data.\nSubjects: list and order are editable, each with the e-mail address it is routed to and an optional shortcut link (e.g. Partnership → /partners, Membership → /join).\nMessages go to the contact inbox with a status (new / answered / archived). The sender gets a copy by e-mail.\nSpam protection: invisible check plus a honeypot field; no puzzle.\nMap: a static image for now; can be replaced by an embed later.",
+   "w": 400,
+   "x": 3510,
+   "y": 94199
+  },
+  "s8": {
+   "fill": "blue",
+   "text": "WHICH ADMIN SCREEN MANAGES EACH PUBLIC PAGE\n• / Home → Pages › Home page (hero, stats, timeline, meeting info, Next up). Partners strip → Sponsors. Featured Memories → Memories.\n• Committee map → Pages › Map / Committees\n• /events and /upcoming (+ detail pages, galleries, PDFs, video) → Content › Events. Application forms and applicants → Content › Applications.\n• /members → Content › Members (new registrations wait in Approvals)\n• /memories → Content › Memories (submissions wait in Approvals)\n• /submit (ideas & impressions) → Content › Ideas & Feedback. Impressions turned into Memories → Approvals › Memories\n• /journey → Pages › EESTEC Journey\n• /join → Pages › Join Us. Applications → Inbox › Membership applications\n• /partners + Home partners → Pages › Sponsors. Inquiries → Inbox › Partner inquiries\n• /contact + footer → Pages › Contact and Settings › Contact & legal (e-mails, board roles add/remove/reorder, address, legal). Messages → Inbox › Contact messages\n• Logos, ‘Deadline soon’ 72 h, ‘Just ended’ 14 days, SEO per page → Settings\n• Images everywhere → System › Media library",
+   "w": 420,
+   "x": 7958,
+   "y": 99216
+  },
+  "s9": {
+   "fill": "gray",
+   "text": "ADMIN PATTERNS (for the developer)\nOne layout for every section: sidebar + top bar with breadcrumbs, then list → edit form → save bar.\nCalmer than the public site: white and grey surfaces; red only for primary buttons, counts that need action, errors and destructive actions.\nBreakpoints: ≥1280 full sidebar; 768–1279 icon rail; <768 drawer menu, tables become cards, main action in a sticky bottom bar.\nEvery list: search, filters in the URL, bulk actions, page numbers, empty state. Every form: Save draft always works; Publish validates first.",
+   "w": 420,
+   "x": 7958,
+   "y": 99976
+  },
+  "t1": {
+   "kind": "title1",
+   "maxW": 8000,
+   "text": "1 · Design system & shared components · spec 00",
+   "w": 240,
+   "x": 0,
+   "y": -300
+  },
+  "t10": {
+   "kind": "title1",
+   "maxW": 4020,
+   "text": "13 · Contact — page, form states & subject routing · spec 10",
+   "w": 240,
+   "x": 0,
+   "y": 93899
+  },
+  "t11": {
+   "kind": "title1",
+   "maxW": 8000,
+   "text": "14 · Admin Panel — shared patterns, desktop first + tablet & mobile · spec 11",
+   "w": 240,
+   "x": 0,
+   "y": 98916
+  },
+  "t12": {
+   "kind": "title1",
+   "maxW": 8000,
+   "text": "7 · Members — list, profiles, log in & sign-up, My profile · spec 04",
+   "w": 240,
+   "x": 0,
+   "y": 40376
+  },
+  "t13": {
+   "kind": "title1",
+   "maxW": 8000,
+   "text": "8 · Memories — list, post page, editor & approval states · spec 05",
+   "w": 240,
+   "x": 0,
+   "y": 53217
+  },
+  "t2": {
+   "kind": "title1",
+   "maxW": 2380,
+   "text": "2 · Home — desktop & mobile · spec 01",
+   "w": 240,
+   "x": 0,
+   "y": 8420
+  },
+  "t3": {
+   "kind": "title1",
+   "maxW": 6360,
+   "text": "3 · Events archive — results, no results, loading · spec 02",
+   "w": 240,
+   "x": 0,
+   "y": 17140
+  },
+  "t4": {
+   "kind": "title1",
+   "maxW": 5420,
+   "text": "4 · Event detail, lightbox & minimal-content version · spec 02",
+   "w": 240,
+   "x": 0,
+   "y": 24556
+  },
+  "t5": {
+   "kind": "title1",
+   "maxW": 3900,
+   "text": "5 · Upcoming Events — list & empty state · spec 03",
+   "w": 240,
+   "x": 0,
+   "y": 29462
+  },
+  "t6": {
+   "kind": "title1",
+   "maxW": 6350,
+   "text": "6 · Upcoming event detail, application states & after the event · spec 03",
+   "w": 240,
+   "x": 0,
+   "y": 35244
+  },
+  "t7": {
+   "kind": "title1",
+   "maxW": 3890,
+   "text": "10 · EESTEC Journey — desktop, mobile & interaction states · spec 07",
+   "w": 240,
+   "x": 0,
+   "y": 72435
+  },
+  "t8": {
+   "kind": "title1",
+   "maxW": 4418,
+   "text": "11 · Join Us — page, FAQ & membership form states · spec 08",
+   "w": 240,
+   "x": 0,
+   "y": 77657
+  },
+  "t9": {
+   "kind": "title1",
+   "maxW": 3910,
+   "text": "12 · Sponsors & partners — For Companies page, logo rules & inquiry form · spec 09",
+   "w": 240,
+   "x": 0,
+   "y": 86377
+  },
+  "t14": {
+   "x": 0,
+   "y": 65346,
+   "text": "9 · Submit an idea / impression — public form & admin side · spec 06",
+   "kind": "title1",
+   "maxW": 5920
+  },
+  "s14": {
+   "x": 5500,
+   "y": 65646,
+   "w": 420,
+   "fill": "blue",
+   "text": "CONTENT FROM THE ADMIN PANEL (Ideas & Feedback)\n• Content › Ideas & Feedback: two lists, Ideas and Event feedback, with statuses from the spec: New / Under review / Accepted / Archived. Each item has an owner, internal notes, ‘Reply by e-mail’ (not for anonymous ideas) and CSV export.\n• Accepted ideas can become an event draft in one click.\n• Ratings per event: average, spread and latest comment, per academic year.\n• Form settings: both intro texts, the idea types list (add, rename, reorder, remove) and the e-mail to the board on every new submission (on/off).\n• Impressions that a member turned into a Memory also appear in Approvals › Memories; ideas and feedback are never public, so they don't go through Approvals.\n• Dashboard counter ‘New ideas & feedback’ and the red count in the sidebar show New items.\nAll names and texts are sample data."
+  },
+  "s15": {
+   "x": 5500,
+   "y": 66406,
+   "w": 420,
+   "fill": "gray",
+   "text": "FOR THE DEVELOPER\n• Tabs come from the URL: /submit?tab=idea (default) or ?tab=impression. ‘&event=<slug>’ preselects the event; event pages and Memories link this way.\n• Anonymous ideas: name and e-mail are hidden and not stored. For logged-in members the account is not linked either.\n• Logged-in members: name and e-mail come from the account; impressions get ‘Turn this into a Memories post’ (creates a Memory waiting for approval, linked to the same event and photos).\n• Visitors' impressions are feedback only, never public.\n• Spam: invisible check plus a honeypot field, like the contact form. Uploads: 10 MB per file, images compressed."
+  },
+  "t0": {
+   "x": 0,
+   "y": -5070,
+   "text": "0 · Developer handoff — start here",
+   "kind": "title1",
+   "maxW": 4480
+  }
+ },
+ "order": [
+  "DevHandoff-1.dc.html",
+  "DevHandoff-2.dc.html",
+  "DevHandoff-3.dc.html",
+  "Main.dc.html",
+  "Header.dc.html",
+  "Footer.dc.html",
+  "EventCard.dc.html",
+  "CommitteeMap.dc.html",
+  "ApplyBox.dc.html",
+  "Home-Desktop.dc.html",
+  "Home-Mobile.dc.html",
+  "EventsList.dc.html",
+  "EventsList-Empty.dc.html",
+  "EventsList-Loading.dc.html",
+  "EventsList-Mobile.dc.html",
+  "EventsList-Mobile-Empty.dc.html",
+  "EventsList-Mobile-Loading.dc.html",
+  "EventsList-Mobile-Filters.dc.html",
+  "EventDetail.dc.html",
+  "EventDetail-Mobile.dc.html",
+  "Lightbox.dc.html",
+  "Lightbox-Mobile.dc.html",
+  "EventDetail-Minimal.dc.html",
+  "UpcomingList.dc.html",
+  "UpcomingList-Empty.dc.html",
+  "UpcomingList-Mobile.dc.html",
+  "UpcomingList-Mobile-Empty.dc.html",
+  "UpcomingDetail.dc.html",
+  "UpcomingDetail-Mobile.dc.html",
+  "UpcomingDetail-Mobile-Viewport.dc.html",
+  "UpcomingStates.dc.html",
+  "EventDetail-Ended.dc.html",
+  "EventDetail-Ended-Mobile.dc.html",
+  "JourneyStep.dc.html",
+  "Journey.dc.html",
+  "Journey-Mobile.dc.html",
+  "JourneyStates.dc.html",
+  "JoinForm.dc.html",
+  "JoinPage.dc.html",
+  "JoinPage-Mobile.dc.html",
+  "JoinFormStates.dc.html",
+  "JoinFormStates-Mobile.dc.html",
+  "PartnerLogo.dc.html",
+  "PartnerLogos.dc.html",
+  "CompanyForm.dc.html",
+  "PartnersPage.dc.html",
+  "PartnersPage-Mobile.dc.html",
+  "PartnersStates.dc.html",
+  "PartnersStates-Mobile.dc.html",
+  "ContactForm.dc.html",
+  "ContactPage.dc.html",
+  "ContactPage-Mobile.dc.html",
+  "ContactStates.dc.html",
+  "ContactStates-Mobile.dc.html",
+  "AdminSidebar.dc.html",
+  "AdminTopbar.dc.html",
+  "AdminLogin.dc.html",
+  "AdminLoginStates.dc.html",
+  "AdminLogin-Mobile.dc.html",
+  "AdminDashboard.dc.html",
+  "AdminDashboard-Tablet.dc.html",
+  "AdminMobileViews.dc.html",
+  "AdminEvents.dc.html",
+  "AdminEvents-Empty.dc.html",
+  "AdminEventEdit.dc.html",
+  "AdminEditStates.dc.html",
+  "AdminApprovals.dc.html",
+  "AdminInbox.dc.html",
+  "AdminSettings.dc.html",
+  "AdminUsers.dc.html",
+  "AdminDialogs.dc.html",
+  "AdminMobile.dc.html",
+  "MemberCard.dc.html",
+  "AuthForm.dc.html",
+  "MembersPage.dc.html",
+  "MembersPage-Mobile.dc.html",
+  "MembersPage-Member.dc.html",
+  "MembersPage-Empty.dc.html",
+  "MembersPage-Mobile-Empty.dc.html",
+  "HeaderStates.dc.html",
+  "MemberCardStates.dc.html",
+  "MemberProfile.dc.html",
+  "MemberProfile-Mobile.dc.html",
+  "MemberProfile-Restricted.dc.html",
+  "MemberProfile-Restricted-Mobile.dc.html",
+  "AuthPage.dc.html",
+  "AuthPage-Login-Mobile.dc.html",
+  "AuthPage-Register.dc.html",
+  "AuthPage-Register-Mobile.dc.html",
+  "AuthPage-Register-Errors.dc.html",
+  "AuthStates.dc.html",
+  "MyProfile.dc.html",
+  "MyProfile-Mobile.dc.html",
+  "MyProfileStates.dc.html",
+  "MemoriesList.dc.html",
+  "MemoriesList-Mobile.dc.html",
+  "MemoriesList-Map.dc.html",
+  "MemoriesList-Mobile-Empty.dc.html",
+  "MemoryStates.dc.html",
+  "MemoriesList-Empty.dc.html",
+  "MemoryPost.dc.html",
+  "MemoryPost-Mobile.dc.html",
+  "MemoryPost-Former.dc.html",
+  "MemoryLightbox.dc.html",
+  "MemoryPost-Preview.dc.html",
+  "MemoryLightbox-Mobile.dc.html",
+  "MemoryEditor.dc.html",
+  "MemoryEditor-Mobile.dc.html",
+  "MemoryEditor-Errors.dc.html",
+  "MemoryEditor-Rejected.dc.html",
+  "MemoryEditor-LiveEdit.dc.html",
+  "MemoryPost-ChangesWaiting.dc.html",
+  "MemoryPost-ChangesWaiting-Mobile.dc.html",
+  "SubmitForm.dc.html",
+  "SubmitPage.dc.html",
+  "SubmitPage-Mobile.dc.html",
+  "SubmitPage-Impression.dc.html",
+  "SubmitPage-Mobile-Impression.dc.html",
+  "SubmitStates.dc.html",
+  "AdminIdeas.dc.html",
+  "AdminIdeas-Feedback.dc.html",
+  "AdminIdeas-Ratings.dc.html",
+  "AdminIdeas-Settings.dc.html",
+  "Main-Continued.dc.html",
+  "Home-Mobile-Continued.dc.html",
+  "JoinPage-Mobile-Continued.dc.html"
+ ],
+ "pages": [],
+ "title": "eestec.mk — Website Design"
+}

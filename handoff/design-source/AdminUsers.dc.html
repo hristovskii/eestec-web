@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · Users &amp; roles</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+a{color:#b81f24}
+.a-h1{font-size:24px;line-height:1.25;font-weight:700}
+.a-h2{font-size:16px;line-height:1.35;font-weight:700}
+.muted{color:#6b6b6b}
+.sm{font-size:13px}
+.panel{background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid #ececec}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-ghost{border-color:transparent;background:transparent}
+.btn-sm{height:30px;padding:0 10px;font-size:13px}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:2px}
+.input{width:100%;height:34px;padding:0 12px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px}
+.sel{appearance:none;-webkit-appearance:none;padding-right:30px}
+.ico{position:relative;display:block}.ico svg.r{position:absolute;right:9px;top:9px;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.b-neutral{background:#f5f5f5;color:#3a3a3a;border:1px solid #e3e3e3}
+.b-pending{background:#fdf0f0;color:#b81f24;border:1px solid rgba(229,42,48,0.35)}
+.b-pub{background:#1a1a1a;color:#ffffff}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{height:40px;padding:0 14px;font-size:12px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:#6b6b6b;text-align:left;background:#fafafa;border-bottom:1px solid #e3e3e3;white-space:nowrap}
+.tbl td{height:60px;padding:8px 14px;border-bottom:1px solid #ececec;vertical-align:middle}
+.mx th,.mx td{text-align:center}
+.mx th:first-child,.mx td:first-child{text-align:left}
+.mx td{height:46px}
+</style>
+</helmet>
+
+<div style="display: flex; width: 100%; min-height: 900px; background: #f5f5f5">
+  <div style="width: 248px; flex-shrink: 0; background: #ffffff; border-right: 1px solid #e3e3e3">
+    <div style="position: sticky; top: 0"><dc-import name="AdminSidebar" active="Admin users" hint-size="248px,900px"></dc-import></div>
+  </div>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="AdminTopbar" crumbs="{{crumbs}}" hint-size="100%,60px"></dc-import>
+    <main style="padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><h1 class="a-h1">Admin users &amp; roles</h1><p class="muted">Who can sign in to the admin and what they can change. Only super admins see this page.</p></div>
+        <button type="button" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Invite admin</button>
+      </div>
+
+      <section class="panel" aria-labelledby="h-users" style="overflow: hidden">
+        <div class="card-h"><h2 id="h-users" class="a-h2">Admin users <span class="muted" style="font-weight: 400">· 6</span></h2><span class="sm muted">2FA is required for super admins</span></div>
+        <table class="tbl">
+          <thead><tr><th>Person</th><th style="width: 190px">Role</th><th>Access</th><th>2-step login</th><th>Last active</th><th style="width: 52px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0)">Actions</span></th></tr></thead>
+          <tbody>
+            <sc-for list="{{users}}" as="u" hint-placeholder-count="6">
+              <tr>
+                <td><span style="display: flex; align-items: center; gap: 12px"><span style="width: 34px; height: 34px; border-radius: 50%; background: {{u.abg}}; color: {{u.afg}}; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{u.i}}</span><span style="display: flex; flex-direction: column"><strong style="font-weight: 500">{{u.name}}</strong><span class="sm muted">{{u.mail}}</span></span></span></td>
+                <td><span class="ico"><select class="input sel" aria-label="Role for {{u.name}}"><option>{{u.role}}</option><option>Super admin</option><option>Editor</option><option>Event manager</option></select><svg class="r" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></td>
+                <td class="sm">{{u.access}}</td>
+                <td><span class="{{u.tfaCls}}">{{u.tfa}}</span></td>
+                <td class="sm"><span style="display: flex; flex-direction: column"><span>{{u.last}}</span><sc-if value="{{u.invited}}" hint-placeholder-val="{{ false }}"><button type="button" style="border: 0; background: none; padding: 0; color: #b81f24; font: inherit; font-weight: 500; cursor: pointer; text-align: left">Resend invite</button></sc-if></span></td>
+                <td><button type="button" class="btn btn-ghost" aria-label="More actions for {{u.name}}" style="width: 32px; height: 32px; padding: 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="#1a1a1a" aria-hidden="true"><circle cx="12" cy="5" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="12" cy="19" r="1.8"></circle></svg></button></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="panel" aria-labelledby="h-perm" style="overflow: hidden">
+        <div class="card-h"><h2 id="h-perm" class="a-h2">Roles &amp; permissions</h2><span class="sm muted">Fixed roles from the spec · assigned per person above</span></div>
+        <table class="tbl mx">
+          <thead><tr><th>Area</th><th>Super admin</th><th>Editor<br><span style="text-transform: none; letter-spacing: 0; font-weight: 400">board · PR · IT</span></th><th>Event manager</th><th>Member</th></tr></thead>
+          <tbody>
+            <sc-for list="{{perms}}" as="p" hint-placeholder-count="10">
+              <tr>
+                <td><strong style="font-weight: 500">{{p.area}}</strong></td>
+                <sc-for list="{{p.cells}}" as="c" hint-placeholder-count="4">
+                  <td>
+                    <sc-if value="{{c.yes}}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Full access"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+                    <sc-if value="{{c.part}}" hint-placeholder-val="{{ false }}"><span class="badge b-neutral">{{c.t}}</span></sc-if>
+                    <sc-if value="{{c.no}}" hint-placeholder-val="{{ false }}"><span class="muted" aria-label="No access">—</span></sc-if>
+                  </td>
+                </sc-for>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+        <p class="sm muted" style="padding: 14px 20px; border-top: 1px solid #ececec">Members have no admin access. They edit only their own profile, Memories and applications on the public site.</p>
+      </section>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1287}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const u = (i, name, mail, role, access, tfa, last, invited) => ({
+      i, name, mail, role, access, tfa: tfa === true ? 'On' : (tfa === false ? 'Off' : 'Not set up yet'), tfaCls: tfa === true ? 'badge b-pub' : (tfa === false ? 'badge b-pending' : 'badge b-neutral'),
+      last, invited: !!invited, abg: invited ? '#f5f5f5' : (role === 'Super admin' ? '#1a1a1a' : '#ececec'), afg: invited ? '#6b6b6b' : (role === 'Super admin' ? '#ffffff' : '#1a1a1a')
+    });
+    const Y = { yes: true, part: false, no: false, t: '' };
+    const N = { yes: false, part: false, no: true, t: '' };
+    const P = (t) => ({ yes: false, part: true, no: false, t });
+    const perm = (area, a, b, c, d) => ({ area, cells: [a, b, c, d] });
+    return {
+      crumbs: [{ t: 'Admin', href: '/admin' }, { t: 'Admin users' }],
+      users: [
+        u('AT', 'Ana Trajkovska', 'ana.t@eestec.mk', 'Super admin', 'Everything', true, 'Now', false),
+        u('MS', 'Marija Stojanovska', 'marija.s@eestec.mk', 'Editor', 'Content, pages and approvals', true, 'Yesterday, 18:02', false),
+        u('SN', 'Stefan Nikolovski', 'pr@eestec.mk', 'Editor', 'Content, pages and approvals', true, 'Yesterday, 21:14', false),
+        u('IK', 'Ivana Kostova', 'partners@eestec.mk', 'Editor', 'Content, pages and approvals', true, '30 Sep', false),
+        u('DR', 'Daniel Ristov', 'daniel.r@eestec.mk', 'Event manager', 'Leading Teams, FPGA Basics', false, 'Fri 2 Oct, 16:40', false),
+        u('PK', 'Petar Kolev', 'petar.k@students.feit.ukim.edu.mk', 'Event manager', 'New Year Social 2026', null, 'Invited 2 days ago', true)
+      ],
+      perms: [
+        perm('Dashboard', Y, Y, P('Own events'), N),
+        perm('Events & galleries', Y, Y, P('Own events'), N),
+        perm('Applications & form builder', Y, Y, P('Own events'), N),
+        perm('Approvals: members, Memories, ideas', Y, Y, N, N),
+        perm('Inbox & CSV export', Y, Y, P('Own applications'), N),
+        perm('Pages: Home, Journey, Join Us, Sponsors, Contact', Y, Y, N, N),
+        perm('Members, teams & board', Y, Y, N, N),
+        perm('Media library', Y, Y, P('Own uploads'), N),
+        perm('Settings', Y, N, N, N),
+        perm('Admin users & roles', Y, N, N, N)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

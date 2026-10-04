@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Card</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 100%; height: 100%; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif">
+
+<sc-if value="{{isLoading}}" hint-placeholder-val="{{ false }}">
+  <div aria-hidden="true" style="width: 100%; height: 100%; min-height: 420px; display: flex; flex-direction: column; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08); box-sizing: border-box">
+    <div style="width: 100%; aspect-ratio: 16 / 10; background: #ececec"></div>
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px">
+      <div style="display: flex; gap: 6px"><span style="width: 84px; height: 26px; border-radius: 999px; background: #ececec"></span><span style="width: 64px; height: 26px; border-radius: 999px; background: #f2f2f2"></span></div>
+      <span style="width: 92%; height: 18px; border-radius: 4px; background: #e6e6e6"></span>
+      <span style="width: 64%; height: 18px; border-radius: 4px; background: #e6e6e6"></span>
+      <span style="width: 48%; height: 12px; border-radius: 4px; background: #efefef; margin-top: 6px"></span>
+      <span style="width: 56%; height: 12px; border-radius: 4px; background: #efefef"></span>
+      <span style="width: 30%; height: 14px; border-radius: 4px; background: #f2f2f2; margin-top: auto"></span>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{ true }}">
+<a href="{{it.href}}" class="ev-card" style="width: 100%; height: 100%; min-height: 420px; display: flex; flex-direction: column; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: {{shadow}}; transform: {{lift}}; transition: box-shadow 0.15s, transform 0.15s; color: #1a1a1a; text-decoration: none; box-sizing: border-box">
+  <div style="position: relative; width: 100%; aspect-ratio: 16 / 10; background: #e9e9e9; flex-shrink: 0">
+    <sc-if value="{{hasImage}}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 16px; color: #6b6b6b; text-align: center; background: repeating-linear-gradient(135deg, #ececec 0 12px, #e6e6e6 12px 24px)">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+        <span style="font-size: 13px; line-height: 1.4; max-width: 240px">Photo: {{it.photo}}</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{noImage}}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #e52a30">
+        <img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="" style="width: 42%; height: auto; opacity: 0.95">
+      </div>
+    </sc-if>
+    <sc-if value="{{hasBadge}}" hint-placeholder-val="{{ false }}">
+      <span style="position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: 999px; background: {{badgeBg}}; color: {{badgeFg}}; border: {{badgeBorder}}; font-size: 14px; font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.18); box-sizing: border-box">{{badgeLabel}}</span>
+    </sc-if>
+    <sc-if value="{{isOrganized}}" hint-placeholder-val="{{ false }}">
+      <span style="position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px 0 4px; border-radius: 999px; background: #ffffff; color: #1a1a1a; font-size: 13px; font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.18)">
+        <img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="" style="width: 22px; height: 22px; border-radius: 50%">Organized by LC Skopje
+      </span>
+    </sc-if>
+  </div>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 20px">
+    <div style="display: flex; flex-wrap: wrap; gap: 6px">
+      <span style="display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; background: #f5f5f5; color: #1a1a1a; font-size: 13px; font-weight: 500">{{it.type}}</span>
+      <sc-if value="{{hasScope}}" hint-placeholder-val="{{ true }}">
+        <span style="display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; border: 1px solid #d0d0d0; color: #1a1a1a; font-size: 13px; font-weight: 500">{{it.scope}}</span>
+      </sc-if>
+    </div>
+    <h3 style="margin: 0; font-size: 20px; line-height: 1.3; font-weight: 700; color: {{titleColor}}; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{it.title}}</h3>
+    <sc-if value="{{isEvent}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #6b6b6b">
+        <span style="display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>{{it.date}}</span>
+        <span style="display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>{{it.location}}</span>
+      </div>
+      <sc-if value="{{hasDeadline}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px; background: {{deadlineBg}}; color: {{deadlineFg}}; font-size: 14px; font-weight: {{deadlineWeight}}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>{{it.deadline}}
+        </div>
+      </sc-if>
+    </sc-if>
+    <sc-if value="{{hasEventLine}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.4; color: #3a3a3a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span><span style="font-weight: 500">{{it.event}}</span> · {{it.place}}</span></span>
+    </sc-if>
+    <sc-if value="{{isMemory}}" hint-placeholder-val="{{ false }}">
+      <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #6b6b6b; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{it.excerpt}}</p>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; background: {{avatarBg}}; color: {{avatarFg}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{it.initials}}</span>
+        <span style="display: flex; flex-direction: column; font-size: 14px; line-height: 1.3"><span style="font-weight: 500">{{it.author}}</span><span style="color: #6b6b6b">{{it.date}}</span></span>
+      </div>
+    </sc-if>
+    <span style="margin-top: auto; padding-top: 4px; display: flex; align-items: center; gap: 6px; color: #b81f24; font-size: 15px; font-weight: 500">{{linkLabel}}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></span>
+  </div>
+</a>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"item":{"editor":null,"tsType":"{kind?: \"event\"|\"memory\", title: string, date: string, location?: string, type: string, scope?: string, badge?: string, organized?: boolean, photo?: string, hasImage?: boolean, excerpt?: string, author?: string, event?: string, place?: string, former?: boolean, initials?: string, href?: string, hover?: boolean, status?: \"open\"|\"closing\"|\"soon\"|\"closed\"|\"full\"|\"ended\", deadline?: string, cta?: string}"},"loading":{"editor":"boolean","default":false},"$preview":{"width":380,"height":431}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = {
+      kind: 'event',
+      title: 'Soft Skills Academy Skopje 2026',
+      date: '12–14 Sep 2026',
+      location: 'FEEIT, Skopje',
+      type: 'Training / Soft Skills',
+      scope: 'Local',
+      badge: '',
+      organized: false,
+      photo: 'participants in a group exercise',
+      hasImage: true,
+      excerpt: '',
+      author: '',
+      initials: '',
+      href: '/events/soft-skills-academy-2026',
+      hover: false
+    };
+    const it = Object.assign({}, base, this.props.item || {});
+    const isMemory = it.kind === 'memory';
+    const loading = !!this.props.loading;
+    const statuses = {
+      open: ['Applications open', '#e52a30', '#ffffff', '0'],
+      closing: ['Closing soon', '#e52a30', '#ffffff', '0'],
+      soon: ['Opening soon', '#ffffff', '#1a1a1a', '1.5px solid #1a1a1a'],
+      closed: ['Applications closed', '#ffffff', '#6b6b6b', '0'],
+      full: ['Full · waitlist open', '#1a1a1a', '#ffffff', '0'],
+      ended: ['Just ended', '#1a1a1a', '#ffffff', '0']
+    };
+    const st = statuses[it.status] || (it.badge ? [it.badge, '#e52a30', '#ffffff', '0'] : null);
+    const urgent = it.status === 'closing';
+    const muted = it.status === 'closed';
+    return {
+      hasDeadline: !!it.deadline,
+      deadlineBg: urgent ? '#fdf0f0' : '#f5f5f5',
+      deadlineFg: urgent ? '#b81f24' : (muted ? '#6b6b6b' : '#1a1a1a'),
+      deadlineWeight: urgent ? 700 : 500,
+      badgeLabel: st ? st[0] : '',
+      badgeBg: st ? st[1] : '#e52a30',
+      badgeFg: st ? st[2] : '#ffffff',
+      badgeBorder: st ? st[3] : '0',
+      it,
+      isLoading: loading,
+      notLoading: !loading,
+      isMemory,
+      isEvent: !isMemory,
+      hasImage: !!it.hasImage,
+      noImage: !it.hasImage,
+      hasBadge: !!st,
+      isOrganized: !!it.organized && !isMemory,
+      hasScope: !!it.scope && !isMemory,
+      hasEventLine: isMemory && !!it.event,
+      avatarBg: it.former ? '#ececec' : '#1a1a1a',
+      avatarFg: it.former ? '#6b6b6b' : '#ffffff',
+      shadow: it.hover ? '0 0 0 2px #e52a30, 0 12px 28px rgba(0,0,0,0.14)' : '0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08)',
+      lift: it.hover ? 'translateY(-4px)' : 'none',
+      titleColor: it.hover ? '#b81f24' : '#1a1a1a',
+      linkLabel: it.cta || (isMemory ? 'Read the story' : 'View event')
+    };
+  }
+}
+</script>
+</body>
+</html>

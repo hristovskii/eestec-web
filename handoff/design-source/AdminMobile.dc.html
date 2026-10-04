@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · mobile</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+.am a{color:#b81f24}
+.am .muted{color:#6b6b6b}
+.am .sm{font-size:13px}
+.am .panel{background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.am .ib{width:44px;height:44px;border:0;border-radius:10px;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;flex-shrink:0}
+.am .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 16px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:15px;font-weight:500;white-space:nowrap;cursor:pointer;text-decoration:none}
+.am .btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.am .btn-reject{border-color:#e52a30;color:#b81f24}
+.am .badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.am .b-pub{background:#1a1a1a;color:#ffffff}
+.am .b-draft{background:#ffffff;color:#1a1a1a;border:1px solid #8c8c8c}
+.am .b-neutral{background:#f5f5f5;color:#3a3a3a;border:1px solid #e3e3e3}
+.am .b-pending{background:#fdf0f0;color:#b81f24;border:1px solid rgba(229,42,48,0.35)}
+.am .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.am .input{width:100%;height:44px;padding:0 12px 0 40px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;font-family:inherit;font-size:15px;color:#1a1a1a}
+.am .ph{background-color:#ececec;background-image:repeating-linear-gradient(135deg,rgba(0,0,0,0.04) 0 10px,transparent 10px 20px)}
+.am .tabs{display:flex;gap:20px;overflow:hidden;border-bottom:1px solid #e3e3e3;padding:0 16px;background:#fff}
+.am .tab{height:44px;display:flex;align-items:center;gap:6px;border:0;background:none;padding:0;font:inherit;font-size:14px;font-weight:500;color:#3a3a3a;white-space:nowrap;border-bottom:3px solid transparent}
+.am .tab[aria-selected="true"]{color:#1a1a1a;font-weight:700;border-bottom-color:#e52a30}
+.am .cnt{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#ececec;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+</style>
+</helmet>
+
+<div class="am" style="position: relative; width: 390px; height: 844px; overflow: hidden; background: #f5f5f5; display: flex; flex-direction: column">
+  <header style="height: 56px; flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: 0 6px; background: #ffffff; border-bottom: 1px solid #e3e3e3">
+    <button type="button" class="ib" aria-label="Open admin menu" aria-expanded="{{isMenu}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"></path></svg></button>
+    <img src="/_blob/50a34c7b9e3bee5c6211c37ed7b78ae3" alt="EESTEC LC Skopje" style="height: 28px; width: auto">
+    <span style="height: 20px; padding: 0 7px; border-radius: 6px; background: #f5f5f5; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #6b6b6b; display: inline-flex; align-items: center; margin-left: 6px">ADMIN</span>
+    <span style="flex: 1"></span>
+    <button type="button" class="ib" aria-label="Notifications, 3 new"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span style="position: absolute; top: 10px; right: 11px; width: 8px; height: 8px; border-radius: 50%; background: #e52a30; box-shadow: 0 0 0 2px #fff"></span></button>
+    <button type="button" class="ib" aria-label="Account: Ana Trajkovska, Super admin"><span style="width: 32px; height: 32px; border-radius: 50%; background: #1a1a1a; color: #ffffff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">AT</span></button>
+  </header>
+
+  <sc-if value="{{showDash}}" hint-placeholder-val="{{ true }}">
+    <main style="flex: 1; overflow: hidden; padding: 20px 16px; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; flex-direction: column; gap: 4px"><h1 style="font-size: 22px; line-height: 1.25; font-weight: 700">Good morning, Ana</h1><p class="muted">24 things wait for a decision.</p></div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
+        <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+          <a href="{{s.href}}" class="panel" style="display: flex; flex-direction: column; gap: 4px; padding: 14px; text-decoration: none; color: #1a1a1a">
+            <span style="display: flex; align-items: center; gap: 8px"><span style="font-size: 26px; line-height: 1; font-weight: 700">{{s.n}}</span><sc-if value="{{s.attn}}" hint-placeholder-val="{{ true }}"><span style="width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span></sc-if></span>
+            <span class="sm" style="line-height: 1.35">{{s.label}}</span>
+          </a>
+        </sc-for>
+      </div>
+      <section class="panel" aria-labelledby="m-pend">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid #ececec"><h2 id="m-pend" style="font-size: 16px; font-weight: 700">Pending approvals</h2><a href="/admin/approvals" class="sm" style="font-weight: 500">See all 24</a></div>
+        <ul style="list-style: none; margin: 0; padding: 0">
+          <sc-for list="{{pending}}" as="p" hint-placeholder-count="3">
+            <li style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #ececec">
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px"><span><span class="badge b-neutral">{{p.type}}</span></span><strong style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{p.t}}</strong><span class="sm muted">{{p.meta}}</span></span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+      <div style="display: flex; gap: 8px"><a href="/admin/events/new" class="btn btn-primary" style="flex: 1">+ Add event</a><a href="/admin/inbox" class="btn" style="flex: 1">Inbox · 19</a></div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{showEvents}}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 16px 16px 12px; display: flex; flex-direction: column; gap: 12px; background: #ffffff">
+      <div style="display: flex; justify-content: space-between; align-items: center"><h1 style="font-size: 22px; font-weight: 700">Events</h1><a href="/admin/events/new" class="btn btn-primary" style="height: 40px">+ Add</a></div>
+      <div style="display: flex; gap: 8px"><div style="position: relative; flex: 1"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 12px; top: 13px"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input class="input" placeholder="Search events" aria-label="Search events"></div><button type="button" class="btn" style="width: 44px; padding: 0; position: relative" aria-label="Filters, 1 active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg><span style="position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; border-radius: 999px; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center">1</span></button></div>
+    </div>
+    <div class="tabs" role="tablist"><button type="button" role="tab" class="tab" aria-selected="true">All <span class="cnt">155</span></button><button type="button" role="tab" class="tab" aria-selected="false">Upcoming <span class="cnt">7</span></button><button type="button" role="tab" class="tab" aria-selected="false">Past <span class="cnt">148</span></button></div>
+    <ul style="list-style: none; margin: 0; padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden">
+      <sc-for list="{{events}}" as="e" hint-placeholder-count="5">
+        <li class="panel" style="display: flex; gap: 12px; padding: 12px; align-items: center">
+          <span class="ph" style="width: 56px; height: 56px; border-radius: 8px; flex-shrink: 0"></span>
+          <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+            <strong style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{e.t}}</strong>
+            <span class="sm muted">{{e.meta}}</span>
+            <span style="display: flex; gap: 6px; align-items: center"><span class="{{e.cls}}"><span class="dot"></span>{{e.status}}</span><span class="sm muted">{{e.apps}}</span></span>
+          </span>
+          <button type="button" class="ib" aria-label="More actions for {{e.t}}" style="width: 36px; height: 36px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#1a1a1a" aria-hidden="true"><circle cx="12" cy="5" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="12" cy="19" r="1.8"></circle></svg></button>
+        </li>
+      </sc-for>
+    </ul>
+  </sc-if>
+
+  <sc-if value="{{showApproval}}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; align-items: center; gap: 4px; padding: 6px 6px 6px 4px; background: #ffffff; border-bottom: 1px solid #e3e3e3">
+      <button type="button" class="ib" aria-label="Back to approvals"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></button>
+      <span style="flex: 1; display: flex; flex-direction: column"><strong style="font-size: 15px">Memory · 1 of 4</strong><span class="sm muted">Waiting 5 h</span></span>
+      <button type="button" class="ib" aria-label="Previous" style="width: 40px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+      <button type="button" class="ib" aria-label="Next" style="width: 40px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+    </div>
+    <main style="flex: 1; overflow: hidden; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+      <article class="panel" style="overflow: hidden">
+        <div class="ph" style="height: 150px; display: flex; align-items: center; justify-content: center; color: #6b6b6b; font-size: 13px">Cover: group selfie on the Ohrid lake shore</div>
+        <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+          <h2 style="font-size: 19px; line-height: 1.3; font-weight: 700">Seven days, 28 nationalities and one very long bus ride to Ohrid</h2>
+          <p class="sm muted">Marija Stojanovska · Power Up — Renewable Grids · 6 photos</p>
+          <p style="font-size: 15px; line-height: 1.55">I joined the organizing team for Power Up thinking the hardest part would be the lab day. It wasn't. It was the bus to Ohrid on day six…</p>
+          <a href="#" class="sm" style="font-weight: 500">Read all 412 words</a>
+        </div>
+      </article>
+      <div class="panel" style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px">
+        <span style="display: flex; align-items: center; gap: 8px" class="sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Linked to a real event</span>
+        <span style="display: flex; align-items: center; gap: 8px; color: #b81f24" class="sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>2 gallery photos have no alt text</span>
+      </div>
+    </main>
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; gap: 8px; padding: 12px 16px 24px; background: #ffffff; border-top: 1px solid #e3e3e3; box-shadow: 0 -6px 16px rgba(0,0,0,0.06)">
+      <button type="button" class="btn btn-reject" style="flex: 1">Reject…</button>
+      <button type="button" class="btn btn-primary" style="flex: 2">Approve &amp; publish</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isMenu}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(26,26,26,0.55)"></div>
+    <div role="dialog" aria-modal="true" aria-label="Admin menu" style="position: absolute; top: 0; left: 0; bottom: 0; width: 300px; background: #ffffff; box-shadow: 8px 0 24px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #ececec">
+        <span style="width: 36px; height: 36px; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">AT</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><strong style="font-weight: 500">Ana Trajkovska</strong><span class="sm muted">Super admin</span></span>
+        <button type="button" class="ib" aria-label="Close menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+      </div>
+      <div style="padding: 0 18px; width: 100%"><dc-import name="AdminSidebar" active="Dashboard" min-h="{{ 770 }}" hint-size="248px,770px"></dc-import></div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"view":{"editor":"enum","options":["dashboard","menu","events","approval"],"default":"dashboard"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const v = this.props.view ?? 'dashboard';
+    return {
+      showDash: v === 'dashboard' || v === 'menu',
+      isMenu: v === 'menu',
+      showEvents: v === 'events',
+      showApproval: v === 'approval',
+      stats: [
+        { n: '3', label: 'Member registrations', href: '/admin/approvals?type=members', attn: true },
+        { n: '4', label: 'Memories to approve', href: '/admin/approvals?type=memories', attn: true },
+        { n: '12', label: 'Membership applications', href: '/admin/inbox?tab=membership', attn: true },
+        { n: '7', label: 'New messages', href: '/admin/inbox', attn: true }
+      ],
+      pending: [
+        { type: 'Memory', t: 'Seven days, 28 nationalities and one very long bus ride', meta: 'Marija Stojanovska · 5 h ago' },
+        { type: 'Member', t: 'Daniel Ristov', meta: 'FEEIT, 2nd year · 2 days ago' },
+        { type: 'Memory', t: 'Power Up: the lab day (from an impression)', meta: 'Marija Stojanovska · today' }
+      ],
+      events: [
+        { t: 'Workshop: AI at the Edge', meta: '7–13 Nov 2026 · Workshop', status: 'Published', cls: 'badge b-pub', apps: '38 applications' },
+        { t: 'Soft Skills Training: Leading Teams', meta: '14 Nov 2026 · Training', status: 'Published', cls: 'badge b-pub', apps: '23 applications' },
+        { t: 'Hands-on: FPGA Basics', meta: '21–22 Nov 2026 · Workshop', status: 'Published', cls: 'badge b-pub', apps: '27 · full' },
+        { t: 'New Year Social 2026', meta: '18 Dec 2026 · Social', status: 'Draft', cls: 'badge b-draft', apps: '' },
+        { t: 'EESTech Challenge 2027 — Local Round Skopje', meta: '13 Mar 2027 · Competition', status: 'Draft', cls: 'badge b-draft', apps: '' },
+        { t: 'Exchange: Kraków Winter Edition', meta: '4–8 Dec 2026 · Exchange', status: 'Published', cls: 'badge b-pub', apps: 'External form' },
+        { t: 'FEEIT Career Day 2026', meta: '20 May 2026 · Other', status: 'Hidden', cls: 'badge b-neutral', apps: '' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

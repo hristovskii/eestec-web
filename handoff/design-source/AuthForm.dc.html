@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Member auth form</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+body{background:transparent}
+.af .seg{display:flex;flex-wrap:wrap;gap:8px}
+.af .seg label{display:flex;align-items:center;justify-content:center;min-width:52px;height:44px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;background:#ffffff}
+.af .seg label.on{border:2px solid #e52a30;color:#b81f24;background:#fdf0f0}
+.af .seg.err label{border-color:#e52a30}
+.af .seg input{position:absolute;opacity:0;width:1px;height:1px}
+.af .vis{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;padding:14px 16px;border:1px solid #8c8c8c;border-radius:10px;cursor:pointer;background:#ffffff}
+.af .vis.on{border:2px solid #e52a30;background:#fdf0f0;padding:13px 15px}
+.af .vis input{width:20px;height:20px;margin:2px 0 0;accent-color:#e52a30}
+.af .eye{position:absolute;right:4px;top:4px;width:44px;height:40px;border:0;background:transparent;border-radius:6px;color:#3a3a3a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.af .meter{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px}
+.af .meter span{height:4px;border-radius:2px;background:#e3e3e3}
+.af .meter span.on{background:#1a1a1a}
+.af .rules{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:#6b6b6b}
+.af .rules li{display:flex;align-items:center;gap:5px}
+.af .rules li.ok{color:#1a1a1a}
+.af .divider{display:flex;align-items:center;gap:12px;font-size:13px;color:#6b6b6b}
+.af .divider::before,.af .divider::after{content:"";flex:1;height:1px;background:#e3e3e3}
+.af .notice{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;padding:14px 16px;border-radius:10px}
+.af .n-err{border:2px solid #e52a30;background:#fdf0f0}
+.af .n-info{border:1px solid #e3e3e3;background:#f5f5f5}
+.af .big-ic{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.af .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+.af .steps li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;padding-bottom:16px;position:relative}
+.af .steps li:not(:last-child)::before{content:"";position:absolute;left:13px;top:28px;bottom:2px;width:2px;background:#e3e3e3}
+.af .dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;position:relative;z-index:1}
+</style>
+</helmet>
+<div class="af" style="width: 100%; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a">
+<div style="background: #ffffff; border: 1px solid #e3e3e3; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.06); padding: {{pad}}; display: flex; flex-direction: column; gap: 22px">
+
+<sc-if value="{{isLogin}}" hint-placeholder-val="{{ true }}">
+  <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">Log in</h1><p class="muted" style="font-size: 15px">For EESTEC LC Skopje members.</p></div>
+  <sc-if value="{{loginErr}}" hint-placeholder-val="{{ false }}">
+    <div role="alert" class="notice n-err"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg><div style="display: flex; flex-direction: column; gap: 2px"><strong>E-mail or password is wrong</strong><span class="small">Check both and try again, or <a href="/forgot-password" class="link">reset your password</a>.</span></div></div>
+  </sc-if>
+  <sc-if value="{{loginPending}}" hint-placeholder-val="{{ false }}">
+    <div role="status" class="notice n-info"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><div style="display: flex; flex-direction: column; gap: 2px"><strong>Your account is waiting for board approval</strong><span class="small">You can log in and edit your profile, but it isn't visible on the site yet. We'll e-mail you when it's approved.</span></div></div>
+  </sc-if>
+  <form style="display: flex; flex-direction: column; gap: 18px" novalidate>
+    <div><label class="label" for="af-le">E-mail</label><input class="{{leCls}}" id="af-le" type="email" autocomplete="email" value="{{le}}" placeholder="name@example.com"></div>
+    <div>
+      <label class="label" for="af-lp" style="display: flex; justify-content: space-between"><span>Password</span><a href="/forgot-password" class="link small">Forgot password?</a></label>
+      <div style="position: relative"><input class="{{lpCls}}" id="af-lp" type="password" autocomplete="current-password" value="{{lp}}" placeholder="Your password" style="padding-right: 52px"><button type="button" class="eye" aria-label="Show password"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
+    </div>
+    <label style="display: flex; align-items: center; gap: 10px; font-size: 15px"><input type="checkbox" class="cb" checked> Keep me logged in</label>
+    <button type="submit" class="btn btn-primary btn-block">Log in</button>
+  </form>
+  <sc-if value="{{showSso}}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 14px; padding: 14px; border: 2px dashed #c7c7c7; border-radius: 12px">
+      <span class="chip" style="align-self: flex-start; height: 24px; font-size: 12px">Future · only if EESTEC International offers it</span>
+  <div class="divider">or</div>
+    <a href="/auth/eestec-net" class="btn btn-quiet btn-block"><img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="" style="width: 22px; height: 22px; border-radius: 4px">Log in with eestec.net</a>
+    </div>
+  </sc-if>
+  <p style="font-size: 15px; text-align: center; padding-top: 4px; border-top: 1px solid #ececec; padding-top: 18px">New here? <a href="/register" class="link">Create a member account</a></p>
+</sc-if>
+
+<sc-if value="{{isForgot}}" hint-placeholder-val="{{ false }}">
+  <a href="/login" class="small" style="display: inline-flex; align-items: center; gap: 6px; color: #1a1a1a; text-decoration: none; font-weight: 500"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>Back to log in</a>
+  <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">Forgot your password?</h1><p class="muted" style="font-size: 15px; line-height: 1.5">Enter the e-mail you registered with. We'll send you a link to choose a new one.</p></div>
+  <form style="display: flex; flex-direction: column; gap: 18px" novalidate>
+    <div><label class="label" for="af-fe">E-mail</label><input class="input" id="af-fe" type="email" value="marija.s@students.feit.ukim.edu.mk" style="border-color: #e52a30; box-shadow: 0 0 0 3px rgba(229,42,48,0.28)"></div>
+    <button type="submit" class="btn btn-primary btn-block">Send reset link</button>
+  </form>
+</sc-if>
+
+<sc-if value="{{isSent}}" hint-placeholder-val="{{ false }}">
+  <span class="big-ic" style="background: #fdf0f0; color: #e52a30"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6"></path></svg></span>
+  <div role="status" style="display: flex; flex-direction: column; gap: 8px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">Check your inbox</h1><p class="body muted">If <strong style="color: #1a1a1a">marija.s@students.feit.ukim.edu.mk</strong> has an account, a reset link is on its way. It works for 30 minutes.</p></div>
+  <div style="display: flex; flex-direction: column; gap: 10px"><a href="/login" class="btn btn-primary btn-block">Back to log in</a><button type="button" class="btn btn-quiet btn-block" disabled style="background: #f5f5f5; color: #6b6b6b; border-color: #e3e3e3; cursor: not-allowed">Resend in 0:45</button></div>
+  <p class="small muted">Nothing after 5 minutes? Check spam, or <a href="/contact?subject=membership" class="link">contact us</a>.</p>
+</sc-if>
+
+<sc-if value="{{isReset}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">Choose a new password</h1><p class="muted" style="font-size: 15px">For marija.s@students.feit.ukim.edu.mk</p></div>
+  <form style="display: flex; flex-direction: column; gap: 18px" novalidate>
+    <div>
+      <label class="label" for="af-np">New password</label>
+      <div style="position: relative"><input class="input" id="af-np" type="password" value="lake-ohrid-2026" style="padding-right: 52px"><button type="button" class="eye" aria-label="Show password"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
+      <div class="meter" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      <p class="small" style="margin-top: 6px">Strength: <strong>Good</strong></p>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Save and log in</button>
+  </form>
+  <p class="small muted">This logs you out on your other devices.</p>
+</sc-if>
+
+<sc-if value="{{isRegister}}" hint-placeholder-val="{{ false }}">
+  <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">Create your member account</h1><p class="muted" style="font-size: 15px; line-height: 1.5">For people who are already members of EESTEC LC Skopje. The board checks every new account. Not a member yet? <a href="/join" class="link">Apply on Join Us</a> first.</p></div>
+  <sc-if value="{{regErr}}" hint-placeholder-val="{{ false }}">
+    <div role="alert" class="notice n-err"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg><div style="display: flex; flex-direction: column; gap: 6px"><strong>Please fix 3 fields</strong><ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6"><li><a class="link" href="#af-re">E-mail</a> is already registered</li><li><a class="link" href="#af-rp">Password</a> is too short</li><li><a class="link" href="#af-rc">Consent</a> is needed</li></ul></div></div>
+  </sc-if>
+  <form style="display: grid; grid-template-columns: {{cols}}; gap: 20px" novalidate>
+    <div><label class="label" for="af-rn">Full name <span class="req">*</span></label><input class="input" id="af-rn" autocomplete="name" value="Elena Petrovska"></div>
+    <div>
+      <label class="label" for="af-re">E-mail <span class="req">*</span></label><input class="{{reCls}}" id="af-re" type="email" autocomplete="email" value="elena.p@students.finki.ukim.mk" aria-invalid="{{regErr}}">
+      <sc-if value="{{regErr}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Already registered. <a href="/login" class="link">Log in</a> instead?</span></sc-if>
+    </div>
+    <div style="grid-column: 1 / -1">
+      <label class="label" for="af-rp">Password <span class="req">*</span></label>
+      <div style="position: relative"><input class="{{rpCls}}" id="af-rp" type="password" autocomplete="new-password" value="{{rp}}" aria-describedby="af-rules" style="padding-right: 52px"><button type="button" class="eye" aria-label="Show password"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
+      <ul class="rules" id="af-rules"><sc-for list="{{rules}}" as="r" hint-placeholder-count="3"><li class="{{r.cls}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.icon}}"></path></svg>{{r.t}}</li></sc-for></ul>
+    </div>
+    <div style="position: relative">
+      <label class="label" for="af-rf">Faculty <span class="req">*</span></label>
+      <select class="input select" id="af-rf"><option>FINKI</option><option>FEEIT</option><option>Faculty of Mechanical Engineering</option><option>Other faculty at UKIM</option><option>Other university</option></select>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="top: 41px"><path d="M6 9l6 6 6-6"></path></svg>
+    </div>
+    <div><label class="label" for="af-rph">Phone <span class="muted" style="font-weight: 400">· optional</span></label><input class="input" id="af-rph" type="tel" autocomplete="tel" placeholder="07X XXX XXX"></div>
+    <fieldset style="grid-column: 1 / -1"><legend class="label">Year of study <span class="req">*</span></legend>
+      <div class="seg"><label><input type="radio" name="af-y">1st</label><label class="on"><input type="radio" name="af-y" checked>2nd</label><label><input type="radio" name="af-y">3rd</label><label><input type="radio" name="af-y">4th</label><label><input type="radio" name="af-y">Master's</label><label><input type="radio" name="af-y">PhD</label></div>
+    </fieldset>
+    <div style="grid-column: 1 / -1">
+      <span class="label">Profile photo <span class="muted" style="font-weight: 400">· optional, you can add it later</span></span>
+      <div style="display: flex; align-items: center; gap: 16px">
+        <div class="ph" style="width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; gap: 8px"><label class="btn btn-quiet btn-sm" for="af-photo">Upload photo</label><input id="af-photo" type="file" accept="image/*" class="sr-only"></span><span class="small muted">JPG or PNG, a clear face photo. We crop it to a square.</span></div>
+      </div>
+    </div>
+    <fieldset style="grid-column: 1 / -1"><legend class="label">Who can see your profile? <span class="req">*</span></legend>
+      <div style="display: grid; grid-template-columns: {{cols}}; gap: 10px">
+        <label class="vis"><input type="radio" name="af-vis"><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 15px">Public</strong><span class="small muted">Anyone visiting eestec.mk</span></span></label>
+        <label class="vis on"><input type="radio" name="af-vis" checked><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 15px">Members only</strong><span class="small muted">Only logged-in members. Visitors see your name and team.</span></span></label>
+      </div>
+      <p class="help">You can change this any time in My profile.</p>
+    </fieldset>
+    <div id="af-rc" style="grid-column: 1 / -1; padding: 14px 16px; border-radius: 10px; background: {{consentBg}}; border: {{consentBorder}}">
+      <label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 14px; line-height: 1.5"><input type="checkbox" class="cb" checked="{{consentOn}}" aria-invalid="{{regErr}}"><span>I agree that EESTEC LC Skopje stores and processes my personal data to run my member account, as described in the <a class="link" href="/privacy">privacy policy</a>. I can delete my account and data at any time. <span class="req">*</span></span></label>
+      <sc-if value="{{regErr}}" hint-placeholder-val="{{ false }}"><span class="error" style="padding-left: 32px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Please agree so we can create your account</span></sc-if>
+    </div>
+    <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 14px">
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+      <p style="font-size: 15px; text-align: center">Already have an account? <a href="/login" class="link">Log in</a></p>
+    </div>
+  </form>
+</sc-if>
+
+<sc-if value="{{isCheck}}" hint-placeholder-val="{{ false }}">
+  <span class="big-ic" style="background: #fdf0f0; color: #e52a30"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6"></path></svg></span>
+  <div role="status" style="display: flex; flex-direction: column; gap: 8px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">Confirm your e-mail</h1><p class="body muted">We sent a link to <strong style="color: #1a1a1a">elena.p@students.finki.ukim.mk</strong>. Click it to activate your account. The link works for 24 hours.</p></div>
+  <ol class="steps">
+    <li><span class="dot" style="background: #1a1a1a; color: #ffffff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="padding-top: 4px"><strong>Account created</strong></span></li>
+    <li><span class="dot" style="background: #e52a30; color: #ffffff">2</span><span style="padding-top: 4px"><strong>Confirm your e-mail</strong><br><span class="small muted">You are here</span></span></li>
+    <li><span class="dot" style="background: #ffffff; border: 2px solid #c7c7c7; color: #6b6b6b">3</span><span style="padding-top: 4px; color: #6b6b6b"><strong>Board approval</strong><br><span class="small">Usually within 3 days</span></span></li>
+  </ol>
+  <div style="display: flex; flex-direction: column; gap: 10px"><button type="button" class="btn btn-quiet btn-block">Resend e-mail</button><a href="/register?edit" class="link small" style="justify-content: center">Wrong e-mail? Change it</a></div>
+</sc-if>
+
+<sc-if value="{{isPending}}" hint-placeholder-val="{{ false }}">
+  <span class="big-ic" style="background: #1a1a1a; color: #ffffff"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
+  <div role="status" style="display: flex; flex-direction: column; gap: 8px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">E-mail confirmed. Waiting for board approval.</h1><p class="body muted">Thanks, Elena! A board member checks that you are an LC Skopje member, usually within 3 days. We'll e-mail you when your profile is live.</p></div>
+  <ol class="steps">
+    <li><span class="dot" style="background: #1a1a1a; color: #ffffff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="padding-top: 4px"><strong>Account created</strong></span></li>
+    <li><span class="dot" style="background: #1a1a1a; color: #ffffff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="padding-top: 4px"><strong>E-mail confirmed</strong></span></li>
+    <li><span class="dot" style="background: #e52a30; color: #ffffff">3</span><span style="padding-top: 4px"><strong>Board approval</strong><br><span class="small muted">Pending since today</span></span></li>
+  </ol>
+  <div style="padding: 14px 16px; border-radius: 10px; background: #f5f5f5; font-size: 14px; line-height: 1.5"><strong>Meanwhile</strong> you can finish your profile (photo, bio, links). Nobody else sees it until it's approved.</div>
+  <a href="/profile" class="btn btn-primary btn-block">Finish my profile</a>
+</sc-if>
+
+<sc-if value="{{isExpired}}" hint-placeholder-val="{{ false }}">
+  <span class="big-ic" style="background: #f5f5f5; color: #1a1a1a"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71M3 3l18 18"></path></svg></span>
+  <div role="status" style="display: flex; flex-direction: column; gap: 8px"><h1 style="font-size: {{h}}; line-height: 1.2; font-weight: 700">This link has expired</h1><p class="body muted">Confirmation links work for 24 hours and reset links for 30 minutes. Ask for a new one below.</p></div>
+  <form style="display: flex; flex-direction: column; gap: 14px" novalidate><div><label class="label" for="af-xe">E-mail</label><input class="input" id="af-xe" type="email" value="elena.p@students.finki.ukim.mk"></div><button type="submit" class="btn btn-primary btn-block">Send a new link</button></form>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["login","login-error","login-pending","forgot","sent","reset","register","register-errors","check-email","pending","expired"],"default":"login"},"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"sso":{"editor":"boolean","default":false},"$preview":{"width":480,"height":485}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.props.state ?? 'login';
+    const mobile = (this.props.device ?? 'desktop') === 'mobile';
+    const regErr = st === 'register-errors';
+    const ok = 'M20 6 9 17l-5-5', x = 'M18 6 6 18M6 6l12 12';
+    const rules = regErr
+      ? [{ t: 'At least 10 characters', cls: '', icon: x }, { t: 'Not your e-mail or name', cls: 'ok', icon: ok }, { t: 'Not a common password', cls: 'ok', icon: ok }]
+      : [{ t: 'At least 10 characters', cls: 'ok', icon: ok }, { t: 'Not your e-mail or name', cls: 'ok', icon: ok }, { t: 'Not a common password', cls: 'ok', icon: ok }];
+    const loginErr = st === 'login-error';
+    return {
+      isLogin: st.indexOf('login') === 0, loginErr, loginPending: st === 'login-pending',
+      showSso: !!this.props.sso,
+      isForgot: st === 'forgot', isSent: st === 'sent', isReset: st === 'reset',
+      isRegister: st.indexOf('register') === 0, regErr,
+      isCheck: st === 'check-email', isPending: st === 'pending', isExpired: st === 'expired',
+      le: loginErr ? 'marija.s@students.feit.ukim.edu.mk' : (st === 'login-pending' ? 'elena.p@students.finki.ukim.mk' : ''),
+      lp: loginErr ? '' : (st === 'login-pending' ? 'lake-ohrid-2026' : ''),
+      leCls: loginErr ? 'input err' : 'input',
+      lpCls: loginErr ? 'input err' : 'input',
+      reCls: regErr ? 'input err' : 'input',
+      rpCls: regErr ? 'input err' : 'input',
+      rp: regErr ? 'elena123' : 'lake-ohrid-2026',
+      rules,
+      consentOn: !regErr,
+      consentBg: regErr ? '#fdf0f0' : '#f5f5f5',
+      consentBorder: regErr ? '2px solid #e52a30' : '2px solid transparent',
+      pad: mobile ? '24px 20px' : '36px',
+      h: mobile ? '26px' : '30px',
+      cols: mobile ? 'minmax(0, 1fr)' : 'repeat(2, minmax(0, 1fr))'
+    };
+  }
+}
+</script>
+</body>
+</html>

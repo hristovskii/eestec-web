@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EESTEC Memories — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+.seg{display:inline-flex;padding:3px;border:1px solid #c7c7c7;border-radius:10px;background:#ffffff}
+.seg button{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:0;border-radius:8px;background:transparent;color:#1a1a1a;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.seg button[aria-pressed="true"]{background:#1a1a1a;color:#ffffff}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat strong{font-size:28px;line-height:1.1;font-weight:700}
+.pin{position:absolute;transform:translate(-50%,-50%);min-width:30px;height:30px;padding:0 8px;border-radius:999px;border:2px solid #ffffff;background:#e52a30;color:#ffffff;font-family:inherit;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.3);cursor:pointer}
+.mini{display:grid;grid-template-columns:88px minmax(0,1fr);gap:14px;padding:12px;border:1px solid #e3e3e3;border-radius:12px;background:#ffffff;color:#1a1a1a;text-decoration:none}
+.mini:hover{border-color:#e52a30}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="desktop" active="Memories" auth="{{auth}}" hint-size="100%,72px"></dc-import></div>
+  <main>
+    <section style="background: #f5f5f5">
+      <div class="container" style="padding-top: 40px; padding-bottom: 40px; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Memories</span></nav>
+          <h1 class="h1">EESTEC Memories</h1>
+          <span class="title-bar"></span>
+          <p class="body muted" style="font-size: 18px; max-width: 620px; padding-top: 4px">Stories and photos from our members: workshops, exchanges, congresses and everything that happened on the bus in between.</p>
+          <div style="display: flex; gap: 40px; padding-top: 12px"><span class="stat"><strong>84</strong><span class="small muted">stories</span></span><span class="stat"><strong>31</strong><span class="small muted">events</span></span><span class="stat"><strong>14</strong><span class="small muted">cities</span></span></div>
+        </div>
+        <div class="card" style="width: 340px; flex-shrink: 0; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+          <strong style="font-size: 17px">Been to an EESTEC event?</strong>
+          <p class="small muted">{{shareText}}</p>
+          <a href="{{shareHref}}" class="btn btn-primary btn-block"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg>Share your memory</a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Memories" style="padding: 40px 0 88px">
+      <div class="container" style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center">
+          <div style="position: relative">
+            <label for="mm-q" class="sr-only">Search Memories</label>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 14px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            <input id="mm-q" class="input" type="search" placeholder="Search titles and stories" value="{{q}}" style="padding-left: 44px">
+          </div>
+          <sc-if value="{{mapEnabled}}" hint-placeholder-val="{{ false }}"><div style="display: flex; align-items: center; gap: 10px"><span class="chip chip-dark" style="height: 26px">Phase 2 · after launch</span>
+          <div class="seg" role="group" aria-label="View">
+            <button type="button" aria-pressed="{{isGrid}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>Cards</button>
+            <button type="button" aria-pressed="{{isMap}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4zM8 2v16M16 6v16"></path></svg>Map</button>
+          </div></div></sc-if>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 180px; gap: 12px">
+          <sc-for list="{{filters}}" as="f" hint-placeholder-count="5">
+            <div style="position: relative"><label for="{{f.id}}" class="sr-only">{{f.label}}</label><select id="{{f.id}}" class="input select" style="border-color: {{f.border}}; border-width: {{f.bw}}"><option>{{f.value}}</option></select><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{showGrid}}" hint-placeholder-val="{{ true }}">
+          <p class="small muted" role="status" style="padding-top: 8px">Showing <strong style="color: #1a1a1a">1–12</strong> of <strong style="color: #1a1a1a">84</strong> Memories, newest first</p>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+            <sc-for list="{{mems}}" as="m" hint-placeholder-count="12"><dc-import name="EventCard" item="{{m}}" hint-size="100%,500px"></dc-import></sc-for>
+          </div>
+          <nav aria-label="Pagination" style="margin-top: 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
+            <span class="small muted">Page 1 of 7</span>
+            <div style="display: flex; align-items: center; gap: 6px">
+              <a href="#" class="page-btn" aria-disabled="true" aria-label="Previous page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></a>
+              <a href="/memories?page=1" class="page-btn" aria-current="page">1</a><a href="/memories?page=2" class="page-btn">2</a><a href="/memories?page=3" class="page-btn">3</a><span class="small muted" style="padding: 0 6px">…</span><a href="/memories?page=7" class="page-btn">7</a>
+              <a href="/memories?page=2" class="page-btn" aria-label="Next page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></a>
+            </div>
+            <a href="#top" class="link small">Back to top ↑</a>
+          </nav>
+        </sc-if>
+
+        <sc-if value="{{showMap}}" hint-placeholder-val="{{ false }}">
+          <p class="small muted" role="status" style="padding-top: 8px"><strong style="color: #1a1a1a">84</strong> Memories in <strong style="color: #1a1a1a">14</strong> cities · tap a pin to see its stories</p>
+          <div style="display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start">
+            <div style="position: relative; width: 100%; aspect-ratio: 1200 / 910; border-radius: 12px; overflow: hidden; border: 1px solid #dedede; background: #eef0f2">
+              <img src="/_blob/ed3ea9c77eba11d47d93eebd3411a326" alt="Map of Europe with the cities where our Memories happened" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+              <sc-for list="{{pins}}" as="p" hint-placeholder-count="9">
+                <button type="button" class="pin" aria-label="{{p.label}}" aria-pressed="{{p.sel}}" style="left: {{p.x}}%; top: {{p.y}}%; background: {{p.bg}}; min-width: {{p.size}}px; height: {{p.size}}px">{{p.n}}</button>
+              </sc-for>
+              <div style="position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; background: #ffffff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.18); overflow: hidden"><button type="button" aria-label="Zoom in" style="width: 36px; height: 36px; border: 0; border-bottom: 1px solid #e3e3e3; background: #ffffff; font-size: 20px; cursor: pointer">+</button><button type="button" aria-label="Zoom out" style="width: 36px; height: 36px; border: 0; background: #ffffff; font-size: 20px; cursor: pointer">−</button></div>
+              <div style="position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #ffffff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.15); font-size: 13px"><span style="min-width: 24px; height: 24px; padding: 0 6px; border-radius: 999px; background: #e52a30; color: #fff; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">3</span>Memories in that city</div>
+              <span style="position: absolute; right: 0; bottom: 0; padding: 2px 8px; background: rgba(255,255,255,0.85); font-size: 11px; color: #4a4a4a">Leaflet | © OpenStreetMap contributors</span>
+            </div>
+            <aside aria-labelledby="h-city" style="display: flex; flex-direction: column; gap: 12px">
+              <div style="display: flex; align-items: center; justify-content: space-between"><div style="display: flex; flex-direction: column"><h2 id="h-city" style="font-size: 22px; font-weight: 700">Kraków, Poland</h2><span class="small muted">3 Memories · 2 events</span></div><button type="button" class="btn btn-quiet btn-sm" aria-label="Close city">Show all</button></div>
+              <sc-for list="{{cityMems}}" as="c" hint-placeholder-count="3">
+                <a href="{{c.href}}" class="mini"><span class="ph" style="width: 88px; height: 72px; border-radius: 8px"></span><span style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><strong style="font-size: 15px; line-height: 1.3">{{c.title}}</strong><span class="small muted">{{c.author}} · {{c.date}}</span><span class="small" style="color: #3a3a3a">{{c.event}}</span></span></a>
+              </sc-for>
+            </aside>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 8px">
+            <p class="small muted" role="status"><strong style="color: #1a1a1a">0</strong> Memories found</p>
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span class="tag">“snow”<button type="button" aria-label="Remove search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></span>
+              <span class="tag">Tallinn, Estonia<button type="button" aria-label="Remove filter Tallinn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></span>
+              <button type="button" class="link small" style="border: 0; background: transparent; height: 32px; padding: 0 6px; cursor: pointer; font-family: inherit">Clear all</button>
+            </div>
+          </div>
+          <div style="padding: 64px 32px; border: 1px dashed #c7c7c7; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+            <span style="width: 72px; height: 72px; border-radius: 50%; background: #f5f5f5; color: #6b6b6b; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+            <h2 class="h3">No Memories from Tallinn yet</h2>
+            <p class="body muted" style="max-width: 520px">Nobody has written about “snow” in Tallinn. Were you there? Your story could be the first.</p>
+            <div style="display: flex; gap: 12px; padding-top: 8px"><a href="{{shareHref}}" class="btn btn-primary">Share your memory</a><button type="button" class="btn btn-secondary">Clear filters</button></div>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20"><dc-import name="Header" variant="mobile" active="Memories" auth="{{auth}}" hint-size="390px,64px"></dc-import></div>
+  <main>
+    <section style="background: #f5f5f5; padding: 24px 16px 28px; display: flex; flex-direction: column; gap: 12px">
+      <nav aria-label="Breadcrumb" class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page" style="color: #1a1a1a">Memories</span></nav>
+      <h1 class="h1-m">EESTEC Memories</h1>
+      <span class="title-bar"></span>
+      <p class="body muted">Stories and photos from our members, from workshops to exchanges.</p>
+      <a href="{{shareHref}}" class="btn btn-primary btn-block" style="margin-top: 8px">Share your memory</a>
+    </section>
+    <section aria-label="Memories" style="padding: 20px 16px 40px; display: flex; flex-direction: column; gap: 14px">
+      <div style="position: relative"><label for="mmm-q" class="sr-only">Search Memories</label><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 14px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input id="mmm-q" class="input" type="search" placeholder="Search Memories" value="{{q}}" style="padding-left: 44px"></div>
+      <div style="display: flex; gap: 8px">
+        <button type="button" class="btn btn-quiet" style="flex: 1; height: 48px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>Filters<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}"><span class="chip chip-dark" style="height: 22px; padding: 0 8px">1</span></sc-if></button>
+        <sc-if value="{{mapEnabled}}" hint-placeholder-val="{{ false }}"><div class="seg" role="group" aria-label="View"><button type="button" aria-pressed="true">Cards</button><button type="button" aria-pressed="false">Map</button></div></sc-if>
+      </div>
+      <sc-if value="{{showGrid}}" hint-placeholder-val="{{ true }}">
+        <p class="small muted" role="status"><strong style="color: #1a1a1a">84</strong> Memories, newest first</p>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <sc-for list="{{memsM}}" as="m" hint-placeholder-count="5"><dc-import name="EventCard" item="{{m}}" hint-size="358px,500px"></dc-import></sc-for>
+        </div>
+        <nav aria-label="Pagination" style="margin-top: 12px; display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; align-items: center; gap: 8px">
+          <a href="#" class="page-btn" aria-disabled="true" aria-label="Previous page" style="width: 52px; height: 48px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></a>
+          <span style="text-align: center; font-size: 15px; font-weight: 500">Page 1 of 17</span>
+          <a href="/memories?page=2" class="page-btn" aria-label="Next page" style="width: 52px; height: 48px; border-color: #e52a30; color: #e52a30"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></a>
+        </nav>
+      </sc-if>
+      <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+        <p class="small muted" role="status"><strong style="color: #1a1a1a">0</strong> Memories found</p>
+        <div style="padding: 36px 20px; border: 1px dashed #c7c7c7; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+          <span style="width: 64px; height: 64px; border-radius: 50%; background: #f5f5f5; color: #6b6b6b; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+          <h2 class="h3-m">No Memories from Tallinn yet</h2>
+          <p class="small muted">Were you there? Your story could be the first.</p>
+          <a href="{{shareHref}}" class="btn btn-primary btn-block" style="margin-top: 6px">Share your memory</a>
+          <button type="button" class="btn btn-secondary btn-block">Clear filters</button>
+        </div>
+      </sc-if>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"view":{"editor":"enum","options":["grid","map"],"default":"grid"},"state":{"editor":"enum","options":["results","empty"],"default":"results"},"auth":{"editor":"enum","options":["guest","member"],"default":"guest"},"mapEnabled":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":3597}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const view = this.props.view ?? 'grid';
+    const empty = (this.props.state ?? 'results') === 'empty';
+    const auth = this.props.auth ?? 'guest';
+    const ini = (n) => n.split(' ').map((w) => w[0]).join('').slice(0, 2);
+    const M = (title, author, event, place, date, type, photo, excerpt, slug) => ({ kind: 'memory', title, author, initials: ini(author), event, place, date, type, hasImage: !!photo, photo: photo || '', excerpt, href: '/memories/' + slug });
+    const mems = [
+      M('What I learned leading my first team', 'Stefan Nikolovski', 'Soft Skills Academy 2026', 'Skopje, North Macedonia', '20 Sep 2026', 'Training', 'team exercise with sticky notes', 'Three days, eleven trainers and one moment where I realised I had been running meetings wrong for two years.', 'what-i-learned'),
+      M('Seven days, 28 nationalities and one very long bus ride to Ohrid', 'Marija Stojanovska', 'Power Up — Renewable Grids', 'Ohrid, North Macedonia', '2 Jun 2026', 'Workshop', 'group selfie on the Ohrid lake shore', 'What I expected from my first workshop as an organizer, and what actually happened when 28 students arrived at once.', 'ohrid-bus-ride'),
+      M('I came for the lab, I stayed for the people', 'Kasia Nowak', 'Power Up — Renewable Grids', 'Skopje, North Macedonia', '29 May 2026', 'Workshop', '', 'A participant from Kraków on why the high-voltage lab day was only the second-best part of Power Up.', 'came-for-the-lab'),
+      M('Congress diary: 40 committees, one big family', 'Ana Trajkovska', 'EESTEC Congress 2026', 'Patras, Greece', '10 May 2026', 'Congress', 'delegates in the congress hall', 'Five days of plenaries, votes and late-night city tours. Notes from my first congress as a delegate.', 'congress-diary'),
+      M('Three days in Delft, zero days of sun', 'Daniel Ristov', 'Exchange: Delft Spring Days', 'Delft, Netherlands', '18 Apr 2026', 'Exchange', 'bikes along a Delft canal', 'Bikes everywhere, a cleanroom tour and the best stroopwafels I have ever had.', 'delft-zero-sun'),
+      M('Our first EESTech Challenge podium', 'Filip Angelovski', 'EESTech Challenge 2026', 'Skopje, North Macedonia', '22 Mar 2026', 'Competition', 'team holding the second-place certificate', 'Twelve hours, one broken sensor and a second place we did not see coming.', 'first-podium'),
+      M('Organizing a New Year social for 120 people', 'Teodora Mitreva', 'New Year Social 2025', 'Skopje, North Macedonia', '5 Jan 2026', 'Social', 'confetti over the dance floor', 'Spreadsheets, a DJ who cancelled twice, and the best night of the year.', 'new-year-120'),
+      M('Snow, pierogi and a lot of PCB', 'Jana Kostovska', 'Exchange: Kraków Winter Edition', 'Kraków, Poland', '15 Dec 2025', 'Exchange', 'PCB workshop in a Kraków lab', 'My first exchange abroad: five days of soldering, sightseeing and very cold hands.', 'snow-pierogi-pcb'),
+      M('Belgrade by night, robotics by day', 'Nikola Jovanovski', 'Workshop: Robotics Belgrade', 'Belgrade, Serbia', '14 Nov 2025', 'Workshop', 'line-following robots on a test track', 'We built a line-following robot in four days. It followed the line about half the time.', 'belgrade-robotics'),
+      M('Why I said yes to my first training', 'Sara Dimova', 'Soft Skills Training Zagreb', 'Zagreb, Croatia', '2 Oct 2025', 'Training', 'trainer at a flipchart', 'I almost did not apply. Here is why I am glad I did, and what I would tell first-years.', 'first-training'),
+      M('Hackathon at 3 a.m.', 'Martin Stojanov', 'EESTech Challenge 2025', 'Skopje, North Macedonia', '18 Mar 2025', 'Competition', '', 'Pizza, a whiteboard full of diagrams, and the moment our demo finally worked.', 'hackathon-3am'),
+      M('My first exchange: Kraków in the snow', 'Marija Stojanovska', 'Exchange: Kraków Winter Edition', 'Kraków, Poland', '15 Dec 2024', 'Exchange', 'Kraków old town square at night', 'Five days, two suitcases and one lost glove. Why the Kraków exchange made me join the Events team.', 'krakow-in-the-snow')
+    ];
+    const P = (city, n, x, y, sel) => ({ label: city + ': ' + n + ' Memories', n, x, y, sel: sel ? 'true' : 'false', bg: sel ? '#1a1a1a' : '#e52a30', size: n >= 10 ? 38 : 30 });
+    const F = (id, label, value, active) => ({ id, label, value, border: active ? '#e52a30' : '#8c8c8c', bw: active ? '2px' : '1px' });
+    const share = auth === 'member';
+    return {
+      isDesktop: device === 'desktop', isMobile: device === 'mobile',
+      auth,
+      mapEnabled: !!this.props.mapEnabled || view === 'map',
+      isGrid: view === 'grid' ? 'true' : 'false', isMap: view === 'map' ? 'true' : 'false',
+      showGrid: view === 'grid' && !empty, showMap: view === 'map' && !empty, isEmpty: empty,
+      q: empty ? 'snow' : '',
+      shareText: share ? 'Write about it with photos. The board checks it before it goes live.' : 'Members write Memories here. Not a member? Send a quick impression instead.',
+      shareHref: share ? '/memories/new' : '/login?next=/memories/new',
+      filters: [F('mm-ev', 'Event', 'All events'), F('mm-yr', 'Year', 'All years'), F('mm-city', 'City or country', empty ? 'Tallinn, Estonia' : 'All cities', empty), F('mm-au', 'Author', 'All authors'), F('mm-sort', 'Sort', 'Newest first')],
+      mems, memsM: mems.slice(0, 5),
+      pins: [P('Skopje', 38, 58.95, 77.12), P('Ohrid', 9, 56.9, 82.2), P('Kraków', 3, 56.26, 49.19, true), P('Delft', 4, 27.92, 41.77), P('Belgrade', 6, 57.19, 67.92), P('Patras', 3, 59.52, 88.89), P('Zagreb', 2, 49.06, 64.42), P('Munich', 2, 41.05, 56.25), P('Istanbul', 1, 72.69, 80.29), P('Ljubljana', 2, 46.37, 63.58), P('Athens', 2, 63.14, 89.69), P('Riga', 1, 63.83, 21.36)],
+      cityMems: [
+        { title: 'Snow, pierogi and a lot of PCB', author: 'Jana Kostovska', date: 'Dec 2025', event: 'Exchange: Kraków Winter Edition', href: '/memories/snow-pierogi-pcb' },
+        { title: 'My first exchange: Kraków in the snow', author: 'Marija Stojanovska', date: 'Dec 2024', event: 'Exchange: Kraków Winter Edition', href: '/memories/krakow-in-the-snow' },
+        { title: 'Wawel at sunrise with 20 engineers', author: 'Goran Spasovski', date: 'Apr 2024', event: 'Workshop: Smart Grids Kraków', href: '/memories/wawel-sunrise' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

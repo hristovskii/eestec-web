@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Member log in · states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h2,p{margin:0}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+</style>
+</helmet>
+<div style="width: 100%; padding: 56px 40px 64px">
+  <div style="max-width: 1600px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">Member log in &amp; sign-up · all states</h2><p style="color: #6b6b6b; font-size: 15px; line-height: 1.5; max-width: 980px">Same card on /login, /register, /forgot-password and /reset-password, centered on a grey page (see the full pages). Sign-up has three steps: create account → confirm e-mail → board approval. Errors never say whether an e-mail has an account, except on sign-up where it helps the person log in instead. “Log in with eestec.net” is hidden until EESTEC International offers it (9).</p></div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">1 · Wrong e-mail or password</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="login-error" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">2 · Forgot password</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="forgot" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">3 · Reset link sent</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="sent" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">4 · Choose a new password</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="reset" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">5 · After sign-up: confirm e-mail</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="check-email" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">6 · E-mail confirmed, waiting for approval</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="pending" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">7 · Logging in while still pending</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="login-pending" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">8 · Expired link</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="expired" hint-size="100%,560px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">9 · Future: log in with eestec.net (hidden for now)</span><div style="width: 100%; min-width: 0"><dc-import name="AuthForm" state="login" sso="{{ true }}" hint-size="100%,700px"></dc-import></div></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1760,"height":2394}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

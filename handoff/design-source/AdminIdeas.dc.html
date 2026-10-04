@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · Ideas &amp; Feedback</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+a{color:#b81f24}
+.a-h1{font-size:24px;line-height:1.25;font-weight:700}
+.a-h2{font-size:16px;line-height:1.35;font-weight:700}
+.muted{color:#6b6b6b}
+.sm{font-size:13px}
+.panel{background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-ghost{border-color:transparent;background:transparent}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:2px}
+.input{width:100%;height:36px;padding:0 12px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px}
+textarea.input{height:auto;padding:10px 12px;line-height:1.5}
+.sel{appearance:none;-webkit-appearance:none;padding-right:32px}
+.ico{position:relative}.ico svg.r{position:absolute;right:10px;top:10px;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.b-neutral{background:#f5f5f5;color:#3a3a3a;border:1px solid #e3e3e3}
+.b-pending{background:#fdf0f0;color:#b81f24;border:1px solid rgba(229,42,48,0.35)}
+.tabs{display:flex;gap:24px;border-bottom:1px solid #e3e3e3}
+.tab{display:flex;align-items:center;gap:8px;height:44px;margin-bottom:-1px;border:0;border-bottom:2px solid transparent;background:transparent;color:#6b6b6b;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;padding:0}
+.tab[aria-selected="true"]{color:#1a1a1a;font-weight:700;border-bottom-color:#e52a30}
+.cnt{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#ececec;color:#3a3a3a;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.cnt-red{background:#e52a30;color:#ffffff}
+.seg{display:inline-flex;padding:3px;border:1px solid #d0d0d0;border-radius:8px;background:#ffffff}
+.seg button{height:28px;padding:0 12px;border:0;border-radius:6px;background:transparent;font-family:inherit;font-size:13px;font-weight:500;color:#3a3a3a;cursor:pointer}
+.seg button[aria-pressed="true"]{background:#1a1a1a;color:#ffffff}
+.mi{display:grid;grid-template-columns:10px minmax(0,1fr);gap:10px;padding:14px 16px;border-bottom:1px solid #ececec;cursor:pointer}
+.mi:hover{background:#fafafa}
+.cb{width:18px;height:18px;margin:0;accent-color:#e52a30}
+.b-new{background:#e52a30;color:#ffffff}
+.b-review{background:#fdf0f0;color:#b81f24;border:1px solid rgba(229,42,48,0.35)}
+.b-acc{background:#1a1a1a;color:#ffffff}
+.b-arch{background:#f5f5f5;color:#6b6b6b;border:1px solid #e3e3e3}
+.stars{display:inline-flex;gap:1px;color:#e52a30;vertical-align:-2px}
+.stars .off{color:#d0d0d0}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{height:40px;padding:0 16px;font-size:12px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:#6b6b6b;text-align:left;background:#fafafa;border-bottom:1px solid #e3e3e3;white-space:nowrap}
+.tbl td{padding:14px 16px;border-bottom:1px solid #ececec;vertical-align:middle}
+.bar{display:grid;grid-template-columns:14px 120px 26px;gap:8px;align-items:center;font-size:12px;color:#6b6b6b}
+.bar span.t{display:block;height:6px;border-radius:3px;background:#ececec;overflow:hidden}
+.bar span.t i{display:block;height:100%;background:#1a1a1a}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:440px;background:#ffffff;box-shadow:-12px 0 32px rgba(0,0,0,0.18);display:flex;flex-direction:column;z-index:30}
+.lab{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.tgl{position:relative;display:inline-block;width:36px;height:20px;border-radius:999px;background:#c7c7c7;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:18px}
+</style>
+</helmet>
+
+<div style="position: relative; display: flex; width: 100%; min-height: 900px; background: #f5f5f5">
+  <div style="width: 248px; flex-shrink: 0; background: #ffffff; border-right: 1px solid #e3e3e3">
+    <div style="position: sticky; top: 0"><dc-import name="AdminSidebar" active="Ideas &amp; Feedback" hint-size="248px,900px"></dc-import></div>
+  </div>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="AdminTopbar" crumbs="{{crumbs}}" hint-size="100%,60px"></dc-import>
+    <main style="padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><h1 class="a-h1">Ideas &amp; Feedback</h1><p class="muted">Everything sent from /submit. Impressions that members turned into Memories also wait in Approvals › Memories.</p></div>
+        <div style="display: flex; gap: 8px"><button type="button" class="btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>Export CSV</button><button type="button" class="btn" aria-expanded="{{showDrawer}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg>Form settings</button></div>
+      </div>
+
+      <div class="panel" style="overflow: hidden">
+        <div role="tablist" aria-label="Type" class="tabs" style="padding: 0 20px">
+          <button type="button" role="tab" class="tab" aria-selected="{{selIdeas}}">Ideas <span class="cnt cnt-red">5 new</span></button>
+          <button type="button" role="tab" class="tab" aria-selected="{{selFb}}">Event feedback <span class="cnt cnt-red">4 new</span></button>
+          <button type="button" role="tab" class="tab" aria-selected="{{selRatings}}">Ratings per event</button>
+        </div>
+
+        <sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-bottom: 1px solid #ececec">
+            <label style="position: relative; width: 260px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0)">Search</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 11px; top: 10px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input class="input" placeholder="Search text or name" style="padding-left: 34px"></label>
+            <div class="seg" role="group" aria-label="Status"><sc-for list="{{statusSeg}}" as="s" hint-placeholder-count="5"><button type="button" aria-pressed="{{s.on}}">{{s.t}}</button></sc-for></div>
+            <span class="ico" style="width: 190px"><select class="input sel" aria-label="{{filterLabel}}"><option>{{filterAll}}</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span>
+          </div>
+          <div style="display: grid; grid-template-columns: 420px minmax(0, 1fr); min-height: 660px">
+            <ul role="listbox" aria-label="Submissions" style="list-style: none; margin: 0; padding: 0; border-right: 1px solid #e3e3e3">
+              <sc-for list="{{items}}" as="m" hint-placeholder-count="7">
+                <li role="option" aria-selected="{{m.sel}}" class="mi" style="background: {{m.bg}}; grid-template-columns: 10px minmax(0, 1fr)">
+                  <span style="padding-top: 6px"><sc-if value="{{m.isNew}}" hint-placeholder-val="{{ true }}"><span aria-label="New" style="display: block; width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span></sc-if></span>
+                  <span style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+                    <span style="display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: {{m.w}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.title}}</span><span class="sm muted" style="white-space: nowrap">{{m.when}}</span></span>
+                    <span style="display: flex; align-items: center; gap: 8px; min-width: 0"><span class="{{m.statusCls}}" style="height: 20px; font-size: 11px">{{m.status}}</span><span class="sm muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.meta}}</span></span>
+                  </span>
+                </li>
+              </sc-for>
+            </ul>
+
+            <sc-if value="{{isIdeas}}" hint-placeholder-val="{{ true }}">
+              <section aria-label="Selected idea" style="display: flex; flex-direction: column; min-width: 0">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid #ececec">
+                  <div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; gap: 8px"><span class="badge b-neutral">Workshop topic</span><span class="badge b-review">Under review</span></span><strong style="font-size: 19px">A beginner workshop on PCB design</strong><span class="sm muted">Bojan Ilievski · <a href="mailto:bojan.i@students.feit.ukim.edu.mk">bojan.i@students.feit.ukim.edu.mk</a> · not a member · Today, 11:20</span></div>
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <span class="ico" style="width: 150px"><select class="input sel" aria-label="Status"><option>Under review</option><option>New</option><option>Accepted</option><option>Archived</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span>
+                    <span class="ico" style="width: 180px"><select class="input sel" aria-label="Owner"><option>Daniel Ristov</option><option>No owner</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span>
+                  </div>
+                </div>
+                <div style="padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; font-size: 15px; line-height: 1.65; max-width: 760px">
+                  <p>Many first-years want to build hardware but have never designed a board. A two-evening workshop with KiCad, ending with a real PCB we order together, would be perfect before the EESTech Challenge.</p>
+                  <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid #e3e3e3; border-radius: 10px; width: fit-content"><span style="width: 30px; height: 36px; border-radius: 5px; background: #e52a30; color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px">PDF</span><span class="sm"><strong>pcb-workshop-plan.pdf</strong> · 220 KB</span><a href="#" class="sm" style="font-weight: 500">Download</a></div>
+                </div>
+                <div style="padding: 0 24px 20px; display: flex; gap: 10px; flex-wrap: wrap">
+                  <a href="mailto:bojan.i@students.feit.ukim.edu.mk?subject=Your%20idea" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17l-5-5 5-5M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>Reply by e-mail</a>
+                  <button type="button" class="btn">Accept and create event draft</button>
+                  <button type="button" class="btn btn-ghost">Archive</button>
+                </div>
+                <div style="margin-top: auto; padding: 18px 24px; border-top: 1px solid #ececec; background: #fafafa; display: flex; flex-direction: column; gap: 12px">
+                  <strong class="sm" style="text-transform: uppercase; letter-spacing: 0.05em; color: #6b6b6b">Internal notes · only admins see these</strong>
+                  <div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px"><span style="width: 28px; height: 28px; border-radius: 50%; background: #ececec; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center">DR</span><span class="sm"><strong>Daniel Ristov</strong> <span class="muted">· 14:02</span><br>Discussed on Wednesday. Filip can run it; asking Voltline for free boards.</span></div>
+                  <div style="display: flex; gap: 8px"><input class="input" placeholder="Add a note…"><button type="button" class="btn">Add</button></div>
+                </div>
+              </section>
+            </sc-if>
+
+            <sc-if value="{{isFb}}" hint-placeholder-val="{{ false }}">
+              <section aria-label="Selected feedback" style="display: flex; flex-direction: column; min-width: 0">
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid #ececec">
+                  <div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; gap: 8px; align-items: center"><span class="badge b-new">New</span><span class="stars" aria-label="4 of 5 stars"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="off"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"></path></svg></span><span class="sm" style="font-weight: 500">4 of 5</span></span><strong style="font-size: 19px">Workshop: Power Up — Renewable Grids</strong><span class="sm muted">Marija Stojanovska · member · Today, 09:14</span></div>
+                  <span class="ico" style="width: 150px"><select class="input sel" aria-label="Status"><option>New</option><option>Under review</option><option>Accepted</option><option>Archived</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span>
+                </div>
+                <div style="padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; font-size: 15px; line-height: 1.65; max-width: 760px">
+                  <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; background: #f5f5f5" class="sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg><span style="flex: 1">The author also asked to publish this as a Memory. It is waiting in Approvals.</span><a href="/admin/approvals?type=memories" style="font-weight: 500">Open in Approvals</a></div>
+                  <p>The lab day was the best part: real equipment and engineers who took time for every question. Next time, a bit more free time in Ohrid and fewer hours on the bus would be great.</p>
+                  <div style="display: flex; gap: 10px"><span class="ph" style="width: 120px; height: 90px; border-radius: 8px; background: repeating-linear-gradient(135deg,#ececec 0 10px,#e6e6e6 10px 20px)"></span><span class="ph" style="width: 120px; height: 90px; border-radius: 8px; background: repeating-linear-gradient(135deg,#ececec 0 10px,#e6e6e6 10px 20px)"></span></div>
+                </div>
+                <div style="padding: 0 24px 20px; display: flex; gap: 10px">
+                  <button type="button" class="btn">Add photos to the event gallery</button>
+                  <button type="button" class="btn">Share with the organizers</button>
+                  <button type="button" class="btn btn-ghost">Archive</button>
+                </div>
+                <div style="margin-top: auto; padding: 18px 24px; border-top: 1px solid #ececec; background: #fafafa; display: flex; flex-direction: column; gap: 12px">
+                  <strong class="sm" style="text-transform: uppercase; letter-spacing: 0.05em; color: #6b6b6b">Internal notes · only admins see these</strong>
+                  <div style="display: flex; gap: 8px"><input class="input" placeholder="Add a note…"><button type="button" class="btn">Add</button></div>
+                </div>
+              </section>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{isRatings}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-bottom: 1px solid #ececec"><span class="ico" style="width: 240px"><select class="input sel" aria-label="Year"><option>Academic year 2025/26</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span><span class="sm muted">Average of all ratings: <strong style="color: #1a1a1a">4.4</strong> from 96 responses</span></div>
+          <table class="tbl">
+            <thead><tr><th>Event</th><th>Responses</th><th>Average</th><th>Spread</th><th>Latest comment</th><th></th></tr></thead>
+            <tbody>
+              <sc-for list="{{ratings}}" as="r" hint-placeholder-count="5">
+                <tr>
+                  <td><span style="display: flex; flex-direction: column"><strong style="font-weight: 500">{{r.t}}</strong><span class="sm muted">{{r.date}}</span></span></td>
+                  <td>{{r.n}}</td>
+                  <td><span style="display: flex; align-items: center; gap: 8px"><strong style="font-size: 16px">{{r.avg}}</strong><span class="stars" aria-hidden="true"><sc-for list="{{r.stars}}" as="s" hint-placeholder-count="5"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: {{s}}"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"></path></svg></sc-for></span></span></td>
+                  <td><div style="display: flex; flex-direction: column; gap: 3px"><sc-for list="{{r.dist}}" as="d" hint-placeholder-count="5"><span class="bar"><span>{{d.s}}</span><span class="t"><i style="width: {{d.w}}%"></i></span><span>{{d.n}}</span></span></sc-for></div></td>
+                  <td class="sm" style="max-width: 320px; color: #3a3a3a">“{{r.quote}}”</td>
+                  <td><a href="#" class="sm" style="font-weight: 500; white-space: nowrap">All {{r.n}} comments</a></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </sc-if>
+      </div>
+    </main>
+  </div>
+
+  <sc-if value="{{showDrawer}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(26,26,26,0.35); z-index: 25"></div>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="fs-h">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid #ececec"><h2 id="fs-h" class="a-h2" style="font-size: 18px">Form settings · /submit</h2><button type="button" class="btn btn-ghost" aria-label="Close" style="width: 36px; padding: 0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+      <div style="flex: 1; overflow: hidden; padding: 20px 22px; display: flex; flex-direction: column; gap: 22px">
+        <div><label class="lab" for="fs-i1">Intro text · Submit an idea</label><textarea class="input" id="fs-i1" rows="3">Tell us. The board reads every idea and every piece of feedback, from members and non-members alike.</textarea></div>
+        <div><label class="lab" for="fs-i2">Intro text · Impression / feedback</label><textarea class="input" id="fs-i2" rows="2">Tell the organizers how it went.</textarea></div>
+        <div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" style="margin: 0">Idea types · drag to reorder</span>
+          <sc-for list="{{types}}" as="t" hint-placeholder-count="5"><div style="display: grid; grid-template-columns: 18px minmax(0, 1fr) 32px; gap: 8px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8c8c8c" aria-hidden="true"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg><input class="input" value="{{t}}" aria-label="Idea type"><button type="button" class="btn btn-ghost" aria-label="Remove {{t}}" style="width: 32px; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg></button></div></sc-for>
+          <button type="button" class="btn" style="align-self: flex-start">+ Add type</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <button type="button" role="switch" aria-checked="true" style="display: flex; align-items: center; justify-content: space-between; border: 0; background: none; padding: 0; font: inherit; color: #1a1a1a; cursor: pointer; text-align: left"><span><strong>E-mail the board on every new submission</strong><br><span class="sm muted">To the addresses in Settings › E-mail notifications</span></span><span class="tgl on"></span></button>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 14px 22px; border-top: 1px solid #ececec"><button type="button" class="btn">Cancel</button><button type="button" class="btn btn-primary">Save</button></div>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"view":{"editor":"enum","options":["ideas","feedback","ratings","settings"],"default":"ideas"},"$preview":{"width":1440,"height":983}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const view = this.props.view ?? 'ideas';
+    const ideas = view === 'ideas' || view === 'settings';
+    const fb = view === 'feedback';
+    const S = { New: 'badge b-new', 'Under review': 'badge b-review', Accepted: 'badge b-acc', Archived: 'badge b-arch' };
+    const I = (title, status, meta, when, sel) => ({ title, status, statusCls: S[status], meta, when, isNew: status === 'New', sel: sel ? 'true' : 'false', bg: sel ? '#fdf6f6' : '#ffffff', w: status === 'New' ? 700 : 500 });
+    const ideaItems = [
+      I('A beginner workshop on PCB design', 'Under review', 'Workshop topic · Bojan Ilievski', '11:20', true),
+      I('Hackathon with the Faculty of Design', 'New', 'New event · Anonymous', '09:02'),
+      I('Dark mode for eestec.mk', 'New', 'Website improvement · Filip A.', 'Yesterday'),
+      I('Invite Gridnova for a lab tour', 'New', 'Partnership / company · Anonymous', 'Yesterday'),
+      I('Study group before exam session', 'New', 'Other · Sara Dimova', 'Fri'),
+      I('Soft skills training in Macedonian', 'New', 'Workshop topic · Ivana M.', 'Thu'),
+      I('Robotics workshop for high-schoolers', 'Accepted', 'New event · Nikola J. · event draft created', '20 Sep'),
+      I('More photos on the Home page', 'Archived', 'Website improvement · Anonymous', '2 Sep')
+    ];
+    const F = (title, status, meta, when, sel) => I(title, status, meta, when, sel);
+    const fbItems = [
+      F('Power Up — Renewable Grids', 'New', '★ 4 · Marija Stojanovska · also a Memory', '09:14', true),
+      F('Power Up — Renewable Grids', 'New', '★ 5 · Kasia Nowak (guest)', 'Yesterday'),
+      F('Soft Skills Academy Skopje 2026', 'New', '★ 3 · Anonymous', 'Yesterday'),
+      F('Soft Skills Academy Skopje 2026', 'New', '★ 5 · Teodora Mitreva', 'Fri'),
+      F('New Year Social 2025', 'Under review', '★ 2 · guest · “too crowded”', '6 Jan'),
+      F('EESTech Challenge 2026', 'Accepted', '★ 5 · Filip Angelovski', '24 Mar'),
+      F('Other: Study visit to Makstil', 'Archived', 'No rating · guest', '2 Mar')
+    ];
+    const C = (n) => n >= 0.75 ? '#e52a30' : '#d0d0d0';
+    const R = (t, date, avg, d, quote) => {
+      const n = d.reduce((a, b) => a + b, 0); const mx = Math.max.apply(null, d);
+      return { t, date, avg: avg.toFixed(1), n, quote, stars: [1, 2, 3, 4, 5].map((i) => C(avg - i + 1)), dist: [5, 4, 3, 2, 1].map((s, k) => ({ s, n: d[4 - k], w: Math.round(d[4 - k] / mx * 100) })) };
+    };
+    return {
+      crumbs: [{ t: 'Admin', href: '/admin' }, { t: 'Ideas & Feedback', href: '/admin/ideas' }, { t: view === 'ratings' ? 'Ratings per event' : (fb ? 'Event feedback' : 'Ideas') }],
+      selIdeas: ideas ? 'true' : 'false', selFb: fb ? 'true' : 'false', selRatings: view === 'ratings' ? 'true' : 'false',
+      isList: view !== 'ratings', isIdeas: ideas, isFb: fb, isRatings: view === 'ratings', showDrawer: view === 'settings',
+      statusSeg: [['All', ''], ['New', ''], ['Under review', ''], ['Accepted', ''], ['Archived', '']].map(([t], i) => ({ t: t + (i === 1 ? (fb ? ' · 4' : ' · 5') : ''), on: i === 0 ? 'true' : 'false' })),
+      filterLabel: fb ? 'Event' : 'Idea type', filterAll: fb ? 'All events' : 'All idea types',
+      items: fb ? fbItems : ideaItems,
+      types: ['New event', 'Workshop topic', 'Partnership / company', 'Website improvement', 'Other'],
+      ratings: [
+        R('Workshop: Power Up — Renewable Grids', 'May 2026', 4.7, [0, 0, 1, 6, 15], 'The lab day was the best part. Fewer hours on the bus next time.'),
+        R('Soft Skills Academy Skopje 2026', 'Sep 2026', 4.2, [0, 1, 3, 9, 9], 'Great trainers, but the rooms were too hot in the afternoon.'),
+        R('EESTech Challenge 2026', 'Mar 2026', 4.6, [0, 0, 1, 4, 10], 'Well organized, the task was hard in a good way.'),
+        R('New Year Social 2025', 'Jan 2026', 3.6, [1, 2, 6, 7, 4], 'Fun night, but too crowded around the bar.'),
+        R('Exchange: Kraków Winter Edition', 'Dec 2025', 4.9, [0, 0, 0, 1, 11], 'Best week of my studies so far.')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

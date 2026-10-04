@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Upcoming Events — states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.ds-label{font-size:13px;font-weight:700;color:#1a1a1a;letter-spacing:0.06em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.step{display:flex;align-items:center;gap:10px}
+.step b{width:28px;height:28px;border-radius:50%;background:#e52a30;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+</style>
+</helmet>
+
+<div style="width: 100%; background: #ffffff">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px 96px; display: flex; flex-direction: column; gap: 80px">
+
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Application box</h2>
+        <span class="title-bar"></span>
+        <p class="muted" style="font-size: 17px">The countdown and apply button on /upcoming/[slug]. The state is set automatically from the open date, the deadline and the number of places.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Open</span><dc-import name="ApplyBox" status="open" hint-size="100%,470px"></dc-import></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Deadline soon (default: under 72 h)</span><dc-import name="ApplyBox" status="closing" hint-size="100%,470px"></dc-import></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Opening soon</span><dc-import name="ApplyBox" status="soon" hint-size="100%,470px"></dc-import></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Closed</span><dc-import name="ApplyBox" status="closed" hint-size="100%,330px"></dc-import></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Full</span><dc-import name="ApplyBox" status="full" hint-size="100%,400px"></dc-import></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Event abroad · external application</span><dc-import name="ApplyBox" status="external" hint-size="100%,520px"></dc-import></div>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; padding-top: 8px">
+        <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">Add to calendar · menu open</span><dc-import name="ApplyBox" status="open" calendar-open="{{ true }}" hint-size="100%,630px"></dc-import></div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="ds-label">Form · after submitting</span>
+          <div role="status" style="padding: 40px; border: 1px solid #e3e3e3; border-radius: 16px; display: flex; flex-direction: column; gap: 20px">
+            <span style="width: 64px; height: 64px; border-radius: 50%; background: #1a1a1a; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 28px; font-weight: 700">Application sent!</h3>
+              <p style="font-size: 17px; line-height: 1.6">Thanks, Marija. We sent a confirmation to <strong>marija.s@students.feit.ukim.edu.mk</strong>. The organizing team will let you know by <strong>25 Oct 2026</strong>.</p>
+            </div>
+            <dl style="margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 18px 20px; border-radius: 12px; background: #f5f5f5">
+              <div><dt class="small muted">Event</dt><dd style="margin: 2px 0 0; font-weight: 500">Workshop: AI at the Edge</dd></div>
+              <div><dt class="small muted">Submitted</dt><dd style="margin: 2px 0 0; font-weight: 500">4 Oct 2026, 18:42</dd></div>
+              <div><dt class="small muted">Reference</dt><dd style="margin: 2px 0 0; font-weight: 500">AIE-2026-0042</dd></div>
+            </dl>
+            <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap">
+              <a href="#" class="btn btn-secondary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>Add event to calendar</a>
+              <a href="/upcoming" class="link">Back to Upcoming Events</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Card states</h2>
+        <span class="title-bar"></span>
+        <p class="muted" style="font-size: 17px">The same card as Events, with a status badge and a deadline line.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+        <sc-for list="{{cards}}" as="c" hint-placeholder-count="6">
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <span class="ds-label">{{c.label}}</span>
+            <dc-import name="EventCard" item="{{c.item}}" hint-size="100%,500px"></dc-import>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Event lifecycle</h2>
+        <span class="title-bar"></span>
+        <p class="muted" style="font-size: 17px">One record moves from Upcoming Events to the archive on its own. Nothing is entered twice.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr) 40px minmax(0, 1fr); align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div class="step"><b>1</b><div><strong>Before the deadline</strong><p class="small muted">/upcoming · form open</p></div></div>
+          <dc-import name="EventCard" item="{{life1}}" hint-size="100%,500px"></dc-import>
+        </div>
+        <div aria-hidden="true" style="display: flex; justify-content: center; padding-top: 240px; color: #e52a30"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></div>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div class="step"><b>2</b><div><strong>Deadline passes</strong><p class="small muted">/upcoming · form closes automatically</p></div></div>
+          <dc-import name="EventCard" item="{{life2}}" hint-size="100%,500px"></dc-import>
+        </div>
+        <div aria-hidden="true" style="display: flex; justify-content: center; padding-top: 240px; color: #e52a30"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></div>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div class="step"><b>3</b><div><strong>End date passes</strong><p class="small muted">/events · International, first in the list</p></div></div>
+          <dc-import name="EventCard" item="{{life3}}" hint-size="100%,440px"></dc-import>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3853}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = { date: '7–13 Nov 2026', location: 'Skopje & Ohrid', type: 'Workshop', scope: 'International', organized: true, hasImage: true, photo: 'dev boards and a laptop running a vision model', href: '/upcoming/ai-at-the-edge' };
+    const mk = (o) => Object.assign({}, base, { title: 'Workshop: AI at the Edge' }, o);
+    return {
+      cards: [
+        { label: 'Applications open', item: mk({ status: 'open', deadline: 'Applications close in 13 days', cta: 'Details & application' }) },
+        { label: 'Deadline soon', item: Object.assign({}, base, { title: 'Soft Skills Training: Leading Teams', date: '14 Nov 2026', location: 'FEEIT, Skopje', type: 'Training / Soft Skills', scope: 'Local', status: 'closing', deadline: 'Closes in 2 days 5 h', photo: 'trainer at a flipchart', cta: 'Details & application' }) },
+        { label: 'Opening soon', item: Object.assign({}, base, { title: 'Exchange: Kraków Winter Edition', date: '4–8 Dec 2026', location: 'Kraków, Poland', type: 'Exchange', organized: false, status: 'soon', deadline: 'Applications open 15 Oct on eestec.net', photo: 'Kraków old town in winter', cta: 'View details' }) },
+        { label: 'Applications closed', item: Object.assign({}, base, { title: 'Motivational Weekend Balkan Region 2026', date: '13–15 Nov 2026', location: 'Belgrade, Serbia', type: 'Motivational Weekend', organized: false, status: 'closed', deadline: 'Closed on 1 Oct · selection in progress', photo: 'MW participants in a circle', cta: 'View details' }) },
+        { label: 'Full', item: Object.assign({}, base, { title: 'Hands-on: FPGA Basics', date: '21–22 Nov 2026', location: 'Lab 215, FEEIT', scope: 'Local', status: 'full', deadline: '20 / 20 places · 7 on the waitlist', hasImage: false, cta: 'Join the waitlist' }) },
+        { label: 'Long title, no photo', item: Object.assign({}, base, { title: 'EESTech Challenge 2027 — Local Round Skopje, co-organized with IEEE Student Branch Skopje and the FEEIT Student Parliament', date: '13 Mar 2027', location: 'FEEIT, Skopje', type: 'Competition', scope: 'Local', status: 'soon', deadline: 'Registration opens 1 Feb 2027', hasImage: false, cta: 'View details' }) }
+      ],
+      life1: mk({ status: 'open', deadline: 'Applications close in 13 days', cta: 'Details & application' }),
+      life2: mk({ status: 'closed', deadline: 'Closed on 18 Oct · results by 25 Oct', cta: 'View details' }),
+      life3: mk({ status: 'ended', href: '/events/ai-at-the-edge', cta: 'View event' })
+    };
+  }
+}
+</script>
+</body>
+</html>

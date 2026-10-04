@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · Dashboard</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+a{color:#b81f24}
+.a-h1{font-size:24px;line-height:1.25;font-weight:700}
+.a-h2{font-size:16px;line-height:1.35;font-weight:700}
+.muted{color:#6b6b6b}
+.sm{font-size:13px}
+.panel{background:#ffffff;border:1px solid #e3e3e3;border-radius:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
+.btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-icon{width:32px;height:32px;padding:0}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:2px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.b-neutral{background:#f5f5f5;color:#3a3a3a;border:1px solid #e3e3e3}
+.b-pending{background:#fdf0f0;color:#b81f24;border:1px solid rgba(229,42,48,0.35)}
+.b-pub{background:#1a1a1a;color:#ffffff}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{height:40px;padding:0 16px;font-size:12px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:#6b6b6b;text-align:left;background:#fafafa;border-bottom:1px solid #e3e3e3;white-space:nowrap}
+.tbl td{height:52px;padding:8px 16px;border-bottom:1px solid #ececec;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid #ececec}
+.link{color:#b81f24;font-weight:500;text-decoration:none;font-size:13px}
+.link:hover{text-decoration:underline}
+.stat{display:flex;flex-direction:column;gap:6px;padding:18px 20px;text-decoration:none;color:#1a1a1a;transition:border-color .15s,box-shadow .15s}
+.stat:hover{border-color:#c7c7c7;box-shadow:0 4px 14px rgba(0,0,0,0.06);color:#1a1a1a}
+</style>
+</helmet>
+
+<div style="display: flex; width: 100%; min-height: 900px; background: #f5f5f5">
+  <div style="width: {{sideW}}; flex-shrink: 0; background: #ffffff; border-right: 1px solid #e3e3e3">
+    <div style="position: sticky; top: 0">
+      <dc-import name="AdminSidebar" active="Dashboard" rail="{{rail}}" hint-size="{{sideW}},900px"></dc-import>
+    </div>
+  </div>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="AdminTopbar" crumbs="{{crumbs}}" compact="{{rail}}" hint-size="100%,60px"></dc-import>
+    <main style="padding: 28px {{padX}} 48px; display: flex; flex-direction: column; gap: 24px">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 class="a-h1">Good evening, Ana</h1>
+          <p class="muted">Sunday, 4 October 2026 · <strong style="color: #1a1a1a">24 items</strong> need your attention</p>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap">
+          <a href="/admin/approvals?type=memories" class="btn">Approve memories <span class="badge b-pending" style="height: 20px; padding: 0 7px">4</span></a>
+          <a href="/admin/sponsors/new" class="btn">Add sponsor</a>
+          <a href="/admin/events/new" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add event</a>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: {{statCols}}; gap: 16px">
+        <sc-for list="{{stats}}" as="s" hint-placeholder-count="6">
+          <a href="{{s.href}}" class="panel stat">
+            <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+              <span class="sm muted" style="display: flex; align-items: center; gap: 8px"><sc-if value="{{s.attn}}" hint-placeholder-val="{{ true }}"><span aria-label="needs review" style="width: 8px; height: 8px; border-radius: 50%; background: #e52a30"></span></sc-if>{{s.label}}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a8a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.icon}}"></path></svg>
+            </span>
+            <strong style="font-size: 30px; line-height: 1.1; font-weight: 700">{{s.n}}</strong>
+            <span class="sm muted">{{s.sub}}</span>
+          </a>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: {{twoCols}}; gap: 16px; align-items: start">
+        <section class="panel" aria-labelledby="pa-h">
+          <div class="card-h"><h2 id="pa-h" class="a-h2">Pending approvals</h2><a href="/admin/approvals" class="link">Open queue (24) →</a></div>
+          <ul style="list-style: none; margin: 0; padding: 0">
+            <sc-for list="{{pending}}" as="p" hint-placeholder-count="5">
+              <li style="display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 20px; border-bottom: 1px solid #ececec">
+                <span class="badge b-neutral" style="justify-self: start">{{p.type}}</span>
+                <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{p.t}}</strong><span class="sm muted">{{p.meta}}</span></span>
+                <span style="display: flex; gap: 6px">
+                  <button type="button" class="btn btn-icon" aria-label="Reject {{p.t}}" title="Reject"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+                  <button type="button" class="btn btn-icon" aria-label="Approve {{p.t}}" title="Approve" style="border-color: #e52a30; color: #e52a30"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></button>
+                  <a href="/admin/approvals" class="btn" style="height: 32px">Review</a>
+                </span>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+
+        <section class="panel" aria-labelledby="ra-h">
+          <div class="card-h"><h2 id="ra-h" class="a-h2">Recent activity</h2><a href="/admin/settings#activity" class="link">Activity log →</a></div>
+          <ul style="list-style: none; margin: 0; padding: 6px 0">
+            <sc-for list="{{activity}}" as="a" hint-placeholder-count="6">
+              <li style="display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; padding: 10px 20px">
+                <span style="width: 32px; height: 32px; border-radius: 50%; background: {{a.bg}}; color: {{a.fg}}; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{a.i}}</span>
+                <span style="display: flex; flex-direction: column; gap: 2px"><span style="line-height: 1.4"><strong style="font-weight: 500">{{a.who}}</strong> {{a.what}}</span><span class="sm muted">{{a.when}}</span></span>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+      </div>
+
+      <section class="panel" aria-labelledby="oa-h" style="overflow: hidden">
+        <div class="card-h"><h2 id="oa-h" class="a-h2">Applications for open events</h2><a href="/admin/applications" class="link">All applications →</a></div>
+        <div style="overflow-x: auto">
+          <table class="tbl">
+            <thead><tr><th>Event</th><th>Deadline</th><th>Applications</th><th>Places</th><th>Status</th><th><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0)">Actions</span></th></tr></thead>
+            <tbody>
+              <sc-for list="{{apps}}" as="r" hint-placeholder-count="3">
+                <tr>
+                  <td><strong style="font-weight: 500">{{r.t}}</strong></td>
+                  <td>{{r.deadline}}</td>
+                  <td><strong>{{r.n}}</strong> <span class="muted sm">· {{r.newN}} new</span></td>
+                  <td>{{r.places}}</td>
+                  <td><span class="{{r.badgeCls}}">{{r.status}}</span></td>
+                  <td style="text-align: right"><a href="/admin/applications" class="btn" style="height: 32px">View</a></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","tablet"],"default":"desktop"},"$preview":{"width":1440,"height":1196}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tablet = (this.props.device ?? 'desktop') === 'tablet';
+    const I = {
+      users: 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M20 8v6M23 11h-6M12.5 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z',
+      image: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM21 15l-5-5L5 21',
+      bulb: 'M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z',
+      join: 'M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 2h6v4H9z',
+      mail: 'M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6',
+      cal: 'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM16 2v4M8 2v4M3 10h18'
+    };
+    const initialsBg = { AT: ['#1a1a1a', '#fff'], SN: ['#ececec', '#1a1a1a'], MS: ['#ececec', '#1a1a1a'], SY: ['#f5f5f5', '#6b6b6b'], DR: ['#ececec', '#1a1a1a'] };
+    const act = (i, who, what, when) => ({ i, who, what, when, bg: initialsBg[i][0], fg: initialsBg[i][1] });
+    return {
+      rail: tablet,
+      sideW: tablet ? '72px' : '248px',
+      padX: tablet ? '24px' : '32px',
+      statCols: tablet ? 'repeat(2, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',
+      twoCols: tablet ? 'minmax(0, 1fr)' : 'minmax(0, 7fr) minmax(0, 5fr)',
+      crumbs: [{ t: 'Admin', href: '/admin' }, { t: 'Dashboard' }],
+      stats: [
+        { label: 'Member registrations to approve', n: '3', sub: 'Oldest: 2 days ago', icon: I.users, href: '/admin/approvals?type=members', attn: true },
+        { label: 'Memories to approve', n: '4', sub: 'Oldest: 5 hours ago', icon: I.image, href: '/admin/approvals?type=memories', attn: true },
+        { label: 'New ideas & feedback', n: '5', sub: '2 about the website', icon: I.bulb, href: '/admin/ideas', attn: true },
+        { label: 'New membership applications', n: '12', sub: 'Since Wednesday’s meeting', icon: I.join, href: '/admin/inbox?tab=membership', attn: true },
+        { label: 'New messages', n: '7', sub: '5 contact · 2 companies', icon: I.mail, href: '/admin/inbox', attn: true },
+        { label: 'Applications for open events', n: '88', sub: 'Across 3 events · 10 new', icon: I.cal, href: '/admin/applications', attn: false }
+      ],
+      pending: [
+        { type: 'Memory', t: 'Seven days, 28 nationalities and one very long bus ride', meta: 'Marija Stojanovska · 5 h ago' },
+        { type: 'Member', t: 'Daniel Ristov', meta: 'FEEIT, 2nd year · registered 2 days ago' },
+        { type: 'Memory', t: 'Power Up: the lab day (from an impression)', meta: 'Marija Stojanovska · today' },
+        { type: 'Memory', t: 'My first exchange: Delft by bike', meta: 'Stefan Nikolovski · yesterday' },
+        { type: 'Member', t: 'Elena Petrovska', meta: 'FINKI, 1st year · registered today' }
+      ],
+      activity: [
+        act('AT', 'Ana Trajkovska', 'published Workshop: AI at the Edge', '2 hours ago'),
+        act('SN', 'Stefan Nikolovski', 'edited Home page › Hero', 'Yesterday, 21:14'),
+        act('MS', 'Marija Stojanovska', 'approved 3 Memories', 'Yesterday, 18:02'),
+        act('DR', 'Daniel Ristov', 'exported applications for Leading Teams (CSV)', 'Fri 2 Oct, 16:40'),
+        act('AT', 'Ana Trajkovska', 'added sponsor Gridnova (Gold)', 'Thu 1 Oct, 11:25'),
+        act('SY', 'System', 'daily backup completed', 'Today, 03:00')
+      ],
+      apps: [
+        { t: 'Workshop: AI at the Edge', deadline: '18 Oct 2026, 23:59', n: 38, newN: 6, places: '24', status: 'Open', badgeCls: 'badge b-pub' },
+        { t: 'Soft Skills Training: Leading Teams', deadline: '6 Oct 2026, 23:59', n: 23, newN: 4, places: '30', status: 'Closing soon', badgeCls: 'badge b-pending' },
+        { t: 'Hands-on: FPGA Basics', deadline: '15 Nov 2026', n: 27, newN: 0, places: '20 · full', status: 'Waitlist', badgeCls: 'badge b-neutral' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

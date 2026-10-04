@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>eestec.mk Design System</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--red:#e52a30;--red-dark:#b81f24;--text:#1a1a1a;--muted:#6b6b6b;--surface:#f5f5f5;--border:#e3e3e3;--field:#8c8c8c}
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h2{font-size:36px;line-height:1.2;font-weight:700;letter-spacing:-0.005em}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.eyebrow{font-size:14px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#b81f24}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover,.btn-primary.is-hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover,.btn-secondary.is-hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-inverse{background:#ffffff;border-color:#ffffff;color:#e52a30}
+.btn-inverse:hover,.btn-inverse.is-hover{background:#f5f5f5;border-color:#f5f5f5;color:#b81f24}
+.btn-outline-white{background:transparent;border-color:#ffffff;color:#ffffff}
+.btn-outline-white:hover,.btn-outline-white.is-hover{background:rgba(255,255,255,0.14);color:#ffffff}
+.btn:focus-visible,.btn.is-focus{outline:3px solid #e52a30;outline-offset:3px}
+.on-red .btn:focus-visible,.on-red .btn.is-focus{outline-color:#ffffff}
+.btn:disabled{background:#e6e6e6;border-color:#e6e6e6;color:#6b6b6b;cursor:not-allowed}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap}
+.ev-card:hover{box-shadow:0 0 0 2px #e52a30,0 12px 28px rgba(0,0,0,0.14)!important;transform:translateY(-4px)!important}
+.ev-card:hover h3{color:#b81f24!important}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus,.input.is-focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.input.is-error{border-color:#e52a30;border-width:2px}
+textarea.input{height:auto;min-height:120px;padding:12px 14px;line-height:1.5;resize:vertical}
+.help{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.ds-section{padding:72px 0;border-top:1px solid #e3e3e3}
+.ds-label{font-size:13px;font-weight:500;color:#6b6b6b;letter-spacing:0.04em;text-transform:uppercase}
+</style>
+</helmet>
+
+<div style="width: 100%; min-height: 100%; background: #ffffff">
+
+  <div style="background: #f5f5f5; border-bottom: 1px solid #e3e3e3">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+      <img src="/_blob/50a34c7b9e3bee5c6211c37ed7b78ae3" alt="EESTEC LC Skopje" style="height: 44px; width: auto">
+      <span style="width: 1px; height: 28px; background: #d0d0d0"></span>
+      <span class="small" style="font-weight: 500">eestec.mk · Design system</span>
+      <span class="small muted" style="margin-left: auto">v1.0 · October 2026 · Source: 00-overview-and-design-system.md</span>
+    </div>
+  </div>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px">
+
+    <section style="padding: 72px 0 64px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: end">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span class="eyebrow">Foundations</span>
+        <h1 class="h1">One system for every page of eestec.mk</h1>
+      </div>
+      <p class="body muted" style="font-size: 18px">Red and white, Roboto, and a small set of shared components. Each piece below maps to a single React component or CSS token, so the Next.js build stays consistent from Home to the Admin Panel.</p>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Colors</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted" style="max-width: 680px">Red and white are the only brand colors. Neutrals are used only for text, borders and surfaces.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+        <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+          <div style="height: 128px; background: #e52a30; padding: 16px; display: flex; align-items: flex-end; color: #ffffff; font-weight: 700; font-size: 20px">Aa</div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><strong>Primary · #e52a30</strong><code class="small muted">--color-primary</code><span class="small">Buttons, links on red, active nav, icons, accents</span></div>
+        </div>
+        <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+          <div style="height: 128px; background: #b81f24; padding: 16px; display: flex; align-items: flex-end; color: #ffffff; font-weight: 700; font-size: 20px">Aa</div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><strong>Primary dark · #b81f24</strong><code class="small muted">--color-primary-dark</code><span class="small">Hover / pressed, small red text on white</span></div>
+        </div>
+        <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+          <div style="height: 128px; background: #ffffff; border-bottom: 1px solid #e3e3e3; padding: 16px; display: flex; align-items: flex-end; color: #e52a30; font-weight: 700; font-size: 20px">Aa</div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><strong>White · #ffffff</strong><code class="small muted">--color-white</code><span class="small">Page background, text on red</span></div>
+        </div>
+        <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+          <div style="height: 128px; background: #1a1a1a; padding: 16px; display: flex; align-items: flex-end; color: #ffffff; font-weight: 700; font-size: 20px">Aa</div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><strong>Text · #1a1a1a</strong><code class="small muted">--color-text</code><span class="small">Headings and body copy</span></div>
+        </div>
+        <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+          <div style="height: 128px; background: #6b6b6b; padding: 16px; display: flex; align-items: flex-end; color: #ffffff; font-weight: 700; font-size: 20px">Aa</div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><strong>Muted · #6b6b6b</strong><code class="small muted">--color-muted</code><span class="small">Dates, captions, secondary text</span></div>
+        </div>
+        <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+          <div style="height: 128px; background: #f5f5f5; border-bottom: 1px solid #e3e3e3; padding: 16px; display: flex; align-items: flex-end; color: #1a1a1a; font-weight: 700; font-size: 20px">Aa</div>
+          <div style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><strong>Surface · #f5f5f5</strong><code class="small muted">--color-surface</code><span class="small">Alternating sections, chips, card wells</span></div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap" class="small">
+        <span class="chip" style="background: #f5f5f5">Border · #e3e3e3</span>
+        <span class="chip" style="background: #f5f5f5">Input border · #8c8c8c (3.4:1)</span>
+        <span class="chip" style="background: #f5f5f5">Shadow · 0 1px 2px / 0 4px 16px, black 6–8%</span>
+      </div>
+      <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+        <div style="padding: 14px 20px; background: #f5f5f5; display: grid; grid-template-columns: 2fr 1fr 3fr; gap: 16px" class="small"><strong>Pair</strong><strong>Contrast</strong><strong>Rule</strong></div>
+        <div style="padding: 14px 20px; display: grid; grid-template-columns: 2fr 1fr 3fr; gap: 16px; border-top: 1px solid #e3e3e3" class="small"><span>#1a1a1a on white</span><span>17.4 : 1 ✓</span><span>All body text</span></div>
+        <div style="padding: 14px 20px; display: grid; grid-template-columns: 2fr 1fr 3fr; gap: 16px; border-top: 1px solid #e3e3e3" class="small"><span>#6b6b6b on white / on #f5f5f5</span><span>5.3 / 4.9 : 1 ✓</span><span>Captions and secondary text on both grounds</span></div>
+        <div style="padding: 14px 20px; display: grid; grid-template-columns: 2fr 1fr 3fr; gap: 16px; border-top: 1px solid #e3e3e3" class="small"><span>#b81f24 on white</span><span>6.4 : 1 ✓</span><span>Red links, eyebrows and any red text under 24px</span></div>
+        <div style="padding: 14px 20px; display: grid; grid-template-columns: 2fr 1fr 3fr; gap: 16px; border-top: 1px solid #e3e3e3; background: #fdf0f0" class="small"><span>#e52a30 ↔ white</span><span>4.46 : 1 · accepted</span><span>Brand red stays exactly #e52a30. White text on red is always Roboto 500 or 700 and never smaller than 14px (buttons, badges, header, footer, hero).</span></div>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Typography</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted">Roboto · fallback "Helvetica Neue", Arial, sans-serif · Headings 700 · Body 400 · Buttons and labels 500</p>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #e3e3e3">
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong>H1</strong><span class="small muted">48 / 1.15 desktop · 32 mobile · Bold</span></div>
+          <span class="h1">Start your EESTEC journey</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #e3e3e3">
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong>H2</strong><span class="small muted">36 / 1.2 desktop · 26 mobile · Bold</span></div>
+          <span class="h2">Tradition of LC Skopje</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #e3e3e3">
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong>H3</strong><span class="small muted">24 / 1.3 desktop · 20 mobile · Bold</span></div>
+          <span class="h3">Workshop: AI at the Edge</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #e3e3e3">
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong>Body</strong><span class="small muted">16 / 1.6 · Regular</span></div>
+          <p class="body" style="max-width: 680px">EESTEC is a non-profit, non-political student association connecting electrical engineering and computer science students across Europe through workshops, exchanges and trainings.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #e3e3e3">
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong>Small</strong><span class="small muted">14 / 1.5 · Regular</span></div>
+          <span class="small muted">12–14 Sep 2026 · FEEIT, Skopje · Photo by Marija Stojanovska</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid #e3e3e3">
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong>Eyebrow</strong><span class="small muted">14 · Medium · Uppercase · #b81f24</span></div>
+          <span class="eyebrow">Latest activity</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: center; padding: 20px 0">
+          <div style="display: flex; flex-direction: column; gap: 2px"><strong>Weights</strong><span class="small muted">300 · 400 · 500 · 700</span></div>
+          <div style="display: flex; gap: 40px; font-size: 32px; flex-wrap: wrap"><span style="font-weight: 300">Light</span><span style="font-weight: 400">Regular</span><span style="font-weight: 500">Medium</span><span style="font-weight: 700">Bold</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Logos &amp; favicon</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted">Provided files only, never redrawn. Replaceable from Admin → Settings → Branding.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div style="height: 220px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: #ffffff"><img src="/_blob/50a34c7b9e3bee5c6211c37ed7b78ae3" alt="EESTEC LC Skopje logo, red" style="width: 62%; height: auto"></div>
+          <span class="small"><strong>Full color</strong> · on white backgrounds</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div style="height: 220px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: #e52a30"><img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje logo, white" style="width: 62%; height: auto"></div>
+          <span class="small"><strong>White</strong> · header, footer and red surfaces</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div style="height: 220px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; background: #f5f5f5">
+            <div style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; background: #ffffff; border-radius: 10px 10px 0 0; box-shadow: 0 1px 3px rgba(0,0,0,0.12); font-size: 13px">
+              <img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="" style="width: 16px; height: 16px; border-radius: 3px">EESTEC LC Skopje
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 16px">
+              <img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="Square icon, 64px" style="width: 64px; height: 64px; border-radius: 12px">
+              <img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="Square icon, 32px" style="width: 32px; height: 32px; border-radius: 6px">
+              <img src="/_blob/8858145c0d6ab17bd53787fe90c4332b" alt="Square icon, 16px" style="width: 16px; height: 16px; border-radius: 3px">
+            </div>
+          </div>
+          <span class="small"><strong>Square icon</strong> · favicon, app icon, social avatar</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Buttons &amp; links</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted">Height 48 (40 small) · radius 8 · Medium 16. One primary action per section.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: 160px repeat(4, minmax(0, 1fr)); gap: 20px 24px; align-items: center">
+        <span></span><span class="ds-label">Default</span><span class="ds-label">Hover / pressed</span><span class="ds-label">Keyboard focus</span><span class="ds-label">Disabled</span>
+        <strong class="small">Primary</strong>
+        <div><a href="/join" class="btn btn-primary">Join Us</a></div>
+        <div><a href="/join" class="btn btn-primary is-hover">Join Us</a></div>
+        <div><a href="/join" class="btn btn-primary is-focus">Join Us</a></div>
+        <div><button type="button" class="btn btn-primary" disabled>Applications closed</button></div>
+        <strong class="small">Secondary</strong>
+        <div><a href="/upcoming" class="btn btn-secondary">Upcoming Events</a></div>
+        <div><a href="/upcoming" class="btn btn-secondary is-hover">Upcoming Events</a></div>
+        <div><a href="/upcoming" class="btn btn-secondary is-focus">Upcoming Events</a></div>
+        <div><button type="button" class="btn btn-secondary" disabled style="background: #ffffff; border-color: #d0d0d0; color: #6b6b6b">Upcoming Events</button></div>
+        <strong class="small">Small + icon</strong>
+        <div><a href="/upcoming" class="btn btn-primary btn-sm">Apply now<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></div>
+        <div><a href="/upcoming" class="btn btn-secondary btn-sm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>Add to calendar</a></div>
+        <div><a href="/events" class="link">View all events<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></div>
+        <div><a href="https://eestec.net" class="link">eestec.net ↗</a></div>
+      </div>
+      <div class="on-red" style="background: #e52a30; border-radius: 12px; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px">
+        <span class="small" style="color: #ffffff; font-weight: 500; width: 136px">On red surfaces (hero, CTA bands)</span>
+        <a href="/join" class="btn btn-inverse">Join Us</a>
+        <a href="/join" class="btn btn-inverse is-hover">Join Us</a>
+        <a href="/upcoming" class="btn btn-outline-white">Upcoming Events</a>
+        <a href="/upcoming" class="btn btn-outline-white is-focus">Upcoming Events</a>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <h2 class="h2">Badges &amp; chips</h2>
+          <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <span class="ds-label">Application status</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px">
+            <span class="chip" style="background: #e52a30; color: #ffffff"><span style="width: 6px; height: 6px; border-radius: 50%; background: #ffffff"></span>Applications open</span>
+            <span class="chip" style="background: #ffffff; color: #1a1a1a; border: 1.5px solid #1a1a1a">Opening soon</span>
+            <span class="chip" style="background: #f5f5f5; color: #6b6b6b">Applications closed</span>
+          </div>
+          <span class="ds-label">Event type and scope</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px">
+            <span class="chip" style="background: #f5f5f5; color: #1a1a1a">Workshop</span>
+            <span class="chip" style="background: #f5f5f5; color: #1a1a1a">Exchange</span>
+            <span class="chip" style="background: #f5f5f5; color: #1a1a1a">Training</span>
+            <span class="chip" style="border: 1px solid #d0d0d0; color: #1a1a1a">Local</span>
+            <span class="chip" style="border: 1px solid #d0d0d0; color: #1a1a1a">International</span>
+          </div>
+          <span class="ds-label">Countdown</span>
+          <div style="display: flex; gap: 8px">
+            <div style="width: 72px; padding: 10px 0; border-radius: 8px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center"><span style="font-size: 28px; font-weight: 700; color: #e52a30; line-height: 1.1">33</span><span class="small muted">days</span></div>
+            <div style="width: 72px; padding: 10px 0; border-radius: 8px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center"><span style="font-size: 28px; font-weight: 700; color: #e52a30; line-height: 1.1">15</span><span class="small muted">hours</span></div>
+            <div style="width: 72px; padding: 10px 0; border-radius: 8px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center"><span style="font-size: 28px; font-weight: 700; color: #e52a30; line-height: 1.1">42</span><span class="small muted">min</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <h2 class="h2">Section title</h2>
+          <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        </div>
+        <div style="padding: 32px; border: 1px dashed #c7c7c7; border-radius: 12px; display: flex; flex-direction: column; gap: 12px">
+          <span class="eyebrow">Optional eyebrow</span>
+          <h2 class="h2">What is EESTEC?</h2>
+          <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+          <p class="body muted">Optional intro, max 640px wide. Centered variant used for Partners and Journey.</p>
+        </div>
+        <p class="small muted">&lt;SectionTitle eyebrow? title intro? align="left|center" /&gt; · underline 56 × 4, radius 2, #e52a30</p>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Cards</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted">One card component for events, upcoming events and memories. White, radius 12, soft shadow, image on top (16:10). Titles clamp to 2 lines; a missing image falls back to the white logo on red.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch">
+        <dc-import name="EventCard" item="{{cardUpcoming}}" hint-size="100%,440px"></dc-import>
+        <dc-import name="EventCard" item="{{cardMemory}}" hint-size="100%,440px"></dc-import>
+        <dc-import name="EventCard" item="{{cardLong}}" hint-size="100%,440px"></dc-import>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">Activity / icon card</span>
+          <div style="padding: 24px; border: 1px solid #e3e3e3; border-radius: 12px; background: #ffffff; display: flex; flex-direction: column; gap: 12px">
+            <span style="width: 48px; height: 48px; border-radius: 12px; background: rgba(229,42,48,0.1); color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1"></rect><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"></path></svg></span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 700">Workshops</h3>
+            <p class="small muted">A week of lectures, labs and city life hosted by a committee.</p>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">Stat</span>
+          <div style="padding: 24px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 48px; line-height: 1.1; font-weight: 700; color: #e52a30">5,000+</span>
+            <span class="body muted">EESTEC members in Europe</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">Empty state (0 items)</span>
+          <div style="padding: 28px 24px; border: 1px dashed #c7c7c7; border-radius: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; background: #f5f5f5">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>
+            <p class="body">No upcoming events right now. Follow us on Instagram so you don't miss the next one.</p>
+            <a href="https://instagram.com/eestec_skopje" class="btn btn-secondary btn-sm">Follow @eestec_skopje</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Form fields</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted">Label above the field, red focus ring, errors with an icon and text (never color alone).</p>
+      </div>
+      <form style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; max-width: 960px">
+        <div>
+          <label class="label" for="f-name">Full name</label>
+          <input class="input" id="f-name" type="text" placeholder="e.g. Marija Stojanovska">
+          <span class="help">As written on your student ID.</span>
+        </div>
+        <div>
+          <label class="label" for="f-email">E-mail <span class="muted" style="font-weight: 400">· focused</span></label>
+          <input class="input is-focus" id="f-email" type="email" value="marija.s@students.feit.ukim.edu.mk">
+        </div>
+        <div>
+          <label class="label" for="f-phone">Phone</label>
+          <input class="input is-error" id="f-phone" type="tel" value="070 12" aria-invalid="true" aria-describedby="f-phone-err">
+          <span class="error" id="f-phone-err"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Enter a full phone number, e.g. 070 123 456.</span>
+        </div>
+        <div>
+          <label class="label" for="f-year">Year of study</label>
+          <div style="position: relative">
+            <select class="input" id="f-year" style="appearance: none; padding-right: 40px">
+              <option>2nd year</option>
+              <option>1st year</option>
+              <option>3rd year</option>
+              <option>4th year</option>
+              <option>Master's</option>
+            </select>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 14px; top: 15px; pointer-events: none"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+        </div>
+        <div style="grid-column: 1 / -1">
+          <label class="label" for="f-motivation">Why do you want to join this workshop?</label>
+          <textarea class="input" id="f-motivation" rows="4">I want to try embedded ML on real hardware and meet students working on the same problems in other countries.</textarea>
+          <span class="help" style="justify-content: space-between">Keep it under 1,500 characters.<span>112 / 1,500</span></span>
+        </div>
+        <div>
+          <span class="label">CV (PDF, max 5 MB)</span>
+          <label for="f-cv" style="display: flex; align-items: center; gap: 12px; padding: 14px; border: 1.5px dashed #8c8c8c; border-radius: 8px; cursor: pointer">
+            <span style="width: 40px; height: 40px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; color: #e52a30"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg></span>
+            <span class="small"><strong style="color: #b81f24">Upload a file</strong> or drag it here</span>
+          </label>
+          <input id="f-cv" type="file" style="position: absolute; width: 1px; height: 1px; opacity: 0">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; justify-content: center">
+          <label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer" class="small">
+            <input type="checkbox" checked style="width: 20px; height: 20px; margin: 0; accent-color: #e52a30; flex-shrink: 0">
+            <span>I agree that EESTEC LC Skopje processes my personal data for this application. <a href="/privacy">Privacy policy</a></span>
+          </label>
+          <label style="display: flex; gap: 12px; align-items: center; cursor: pointer" class="small">
+            <input type="radio" name="member" checked style="width: 20px; height: 20px; margin: 0; accent-color: #e52a30">I'm already an EESTEC member
+          </label>
+        </div>
+        <div style="grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; padding-top: 8px">
+          <button type="submit" class="btn btn-primary">Submit application</button>
+          <div role="status" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; background: #f5f5f5" class="small">
+            <span style="width: 24px; height: 24px; border-radius: 50%; background: #1a1a1a; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            Application sent. We e-mailed a confirmation to marija.s@students.feit.ukim.edu.mk.
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Header</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted">Red, sticky, white logo left, menu right, EN / MK switcher top-right. Active page: white pill with red text (red on red would disappear). Under 1024px the menu collapses into a hamburger.</p>
+      </div>
+      <span class="ds-label">Desktop · 1024px and up</span>
+      <div style="border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden">
+        <dc-import name="Header" variant="desktop" active="Upcoming Events" hint-size="100%,72px"></dc-import>
+        <div style="height: 56px; background: #f5f5f5"></div>
+      </div>
+      <div style="display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">Mobile · closed</span>
+          <div style="width: 390px; border: 1px solid #e3e3e3; border-radius: 16px; overflow: hidden">
+            <dc-import name="Header" variant="mobile" active="Home" hint-size="390px,64px"></dc-import>
+            <div style="height: 200px; background: #f5f5f5"></div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="ds-label">Mobile · menu open</span>
+          <div style="width: 390px; border: 1px solid #e3e3e3; border-radius: 16px; overflow: hidden">
+            <dc-import name="Header" variant="mobile-open" active="Home" hint-size="390px,600px"></dc-import>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: flex; flex-direction: column; gap: 32px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="h2">Footer</h2>
+        <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        <p class="body muted">Red, white logo, sitemap, contacts, socials, legal line and copyright. The Partners strip always sits directly above it.</p>
+      </div>
+      <span class="ds-label">Desktop</span>
+      <div style="border-radius: 12px; overflow: hidden">
+        <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+      </div>
+      <span class="ds-label">Mobile</span>
+      <div style="width: 390px; border-radius: 16px; overflow: hidden">
+        <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+      </div>
+    </section>
+
+    <section class="ds-section" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; padding-bottom: 96px">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <h2 class="h2">Layout</h2>
+          <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px" class="small">
+          <span><strong>Container</strong> · max 1200px, centered, 24px side padding (16px under 640px)</span>
+          <span><strong>Breakpoints</strong> · 640 · 1024 · 1280 (mobile first)</span>
+          <span><strong>Section rhythm</strong> · 96px vertical desktop, 64px mobile; alternate white / #f5f5f5</span>
+          <span><strong>Grid</strong> · 12 columns, 24px gutter · cards 3 / 2 / 1 per row</span>
+          <span><strong>Radius</strong> · 8 buttons and inputs · 12 cards and panels · 999 chips</span>
+          <span><strong>Touch targets</strong> · 44px minimum</span>
+        </div>
+        <div style="display: flex; align-items: flex-end; gap: 12px">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 4px; height: 4px; background: #e52a30"></span><span class="small muted">4</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; background: #e52a30"></span><span class="small muted">8</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; background: #e52a30"></span><span class="small muted">12</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 16px; height: 16px; background: #e52a30"></span><span class="small muted">16</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 24px; height: 24px; background: #e52a30"></span><span class="small muted">24</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 32px; height: 32px; background: #e52a30"></span><span class="small muted">32</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 48px; height: 48px; background: #e52a30"></span><span class="small muted">48</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 64px; height: 64px; background: #e52a30"></span><span class="small muted">64</span></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 96px; height: 96px; background: #e52a30"></span><span class="small muted">96</span></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <h2 class="h2">Icons</h2>
+          <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+          <p class="small muted">24px outline, 2px stroke, round caps (Lucide-compatible). Red for accents, #1a1a1a or white otherwise.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; color: #e52a30">
+          <span title="Workshops" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1"></rect><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"></path></svg></span>
+          <span title="Exchanges" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"></path></svg></span>
+          <span title="Motivational Weekends" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg></span>
+          <span title="Soft Skills" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5z"></path></svg></span>
+          <span title="Competitions" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg></span>
+          <span title="Congress" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+          <span title="Calendar" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+          <span title="Location" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+          <span title="Time" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
+          <span title="Join" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M20 8v6M23 11h-6"></path><circle cx="8.5" cy="7" r="4"></circle></svg></span>
+          <span title="Volunteer" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.7 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.7 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg></span>
+          <span title="International" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+          <span title="Lead" style="height: 56px; border-radius: 8px; background: #f5f5f5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"></path></svg></span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":9629}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      cardUpcoming: {
+        kind: 'event', title: 'Workshop: AI at the Edge', date: '7–13 Nov 2026', location: 'Skopje & Ohrid',
+        type: 'Workshop', scope: 'International', badge: 'Applications open', organized: true, hasImage: true,
+        photo: 'participants soldering dev boards in the FEEIT lab', href: '/upcoming/ai-at-the-edge'
+      },
+      cardMemory: {
+        kind: 'memory', title: 'Seven days, 28 nationalities and one very long bus ride to Ohrid', date: '2 Jun 2026',
+        type: 'Memory', hasImage: true, photo: 'group selfie on the Ohrid lake shore',
+        excerpt: 'What I expected from my first workshop as an organizer, and what actually happened when 28 students arrived in Skopje at once.',
+        author: 'Marija Stojanovska', initials: 'MS', href: '/memories/ohrid-bus-ride'
+      },
+      cardLong: {
+        kind: 'event', title: 'EESTEC Chairpersons’ Meeting Autumn 2026 — hosted jointly with the Faculty of Electrical Engineering and Information Technologies', date: '24–28 Oct 2026', location: 'Hotel Continental, Skopje',
+        type: 'Congress', scope: 'International', badge: '', hasImage: false, href: '/events/ecm-2026'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

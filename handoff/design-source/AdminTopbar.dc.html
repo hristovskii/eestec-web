@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin top bar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<header style="height: 60px; padding: 0 24px; display: flex; align-items: center; gap: 16px; background: #ffffff; border-bottom: 1px solid #e3e3e3; box-sizing: border-box; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a">
+  <nav aria-label="Breadcrumb" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #6b6b6b; min-width: 0; flex: 1">
+    <sc-for list="{{crumbs}}" as="c" hint-placeholder-count="3">
+      <sc-if value="{{c.notFirst}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b0b0b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></sc-if>
+      <sc-if value="{{c.isLink}}" hint-placeholder-val="{{ true }}"><a href="{{c.href}}" style="color: #6b6b6b; text-decoration: none; white-space: nowrap">{{c.t}}</a></sc-if>
+      <sc-if value="{{c.isLast}}" hint-placeholder-val="{{ false }}"><span aria-current="page" style="color: #1a1a1a; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.t}}</span></sc-if>
+    </sc-for>
+  </nav>
+  <sc-if value="{{showSearch}}" hint-placeholder-val="{{ true }}">
+    <label style="position: relative; width: 280px">
+      <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0)">Search the admin</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; left: 12px; top: 11px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input type="search" placeholder="Search events, members, messages…" style="width: 100%; height: 38px; padding: 0 44px 0 36px; border: 1px solid #d0d0d0; border-radius: 8px; background: #f5f5f5; font-family: inherit; font-size: 14px; box-sizing: border-box">
+      <kbd style="position: absolute; right: 8px; top: 9px; height: 20px; padding: 0 6px; border: 1px solid #d0d0d0; border-radius: 4px; background: #ffffff; font-family: inherit; font-size: 11px; color: #6b6b6b; display: flex; align-items: center">⌘K</kbd>
+    </label>
+  </sc-if>
+  <button type="button" aria-label="Notifications, 3 new" style="position: relative; width: 38px; height: 38px; border: 1px solid #e3e3e3; border-radius: 8px; background: #ffffff; color: #1a1a1a; display: flex; align-items: center; justify-content: center; cursor: pointer">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+    <span style="position: absolute; top: 6px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: #e52a30; box-shadow: 0 0 0 2px #ffffff"></span>
+  </button>
+  <button type="button" aria-haspopup="menu" style="display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 8px 0 4px; border: 0; border-radius: 8px; background: transparent; font-family: inherit; cursor: pointer; color: #1a1a1a">
+    <span style="width: 34px; height: 34px; border-radius: 50%; background: #1a1a1a; color: #ffffff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{initials}}</span>
+    <sc-if value="{{showName}}" hint-placeholder-val="{{ true }}">
+      <span style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2"><span style="font-size: 14px; font-weight: 500">{{name}}</span><span style="font-size: 12px; color: #6b6b6b">{{role}}</span></span>
+    </sc-if>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+  </button>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"crumbs":{"editor":null},"compact":{"editor":"boolean","default":false},"user":{"editor":null},"$preview":{"width":1192,"height":60}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const raw = this.props.crumbs || [{ t: 'Admin', href: '/admin' }, { t: 'Dashboard' }];
+    const crumbs = raw.map((c, i) => ({ t: c.t, href: c.href || '#', notFirst: i > 0, isLast: i === raw.length - 1, isLink: i < raw.length - 1 }));
+    const u = this.props.user || { name: 'Ana Trajkovska', role: 'Super admin', initials: 'AT' };
+    const compact = !!this.props.compact;
+    return { crumbs, name: u.name, role: u.role, initials: u.initials, showSearch: !compact, showName: !compact };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Partner logo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.plogo:hover,.plogo:focus-visible{border-color:#c7c7c7!important;box-shadow:0 6px 18px rgba(0,0,0,0.08)!important}
+.plogo:hover img,.plogo:focus-visible img{filter:none!important;opacity:1!important}
+.plogo:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+</style>
+</helmet>
+<a href="{{l.url}}" target="_blank" rel="noopener" class="plogo" aria-label="{{l.name}} (opens in a new tab)" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: {{cellH}}px; border: 1px solid {{border}}; border-radius: 12px; background: #ffffff; box-shadow: {{shadow}}; text-decoration: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <sc-if value="{{hasImg}}" hint-placeholder-val="{{ true }}">
+    <img src="{{l.src}}" alt="{{l.name}}" style="display: block; width: {{w}}px; height: {{h}}px; filter: {{filter}}; opacity: {{opacity}}; transition: filter 0.2s, opacity 0.2s">
+  </sc-if>
+  <sc-if value="{{textOnly}}" hint-placeholder-val="{{ false }}">
+    <span style="display: flex; flex-direction: column; align-items: center; gap: 2px; color: #6b6b6b; text-align: center"><strong style="font-size: 18px; letter-spacing: 0.04em; color: #4a4a4a">{{l.name}}</strong><span style="font-size: 12px">{{l.sub}}</span></span>
+  </sc-if>
+  <sc-if value="{{showBox}}" hint-placeholder-val="{{ false }}">
+    <span aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: {{w}}px; height: {{h}}px; transform: translate(-50%, -50%); outline: 1.5px dashed #e52a30; outline-offset: 2px; pointer-events: none"></span>
+  </sc-if>
+</a>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"logo":{"editor":null,"tsType":"{name: string, src?: string, ratio?: number, url: string, sub?: string}"},"cellH":{"editor":"int","default":112},"maxW":{"editor":"int","default":192},"area":{"editor":"int","default":6000},"hover":{"editor":"boolean","default":false},"showBox":{"editor":"boolean","default":false},"sizing":{"editor":"enum","options":["area","height"],"default":"area"},"$preview":{"width":240,"height":112}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const l = this.props.logo ? Object.assign({ url: '#' }, this.props.logo) : { name: 'Voltline', src: '/_blob/7a12a1763bab8b1a3821ee95a91a5805', ratio: 4, url: '#' };
+    const cellH = this.props.cellH ?? 112;
+    const maxW = this.props.maxW ?? 192;
+    const maxH = Math.round(cellH * 0.64);
+    const area = this.props.area ?? 6000;
+    const r = l.ratio || 1;
+    let w, h;
+    if ((this.props.sizing ?? 'area') === 'height') {
+      h = maxH; w = h * r;
+      if (w > maxW) { w = maxW; h = w / r; }
+    } else {
+      w = Math.sqrt(area * r); h = w / r;
+      if (h > maxH) { h = maxH; w = h * r; }
+      if (w > maxW) { w = maxW; h = w / r; }
+    }
+    const hover = !!this.props.hover;
+    return {
+      l,
+      cellH,
+      w: Math.round(w),
+      h: Math.round(h),
+      hasImg: !!l.src,
+      textOnly: !l.src,
+      showBox: !!this.props.showBox,
+      filter: hover ? 'none' : 'grayscale(1)',
+      opacity: hover ? 1 : 0.6,
+      border: hover ? '#c7c7c7' : '#ececec',
+      shadow: hover ? '0 6px 18px rgba(0,0,0,0.08)' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

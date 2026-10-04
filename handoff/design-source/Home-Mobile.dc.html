@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home (mobile) — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.h1{font-size:32px;line-height:1.2;font-weight:700;letter-spacing:-0.01em}
+.h2{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.eyebrow{font-size:14px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#b81f24}
+.container{padding:0 16px}
+.section{padding:64px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-block{width:100%}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-inverse{background:#ffffff;border-color:#ffffff;color:#e52a30}
+.btn-outline-white{background:transparent;border-color:#ffffff;color:#ffffff}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.on-red .btn:focus-visible{outline-color:#ffffff}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none;min-height:44px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap}
+.ev-card:active{box-shadow:0 0 0 2px #e52a30,0 12px 28px rgba(0,0,0,0.14)!important}
+.dots{background-image:radial-gradient(rgba(255,255,255,0.16) 1.5px,transparent 1.6px);background-size:22px 22px}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.filter{flex-shrink:0;height:40px;padding:0 14px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.logo-box{display:flex;align-items:center;justify-content:center;border:1px solid #e3e3e3;border-radius:12px;background:#ffffff;color:#6b6b6b;font-size:13px;text-decoration:none;text-align:center;padding:0 8px}
+.rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 16px 20px;margin:0 -16px;scrollbar-width:none}
+</style>
+</helmet>
+
+<div style="width: 390px; background: #ffffff">
+
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="mobile" active="Home" hint-size="390px,64px"></dc-import>
+  </div>
+
+  <main>
+
+    <section aria-label="Welcome" class="on-red dots" style="background-color: #e52a30; color: #ffffff">
+      <div class="container" style="padding-top: 40px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 20px">
+        <span class="chip" style="align-self: flex-start; border: 1px solid rgba(255,255,255,0.7); color: #ffffff; height: 30px">EESTEC LC Skopje · FEEIT</span>
+        <h1 class="h1" style="font-size: 34px">Learn more. Travel further. Build it together.</h1>
+        <p style="font-size: 18px; line-height: 1.5; font-weight: 500">Connecting electrical engineering and computer science students across Europe.</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 4px">
+          <a href="/join" class="btn btn-inverse btn-block">Join Us</a>
+          <a href="/upcoming" class="btn btn-outline-white btn-block">Upcoming Events</a>
+        </div>
+        <div style="margin-top: 12px; background: #ffffff; color: #1a1a1a; border-radius: 16px; padding: 20px; box-shadow: 0 16px 32px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+            <span class="eyebrow" style="font-size: 13px">Next event</span>
+            <span class="chip" style="background: #e52a30; color: #ffffff; height: 28px; font-size: 14px"><span style="width: 6px; height: 6px; border-radius: 50%; background: #ffffff"></span>Applications open</span>
+          </div>
+          <h2 class="h3">Workshop: AI at the Edge</h2>
+          <span class="small muted">7–13 Nov 2026 · Skopje &amp; Ohrid</span>
+          <div role="timer" aria-label="33 days, 15 hours, 42 minutes until the event starts" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+            <div style="padding: 10px 0; border-radius: 10px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center"><span style="font-size: 26px; font-weight: 700; line-height: 1.1; color: #e52a30">33</span><span style="font-size: 12px" class="muted">days</span></div>
+            <div style="padding: 10px 0; border-radius: 10px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center"><span style="font-size: 26px; font-weight: 700; line-height: 1.1; color: #e52a30">15</span><span style="font-size: 12px" class="muted">hours</span></div>
+            <div style="padding: 10px 0; border-radius: 10px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center"><span style="font-size: 26px; font-weight: 700; line-height: 1.1; color: #e52a30">42</span><span style="font-size: 12px" class="muted">min</span></div>
+            <div style="padding: 10px 0; border-radius: 10px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center"><span style="font-size: 26px; font-weight: 700; line-height: 1.1; color: #e52a30">08</span><span style="font-size: 12px" class="muted">sec</span></div>
+          </div>
+          <a href="/upcoming/ai-at-the-edge" class="link small" style="min-height: 36px">Event details · apply by 18 Oct<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="eyebrow">About</span>
+          <h2 class="h2">What is EESTEC?</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <p class="body" style="font-size: 17px">EESTEC is a non-profit, non-political student association founded in 1986 in the Netherlands.</p>
+          <p class="body muted">Today it is a network of Local Committees at technical universities across Europe, organizing workshops, exchanges and trainings together.</p>
+          <a href="https://eestec.net" class="link" style="align-self: flex-start">Visit eestec.net<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"></path></svg></a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <div style="padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: rgba(229,42,48,0.1); color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1"></rect><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"></path></svg></span>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700">Workshops</h3>
+            <p class="muted" style="font-size: 14px; line-height: 1.45">A week of lectures, labs and city life.</p>
+          </div>
+          <div style="padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: rgba(229,42,48,0.1); color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"></path></svg></span>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700">Exchanges</h3>
+            <p class="muted" style="font-size: 14px; line-height: 1.45">Short, culture-first trips abroad.</p>
+          </div>
+          <div style="padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: rgba(229,42,48,0.1); color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg></span>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700">Motivational Weekends</h3>
+            <p class="muted" style="font-size: 14px; line-height: 1.45">Turn new members into organizers.</p>
+          </div>
+          <div style="padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: rgba(229,42,48,0.1); color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5z"></path></svg></span>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700">Soft Skills trainings</h3>
+            <p class="muted" style="font-size: 14px; line-height: 1.45">Communication, leadership, teamwork.</p>
+          </div>
+          <div style="padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: rgba(229,42,48,0.1); color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path></svg></span>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700">Competitions</h3>
+            <p class="muted" style="font-size: 14px; line-height: 1.45">EESTech Challenge, RoboMac and more.</p>
+          </div>
+          <div style="padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 10px">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: rgba(229,42,48,0.1); color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700">Congress</h3>
+            <p class="muted" style="font-size: 14px; line-height: 1.45">Where every committee shapes the future.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: #f5f5f5">
+      <div class="container" style="display: flex; flex-direction: column; gap: 32px">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="eyebrow">Since the early 2000s</span>
+          <h2 class="h2">Tradition of LC Skopje</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="position: relative">
+          <span aria-hidden="true" style="position: absolute; left: 9px; top: 10px; bottom: 10px; width: 2px; background: #e52a30"></span>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 32px; position: relative">
+            <sc-for list="{{milestones}}" as="m" hint-placeholder-count="5">
+              <li style="display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 16px">
+                <span aria-hidden="true" style="width: 20px; height: 20px; margin-top: 4px; border-radius: 50%; background: #e52a30; border: 4px solid #f5f5f5; box-shadow: 0 0 0 2px #e52a30"></span>
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <span style="font-size: 24px; font-weight: 700; color: #e52a30; line-height: 1.2">{{m.year}}</span>
+                  <h3 style="margin: 0; font-size: 18px; font-weight: 700; line-height: 1.35">{{m.title}}</h3>
+                  <p class="small muted">{{m.text}}</p>
+                  <sc-if value="{{m.hasPhoto}}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top: 6px; aspect-ratio: 16 / 9; border-radius: 10px; background: repeating-linear-gradient(135deg, #e9e9e9 0 12px, #e2e2e2 12px 24px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px; text-align: center; color: #6b6b6b">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+                      <span style="font-size: 12px">Photo: {{m.photo}}</span>
+                    </div>
+                  </sc-if>
+                </div>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-bottom: 48px">
+      <div class="container" style="display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <h2 class="h2">EESTEC in numbers</h2>
+          <span class="title-bar"></span>
+        </div>
+        <dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <div style="padding: 20px 16px; border-radius: 12px; background: #f5f5f5; display: flex; flex-direction: column-reverse; gap: 4px"><dt class="small muted">Local Committees</dt><dd style="margin: 0; font-size: 40px; font-weight: 700; line-height: 1; color: #e52a30">35</dd></div>
+          <div style="padding: 20px 16px; border-radius: 12px; background: #f5f5f5; display: flex; flex-direction: column-reverse; gap: 4px"><dt class="small muted">Countries</dt><dd style="margin: 0; font-size: 40px; font-weight: 700; line-height: 1; color: #e52a30">21</dd></div>
+          <div style="padding: 20px 16px; border-radius: 12px; background: #f5f5f5; display: flex; flex-direction: column-reverse; gap: 4px"><dt class="small muted">EESTEC members in Europe</dt><dd style="margin: 0; font-size: 40px; font-weight: 700; line-height: 1; color: #e52a30">5,000+</dd></div>
+          <div style="padding: 20px 16px; border-radius: 12px; background: #f5f5f5; display: flex; flex-direction: column-reverse; gap: 4px"><dt class="small muted">LC Skopje members</dt><dd style="margin: 0; font-size: 40px; font-weight: 700; line-height: 1; color: #e52a30">80</dd></div>
+          <div style="grid-column: 1 / -1; padding: 20px 16px; border-radius: 12px; background: #f5f5f5; display: flex; flex-direction: column-reverse; gap: 4px"><dt class="small muted">Events organized by LC Skopje</dt><dd style="margin: 0; font-size: 40px; font-weight: 700; line-height: 1; color: #e52a30">150+</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section style="padding: 16px 0 64px">
+      <div class="container" style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="eyebrow">The network</span>
+          <h2 class="h2">EESTEC across Europe</h2>
+          <span class="title-bar"></span>
+          <p class="small muted" style="padding-top: 4px">Tap a pin to see the committee.</p>
+        </div>
+        <div role="group" aria-label="Filter committees" class="rail" style="gap: 8px; padding-bottom: 4px">
+          <button type="button" class="filter" aria-pressed="true">All · 35</button>
+          <button type="button" class="filter" aria-pressed="false">LCs · 23</button>
+          <button type="button" class="filter" aria-pressed="false">Observers · 8</button>
+          <button type="button" class="filter" aria-pressed="false">JLCs · 4</button>
+        </div>
+        <dc-import name="CommitteeMap" compact="{{ true }}" show-popup="{{ false }}" hint-size="358px,272px"></dc-import>
+        <div style="display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08)">
+          <span aria-hidden="true" style="width: 16px; height: 16px; flex-shrink: 0; border-radius: 50%; background: #e52a30; border: 3px solid #ffffff; box-shadow: 0 0 0 1px #e52a30"></span>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+            <strong style="font-size: 16px">LC Skopje</strong>
+            <span class="small muted">Skopje, North Macedonia · Local Committee</span>
+          </div>
+          <a href="https://eestec.mk" aria-label="Open eestec.mk" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #b81f24"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"></path></svg></a>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+          <a href="/committees" class="link small">Browse all committees as a list</a>
+          <span class="small muted" style="display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2b2b2b"></span>LC <span style="width: 8px; height: 8px; border-radius: 50%; border: 2px solid #2b2b2b; margin-left: 6px"></span>Obs.</span>
+        </div>
+        <label class="small" style="display: flex; align-items: center; gap: 10px; min-height: 44px">
+          <input type="checkbox" style="width: 20px; height: 20px; margin: 0; accent-color: #e52a30">Show cities our members have visited
+        </label>
+      </div>
+    </section>
+
+    <section style="padding: 0 0 64px">
+      <div class="container">
+        <div style="display: flex; flex-direction: column; gap: 14px; padding: 24px 20px; border-radius: 16px; background: #fdf0f0; border: 1px solid rgba(229,42,48,0.3)">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 12px; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+            <span class="eyebrow">Weekly meetings</span>
+          </div>
+          <p style="font-size: 19px; line-height: 1.4; font-weight: 500">We meet every <strong>Wednesday</strong> at <strong>18:00</strong> in <strong>room 117</strong>, FEEIT.</p>
+          <p class="small muted">Open to every student. Come once and see if it's for you.</p>
+          <a href="https://maps.google.com/?q=FEEIT+Skopje" class="btn btn-secondary btn-block">Get directions</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: #f5f5f5">
+      <div class="container" style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="eyebrow">Latest activity</span>
+          <h2 class="h2">What we've been up to</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between">
+          <h3 class="h3">Past events</h3>
+          <a href="/events" class="link small">View all</a>
+        </div>
+        <div class="rail" style="margin-top: -12px">
+          <sc-for list="{{events}}" as="ev" hint-placeholder-count="3">
+            <div style="flex: 0 0 300px; scroll-snap-align: start">
+              <dc-import name="EventCard" item="{{ev}}" hint-size="300px,420px"></dc-import>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 8px">
+          <h3 class="h3">Memories</h3>
+          <a href="/memories" class="link small">Read all</a>
+        </div>
+        <div class="rail" style="margin-top: -12px">
+          <sc-for list="{{memories}}" as="mem" hint-placeholder-count="3">
+            <div style="flex: 0 0 300px; scroll-snap-align: start">
+              <dc-import name="EventCard" item="{{mem}}" hint-size="300px,460px"></dc-import>
+            </div>
+          </sc-for>
+        </div>
+        <a href="/submit" class="btn btn-secondary btn-block">Share your story</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="display: flex; flex-direction: column; gap: 32px">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="eyebrow">EESTEC Journey</span>
+          <h2 class="h2">From first meeting to alumni</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="position: relative">
+          <span aria-hidden="true" style="position: absolute; left: 27px; top: 28px; bottom: 28px; border-left: 2px dashed #e52a30; opacity: 0.45"></span>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; position: relative">
+            <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+              <li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; align-items: center">
+                <span style="width: 56px; height: 56px; border-radius: 50%; background: #ffffff; border: 2px solid #e52a30; color: #e52a30; display: flex; align-items: center; justify-content: center">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.icon}}"></path></svg>
+                </span>
+                <div style="display: flex; flex-direction: column; gap: 2px">
+                  <span style="font-size: 12px; font-weight: 700; color: #b81f24; letter-spacing: 0.08em">STEP {{s.n}}</span>
+                  <h3 style="margin: 0; font-size: 17px; font-weight: 700">{{s.title}}</h3>
+                  <p class="small muted">{{s.text}}</p>
+                </div>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+        <a href="/journey" class="btn btn-primary btn-block">Explore the journey</a>
+      </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid #e3e3e3; padding-bottom: 56px">
+      <div class="container" style="display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center">
+          <h2 class="h2">Our Partners</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="width: 100%; min-width: 0">
+          <dc-import name="PartnerLogos" variant="home" device="mobile" hint-size="358px,700px"></dc-import>
+        </div>
+        <a href="/partners" class="btn btn-secondary btn-block">Become a partner<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+      </div>
+    </section>
+
+  </main>
+
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":8787}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      milestones: [
+        { year: '2005', title: 'International networking workshop', text: 'A week of networking in Skopje for students from across Europe, closing with a weekend in Ohrid.', hasPhoto: true, photo: 'workshop participants in Ohrid, 2005' },
+        { year: '2011', title: 'Hosting the EESTEC Chairpersons’ Meeting', text: 'LC Skopje welcomed the chairpersons of committees from all over Europe for the ECM.', hasPhoto: false },
+        { year: '2015', title: 'RoboMac is born', text: 'A robotics competition co-organized with IEEE SB Skopje and the FEEIT Student Parliament.', hasPhoto: false },
+        { year: '2019', title: 'Soft Skills Academy', text: 'Our first local training academy, run by EESTEC trainers for FEEIT students.', hasPhoto: false },
+        { year: '2025', title: '20 years of international events', text: 'Two decades of workshops and exchanges hosted in Skopje and Ohrid.', hasPhoto: false }
+      ],
+      events: [
+        { kind: 'event', title: 'Soft Skills Academy Skopje 2026', date: '12–14 Sep 2026', location: 'FEEIT, Skopje', type: 'Training', scope: 'Local', hasImage: true, photo: 'participants in a group exercise', href: '/events/soft-skills-academy-2026' },
+        { kind: 'event', title: 'Workshop: Power Up — Renewable Grids', date: '18–24 May 2026', location: 'Skopje & Ohrid', type: 'Workshop', scope: 'International', hasImage: true, photo: 'visit to a solar plant near Skopje', href: '/events/power-up-2026' },
+        { kind: 'event', title: 'RoboMac 2026', date: '11 Apr 2026', location: 'FEEIT, Skopje', type: 'Competition', scope: 'Local', hasImage: false, href: '/events/robomac-2026' }
+      ],
+      memories: [
+        { kind: 'memory', title: 'Seven days, 28 nationalities and one very long bus ride to Ohrid', date: '2 Jun 2026', type: 'Workshop', hasImage: true, photo: 'group selfie on the Ohrid lake shore', excerpt: 'What I expected from my first workshop as an organizer, and what actually happened when 28 students arrived at once.', author: 'Marija Stojanovska', initials: 'MS', href: '/memories/ohrid-bus-ride' },
+        { kind: 'memory', title: 'My first exchange: Delft by bike', date: '21 Apr 2026', type: 'Exchange', hasImage: true, photo: 'bikes along a Delft canal', excerpt: 'Five days, two flat tyres and a lab tour I still think about.', author: 'Stefan Nikolovski', initials: 'SN', href: '/memories/delft-by-bike' },
+        { kind: 'memory', title: 'Why I stayed up until 4 a.m. at the EESTech Challenge', date: '3 Mar 2026', type: 'Competition', hasImage: true, photo: 'team around a laptop at night', excerpt: 'Our team did not win the local round. Here is everything we learned anyway.', author: 'Ana Trajkovska', initials: 'AT', href: '/memories/eestech-challenge-night' }
+      ],
+      steps: [
+        { n: '01', title: 'Join', text: 'Become a member of LC Skopje.', icon: 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M20 8v6M23 11h-6M12.5 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z' },
+        { n: '02', title: 'Participate', text: 'Attend local workshops, trainings and socials.', icon: 'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM16 2v4M8 2v4M3 10h18' },
+        { n: '03', title: 'Volunteer & Organize', text: 'Join a team and help organize events.', icon: 'M20.8 4.6a5.5 5.5 0 0 0-7.7 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.7 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z' },
+        { n: '04', title: 'Go International', text: 'Apply for workshops and exchanges across Europe.', icon: 'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' },
+        { n: '05', title: 'Lead', text: 'Coordinate, join the board or international teams.', icon: 'M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7' },
+        { n: '06', title: 'Stay Connected', text: 'Become alumni and support the next generation.', icon: 'M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.8 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

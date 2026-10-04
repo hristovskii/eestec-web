@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contact form</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.jf *,.jf *::before,.jf *::after{box-sizing:border-box}
+.jf .label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.jf .req{color:#b81f24}
+.jf .input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.jf .input::placeholder{color:#6b6b6b}
+.jf .input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.jf .input.err{border:2px solid #e52a30}
+.jf .input:disabled{background:#f5f5f5;color:#6b6b6b;border-color:#c7c7c7}
+.jf textarea.input{height:auto;min-height:148px;padding:12px 14px;line-height:1.5;resize:vertical}
+.jf .select{appearance:none;-webkit-appearance:none;padding-right:40px}
+.jf .chev{position:absolute;right:14px;top:41px;pointer-events:none}
+.jf .error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.jf .help{display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-size:14px;color:#6b6b6b}
+.jf .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 32px;border-radius:8px;border:2px solid #e52a30;background:#e52a30;color:#ffffff;font-family:inherit;font-size:16px;font-weight:500;text-decoration:none;cursor:pointer}
+.jf .btn:hover{background:#b81f24;border-color:#b81f24}
+.jf .btn-sec{background:#ffffff;color:#e52a30}
+.jf .btn-sec:hover{background:#fdf0f0;color:#b81f24}
+.jf .link{color:#b81f24;font-weight:500;text-decoration:none}
+.jf .link:hover{text-decoration:underline}
+</style>
+</helmet>
+<div class="jf" style="width: 100%; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a">
+
+<sc-if value="{{showForm}}" hint-placeholder-val="{{ true }}">
+<form aria-labelledby="ct-title" aria-busy="{{busy}}" style="padding: {{pad}}; border: 1px solid #e3e3e3; border-radius: 16px; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.06); display: grid; grid-template-columns: {{cols}}; gap: 22px 20px">
+  <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px">
+    <h2 id="ct-title" style="margin: 0; font-size: 22px; font-weight: 700">Send us a message</h2>
+    <p style="margin: 0; font-size: 14px; color: #6b6b6b">We usually reply within 2 working days. Fields marked <span class="req">*</span> are required.</p>
+  </div>
+
+  <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}">
+    <div role="alert" style="grid-column: 1 / -1; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding: 16px 18px; border-radius: 10px; border: 2px solid #e52a30; background: #fdf0f0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <strong style="font-size: 16px">Please fix 3 fields</strong>
+        <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6"><li><a class="link" href="#ct-email">E-mail</a></li><li><a class="link" href="#ct-subject">Subject</a></li><li><a class="link" href="#ct-msg">Message</a></li></ul>
+      </div>
+    </div>
+  </sc-if>
+
+  <div><label class="label" for="ct-name">Your name <span class="req">*</span></label><input class="input" id="ct-name" type="text" autocomplete="name" placeholder="e.g. Marija Stojanovska" value="{{v.name}}" disabled="{{busy}}"></div>
+  <div>
+    <label class="label" for="ct-email">E-mail <span class="req">*</span></label>
+    <input class="{{emailClass}}" id="ct-email" type="email" autocomplete="email" placeholder="name@example.com" value="{{v.email}}" aria-invalid="{{errFlag}}" disabled="{{busy}}">
+    <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Enter an e-mail like name@example.com</span></sc-if>
+  </div>
+
+  <div style="grid-column: 1 / -1; position: relative">
+    <label class="label" for="ct-subject">Subject <span class="req">*</span></label>
+    <select class="{{subjectClass}}" id="ct-subject" aria-invalid="{{errFlag}}" aria-describedby="ct-route" disabled="{{busy}}">
+      <sc-for list="{{subjects}}" as="s" hint-placeholder-count="6"><option>{{s}}</option></sc-for>
+    </select>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+    <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Choose a subject so the right person gets your message</span></sc-if>
+    <sc-if value="{{hasRoute}}" hint-placeholder-val="{{ false }}">
+      <div id="ct-route" role="note" style="margin-top: 10px; display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 14px 16px; border-radius: 10px; background: #f5f5f5; font-size: 14px; line-height: 1.5">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+        <span>{{route.text}} <a class="link" href="{{route.href}}">{{route.link}}</a></span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="grid-column: 1 / -1">
+    <label class="label" for="ct-msg">Message <span class="req">*</span></label>
+    <textarea class="{{msgClass}}" id="ct-msg" placeholder="How can we help?" aria-invalid="{{errFlag}}" disabled="{{busy}}" value="{{v.msg}}"></textarea>
+    <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Write a message before sending</span></sc-if>
+    <sc-if value="{{notErrors}}" hint-placeholder-val="{{ true }}"><span class="help"><span>Max 2,000 characters.</span><span>{{v.count}} / 2,000</span></span></sc-if>
+  </div>
+
+  <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1px solid #d0d0d0; border-radius: 10px; background: #ffffff">
+    <span style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: {{spamBg}}; border: {{spamBorder}}; color: #ffffff">
+      <sc-if value="{{spamOk}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+    </span>
+    <span style="display: flex; flex-direction: column; flex: 1"><strong style="font-size: 15px; font-weight: 500">{{spamTitle}}</strong><span style="font-size: 13px; color: #6b6b6b">Spam protection · no puzzles, no tracking cookies</span></span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+  </div>
+
+  <label style="grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 14px; line-height: 1.5; padding: 14px 16px; border-radius: 10px; background: #f5f5f5">
+    <input type="checkbox" checked="{{consentOn}}" disabled="{{busy}}" style="width: 20px; height: 20px; margin: 0; accent-color: #e52a30; flex-shrink: 0">
+    <span>I agree that EESTEC LC Skopje stores my name and e-mail to reply to this message, as described in the <a class="link" href="/privacy">privacy policy</a>. <span class="req">*</span></span>
+  </label>
+
+  <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; flex-wrap: wrap">
+    <sc-if value="{{notBusy}}" hint-placeholder-val="{{ true }}">
+      <button type="submit" class="btn" style="width: {{btnW}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>Send message</button>
+    </sc-if>
+    <sc-if value="{{isBusy}}" hint-placeholder-val="{{ false }}">
+      <button type="button" disabled aria-live="polite" class="btn" style="background: #b81f24; border-color: #b81f24; cursor: progress; width: {{btnW}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.35)" stroke-width="3"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path></svg>Sending…</button>
+    </sc-if>
+  </div>
+</form>
+</sc-if>
+
+<sc-if value="{{isSuccess}}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="padding: {{pad}}; border: 1px solid #e3e3e3; border-radius: 16px; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 22px">
+    <span style="width: 64px; height: 64px; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 700">Message sent. Thanks, Marija!</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6">It went straight to our <strong>membership team</strong>. You'll get an answer at <strong>marija.s@students.feit.ukim.edu.mk</strong>, usually within 2 working days.</p>
+    </div>
+    <dl style="margin: 0; display: grid; grid-template-columns: {{sumCols}}; gap: 16px; padding: 18px 20px; border-radius: 12px; background: #f5f5f5">
+      <div><dt style="font-size: 14px; color: #6b6b6b">Subject</dt><dd style="margin: 2px 0 0; font-weight: 500">Membership</dd></div>
+      <div><dt style="font-size: 14px; color: #6b6b6b">Sent</dt><dd style="margin: 2px 0 0; font-weight: 500">4 Oct 2026, 19:12</dd></div>
+      <div><dt style="font-size: 14px; color: #6b6b6b">Reference</dt><dd style="margin: 2px 0 0; font-weight: 500">MSG-2026-0231</dd></div>
+    </dl>
+    <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap">
+      <a href="/join" class="btn btn-sec" style="height: 48px; padding: 0 22px">See how to join</a>
+      <a href="/contact" class="link">Send another message</a>
+    </div>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["empty","routing","errors","sending","success"],"default":"empty"},"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":680,"height":778}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.props.state ?? 'empty';
+    const mobile = (this.props.device ?? 'desktop') === 'mobile';
+    const errors = st === 'errors';
+    const busy = st === 'sending';
+    const msgFull = 'Hi! I’m in my first year at FEEIT. Can I still join this semester, and do I need to come to a meeting first?';
+    const filled = st === 'routing' || busy;
+    const v = st === 'empty'
+      ? { name: '', email: '', msg: '', count: 0 }
+      : errors ? { name: 'Marija Stojanovska', email: 'marija.s@', msg: '', count: 0 }
+      : { name: 'Marija Stojanovska', email: 'marija.s@students.feit.ukim.edu.mk', msg: st === 'routing' ? '' : msgFull, count: st === 'routing' ? 0 : msgFull.length };
+    const all = ['General question', 'Membership', 'Partnership', 'Media', 'Other committee'];
+    const pick = st === 'routing' ? 'Partnership' : (busy ? 'Membership' : null);
+    const subjects = pick ? [pick].concat(all.filter((s) => s !== pick)) : ['Choose a subject…'].concat(all);
+    const routes = {
+      Partnership: { text: 'Companies: our packages and the partnership offer are on the For Companies page. This message goes straight to our fundraising team.', link: 'For Companies →', href: '/partners' },
+      Membership: { text: 'Want to join? The quickest way is the membership form.', link: 'Join Us →', href: '/join#apply' }
+    };
+    const route = pick ? routes[pick] : null;
+    return {
+      showForm: st !== 'success',
+      isSuccess: st === 'success',
+      isErrors: errors,
+      notErrors: !errors,
+      isBusy: busy,
+      notBusy: !busy,
+      busy,
+      v,
+      subjects,
+      hasRoute: !!route,
+      route: route || { text: '', link: '', href: '#' },
+      errFlag: errors ? 'true' : 'false',
+      emailClass: errors ? 'input err' : 'input',
+      subjectClass: errors ? 'input select err' : 'input select',
+      msgClass: errors ? 'input err' : 'input',
+      spamOk: filled || errors,
+      spamTitle: (filled || errors) ? 'Spam check passed' : 'Checking automatically…',
+      spamBg: (filled || errors) ? '#1a1a1a' : '#ffffff',
+      spamBorder: (filled || errors) ? '0' : '2px solid #c7c7c7',
+      consentOn: filled,
+      pad: mobile ? '20px' : '36px',
+      cols: mobile ? 'minmax(0, 1fr)' : 'repeat(2, minmax(0, 1fr))',
+      sumCols: mobile ? 'minmax(0, 1fr)' : 'repeat(3, minmax(0, 1fr))',
+      btnW: mobile ? '100%' : 'auto'
+    };
+  }
+}
+</script>
+</body>
+</html>

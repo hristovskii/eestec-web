@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Memories · editor states &amp; status flow</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.h1{font-size:48px;line-height:1.15;font-weight:700;letter-spacing:-0.01em}
+.h1-m{font-size:32px;line-height:1.2;font-weight:700}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2-m{font-size:26px;line-height:1.25;font-weight:700}
+.h3{font-size:24px;line-height:1.3;font-weight:700}
+.h3-m{font-size:20px;line-height:1.3;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:#6b6b6b}
+.crumbs a{color:#6b6b6b;text-decoration:none}.crumbs a:hover{color:#b81f24;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-block{width:100%}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-secondary:hover{background:#fdf0f0;border-color:#b81f24;color:#b81f24}
+.btn-quiet{background:#ffffff;border:1px solid #c7c7c7;color:#1a1a1a}
+.btn-quiet:hover{border-color:#1a1a1a;color:#1a1a1a}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.card{border:1px solid #e3e3e3;border-radius:16px;background:#ffffff}
+.input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.input::placeholder{color:#6b6b6b}
+.input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer}
+.chev{position:absolute;right:14px;top:15px;pointer-events:none}
+.filter{flex-shrink:0;height:40px;padding:0 16px;border-radius:999px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.filter:hover{border-color:#1a1a1a}
+.filter[aria-pressed="true"]{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.filter .n{font-size:13px;font-weight:400;opacity:.8}
+.tag{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 6px 0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:14px;font-weight:500;white-space:nowrap}
+.tag button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#1a1a1a;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.page-btn{min-width:44px;height:44px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #e3e3e3;background:#ffffff;color:#1a1a1a;font-size:15px;font-weight:500;text-decoration:none}
+.page-btn:hover{border-color:#1a1a1a;color:#1a1a1a}
+.page-btn[aria-current="page"]{background:#e52a30;border-color:#e52a30;color:#ffffff;font-weight:700}
+.page-btn[aria-disabled="true"]{color:#b0b0b0;border-color:#ececec;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;background:#f5f5f5;color:#1a1a1a;font-size:13px;font-weight:500;white-space:nowrap}
+.chip-out{background:#ffffff;border:1px solid #c7c7c7}
+.chip-red{background:#fdf0f0;color:#b81f24}
+.chip-dark{background:#1a1a1a;color:#ffffff}
+.ph{background:repeating-linear-gradient(135deg,#ececec 0 12px,#e6e6e6 12px 24px);color:#6b6b6b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;font-size:13px}
+.label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.req{color:#b81f24}
+.help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.input.err{border:2px solid #e52a30}
+.cb{width:20px;height:20px;margin:0;accent-color:#e52a30;flex-shrink:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;border:0;background:transparent;padding:0;font:inherit;color:#1a1a1a;text-align:left;cursor:pointer}
+.tgl{position:relative;display:inline-block;width:44px;height:26px;border-radius:999px;background:#8c8c8c;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:21px}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.pcard{background:#ffffff;border:1px solid #e3e3e3;border-radius:16px}
+.st{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap}
+.st .d{width:7px;height:7px;border-radius:50%;background:currentColor}
+.st-ok{background:#1a1a1a;color:#ffffff}.st-wait{background:#fdf0f0;color:#b81f24}.st-out{background:#ffffff;color:#1a1a1a;border:1px solid #8c8c8c}
+.node{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:13px;color:#3a3a3a;width:180px}
+.arrow{flex:1;height:2px;background:#c7c7c7;position:relative;min-width:40px;margin-top:14px}
+.arrow::after{content:"";position:absolute;right:-1px;top:-5px;border:6px solid transparent;border-left:8px solid #c7c7c7;border-right:0}
+.arrow span{position:absolute;left:50%;top:-24px;transform:translateX(-50%);font-size:12px;color:#6b6b6b;white-space:nowrap}
+.save{display:flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid #e3e3e3;border-radius:10px;background:#fff;font-size:14px}
+.opt{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:8px;cursor:pointer}
+.opt:hover,.opt.on{background:#fdf0f0}
+.stage{position:relative;height:460px;border-radius:16px;overflow:hidden;background:#f5f5f5;border:1px solid #e3e3e3}
+.scrim{position:absolute;inset:0;background:rgba(26,26,26,0.55);display:flex;align-items:center;justify-content:center;padding:24px}
+.modal{width:100%;max-width:460px;background:#ffffff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,0.3);padding:28px;display:flex;flex-direction:column;gap:14px}
+.mail{border:1px solid #e3e3e3;border-radius:12px;overflow:hidden;background:#fff;font-size:14px;line-height:1.55}
+.mail .mh{background:#e52a30;padding:14px 18px;display:flex;align-items:center}
+</style>
+</helmet>
+<div style="width: 100%; background: #ffffff; padding: 56px 0 72px">
+  <div style="max-width: 1360px; margin: 0 auto; padding: 0 40px; display: flex; flex-direction: column; gap: 44px">
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">Memories · editor states &amp; status flow</h2><p class="muted" style="font-size: 15px; line-height: 1.5; max-width: 940px">Everything a Memory goes through, from first draft to published, and the small states around the editor. Statuses use the same labels on /profile, in the editor and in e-mails.</p></div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px">
+      <span class="ds-label">1 · Status flow</span>
+      <div class="pcard" style="padding: 36px 32px; display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; align-items: flex-start">
+          <div class="node"><span class="st st-out"><span class="d"></span>Draft</span>Only the author sees it. Autosaves.</div>
+          <div class="arrow"><span>Submit for review</span></div>
+          <div class="node"><span class="st st-wait"><span class="d"></span>Waiting for approval</span>In the board's approval queue. Author can still view it.</div>
+          <div class="arrow"><span>Board approves</span></div>
+          <div class="node"><span class="st st-ok"><span class="d"></span>Published</span>Live on /memories, the event page and the author's profile.</div>
+          <div class="arrow"><span>Author edits</span></div>
+          <div class="node"><span class="st st-wait"><span class="d"></span>Changes waiting</span>Live version stays until the board approves the changes.</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 12px; background: #fdf0f0; font-size: 14px; line-height: 1.5">
+          <span class="st st-out" style="border-color: #e52a30; color: #b81f24"><span class="d"></span>Not approved</span>
+          <span>If the board rejects it, the author gets the reason by e-mail and on /profile. Their text and photos are kept; <strong>Edit and resubmit</strong> sends it back to “Waiting for approval”.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 12px"><span class="ds-label">2 · Saving the draft</span>
+        <div class="save"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#e3e3e3" stroke-width="3"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"></path></svg>Saving…</div>
+        <div class="save"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Draft saved at 18:42</div>
+        <div class="save"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 1l22 22M16.7 11.1A6 6 0 0 1 18 11a5 5 0 0 1 1 9.9M5 12.6a8.4 8.4 0 0 1 3.4-2M10.7 5.1A11 11 0 0 1 22.6 9M1.4 9a11 11 0 0 1 3-2.1M8.5 16.1a5 5 0 0 1 7 0M12 20h.01"></path></svg><span>Offline. Saved on this device; it syncs when you're back online.</span></div>
+        <div class="save" style="border: 2px solid #e52a30; background: #fdf0f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg><span style="flex: 1">Couldn't save your draft.</span><button type="button" class="btn btn-quiet btn-sm" style="height: 32px">Retry</button></div>
+        <p class="small muted">Autosave every 10 seconds while typing. Leaving with unsaved changes asks first.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px"><span class="ds-label">3 · Picking the linked event</span>
+        <div class="pcard" style="padding: 18px; display: flex; flex-direction: column; gap: 8px">
+          <label class="label" for="ms-ev" style="margin: 0">Linked event <span class="req">*</span></label>
+          <div style="position: relative"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 15px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input class="input" id="ms-ev" value="power" role="combobox" aria-expanded="true" aria-controls="ms-ev-list" style="padding-left: 42px; border-color: #e52a30; box-shadow: 0 0 0 3px rgba(229,42,48,0.28)"></div>
+          <div id="ms-ev-list" role="listbox" style="border: 1px solid #e3e3e3; border-radius: 10px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.1)">
+            <div class="opt on" role="option" aria-selected="true"><strong style="font-size: 15px">Workshop: <mark style="background: #fde2e3; color: inherit">Power</mark> Up — Renewable Grids</strong><span class="small muted">May 2026 · Skopje &amp; Ohrid</span></div>
+            <div class="opt" role="option" aria-selected="false"><strong style="font-size: 15px"><mark style="background: #fde2e3; color: inherit">Power</mark> Electronics Workshop</strong><span class="small muted">Apr 2023 · Belgrade</span></div>
+            <div style="height: 1px; background: #ececec; margin: 4px 0"></div>
+            <div class="opt" role="option" aria-selected="false"><strong style="font-size: 15px">Other: not in the list</strong><span class="small muted">You'll type the event or trip name yourself</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px"><span class="ds-label">4 · After “Submit for review”</span>
+        <div class="pcard" role="status" style="padding: 28px; display: flex; flex-direction: column; gap: 14px">
+          <span style="width: 56px; height: 56px; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+          <h3 style="font-size: 24px; line-height: 1.25; font-weight: 700">Sent to the board</h3>
+          <p class="body muted">“Seven days, 28 nationalities…” is waiting for approval, usually within 3 days. We'll e-mail you when it's live or if they ask for changes.</p>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 4px"><a href="/profile#memories" class="btn btn-primary btn-block">Go to My Memories</a><a href="/memories/new" class="btn btn-secondary btn-block">Write another Memory</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 12px"><span class="ds-label">5 · Visitor clicks “Share your memory”</span>
+        <div class="stage"><div class="scrim"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="ms-vis">
+          <h3 id="ms-vis" style="font-size: 20px; font-weight: 700">Memories are written by members</h3>
+          <p class="body muted" style="font-size: 15px">Log in to write a full story with photos. Not a member? You can still send a short impression from an event.</p>
+          <a href="/login?next=/memories/new" class="btn btn-primary btn-block">Log in to write a Memory</a>
+          <a href="/submit?type=impression" class="btn btn-secondary btn-block">Send a quick impression</a>
+          <button type="button" class="link small" style="border: 0; background: none; font-family: inherit; cursor: pointer; align-self: center">Cancel</button>
+        </div></div></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px"><span class="ds-label">6 · E-mail: published</span>
+        <div class="mail"><div class="mh"><img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje" style="height: 32px"></div><div style="padding: 18px; display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 17px">Your Memory is live!</strong><span>Hi Marija, the board approved “Seven days, 28 nationalities and one very long bus ride to Ohrid”. It's now on eestec.mk and on the Power Up event page.</span><a href="#" class="btn btn-primary btn-sm" style="align-self: flex-start">Read and share it</a><span class="small muted">You can edit it any time from My profile.</span></div></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px"><span class="ds-label">7 · E-mail: not approved</span>
+        <div class="mail"><div class="mh"><img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje" style="height: 32px"></div><div style="padding: 18px; display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 17px">A few changes before we publish</strong><span>Hi Jana, thanks for “Kraków in the snow, part two”. The board asked for this:</span><span style="padding: 10px 12px; border-left: 3px solid #e52a30; background: #f5f5f5">Please add alt text to the 2 gallery photos without one, and remove the photo with people who didn't agree to be shown.</span><a href="#" class="btn btn-primary btn-sm" style="align-self: flex-start">Edit and resubmit</a></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1525}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

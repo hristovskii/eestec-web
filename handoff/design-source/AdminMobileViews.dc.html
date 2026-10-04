@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · mobile views</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h2,p{margin:0}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.phone{width:390px;height:844px;border-radius:16px;overflow:hidden;border:1px solid #e3e3e3}
+</style>
+</helmet>
+<div style="padding: 48px 40px 56px; display: flex; flex-direction: column; gap: 28px">
+  <div style="display: flex; flex-direction: column; gap: 8px; max-width: 900px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">Mobile admin (390)</h2><p style="color: #6b6b6b; font-size: 15px; line-height: 1.5">For quick jobs on the phone: check numbers, approve or reject, find an event. The sidebar becomes a drawer, tables become cards, and the main decision sits in a sticky bottom bar. Long edit forms work too but are built for desktop first.</p></div>
+  <div style="display: flex; gap: 32px">
+    <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">1 · Dashboard</span><div class="phone"><dc-import name="AdminMobile" view="dashboard" hint-size="390px,844px"></dc-import></div></div>
+    <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">2 · Menu open</span><div class="phone"><dc-import name="AdminMobile" view="menu" hint-size="390px,844px"></dc-import></div></div>
+    <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">3 · List as cards</span><div class="phone"><dc-import name="AdminMobile" view="events" hint-size="390px,844px"></dc-import></div></div>
+    <div style="display: flex; flex-direction: column; gap: 10px"><span class="ds-label">4 · Approve on the go</span><div class="phone"><dc-import name="AdminMobile" view="approval" hint-size="390px,844px"></dc-import></div></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1744,"height":1088}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

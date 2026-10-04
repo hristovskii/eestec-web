@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Join Us — EESTEC LC Skopje</title>
+<script src="./support.js"></script>
+<link rel="icon" href="/_blob/8858145c0d6ab17bd53787fe90c4332b">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#b81f24}a:hover{color:#e52a30}
+h1,h2,h3,p{margin:0}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section{padding:96px 0}
+.h2{font-size:36px;line-height:1.2;font-weight:700}
+.h2m{font-size:26px;line-height:1.25;font-weight:700}
+.body{font-size:16px;line-height:1.6}
+.small{font-size:14px;line-height:1.5}
+.muted{color:#6b6b6b}
+.eyebrow{font-size:14px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#b81f24}
+.title-bar{display:block;width:56px;height:4px;border-radius:2px;background:#e52a30}
+.dots{background-image:radial-gradient(rgba(255,255,255,0.16) 1.5px,transparent 1.6px);background-size:22px 22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:8px;border:2px solid transparent;font-family:inherit;font-size:16px;font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-block{width:100%}
+.btn-sm{height:40px;padding:0 16px;font-size:14px}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-primary:hover{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-secondary{background:#ffffff;border-color:#e52a30;color:#e52a30}
+.btn-inverse{background:#ffffff;border-color:#ffffff;color:#e52a30}
+.btn-inverse:hover{background:#f5f5f5;color:#b81f24}
+.btn-outline-white{background:transparent;border-color:#ffffff;color:#ffffff}
+.btn-outline-white:hover{background:rgba(255,255,255,0.14);color:#ffffff}
+.btn:focus-visible{outline:3px solid #e52a30;outline-offset:3px}
+.on-red .btn:focus-visible{outline-color:#ffffff}
+.link{display:inline-flex;align-items:center;gap:6px;color:#b81f24;font-weight:500;text-decoration:none}
+.link:hover{color:#e52a30;text-decoration:underline}
+.ic{width:48px;height:48px;border-radius:12px;background:rgba(229,42,48,0.1);color:#e52a30;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.subnav a{display:flex;align-items:center;height:52px;padding:0 4px;border-bottom:3px solid transparent;color:#6b6b6b;font-size:15px;font-weight:500;text-decoration:none;white-space:nowrap}
+.subnav a:hover{color:#1a1a1a}
+.subnav a[aria-current="true"]{color:#b81f24;border-bottom-color:#e52a30;font-weight:700}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.checks li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;font-size:16px;line-height:1.5}
+.faq{border-bottom:1px solid #e3e3e3}
+.faq button{width:100%;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 4px;border:0;background:transparent;text-align:left;font-family:inherit;font-size:18px;font-weight:500;color:#1a1a1a;cursor:pointer}
+.faq button:hover{color:#b81f24}
+.faq button:focus-visible{outline:3px solid #e52a30;outline-offset:2px;border-radius:6px}
+.pm{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.doc{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid #e3e3e3;border-radius:12px;color:#1a1a1a;text-decoration:none;background:#ffffff;transition:border-color .15s,box-shadow .15s}
+.doc:hover{border-color:#e52a30;box-shadow:0 0 0 1px #e52a30;color:#1a1a1a}
+</style>
+</helmet>
+
+<div style="width: 100%">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="desktop" active="Join Us" hint-size="100%,72px"></dc-import>
+  </div>
+  <main>
+    <section class="on-red dots" style="background-color: #e52a30; color: #ffffff">
+      <div class="container" style="padding-top: 80px; padding-bottom: 88px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: center">
+        <div style="display: flex; flex-direction: column; gap: 22px; align-items: flex-start">
+          <span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase">Join Us</span>
+          <h1 style="margin: 0; font-size: 56px; line-height: 1.1; font-weight: 700">Become an EESTECer</h1>
+          <p style="font-size: 20px; line-height: 1.5; font-weight: 500; max-width: 560px">Learn, travel and organize with 80 engineering students in Skopje and 5,000+ across Europe.</p>
+          <div style="display: flex; gap: 14px; padding-top: 6px">
+            <a href="#apply" class="btn btn-inverse">Apply now</a>
+            <a href="/journey" class="btn btn-outline-white">See the journey</a>
+          </div>
+        </div>
+        <div style="background: #ffffff; color: #1a1a1a; border-radius: 16px; padding: 28px; box-shadow: 0 24px 48px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 4px">
+          <span class="eyebrow" style="padding-bottom: 8px">At a glance</span>
+          <sc-for list="{{glance}}" as="g" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: center; padding: 12px 0; border-top: 1px solid #ececec">
+              <span style="width: 40px; height: 40px; border-radius: 10px; background: #fdf0f0; color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{g.icon}}"></path></svg></span>
+              <div style="display: flex; flex-direction: column"><span class="small muted">{{g.k}}</span><strong style="font-size: 16px; font-weight: 500">{{g.v}}</strong></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <nav aria-label="On this page" class="subnav" style="position: sticky; top: 72px; z-index: 15; background: #ffffff; border-bottom: 1px solid #e3e3e3">
+      <div class="container" style="display: flex; align-items: center; gap: 28px">
+        <a href="#why" aria-current="true">Why join</a>
+        <a href="#who">Who can join</a>
+        <a href="#how">How to join</a>
+        <a href="#rules">Rules</a>
+        <a href="#faq">FAQ</a>
+        <a href="#apply" class="btn btn-primary btn-sm" style="margin-left: auto; height: 40px; padding: 0 18px; border-bottom: 2px solid #e52a30; color: #ffffff">Apply now</a>
+      </div>
+    </nav>
+
+    <section id="why" class="section">
+      <div class="container" style="display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="eyebrow">1 · Why join?</span>
+          <h2 class="h2">What you get out of it</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+          <sc-for list="{{benefits}}" as="b" hint-placeholder-count="6">
+            <div style="padding: 28px; border: 1px solid #e3e3e3; border-radius: 12px; display: flex; flex-direction: column; gap: 12px">
+              <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{b.icon}}"></path></svg></span>
+              <h3 style="margin: 0; font-size: 20px; font-weight: 700">{{b.t}}</h3>
+              <p class="small muted" style="font-size: 15px">{{b.d}}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="who" class="section" style="background: #f5f5f5">
+      <div class="container" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: center">
+        <div style="display: flex; flex-direction: column; gap: 24px">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <span class="eyebrow">2 · Who can join?</span>
+            <h2 class="h2">Students in Skopje, any year</h2>
+            <span class="title-bar"></span>
+          </div>
+          <ul class="checks">
+            <sc-for list="{{eligible}}" as="e" hint-placeholder-count="4">
+              <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>{{e}}</span></li>
+            </sc-for>
+          </ul>
+        </div>
+        <div style="padding: 32px; border-radius: 16px; background: #ffffff; display: flex; flex-direction: column; gap: 14px">
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Not sure you qualify?</h3>
+          <p class="body muted">The exact rules are set by the board. Write to us or just come to a Wednesday meeting and ask.</p>
+          <a href="mailto:hello@eestec.mk" class="link">hello@eestec.mk</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section">
+      <div class="container" style="display: flex; flex-direction: column; gap: 48px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="eyebrow">3 · How to join</span>
+          <h2 class="h2">Four steps to full membership</h2>
+          <span class="title-bar"></span>
+        </div>
+        <div style="position: relative">
+          <span aria-hidden="true" style="position: absolute; left: 12.5%; right: 12.5%; top: 31px; height: 4px; background: #e52a30; border-radius: 2px"></span>
+          <ol style="list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+            <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+              <li style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+                <span style="width: 66px; height: 66px; border-radius: 50%; background: #e52a30; color: #ffffff; font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px #ffffff">{{s.n}}</span>
+                <h3 style="margin: 6px 0 0; font-size: 19px; font-weight: 700">{{s.t}}</h3>
+                <p class="small muted" style="font-size: 15px; max-width: 240px">{{s.d}}</p>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+        <div style="display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 28px; align-items: center; padding: 28px 32px; border-radius: 16px; background: #fdf0f0; border: 1px solid rgba(229,42,48,0.3)">
+          <div style="display: flex; flex-direction: column"><span class="small muted" style="font-weight: 500">Membership fee</span><strong style="font-size: 32px; line-height: 1.2">600 MKD <span style="font-size: 16px; font-weight: 500; color: #6b6b6b">/ academic year</span></strong></div>
+          <p class="body">You only pay when you become a full member. Pay in cash at a weekly meeting or by bank transfer; the details are in your welcome e-mail.</p>
+          <a href="#apply" class="btn btn-primary">Start with step 1</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="rules" class="section" style="background: #f5f5f5">
+      <div class="container" style="display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span class="eyebrow">4 · Rules &amp; code of conduct</span>
+          <h2 class="h2">The short version</h2>
+          <span class="title-bar"></span>
+          <p class="body muted" style="padding-top: 4px; max-width: 640px">The official documents are at the bottom of this section. Here is what they mean in practice.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+          <div style="padding: 28px; border-radius: 16px; background: #ffffff; display: flex; flex-direction: column; gap: 18px">
+            <h3 style="margin: 0; font-size: 22px; font-weight: 700">Your rights</h3>
+            <ul class="checks">
+              <sc-for list="{{rights}}" as="r" hint-placeholder-count="4"><li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>{{r}}</span></li></sc-for>
+            </ul>
+          </div>
+          <div style="padding: 28px; border-radius: 16px; background: #ffffff; display: flex; flex-direction: column; gap: 18px">
+            <h3 style="margin: 0; font-size: 22px; font-weight: 700">Your obligations</h3>
+            <ul class="checks">
+              <sc-for list="{{duties}}" as="r" hint-placeholder-count="4"><li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg><span>{{r}}</span></li></sc-for>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <h3 style="margin: 0; font-size: 22px; font-weight: 700">Code of conduct</h3>
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+            <sc-for list="{{conduct}}" as="c" hint-placeholder-count="4">
+              <div style="padding: 24px; border-radius: 12px; background: #ffffff; display: flex; flex-direction: column; gap: 10px">
+                <span class="ic" style="width: 44px; height: 44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{c.icon}}"></path></svg></span>
+                <strong style="font-size: 17px">{{c.t}}</strong>
+                <p class="small muted">{{c.d}}</p>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <h3 style="margin: 0; font-size: 22px; font-weight: 700">Going to an international event</h3>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+            <sc-for list="{{intl}}" as="p" hint-placeholder-count="3">
+              <div style="padding: 24px; border-radius: 12px; background: #ffffff; border-top: 4px solid #e52a30; display: flex; flex-direction: column; gap: 12px">
+                <span style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #b81f24">{{p.k}}</span>
+                <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.5">
+                  <sc-for list="{{p.items}}" as="i" hint-placeholder-count="2"><li>{{i}}</li></sc-for>
+                </ul>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <h3 style="margin: 0; font-size: 22px; font-weight: 700">Official documents</h3>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+            <sc-for list="{{docs}}" as="d" hint-placeholder-count="3">
+              <a href="{{d.href}}" class="doc" download="">
+                <span style="width: 44px; height: 52px; border-radius: 6px; background: #e52a30; color: #ffffff; font-size: 12px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; flex-shrink: 0">PDF</span>
+                <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 16px">{{d.t}}</strong><span class="small muted">{{d.m}}</span></span>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="container" style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 12px; position: sticky; top: 160px">
+          <span class="eyebrow">5 · FAQ</span>
+          <h2 class="h2">Questions we hear a lot</h2>
+          <span class="title-bar"></span>
+          <p class="body muted" style="padding-top: 8px">Didn't find yours? Write to <a href="mailto:hello@eestec.mk">hello@eestec.mk</a>.</p>
+        </div>
+        <div style="border-top: 1px solid #e3e3e3">
+          <sc-for list="{{faq}}" as="f" hint-placeholder-count="6">
+            <div class="faq" style="background: {{f.bg}}; border-radius: {{f.radius}}">
+              <h3 style="margin: 0"><button type="button" aria-expanded="{{f.exp}}" aria-controls="faq-{{f.id}}" style="padding-left: {{f.padX}}; padding-right: {{f.padX}}">{{f.q}}<span class="pm" style="background: {{f.pmBg}}; color: {{f.pmFg}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="{{f.pm}}"></path></svg></span></button></h3>
+              <sc-if value="{{f.open}}" hint-placeholder-val="{{ false }}">
+                <div id="faq-{{f.id}}" role="region" style="padding: 0 64px 22px 20px; font-size: 16px; line-height: 1.65">{{f.a}}</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="apply" style="padding: 0 0 96px">
+      <div class="container" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 12px">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <span class="eyebrow">6 · Apply</span>
+            <h2 class="h2">Apply for membership</h2>
+            <span class="title-bar"></span>
+          </div>
+          <p class="body" style="font-size: 18px">Tell us a bit about yourself. We'll reply within 3 days and invite you to the next weekly meeting.</p>
+          <a href="/journey" style="display: grid; grid-template-columns: 52px minmax(0, 1fr) 20px; gap: 16px; align-items: center; padding: 20px; border-radius: 16px; border: 1px solid #e3e3e3; text-decoration: none; color: #1a1a1a">
+            <span style="width: 52px; height: 52px; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"></path></svg></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px">New to EESTEC?</strong><span class="small muted">See the whole journey, from joining to alumni.</span></span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+          </a>
+        </div>
+        <dc-import name="JoinForm" state="{{formState}}" hint-size="100%,1040px"></dc-import>
+      </div>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="desktop" hint-size="100%,444px"></dc-import>
+</div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+<div style="width: 390px; background: #ffffff">
+  <div style="position: sticky; top: 0; z-index: 20">
+    <dc-import name="Header" variant="mobile" active="Join Us" hint-size="390px,64px"></dc-import>
+  </div>
+  <main>
+    <section class="on-red dots" style="background-color: #e52a30; color: #ffffff">
+      <div style="padding: 44px 16px 40px; display: flex; flex-direction: column; gap: 16px">
+        <span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase">Join Us</span>
+        <h1 style="margin: 0; font-size: 34px; line-height: 1.15; font-weight: 700">Become an EESTECer</h1>
+        <p style="font-size: 18px; line-height: 1.5; font-weight: 500">Learn, travel and organize with 80 engineering students in Skopje and 5,000+ across Europe.</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 4px">
+          <a href="#m-apply" class="btn btn-inverse btn-block">Apply now</a>
+          <a href="/journey" class="btn btn-outline-white btn-block">See the journey</a>
+        </div>
+        <div style="margin-top: 8px; background: #ffffff; color: #1a1a1a; border-radius: 16px; padding: 8px 18px; display: flex; flex-direction: column">
+          <sc-for list="{{glance}}" as="g" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #ececec">
+              <span style="width: 36px; height: 36px; border-radius: 10px; background: #fdf0f0; color: #e52a30; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{g.icon}}"></path></svg></span>
+              <div style="display: flex; flex-direction: column"><span class="small muted">{{g.k}}</span><strong style="font-size: 15px; font-weight: 500">{{g.v}}</strong></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <nav aria-label="On this page" class="subnav" style="position: sticky; top: 64px; z-index: 15; background: #ffffff; border-bottom: 1px solid #e3e3e3">
+      <div style="display: flex; gap: 22px; overflow-x: auto; padding: 0 16px">
+        <a href="#m-why" aria-current="true">Why join</a>
+        <a href="#m-who">Who</a>
+        <a href="#m-how">How</a>
+        <a href="#m-rules">Rules</a>
+        <a href="#m-faq">FAQ</a>
+        <a href="#m-apply">Apply</a>
+      </div>
+    </nav>
+
+    <section id="m-why" style="padding: 48px 16px; display: flex; flex-direction: column; gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">1 · Why join?</span><h2 class="h2m">What you get out of it</h2><span class="title-bar" style="width: 48px"></span></div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <sc-for list="{{benefits}}" as="b" hint-placeholder-count="6">
+          <div style="display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding: 16px; border: 1px solid #e3e3e3; border-radius: 12px">
+            <span class="ic" style="width: 44px; height: 44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{b.icon}}"></path></svg></span>
+            <div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">{{b.t}}</h3><p class="small muted">{{b.d}}</p></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="m-who" style="padding: 48px 16px; background: #f5f5f5; display: flex; flex-direction: column; gap: 22px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">2 · Who can join?</span><h2 class="h2m">Students in Skopje, any year</h2><span class="title-bar" style="width: 48px"></span></div>
+      <ul class="checks">
+        <sc-for list="{{eligible}}" as="e" hint-placeholder-count="4"><li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>{{e}}</span></li></sc-for>
+      </ul>
+      <p class="small muted">Not sure? Write to <a href="mailto:hello@eestec.mk">hello@eestec.mk</a> or come to a Wednesday meeting.</p>
+    </section>
+
+    <section id="m-how" style="padding: 48px 16px; display: flex; flex-direction: column; gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">3 · How to join</span><h2 class="h2m">Four steps to full membership</h2><span class="title-bar" style="width: 48px"></span></div>
+      <div style="position: relative">
+        <span aria-hidden="true" style="position: absolute; left: 25px; top: 26px; bottom: 26px; width: 4px; background: #e52a30; border-radius: 2px"></span>
+        <ol style="list-style: none; margin: 0; padding: 0; position: relative; display: flex; flex-direction: column; gap: 22px">
+          <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+            <li style="display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 16px; align-items: start">
+              <span style="width: 54px; height: 54px; border-radius: 50%; background: #e52a30; color: #ffffff; font-size: 22px; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px #ffffff">{{s.n}}</span>
+              <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 4px"><h3 style="margin: 0; font-size: 17px; font-weight: 700">{{s.t}}</h3><p class="small muted">{{s.d}}</p></div>
+            </li>
+          </sc-for>
+        </ol>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #fdf0f0; border: 1px solid rgba(229,42,48,0.3)">
+        <span class="small muted" style="font-weight: 500">Membership fee</span>
+        <strong style="font-size: 28px; line-height: 1.2">600 MKD <span style="font-size: 15px; font-weight: 500; color: #6b6b6b">/ academic year</span></strong>
+        <p class="small">Only when you become a full member. Cash at a weekly meeting or bank transfer.</p>
+      </div>
+    </section>
+
+    <section id="m-rules" style="padding: 48px 16px; background: #f5f5f5; display: flex; flex-direction: column; gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">4 · Rules &amp; conduct</span><h2 class="h2m">The short version</h2><span class="title-bar" style="width: 48px"></span></div>
+      <div style="padding: 20px; border-radius: 12px; background: #ffffff; display: flex; flex-direction: column; gap: 14px">
+        <h3 style="margin: 0; font-size: 19px; font-weight: 700">Your rights</h3>
+        <ul class="checks" style="gap: 10px">
+          <sc-for list="{{rights}}" as="r" hint-placeholder-count="4"><li style="font-size: 15px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg><span>{{r}}</span></li></sc-for>
+        </ul>
+      </div>
+      <div style="padding: 20px; border-radius: 12px; background: #ffffff; display: flex; flex-direction: column; gap: 14px">
+        <h3 style="margin: 0; font-size: 19px; font-weight: 700">Your obligations</h3>
+        <ul class="checks" style="gap: 10px">
+          <sc-for list="{{duties}}" as="r" hint-placeholder-count="4"><li style="font-size: 15px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg><span>{{r}}</span></li></sc-for>
+        </ul>
+      </div>
+      <h3 style="margin: 8px 0 0; font-size: 19px; font-weight: 700">Code of conduct</h3>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{conduct}}" as="c" hint-placeholder-count="4">
+          <div style="padding: 16px; border-radius: 12px; background: #ffffff; display: flex; flex-direction: column; gap: 8px">
+            <span class="ic" style="width: 38px; height: 38px; border-radius: 10px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{c.icon}}"></path></svg></span>
+            <strong style="font-size: 15px">{{c.t}}</strong>
+            <p class="muted" style="font-size: 14px; line-height: 1.45">{{c.d}}</p>
+          </div>
+        </sc-for>
+      </div>
+      <h3 style="margin: 8px 0 0; font-size: 19px; font-weight: 700">Going to an international event</h3>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{intl}}" as="p" hint-placeholder-count="3">
+          <div style="padding: 16px 18px; border-radius: 12px; background: #ffffff; border-left: 4px solid #e52a30; display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #b81f24">{{p.k}}</span>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.5">
+              <sc-for list="{{p.items}}" as="i" hint-placeholder-count="2"><li>{{i}}</li></sc-for>
+            </ul>
+          </div>
+        </sc-for>
+      </div>
+      <h3 style="margin: 8px 0 0; font-size: 19px; font-weight: 700">Official documents</h3>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{docs}}" as="d" hint-placeholder-count="3">
+          <a href="{{d.href}}" class="doc" download="" style="padding: 14px">
+            <span style="width: 38px; height: 46px; border-radius: 6px; background: #e52a30; color: #ffffff; font-size: 11px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; flex-shrink: 0">PDF</span>
+            <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 15px">{{d.t}}</strong><span class="small muted">{{d.m}}</span></span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e52a30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="m-faq" style="padding: 48px 16px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">5 · FAQ</span><h2 class="h2m">Questions we hear a lot</h2><span class="title-bar" style="width: 48px"></span></div>
+      <div style="border-top: 1px solid #e3e3e3">
+        <sc-for list="{{faq}}" as="f" hint-placeholder-count="6">
+          <div class="faq" style="background: {{f.bg}}; border-radius: {{f.radius}}">
+            <h3 style="margin: 0"><button type="button" aria-expanded="{{f.exp}}" style="font-size: 16px; padding-left: {{f.padXm}}; padding-right: {{f.padXm}}">{{f.q}}<span class="pm" style="width: 28px; height: 28px; background: {{f.pmBg}}; color: {{f.pmFg}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="{{f.pm}}"></path></svg></span></button></h3>
+            <sc-if value="{{f.open}}" hint-placeholder-val="{{ false }}">
+              <div role="region" style="padding: 0 48px 18px 14px; font-size: 15px; line-height: 1.6">{{f.a}}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <p class="small muted">Didn't find yours? Write to <a href="mailto:hello@eestec.mk">hello@eestec.mk</a>.</p>
+    </section>
+
+    <section id="m-apply" style="padding: 8px 16px 56px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="eyebrow">6 · Apply</span><h2 class="h2m">Apply for membership</h2><span class="title-bar" style="width: 48px"></span></div>
+      <p class="body">We'll reply within 3 days and invite you to the next weekly meeting.</p>
+      <dc-import name="JoinForm" state="{{formState}}" device="mobile" hint-size="358px,1300px"></dc-import>
+      <a href="/journey" class="link" style="min-height: 44px">New to EESTEC? See the whole journey →</a>
+    </section>
+  </main>
+  <dc-import name="Footer" variant="mobile" hint-size="390px,860px"></dc-import>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"formState":{"editor":"enum","options":["empty","filled","errors","submitting","success","closed"],"default":"empty"},"$preview":{"width":1440,"height":5947}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const I = {
+      users: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z',
+      clock: 'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0zM12 6v6l4 2',
+      wallet: 'M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM16 14h.01M18 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4',
+      cal: 'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM16 2v4M8 2v4M3 10h18',
+      globe: 'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z',
+      chip: 'M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zM10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3',
+      chat: 'M21 11.5a8.4 8.4 0 0 1-9 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5z',
+      clip: 'M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 2h6v4H9zM9 12l2 2 4-4',
+      brief: 'M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16',
+      heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.7 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.7 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z',
+      flag: 'M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7',
+      shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4'
+    };
+    const faqRaw = [
+      ['Do I have to study at FEEIT?', 'No. Most members study at FEEIT, but students from other faculties and universities in Skopje are welcome too.'],
+      ['How much time does it take?', 'As much as you want to give. Most members spend 2–4 hours a week: the Wednesday meeting plus some team work. Before a big event it can be more, and that’s usually the fun part.'],
+      ['Does it cost anything?', 'Applying and trying it out is free. Full members pay 600 MKD per academic year. International events usually have a small participation fee.'],
+      ['Do I need to speak English?', 'Basic English is enough to start. Local activities are in Macedonian; international events are in English and a great way to practise.'],
+      ['Can I join in my final year?', 'Yes. You can stay active until you graduate and then join our alumni.'],
+      ['When can I apply?', 'Membership applications open at the start of each semester. The form below shows whether they are open right now.']
+    ];
+    const openIdx = 1;
+    const faq = faqRaw.map(([q, a], i) => {
+      const open = i === openIdx;
+      return {
+        id: i + 1, q, a, open,
+        exp: open ? 'true' : 'false',
+        bg: open ? '#f5f5f5' : 'transparent',
+        radius: open ? '12px' : '0',
+        padX: open ? '20px' : '4px',
+        padXm: open ? '14px' : '2px',
+        pm: open ? 'M5 12h14' : 'M12 5v14M5 12h14',
+        pmBg: open ? '#e52a30' : '#fdf0f0',
+        pmFg: open ? '#ffffff' : '#e52a30'
+      };
+    });
+    return {
+      isDesktop: device === 'desktop',
+      isMobile: device === 'mobile',
+      formState: this.props.formState ?? 'empty',
+      glance: [
+        { icon: I.users, k: 'Who', v: 'University students in Skopje' },
+        { icon: I.clock, k: 'Time', v: 'About 2–4 hours a week' },
+        { icon: I.wallet, k: 'Fee', v: '600 MKD / year, once you’re a full member' },
+        { icon: I.cal, k: 'Next info session', v: 'Wed 14 Oct · 18:00 · Room 117, FEEIT' }
+      ],
+      benefits: [
+        { icon: I.globe, t: 'International experience', d: 'Workshops and exchanges in 20+ countries, often for a small fee.' },
+        { icon: I.chip, t: 'Technical knowledge', d: 'Hands-on workshops on embedded systems, AI, power and more.' },
+        { icon: I.chat, t: 'Soft skills', d: 'Communication, leadership and teamwork trainings with certified trainers.' },
+        { icon: I.users, t: 'Friends across Europe', d: 'A network of 5,000+ students who will happily host you.' },
+        { icon: I.clip, t: 'Organizing experience', d: 'Plan real events with real budgets, from a lecture to a week-long workshop.' },
+        { icon: I.brief, t: 'Contacts with companies', d: 'Meet partners at career days, company visits and workshops.' }
+      ],
+      eligible: [
+        'Bachelor’s, master’s or PhD students at FEEIT',
+        'Students from other faculties and universities in Skopje are welcome too',
+        'Any year of study, including your final year',
+        'No experience needed, just curiosity and some free time'
+      ],
+      steps: [
+        { n: '1', t: 'Fill in the form', d: 'Five minutes, right here on this page.' },
+        { n: '2', t: 'Come to a weekly meeting', d: 'Wednesdays at 18:00 in room 117, or the next info session.' },
+        { n: '3', t: 'Join a team', d: 'IT, PR, design, events, fundraising or trainings.' },
+        { n: '4', t: 'Become a full member', d: 'After 3 months of activity and paying the yearly fee.' }
+      ],
+      rights: ['Take part in all local and international events', 'Vote and run for the LC Skopje board', 'Use the EESTEC network for your own projects', 'Get support and mentoring from older members'],
+      duties: ['Be active in at least one team', 'Come to the weekly meetings when you can', 'Pay the yearly membership fee', 'Follow the statute and the code of conduct'],
+      conduct: [
+        { icon: I.heart, t: 'Respect', d: 'Treat everyone with respect, online and offline.' },
+        { icon: I.users, t: 'Inclusion', d: 'Everyone is welcome, whatever their background or beliefs.' },
+        { icon: I.flag, t: 'Represent us well', d: 'At events abroad you represent LC Skopje and EESTEC.' },
+        { icon: I.shield, t: 'Zero tolerance', d: 'Harassment and discrimination lead to removal. Report it to the board in confidence.' }
+      ],
+      intl: [
+        { k: 'BEFORE', items: ['Write your own motivation letter; the board can review it', 'Apply only if you can really attend'] },
+        { k: 'DURING', items: ['Attend all sessions', 'Follow the host committee’s rules'] },
+        { k: 'AFTER', items: ['Within 2 weeks, write a short report or a Memories post', 'Share what you learned at a weekly meeting'] }
+      ],
+      docs: [
+        { t: 'Statute', m: 'PDF · 1.2 MB · updated Mar 2026', href: '/docs/statute.pdf' },
+        { t: 'Internal rules', m: 'PDF · 640 KB · updated Mar 2026', href: '/docs/internal-rules.pdf' },
+        { t: 'Code of conduct', m: 'PDF · 210 KB · updated Sep 2025', href: '/docs/code-of-conduct.pdf' }
+      ],
+      faq
+    };
+  }
+}
+</script>
+</body>
+</html>

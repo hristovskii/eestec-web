@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Submit forms · all states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h2,p{margin:0}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+</style>
+</helmet>
+<div style="width: 100%; padding: 56px 40px 64px">
+  <div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 28px; line-height: 1.2; font-weight: 700">Ideas &amp; impressions · all form states</h2><p style="color: #6b6b6b; font-size: 15px; line-height: 1.5; max-width: 980px">Same field styles, errors, sending and success screens as the other forms. Links can open a tab and preselect an event: /submit?tab=impression&amp;event=power-up-2026. Spam protection: invisible check, a hidden honeypot field and a limit of 5 submissions per hour per device/IP. The consent box appears only when an e-mail is entered.</p></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">1 · Idea · filled (visitor)</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="idea" state="filled" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">2 · Idea · submit anonymously</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="idea" state="filled" anonymous="{{ true }}" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">3 · Idea · errors</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="idea" state="errors" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">4 · Idea · sending</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="idea" state="sending" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">5 · Idea · success</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="idea" state="success" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">6 · Idea · success, sent anonymously</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="idea" state="success" anonymous="{{ true }}" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">7 · Impression · filled (visitor, opened from an event page)</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="impression" state="filled" from-event="{{ true }}" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">8 · Impression · errors</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="impression" state="errors" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">9 · Impression · success (visitor: feedback only)</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="impression" state="success" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">10 · Impression · success (member, turned into a Memory)</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="impression" state="success" auth="member" as-memory="{{ true }}" hint-size="100%,900px"></dc-import></div></div>
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0"><span class="ds-label">11 · Rate limit reached (5 per hour)</span><div style="width: 100%; min-width: 0"><dc-import name="SubmitForm" tab="idea" state="limited" hint-size="100%,900px"></dc-import></div></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":6369}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

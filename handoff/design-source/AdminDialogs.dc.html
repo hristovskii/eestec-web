@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin · dialogs</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#f5f5f5;font-size:14px;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+a{color:#b81f24}
+.muted{color:#6b6b6b}
+.sm{font-size:13px}
+.ds-h{font-size:28px;line-height:1.2;font-weight:700}
+.ds-label{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1a1a1a}
+.stage{position:relative;height:540px;border-radius:12px;overflow:hidden;background:#f5f5f5;border:1px solid #e3e3e3}
+.stage .bgp{position:absolute;inset:0;padding:24px;display:flex;flex-direction:column;gap:12px}
+.stage .bgp span{display:block;height:14px;border-radius:4px;background:#e3e3e3}
+.scrim{position:absolute;inset:0;background:rgba(26,26,26,0.55);display:flex;align-items:center;justify-content:center;padding:24px}
+.modal{width:100%;max-width:480px;background:#ffffff;border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,0.3);display:flex;flex-direction:column}
+.mh{display:flex;align-items:flex-start;gap:14px;padding:22px 22px 0}
+.mb{padding:16px 22px 0;display:flex;flex-direction:column;gap:14px}
+.mf{display:flex;justify-content:flex-end;gap:8px;padding:20px 22px 22px}
+.mh h2{font-size:18px;line-height:1.35;font-weight:700}
+.x{margin-left:auto;width:32px;height:32px;border:0;border-radius:8px;background:transparent;color:#6b6b6b;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 16px;border-radius:8px;border:1px solid #c7c7c7;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px;font-weight:500;line-height:1;white-space:nowrap;cursor:pointer}
+.btn-primary{background:#e52a30;border-color:#e52a30;color:#ffffff}
+.btn-danger-solid{background:#b81f24;border-color:#b81f24;color:#ffffff}
+.btn-ghost{border-color:transparent;background:transparent}
+.label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.input{width:100%;height:38px;padding:0 12px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:14px}
+.input.focus{border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.25)}
+textarea.input{height:auto;padding:10px 12px;line-height:1.5}
+.sel{appearance:none;-webkit-appearance:none;padding-right:32px}
+.ico{position:relative}.ico svg.r{position:absolute;right:10px;top:11px;pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:1px solid #8c8c8c;border-radius:999px;background:#fff;font-family:inherit;font-size:13px;font-weight:500;color:#1a1a1a;cursor:pointer}
+.chip.on{border:2px solid #e52a30;color:#b81f24;background:#fdf0f0}
+.tgl{position:relative;display:inline-block;width:36px;height:20px;border-radius:999px;background:#c7c7c7;flex-shrink:0}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tgl.on{background:#e52a30}.tgl.on::after{left:18px}
+.ic{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 100%; background: #ffffff">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 56px 24px 72px; display: flex; flex-direction: column; gap: 28px">
+    <div style="display: flex; flex-direction: column; gap: 8px"><h2 class="ds-h">Dialogs</h2><p class="muted" style="font-size: 15px">Centered over a dark scrim. Focus moves into the dialog, Esc or Cancel closes it, and the dangerous action is never the default button.</p></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span class="ds-label">1 · Delete confirmation</span>
+        <div class="stage"><div class="bgp"><span style="width: 40%"></span><span></span><span style="width: 80%"></span></div>
+          <div class="scrim"><div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="d1">
+            <div class="mh"><span class="ic" style="background: #fdf0f0; color: #b81f24"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg></span><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="d1">Delete “Workshop: AI at the Edge”?</h2><p class="muted">This also deletes its gallery (8 photos) and <strong style="color: #1a1a1a">38 applications</strong>. This can't be undone.</p></div><button type="button" class="x" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+            <div class="mb" style="padding-left: 76px"><div><label class="label" for="d1-in">Type <strong>DELETE</strong> to confirm</label><input class="input focus" id="d1-in" value="DELETE"></div><a href="/admin/applications" class="sm" style="font-weight: 500">Export the 38 applications first (CSV)</a></div>
+            <div class="mf"><button type="button" class="btn">Cancel</button><button type="button" class="btn btn-danger-solid">Delete event</button></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span class="ds-label">2 · Reject with a reason</span>
+        <div class="stage"><div class="bgp"><span style="width: 40%"></span><span></span><span style="width: 80%"></span></div>
+          <div class="scrim"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="d2">
+            <div class="mh"><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="d2">Reject this Memory?</h2><p class="muted">“Seven days, 28 nationalities…” by Marija Stojanovska</p></div><button type="button" class="x" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+            <div class="mb">
+              <div style="display: flex; flex-wrap: wrap; gap: 6px"><button type="button" class="chip on">Photos need alt text</button><button type="button" class="chip">Not about an EESTEC event</button><button type="button" class="chip">Needs shorter text</button></div>
+              <div><label class="label" for="d2-r">Reason <span class="muted" style="font-weight: 400">· optional</span></label><textarea class="input" id="d2-r" rows="3">Lovely story! Please add a short description to the 2 gallery photos without alt text and send it again.</textarea></div>
+              <button type="button" role="switch" aria-checked="true" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 0; background: transparent; padding: 0; font: inherit; color: #1a1a1a; cursor: pointer">E-mail the reason to the author<span class="tgl on"></span></button>
+            </div>
+            <div class="mf"><button type="button" class="btn">Cancel</button><button type="button" class="btn btn-danger-solid">Reject</button></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span class="ds-label">3 · Leaving with unsaved changes</span>
+        <div class="stage"><div class="bgp"><span style="width: 40%"></span><span></span><span style="width: 80%"></span></div>
+          <div class="scrim"><div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="d3">
+            <div class="mh"><span class="ic" style="background: #f5f5f5; color: #1a1a1a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg></span><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="d3">Leave without saving?</h2><p class="muted">You have unsaved changes to “Workshop: AI at the Edge”.</p></div></div>
+            <div class="mf" style="justify-content: space-between"><button type="button" class="btn btn-ghost" style="color: #b81f24">Discard changes</button><span style="display: flex; gap: 8px"><button type="button" class="btn">Stay on page</button><button type="button" class="btn btn-primary">Save draft &amp; leave</button></span></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span class="ds-label">4 · Invite an admin</span>
+        <div class="stage"><div class="bgp"><span style="width: 40%"></span><span></span><span style="width: 80%"></span></div>
+          <div class="scrim"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="d4">
+            <div class="mh"><div style="display: flex; flex-direction: column; gap: 4px"><h2 id="d4">Invite an admin</h2><p class="muted">They get an e-mail to set a password and 2-step login.</p></div><button type="button" class="x" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div>
+            <div class="mb">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px"><div><label class="label" for="d4-n">Name</label><input class="input" id="d4-n" value="Petar Kolev"></div><div><label class="label" for="d4-e">E-mail</label><input class="input" id="d4-e" value="petar.k@students.feit.ukim.edu.mk"></div></div>
+              <div><label class="label" for="d4-r">Role</label><div class="ico"><select class="input sel" id="d4-r"><option>Event manager</option><option>Editor</option><option>Super admin</option></select><svg class="r" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></div></div>
+              <div><span class="label">Events they manage</span><div style="display: flex; flex-wrap: wrap; gap: 6px"><button type="button" class="chip on">New Year Social 2026 ×</button><button type="button" class="chip" style="border-style: dashed; color: #6b6b6b">+ Add event</button></div></div>
+            </div>
+            <div class="mf"><button type="button" class="btn">Cancel</button><button type="button" class="btn btn-primary">Send invite</button></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1379}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Membership application form</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.jf *,.jf *::before,.jf *::after{box-sizing:border-box}
+.jf .label{display:block;font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:6px}
+.jf .req{color:#b81f24}
+.jf .input{width:100%;height:48px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;background:#ffffff;color:#1a1a1a;font-family:inherit;font-size:16px}
+.jf .input::placeholder{color:#6b6b6b}
+.jf .input:focus{outline:none;border-color:#e52a30;box-shadow:0 0 0 3px rgba(229,42,48,0.28)}
+.jf .input.err{border:2px solid #e52a30}
+.jf .input:disabled{background:#f5f5f5;color:#6b6b6b;border-color:#c7c7c7}
+.jf .select{appearance:none;-webkit-appearance:none;padding-right:40px}
+.jf .chev{position:absolute;right:14px;top:41px;pointer-events:none}
+.jf .seg{display:flex;flex-wrap:wrap;gap:8px}
+.jf .seg label{display:flex;align-items:center;justify-content:center;gap:6px;min-width:52px;height:44px;padding:0 14px;border:1px solid #8c8c8c;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;background:#ffffff}
+.jf .seg label.on{border:2px solid #e52a30;color:#b81f24;background:#fdf0f0}
+.jf .seg.err label{border-color:#e52a30}
+.jf .seg input{position:absolute;opacity:0;width:1px;height:1px}
+.jf .error{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:14px;font-weight:500;color:#b81f24}
+.jf .help{margin-top:6px;font-size:14px;color:#6b6b6b}
+.jf fieldset{border:0;margin:0;padding:0;min-width:0}
+.jf legend{padding:0}
+.jf .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 32px;border-radius:8px;border:2px solid #e52a30;background:#e52a30;color:#ffffff;font-family:inherit;font-size:16px;font-weight:500;text-decoration:none;cursor:pointer}
+.jf .btn:hover{background:#b81f24;border-color:#b81f24}
+.jf .btn-sec{background:#ffffff;color:#e52a30}
+.jf .btn-sec:hover{background:#fdf0f0;color:#b81f24}
+.jf .link{color:#b81f24;font-weight:500;text-decoration:none}
+.jf .link:hover{text-decoration:underline}
+</style>
+</helmet>
+<div class="jf" style="width: 100%; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a">
+
+<sc-if value="{{showForm}}" hint-placeholder-val="{{ true }}">
+<form aria-labelledby="jf-title" aria-busy="{{busy}}" style="padding: {{pad}}; border: 1px solid #e3e3e3; border-radius: 16px; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.06); display: grid; grid-template-columns: {{cols}}; gap: 22px 20px">
+  <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px">
+    <h3 id="jf-title" style="margin: 0; font-size: 22px; font-weight: 700">Membership application</h3>
+    <p style="margin: 0; font-size: 14px; color: #6b6b6b">About 5 minutes. Fields marked <span class="req">*</span> are required.</p>
+  </div>
+
+  <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}">
+    <div role="alert" style="grid-column: 1 / -1; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding: 16px 18px; border-radius: 10px; border: 2px solid #e52a30; background: #fdf0f0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b81f24" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <strong style="font-size: 16px">Please fix 3 fields</strong>
+        <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6"><li><a class="link" href="#jf-email">E-mail</a></li><li><a class="link" href="#jf-year">Year of study</a></li><li><a class="link" href="#jf-consent">Consent to data processing</a></li></ul>
+      </div>
+    </div>
+  </sc-if>
+
+  <div><label class="label" for="jf-name">Full name <span class="req">*</span></label><input class="input" id="jf-name" type="text" autocomplete="name" placeholder="{{ph.name}}" value="{{v.name}}" disabled="{{busy}}"></div>
+  <div>
+    <label class="label" for="jf-email">E-mail <span class="req">*</span></label>
+    <input class="{{emailClass}}" id="jf-email" type="email" autocomplete="email" placeholder="{{ph.email}}" value="{{v.email}}" aria-invalid="{{emailInvalid}}" disabled="{{busy}}">
+    <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Enter an e-mail like name@example.com</span></sc-if>
+  </div>
+  <div><label class="label" for="jf-phone">Phone</label><input class="input" id="jf-phone" type="tel" autocomplete="tel" placeholder="{{ph.phone}}" value="{{v.phone}}" disabled="{{busy}}"></div>
+  <div style="position: relative">
+    <label class="label" for="jf-fac">Faculty <span class="req">*</span></label>
+    <select class="input select" id="jf-fac" disabled="{{busy}}">
+      <sc-for list="{{faculties}}" as="f" hint-placeholder-count="6"><option>{{f}}</option></sc-for>
+    </select>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+  </div>
+  <div style="grid-column: 1 / -1"><label class="label" for="jf-prog">Study program <span class="req">*</span></label><input class="input" id="jf-prog" type="text" placeholder="{{ph.prog}}" value="{{v.prog}}" disabled="{{busy}}"></div>
+
+  <fieldset id="jf-year" style="grid-column: 1 / -1" aria-invalid="{{yearInvalid}}">
+    <legend class="label">Year of study <span class="req">*</span></legend>
+    <div class="{{yearClass}}">
+      <sc-for list="{{years}}" as="y" hint-placeholder-count="6"><label class="{{y.cls}}"><input type="radio" name="jf-year" checked="{{y.on}}" disabled="{{busy}}">{{y.t}}</label></sc-for>
+    </div>
+    <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Choose your year of study</span></sc-if>
+  </fieldset>
+
+  <fieldset style="grid-column: 1 / -1">
+    <legend class="label">What would you like to do? <span style="font-weight: 400; color: #6b6b6b">Pick any</span></legend>
+    <div class="seg">
+      <sc-for list="{{interests}}" as="i" hint-placeholder-count="6"><label class="{{i.cls}}"><input type="checkbox" checked="{{i.on}}" disabled="{{busy}}"><sc-if value="{{i.on}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>{{i.t}}</label></sc-for>
+    </div>
+    <span class="help">IT, PR, design, events, fundraising or trainings. You can change this later.</span>
+  </fieldset>
+
+  <div style="grid-column: 1 / -1; position: relative">
+    <label class="label" for="jf-hear">How did you hear about us?</label>
+    <select class="input select" id="jf-hear" disabled="{{busy}}">
+      <sc-for list="{{hear}}" as="h" hint-placeholder-count="6"><option>{{h}}</option></sc-for>
+    </select>
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+  </div>
+
+  <div id="jf-consent" style="grid-column: 1 / -1; padding: 14px 16px; border-radius: 10px; background: {{consentBg}}; border: {{consentBorder}}">
+    <label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 14px; line-height: 1.5">
+      <input type="checkbox" checked="{{consentOn}}" disabled="{{busy}}" aria-invalid="{{consentInvalid}}" style="width: 20px; height: 20px; margin: 0; accent-color: #e52a30; flex-shrink: 0">
+      <span>I agree that EESTEC LC Skopje stores and processes my personal data to handle my membership application, as described in the <a class="link" href="/privacy">privacy policy</a>. I can ask for my data to be deleted at any time. <span class="req">*</span></span>
+    </label>
+    <sc-if value="{{isErrors}}" hint-placeholder-val="{{ false }}"><span class="error" style="padding-left: 32px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>Please agree so we can process your application</span></sc-if>
+  </div>
+
+  <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; flex-wrap: wrap">
+    <sc-if value="{{notBusy}}" hint-placeholder-val="{{ true }}">
+      <button type="submit" class="btn" style="width: {{btnW}}">Send application</button>
+    </sc-if>
+    <sc-if value="{{isBusy}}" hint-placeholder-val="{{ false }}">
+      <button type="button" disabled aria-live="polite" class="btn" style="background: #b81f24; border-color: #b81f24; cursor: progress; width: {{btnW}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.35)" stroke-width="3"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path></svg>Sending…</button>
+    </sc-if>
+    <span style="font-size: 14px; color: #6b6b6b">You'll get a confirmation e-mail right away.</span>
+  </div>
+</form>
+</sc-if>
+
+<sc-if value="{{isSuccess}}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="padding: {{pad}}; border: 1px solid #e3e3e3; border-radius: 16px; background: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 22px">
+    <span style="width: 64px; height: 64px; border-radius: 50%; background: #e52a30; color: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <h3 style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 700">Welcome aboard, Marija!</h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6">Your application is in. We sent a confirmation to <strong>marija.s@students.feit.ukim.edu.mk</strong>.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 12px; background: #f5f5f5">
+      <strong style="font-size: 15px">What happens next</strong>
+      <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.5">
+        <li style="display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px"><b style="width: 26px; height: 26px; border-radius: 50%; background: #1a1a1a; color: #ffffff; font-size: 13px; display: flex; align-items: center; justify-content: center">1</b><span>We'll reply within 3 days.</span></li>
+        <li style="display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px"><b style="width: 26px; height: 26px; border-radius: 50%; background: #1a1a1a; color: #ffffff; font-size: 13px; display: flex; align-items: center; justify-content: center">2</b><span>Come to the next weekly meeting: <strong>Wed 14 Oct, 18:00, room 117, FEEIT</strong>.</span></li>
+        <li style="display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px"><b style="width: 26px; height: 26px; border-radius: 50%; background: #1a1a1a; color: #ffffff; font-size: 13px; display: flex; align-items: center; justify-content: center">3</b><span>Pick a team and meet your mentor.</span></li>
+      </ol>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap">
+      <a href="#" class="btn btn-sec" style="height: 48px; padding: 0 22px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>Add meeting to calendar</a>
+      <a href="/journey" class="link">See the EESTEC Journey →</a>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{isClosed}}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="padding: {{pad}}; border: 1px dashed #c7c7c7; border-radius: 16px; background: #f5f5f5; display: flex; flex-direction: column; gap: 18px">
+    <span style="width: 64px; height: 64px; border-radius: 50%; background: #ffffff; color: #6b6b6b; display: flex; align-items: center; justify-content: center; border: 1px solid #e3e3e3"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 700">Applications are closed right now</h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6">We take new members at the start of each semester. The next round opens in <strong>February 2027</strong>.</p>
+    </div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #6b6b6b">You can still come to a weekly meeting to meet us: Wednesdays at 18:00, room 117, FEEIT.</p>
+    <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap">
+      <a href="https://instagram.com/eestec_skopje" class="btn" style="height: 48px; padding: 0 22px">Get notified on Instagram</a>
+      <a href="/journey" class="link">See the EESTEC Journey →</a>
+    </div>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"state":{"editor":"enum","options":["empty","filled","errors","submitting","success","closed"],"default":"empty"},"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":640,"height":884}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.props.state ?? 'empty';
+    const mobile = (this.props.device ?? 'desktop') === 'mobile';
+    const filledLike = st === 'filled' || st === 'submitting' || st === 'errors';
+    const vals = {
+      name: 'Marija Stojanovska',
+      email: st === 'errors' ? 'marija.s@students' : 'marija.s@students.feit.ukim.edu.mk',
+      phone: '070 123 456',
+      prog: 'Computer Hardware Engineering and Electronics'
+    };
+    const v = filledLike ? vals : { name: '', email: '', phone: '', prog: '' };
+    const yearPick = (st === 'filled' || st === 'submitting') ? '2nd' : '';
+    const years = ['1st', '2nd', '3rd', '4th', "Master's", 'PhD'].map((t) => ({ t, on: t === yearPick, cls: t === yearPick ? 'on' : '' }));
+    const picked = filledLike ? ['IT', 'Events'] : [];
+    const interests = ['IT', 'PR', 'Design', 'Events', 'Fundraising', 'Trainings'].map((t) => ({ t, on: picked.indexOf(t) >= 0, cls: picked.indexOf(t) >= 0 ? 'on' : '' }));
+    const facAll = ['FEEIT', 'FINKI', 'Faculty of Mechanical Engineering', 'Other faculty at UKIM', 'Other university'];
+    const busy = st === 'submitting';
+    return {
+      showForm: ['empty', 'filled', 'errors', 'submitting'].indexOf(st) >= 0,
+      isSuccess: st === 'success',
+      isClosed: st === 'closed',
+      isErrors: st === 'errors',
+      isBusy: busy,
+      notBusy: !busy,
+      busy,
+      v,
+      ph: { name: 'e.g. Marija Stojanovska', email: 'name@example.com', phone: '07X XXX XXX', prog: 'e.g. Computer Hardware Engineering' },
+      faculties: filledLike ? facAll : ['Choose…'].concat(facAll),
+      hear: filledLike ? ['Instagram', 'A friend', 'Info stand at FEEIT', 'Facebook', 'An event', 'Other'] : ['Choose…', 'Instagram', 'A friend', 'Info stand at FEEIT', 'Facebook', 'An event', 'Other'],
+      years,
+      interests,
+      emailClass: st === 'errors' ? 'input err' : 'input',
+      emailInvalid: st === 'errors' ? 'true' : 'false',
+      yearClass: st === 'errors' ? 'seg err' : 'seg',
+      yearInvalid: st === 'errors' ? 'true' : 'false',
+      consentOn: st === 'filled' || st === 'submitting',
+      consentInvalid: st === 'errors' ? 'true' : 'false',
+      consentBg: st === 'errors' ? '#fdf0f0' : '#f5f5f5',
+      consentBorder: st === 'errors' ? '2px solid #e52a30' : '2px solid transparent',
+      pad: mobile ? '20px' : '36px',
+      cols: mobile ? 'minmax(0, 1fr)' : 'repeat(2, minmax(0, 1fr))',
+      btnW: mobile ? '100%' : 'auto'
+    };
+  }
+}
+</script>
+</body>
+</html>

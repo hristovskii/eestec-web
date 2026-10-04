@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contact form — states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:"Roboto","Helvetica Neue",Arial,sans-serif;color:#1a1a1a;background:#ffffff;-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box}
+h1,h2,h3,p{margin:0}
+.ds-label{font-size:13px;font-weight:700;color:#1a1a1a;letter-spacing:0.06em;text-transform:uppercase}
+.cap{font-size:14px;line-height:1.5;color:#6b6b6b}
+</style>
+</helmet>
+<div style="width: 100%; background: #ffffff">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px 96px; display: flex; flex-direction: column; gap: 40px">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 36px; line-height: 1.2; font-weight: 700">Contact form · states</h2>
+      <span style="display: block; width: 56px; height: 4px; border-radius: 2px; background: #e52a30"></span>
+      <p style="font-size: 17px; line-height: 1.55; color: #6b6b6b">Same fields and styles as the other forms. The subject decides who receives the message; two subjects also suggest a faster page.</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; align-items: start">
+      <sc-for list="{{states}}" as="s" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <span class="ds-label">{{s.label}}</span>
+          <span class="cap">{{s.cap}}</span>
+          <dc-import name="ContactForm" state="{{s.state}}" hint-size="100%,900px"></dc-import>
+        </div>
+      </sc-for>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span class="ds-label">Subject menu · open</span>
+        <span class="cap">Options and the address each one goes to are set in the Admin Panel.</span>
+        <div style="padding: 36px; border: 1px solid #e3e3e3; border-radius: 16px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 14px; font-weight: 500">Subject <span style="color: #b81f24">*</span></span>
+          <div style="height: 48px; padding: 0 14px; border: 2px solid #e52a30; border-radius: 8px; box-shadow: 0 0 0 3px rgba(229,42,48,0.28); display: flex; align-items: center; justify-content: space-between; font-size: 16px">Partnership<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"></path></svg></div>
+          <ul role="listbox" aria-label="Subject" style="list-style: none; margin: 4px 0 0; padding: 6px; border: 1px solid #e3e3e3; border-radius: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.12); background: #ffffff">
+            <sc-for list="{{options}}" as="o" hint-placeholder-count="5">
+              <li role="option" aria-selected="{{o.sel}}" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 6px; background: {{o.bg}}; font-size: 15px; font-weight: {{o.weight}}; color: {{o.fg}}">
+                <span>{{o.t}}</span><span style="font-size: 13px; font-weight: 400; color: #6b6b6b">{{o.hint}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 48px 40px 72px; display: flex; gap: 40px; align-items: flex-start">
+    <sc-for list="{{states}}" as="s" hint-placeholder-count="5">
+      <div style="flex: 0 0 358px; display: flex; flex-direction: column; gap: 10px">
+        <span class="ds-label">{{s.label}}</span>
+        <dc-import name="ContactForm" state="{{s.state}}" device="mobile" hint-size="358px,1000px"></dc-import>
+      </div>
+    </sc-for>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"device":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":1440,"height":2882}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const device = this.props.device ?? 'desktop';
+    const opt = (t, hint, sel) => ({ t, hint, sel: sel ? 'true' : 'false', bg: sel ? '#fdf0f0' : 'transparent', fg: sel ? '#b81f24' : '#1a1a1a', weight: sel ? 700 : 400 });
+    return {
+      isDesktop: device === 'desktop',
+      isMobile: device === 'mobile',
+      states: [
+        { state: 'empty', label: '1 · Empty', cap: 'Spam protection runs in the background; no puzzle to solve.' },
+        { state: 'routing', label: '2 · Subject with a shortcut', cap: 'Partnership and Membership show a link to the page that answers most questions.' },
+        { state: 'errors', label: '3 · Validation errors', cap: 'Summary at the top, message under each field.' },
+        { state: 'sending', label: '4 · Sending', cap: 'Fields locked, spinner on the button.' },
+        { state: 'success', label: '5 · Success', cap: 'Says which team got the message. A copy is e-mailed to the sender.' }
+      ],
+      options: [
+        opt('General question', '', false),
+        opt('Membership', 'Suggests Join Us', false),
+        opt('Partnership', 'Suggests For Companies', true),
+        opt('Media', '', false),
+        opt('Other committee', '', false)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

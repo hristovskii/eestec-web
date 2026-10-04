@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Footer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<footer style="width: 100%; background: #e52a30; color: #ffffff; font-weight: 500; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif">
+
+<sc-if value="{{isDesktop}}" hint-placeholder-val="{{ true }}">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px 0; box-sizing: border-box">
+    <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.3fr; gap: 48px">
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje" style="height: 80px; width: auto; align-self: flex-start; margin-left: -6px">
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; max-width: 320px">The Skopje branch of the Electrical Engineering STudents' European assoCiation, based at FEEIT, Ss. Cyril and Methodius University.</p>
+        <div style="display: flex; gap: 8px">
+          <a href="https://instagram.com/eestec_skopje" aria-label="Instagram" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%; color: #ffffff">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg>
+          </a>
+          <a href="https://facebook.com/eestec.skopje" aria-label="Facebook" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%; color: #ffffff">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://linkedin.com/company/eestec-lc-skopje" aria-label="LinkedIn" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%; color: #ffffff">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+          </a>
+        </div>
+      </div>
+      <nav aria-label="Explore" style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+        <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em">Explore</h2>
+        <a href="/events" style="color: #ffffff; text-decoration: none">Events</a>
+        <a href="/upcoming" style="color: #ffffff; text-decoration: none">Upcoming Events</a>
+        <a href="/members" style="color: #ffffff; text-decoration: none">Members</a>
+        <a href="/memories" style="color: #ffffff; text-decoration: none">Memories</a>
+        <a href="/journey" style="color: #ffffff; text-decoration: none">EESTEC Journey</a>
+      </nav>
+      <nav aria-label="Get involved" style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+        <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em">Get involved</h2>
+        <a href="/join" style="color: #ffffff; text-decoration: none">Join Us</a>
+        <a href="/submit" style="color: #ffffff; text-decoration: none">Submit an idea or impression</a>
+        <a href="/partners" style="color: #ffffff; text-decoration: none">For Companies</a>
+        <a href="/contact" style="color: #ffffff; text-decoration: none">Contact</a>
+        <a href="https://eestec.net" style="color: #ffffff; text-decoration: none">eestec.net ↗</a>
+      </nav>
+      <div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px; line-height: 1.5">
+        <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em">Contact</h2>
+        <p style="margin: 0">FEEIT, Rugjer Boshkovikj 18<br>1000 Skopje, North Macedonia</p>
+        <a href="mailto:hello@eestec.mk" style="color: #ffffff">hello@eestec.mk</a>
+        <p style="margin: 0">Weekly meeting: Wednesdays, 18:00<br>Room 117, FEEIT</p>
+      </div>
+    </div>
+    <div style="margin-top: 56px; padding: 20px 0 24px; border-top: 1px solid rgba(255,255,255,0.35); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px">
+      <span>© 2026 EESTEC LC Skopje · Student association · Reg. no. [0000000] · Tax no. [MK0000000000000]</span>
+      <span style="display: flex; gap: 20px"><a href="/privacy" style="color: #ffffff">Privacy policy</a><a href="/admin" style="color: #ffffff">Board login</a></span>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{isMobile}}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 40px 16px 0; display: flex; flex-direction: column; gap: 32px">
+    <div style="display: flex; flex-direction: column; gap: 16px">
+      <img src="/_blob/3c9567fae79f47c8a917e40a56fbb3eb" alt="EESTEC LC Skopje" style="height: 72px; width: auto; align-self: flex-start; margin-left: -6px">
+      <p style="margin: 0; font-size: 15px; line-height: 1.6">The Skopje branch of the Electrical Engineering STudents' European assoCiation, based at FEEIT, Ss. Cyril and Methodius University.</p>
+      <div style="display: flex; gap: 8px">
+        <a href="https://instagram.com/eestec_skopje" aria-label="Instagram" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%; color: #ffffff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg></a>
+        <a href="https://facebook.com/eestec.skopje" aria-label="Facebook" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%; color: #ffffff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+        <a href="https://linkedin.com/company/eestec-lc-skopje" aria-label="LinkedIn" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%; color: #ffffff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; font-size: 15px">
+      <nav aria-label="Explore" style="display: flex; flex-direction: column">
+        <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em">Explore</h2>
+        <a href="/events" style="color: #ffffff; text-decoration: none; padding: 10px 0">Events</a>
+        <a href="/upcoming" style="color: #ffffff; text-decoration: none; padding: 10px 0">Upcoming Events</a>
+        <a href="/members" style="color: #ffffff; text-decoration: none; padding: 10px 0">Members</a>
+        <a href="/memories" style="color: #ffffff; text-decoration: none; padding: 10px 0">Memories</a>
+        <a href="/journey" style="color: #ffffff; text-decoration: none; padding: 10px 0">EESTEC Journey</a>
+      </nav>
+      <nav aria-label="Get involved" style="display: flex; flex-direction: column">
+        <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em">Get involved</h2>
+        <a href="/join" style="color: #ffffff; text-decoration: none; padding: 10px 0">Join Us</a>
+        <a href="/submit" style="color: #ffffff; text-decoration: none; padding: 10px 0">Submit an idea</a>
+        <a href="/partners" style="color: #ffffff; text-decoration: none; padding: 10px 0">For Companies</a>
+        <a href="/contact" style="color: #ffffff; text-decoration: none; padding: 10px 0">Contact</a>
+        <a href="https://eestec.net" style="color: #ffffff; text-decoration: none; padding: 10px 0">eestec.net ↗</a>
+      </nav>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.5">
+      <h2 style="margin: 0 0 2px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em">Contact</h2>
+      <p style="margin: 0">FEEIT, Rugjer Boshkovikj 18, 1000 Skopje</p>
+      <a href="mailto:hello@eestec.mk" style="color: #ffffff">hello@eestec.mk</a>
+      <p style="margin: 0">Wednesdays, 18:00 · Room 117, FEEIT</p>
+    </div>
+    <div style="padding: 20px 0 28px; border-top: 1px solid rgba(255,255,255,0.35); display: flex; flex-direction: column; gap: 12px; font-size: 14px; line-height: 1.5">
+      <span>© 2026 EESTEC LC Skopje · Student association · Reg. no. [0000000]</span>
+      <span style="display: flex; gap: 20px"><a href="/privacy" style="color: #ffffff">Privacy policy</a><a href="/admin" style="color: #ffffff">Board login</a></span>
+    </div>
+  </div>
+</sc-if>
+
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"$preview":{"width":1440,"height":444}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const variant = this.props.variant ?? 'desktop';
+    return { isDesktop: variant === 'desktop', isMobile: variant === 'mobile' };
+  }
+}
+</script>
+</body>
+</html>
