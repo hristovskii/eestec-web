@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "status": "source",
+    "note": "English UI copy, taken from the design canvas. This file is the key source for mk.json."
+  },
+  "common": {
+    "siteName": "EESTEC LC Skopje",
+    "skipToContent": "Skip to content",
+    "languageSwitch": "Language",
+    "localeNames": {
+      "mk": "MK",
+      "en": "EN"
+    }
+  },
+  "metadata": {
+    "defaultTitle": "EESTEC LC Skopje",
+    "titleTemplate": "%s · EESTEC LC Skopje",
+    "defaultDescription": "The Skopje branch of the Electrical Engineering STudents' European assoCiation, based at FEEIT, Ss. Cyril and Methodius University."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for doesn't exist or has moved.",
+    "home": "Go to the home page",
+    "admin": "Back to the admin dashboard"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "text": "Please try again. If it keeps happening, contact us.",
+    "retry": "Try again"
+  },
+  "placeholder": {
+    "foundation": "Foundation is in place. Pages arrive milestone by milestone."
+  }
+}

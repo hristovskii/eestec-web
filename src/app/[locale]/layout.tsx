@@ -1,0 +1,42 @@
+import '@/shared/styles/globals.css';
+
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { locale as rootLocale } from 'next/root-params';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { getMessages, getTranslations } from 'next-intl/server';
+
+import { SITE_URL } from '@/shared/config/site';
+import { routing } from '@/shared/i18n/routing';
+import { roboto } from '@/shared/styles/fonts';
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('metadata');
+  return {
+    metadataBase: SITE_URL,
+    title: { default: t('defaultTitle'), template: t('titleTemplate') },
+    description: t('defaultDescription'),
+  };
+}
+
+export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'>) {
+  const locale = await rootLocale();
+  if (!hasLocale(routing.locales, locale)) notFound();
+
+  // Client components get only the namespaces they need (docs/ARCHITECTURE.md §7).
+  const messages = await getMessages();
+
+  return (
+    <html lang={locale} className={roboto.variable}>
+      <body>
+        <NextIntlClientProvider messages={{ common: messages.common, error: messages.error }}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "status": "needs-review",
+    "note": "NEEDS REVIEW: Macedonian drafted by Claude from en.json. Review status per key is tracked in docs/i18n-review.md."
+  },
+  "common": {
+    "siteName": "EESTEC LC Скопје",
+    "skipToContent": "Скокни до содржината",
+    "languageSwitch": "Јазик",
+    "localeNames": {
+      "mk": "MK",
+      "en": "EN"
+    }
+  },
+  "metadata": {
+    "defaultTitle": "EESTEC LC Скопје",
+    "titleTemplate": "%s · EESTEC LC Скопје",
+    "defaultDescription": "Скопскиот огранок на Европската асоцијација на студенти по електротехника (EESTEC), со седиште на ФЕИТ, Универзитет „Св. Кирил и Методиј“."
+  },
+  "notFound": {
+    "title": "Страницата не е пронајдена",
+    "text": "Страницата што ја барате не постои или е преместена.",
+    "home": "Оди на почетната страница",
+    "admin": "Назад кон администрацијата"
+  },
+  "error": {
+    "title": "Нешто тргна наопаку",
+    "text": "Обидете се повторно. Ако продолжи да се случува, контактирајте нè.",
+    "retry": "Обиди се повторно"
+  },
+  "placeholder": {
+    "foundation": "Основата е поставена. Страниците доаѓаат чекор по чекор."
+  }
+}
