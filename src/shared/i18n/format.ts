@@ -8,6 +8,8 @@ export const TIME_ZONE = 'Europe/Skopje';
 const presets = {
   /** Sunday, 4 October 2026 */
   long: { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' },
+  /** 2 Oct */
+  dayMonth: { day: 'numeric', month: 'short' },
   /** 18 Oct 2026 */
   date: { day: 'numeric', month: 'short', year: 'numeric' },
   /** 18 Oct 2026, 23:59 */
@@ -35,4 +37,29 @@ export function hourInSkopje(date: Date): number {
   return Number(
     new Intl.DateTimeFormat('en-GB', { hour: 'numeric', hourCycle: 'h23', timeZone: TIME_ZONE }).format(date),
   );
+}
+
+/** The calendar day in Skopje, as YYYY-MM-DD (for "today" / "yesterday" comparisons). */
+export function dayInSkopje(date: Date | string): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }).format(new Date(date));
+}
+
+/** Year in Skopje (events starting on 1 January just after midnight count for that year). */
+export function yearInSkopje(date: Date | string): number {
+  return Number(
+    new Intl.DateTimeFormat('en-GB', { year: 'numeric', timeZone: TIME_ZONE }).format(new Date(date)),
+  );
+}
+
+/**
+ * "7–13 Nov 2026", "14 Nov 2026", "28 Nov – 2 Dec 2026", "30 Dec 2026 – 2 Jan 2027" (EventCard,
+ * AdminEvents). Days only on both sides close up around the dash, like the canvas.
+ */
+export function formatDateRange(start: Date | string, end: Date | string, locale: Locale): string {
+  const text = new Intl.DateTimeFormat(INTL_LOCALE[locale], { ...presets.date, timeZone: TIME_ZONE })
+    .formatRange(new Date(start), new Date(end))
+    // ICU puts thin or narrow spaces around the dash; use plain ones.
+    .replace(/[\u2009\u202f\u00a0]/g, ' ')
+    .replace(/^(\d+)\s*–\s*(\d+)(?=\s)/, '$1–$2');
+  return locale === 'en' ? text.replace(/\bSept\b/, 'Sep') : text;
 }

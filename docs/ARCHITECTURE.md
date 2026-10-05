@@ -796,6 +796,17 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Canvas contradictions resolved: Daniel manages Leading Teams and FPGA Basics (AdminUsers); the "Marija Stojanovska · Editor" row is left out, because Marija is the member-only sample persona everywhere else.
 - English dates use three-letter months ("30 Sep"): newer ICU writes "Sept" in en-GB.
 
+**Notes from building (M5a)**
+
+- M5 split in two: M5a is the events data model, the list and Event types & topics; M5b is the edit form (`/admin/events/new` and `/[id]`). Until M5b, "Add event", "Edit" and "Duplicate" open a 404. "View on site" arrives with the public pages (M6).
+- One `EventRecord` holds every field the public pages need (D6): location plus a short city for cards and a country, organizer (`null` = LC Skopje, which drives the "Organized by LC Skopje" badge), agenda as dated items (UpcomingDetail draws a day-by-day programme, not free text), requirements as rich text, fee as price + note, contact e-mail, participant and country counts, and the application settings incl. "Results by". Event partners come with sponsors (M11).
+- Images used by an event keep their own alt text and credit (`cover_alt`, gallery captions in `schema.sql`); the file stays in the Media library. A gallery photo with `alt: null` blocks publishing.
+- Publish rules are one pure function (`publishIssues`) used by bulk Publish now and by the edit form in M5b. Bulk Publish skips events that aren't ready and names them.
+- Event types and topics are `Localized` lists with an order. Deleting a type that events use asks for the type they get instead; deleting a topic takes it off its events.
+- Applications column: sample counts from AdminEvents / AdminDashboard until the applications feature (M7).
+- Sample data: 23 events from the canvas in one dataset (contradictions are listed at the top of `events/data/fixtures/events.ts`). Some published archive samples have no short description or cover because the canvas never gives one; the edit form asks for them before "Update live page".
+- Export CSV is `/api/export/[resource]` (events now, applications in M7): the current filters, BOM for Excel, formula-safe cells, logged in the activity log.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

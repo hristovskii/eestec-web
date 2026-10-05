@@ -19,3 +19,10 @@ export async function listMedia(actor: Actor, params: MediaListParams) {
     pageSize: params.size,
   });
 }
+
+/** Library items by id (other features' admin screens: event covers, galleries). Unknown ids are left out. */
+export async function getMediaItems(ids: readonly string[]) {
+  const repo = await mediaRepository();
+  const items = await Promise.all([...new Set(ids)].map((id) => repo.get(id)));
+  return items.filter((item) => item !== null);
+}
