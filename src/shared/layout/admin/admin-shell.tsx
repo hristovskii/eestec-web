@@ -315,10 +315,9 @@ function Topbar({
   const section = groups
     .flatMap((g) => g.items)
     .find((item) => item.href !== '/admin' && isCurrent(pathname, item.href));
-  const crumbs = [
-    { label: t('admin'), href: '/admin' },
-    { label: section ? tNav(section.key) : tNav('dashboard') },
-  ];
+  // Pages outside the sidebar (e.g. /admin/design-system) show just "Admin".
+  const current = section ? tNav(section.key) : pathname === '/admin' ? tNav('dashboard') : null;
+  const crumbs = [{ label: t('admin'), href: '/admin' }, ...(current ? [{ label: current }] : [])];
 
   const signOut = () =>
     startTransition(async () => {

@@ -5,6 +5,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 
 import { SITE_URL } from '@/shared/config/site';
+import { pinnedNow } from '@/shared/lib/now';
+import { ClockProvider } from '@/shared/ui/clock-provider';
 import { roboto } from '@/shared/styles/fonts';
 import { Toaster } from '@/shared/ui/primitives/sonner';
 import { DevToolbarSlot } from '@/features/devtools/server';
@@ -25,7 +27,7 @@ export default async function AdminRootLayout({ children }: LayoutProps<'/admin'
         <NextIntlClientProvider
           messages={{ common: messages.common, ui: messages.ui, admin: messages.admin }}
         >
-          {children}
+          <ClockProvider pinnedNow={pinnedNow()}>{children}</ClockProvider>
           <Toaster />
           <Suspense fallback={null}>
             <DevToolbarSlot />
