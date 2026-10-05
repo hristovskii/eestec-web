@@ -8,7 +8,7 @@ The website of EESTEC LC Skopje (eestec.mk): a public site, member accounts (Pha
 
 ## Sources of truth (read before changing anything)
 
-0. `docs/ARCHITECTURE.md`: the approved architecture, folder rules, milestones and the decisions log (§9, D1–D20). It overrides everything below where they differ.
+0. `docs/ARCHITECTURE.md`: the approved architecture, folder rules, milestones and the decisions log (§9, D1–D21). It overrides everything below where they differ.
 1. `specs/00-overview-and-design-system.md` … `specs/11-admin-panel.md` (the original specs)
 2. `handoff/docs/rules-and-settings.md` (decisions made during design; they override the specs where they differ)
 3. `handoff/docs/routes.md`, `handoff/docs/components.md`, `handoff/docs/data-model.md`, `handoff/supabase/schema.sql`

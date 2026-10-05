@@ -2,11 +2,14 @@ import 'server-only';
 
 import { accessTo, type Actor } from '@/features/auth';
 import { getMediaItems } from '@/features/media/server';
+import { getSiteSettings } from '@/features/settings/server';
 import { now } from '@/shared/lib/now';
 
 import { eventsRepository, eventTaxonomyRepository } from './data';
+import { newEventInput } from './domain/new-event';
 import type { AdminEventsParams } from './schemas/admin-events-params.schema';
-import type { AdminEventsQuery } from './types';
+import type { EventDraftInput } from './schemas/event.schema';
+import type { AdminEventsQuery, EventRecord } from './types';
 
 /** Every event as a choice (admin forms: "Events they manage"). */
 export async function listEventOptions() {
@@ -60,4 +63,47 @@ export async function listEventTaxonomy() {
   const taxonomy = await eventTaxonomyRepository();
   const [types, topics] = await Promise.all([taxonomy.list('types'), taxonomy.list('topics')]);
   return { types, topics };
+}
+
+/** The Media library files an event uses (cover, gallery, info pack, share image). */
+const mediaIdsOf = (event: EventDraftInput) => [
+  ...(event.cover ? [event.cover.mediaId] : []),
+  ...event.gallery.map((photo) => photo.mediaId),
+  ...(event.infoPackId ? [event.infoPackId] : []),
+  ...(event.seo.shareImageId ? [event.seo.shareImageId] : []),
+];
+
+/**
+ * Everything the edit form needs: the event (or a new draft with the Settings defaults), the
+ * files it uses, and the types and topics to choose from. Callers check the permission.
+ */
+export async function getEventEditor(id: string | null) {
+  const [repo, taxonomy] = await Promise.all([eventsRepository(), eventTaxonomyRepository()]);
+  const [record, types, topics] = await Promise.all([
+    id ? repo.get(id) : Promise.resolve(null),
+    taxonomy.list('types'),
+    taxonomy.list('topics'),
+  ]);
+  if (id && !record) return null;
+
+  let input: EventDraftInput;
+  if (record) {
+    const { id: _id, createdAt: _c, updatedAt: _u, updatedBy: _b, ...fields } = record;
+    input = fields;
+  } else {
+    const { events } = await getSiteSettings('en');
+    input = newEventInput(now(), {
+      typeId: types[0]?.id ?? '',
+      maxParticipants: events.defaultMaxParticipants,
+      waitlist: events.defaultWaitlistEnabled,
+    });
+  }
+  const media = await getMediaItems(mediaIdsOf(input));
+  return {
+    record: record satisfies EventRecord | null,
+    input,
+    media,
+    types: types.map(({ id: typeId, name }) => ({ id: typeId, name })),
+    topics: topics.map(({ id: topicId, name }) => ({ id: topicId, name })),
+  };
 }

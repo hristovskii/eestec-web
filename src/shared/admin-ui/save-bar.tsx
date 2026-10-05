@@ -1,6 +1,8 @@
 'use client';
 
-import { Check, LoaderCircle } from 'lucide-react';
+import { ArrowLeft, Check, LoaderCircle } from 'lucide-react';
+import type { Route } from 'next';
+import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
 import * as React from 'react';
 
@@ -24,6 +26,11 @@ type SaveBarProps = {
   onSaveDraft: () => void;
   onPublish: () => void;
   onDiscard: () => void;
+  /** Edit pages: the ← back to the list and the line under the title (AdminEventEdit). */
+  back?: { href: string; label: string };
+  subtitle?: React.ReactNode;
+  /** The edit page's own heading (h1); the lab shows several bars, so h2 there. */
+  headingLevel?: 1 | 2;
   className?: string;
 };
 
@@ -41,8 +48,12 @@ export function SaveBar({
   onSaveDraft,
   onPublish,
   onDiscard,
+  back,
+  subtitle,
+  headingLevel = 2,
   className,
 }: SaveBarProps) {
+  const Heading = headingLevel === 1 ? 'h1' : 'h2';
   const t = useTranslations('admin.ui.saveBar');
   const saving = state === 'saving';
 
@@ -56,9 +67,21 @@ export function SaveBar({
         className,
       )}
     >
-      <div className="flex min-w-0 items-center gap-3">
-        <h2 className="truncate text-[17px] font-bold">{title}</h2>
-        <AdminBadge tone={status.tone}>{status.label}</AdminBadge>
+      <div className="flex min-w-0 items-center gap-3.5">
+        {back && (
+          <Button asChild variant="ghost" size="icon" className="size-9 shrink-0">
+            <Link href={back.href as Route} aria-label={back.label}>
+              <ArrowLeft aria-hidden />
+            </Link>
+          </Button>
+        )}
+        <div className="flex min-w-0 flex-col">
+          <span className="flex min-w-0 items-center gap-2.5">
+            <Heading className="truncate text-[17px] font-bold md:text-[20px]">{title}</Heading>
+            <AdminBadge tone={status.tone}>{status.label}</AdminBadge>
+          </span>
+          {subtitle && <span className="truncate text-[13px] text-muted-ink">{subtitle}</span>}
+        </div>
       </div>
       <div className="ml-auto flex flex-wrap items-center justify-end gap-x-3.5 gap-y-2">
         <SaveStatus state={state} published={published} savedAt={savedAt} />

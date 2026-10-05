@@ -22,6 +22,8 @@ type LocalizedFieldProps = {
   multiline?: boolean;
   rows?: number;
   placeholder?: string;
+  /** Shows "24 / 90" for the language on screen (AdminEventEdit counters). */
+  maxLength?: number;
 };
 
 /**
@@ -39,6 +41,7 @@ export function LocalizedField({
   multiline,
   rows = 4,
   placeholder,
+  maxLength,
 }: LocalizedFieldProps) {
   const t = useTranslations('admin.ui.localized');
   const [lang, setLang] = React.useState<Locale>('mk');
@@ -63,7 +66,8 @@ export function LocalizedField({
     placeholder,
     required: lang === 'mk' ? required : undefined,
     'aria-invalid': showError ? (true as const) : undefined,
-    'aria-describedby': [showError && errorId, helpText && helpId].filter(Boolean).join(' ') || undefined,
+    'aria-describedby':
+      [showError && errorId, (helpText || maxLength) && helpId].filter(Boolean).join(' ') || undefined,
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       onChange(lang === 'mk' ? { ...value, mk: event.target.value } : { ...value, en: event.target.value }),
   };
@@ -81,39 +85,13 @@ export function LocalizedField({
           )}
           <span className="sr-only"> ({lang === 'mk' ? t('mkName') : t('enName')})</span>
         </label>
-        <div
-          role="group"
-          aria-label={t('languages', { label })}
-          className="-my-1 inline-flex shrink-0 rounded-sm border border-line bg-white p-0.5"
-        >
-          {(['mk', 'en'] as const).map((code) => (
-            <button
-              key={code}
-              type="button"
-              aria-pressed={lang === code}
-              aria-label={code === 'mk' ? t('mkName') : t('enName')}
-              onClick={() => setLang(code)}
-              className={cn(
-                'relative flex h-6 cursor-pointer items-center gap-1 rounded-sm px-2 text-[12px] font-bold',
-                'focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand',
-                lang === code ? 'bg-ink text-white' : 'text-ink-2 hover:bg-surface',
-              )}
-            >
-              {code === 'mk' ? t('mk') : t('en')}
-              {code === 'mk' && error && <span aria-hidden className="size-1.5 rounded-full bg-brand" />}
-              {code === 'en' && englishEmpty && (
-                <span
-                  aria-hidden
-                  title={t('enEmpty')}
-                  className={cn(
-                    'size-1.5 rounded-full border',
-                    lang === 'en' ? 'border-white' : 'border-muted-ink',
-                  )}
-                />
-              )}
-            </button>
-          ))}
-        </div>
+        <LanguageToggle
+          label={label}
+          lang={lang}
+          onChange={setLang}
+          mkError={!!error}
+          englishEmpty={englishEmpty}
+        />
       </div>
       {multiline ? (
         <Textarea {...control} rows={rows} className="min-h-0 md:text-small" />
@@ -121,11 +99,76 @@ export function LocalizedField({
         <Input {...control} className="md:text-small" />
       )}
       {showError && <FieldError id={errorId}>{error}</FieldError>}
-      {helpText && (
-        <span id={helpId} className="mt-1.5 text-small text-muted-ink">
-          {helpText}
+      {(helpText || maxLength) && (
+        <span id={helpId} className="mt-1.5 flex justify-between gap-2 text-small text-muted-ink">
+          <span>{helpText}</span>
+          {maxLength && (
+            <span
+              className={cn(
+                'shrink-0 tabular-nums',
+                text.length > maxLength && 'font-medium text-brand-dark',
+              )}
+            >
+              {t('count', { count: text.length, max: maxLength })}
+            </span>
+          )}
         </span>
       )}
+    </div>
+  );
+}
+
+/**
+ * MK · EN switch of a bilingual field: a red dot when the Macedonian text has an error, an empty
+ * ring when there is no English text yet.
+ */
+export function LanguageToggle({
+  label,
+  lang,
+  onChange,
+  mkError,
+  englishEmpty,
+}: {
+  label: string;
+  lang: Locale;
+  onChange: (lang: Locale) => void;
+  mkError?: boolean;
+  englishEmpty: boolean;
+}) {
+  const t = useTranslations('admin.ui.localized');
+  return (
+    <div
+      role="group"
+      aria-label={t('languages', { label })}
+      className="-my-1 inline-flex shrink-0 rounded-sm border border-line bg-white p-0.5"
+    >
+      {(['mk', 'en'] as const).map((code) => (
+        <button
+          key={code}
+          type="button"
+          aria-pressed={lang === code}
+          aria-label={code === 'mk' ? t('mkName') : t('enName')}
+          onClick={() => onChange(code)}
+          className={cn(
+            'relative flex h-6 cursor-pointer items-center gap-1 rounded-sm px-2 text-[12px] font-bold',
+            'focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand',
+            lang === code ? 'bg-ink text-white' : 'text-ink-2 hover:bg-surface',
+          )}
+        >
+          {code === 'mk' ? t('mk') : t('en')}
+          {code === 'mk' && mkError && <span aria-hidden className="size-1.5 rounded-full bg-brand" />}
+          {code === 'en' && englishEmpty && (
+            <span
+              aria-hidden
+              title={t('enEmpty')}
+              className={cn(
+                'size-1.5 rounded-full border',
+                lang === 'en' ? 'border-white' : 'border-muted-ink',
+              )}
+            />
+          )}
+        </button>
+      ))}
     </div>
   );
 }

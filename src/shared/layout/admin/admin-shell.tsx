@@ -79,6 +79,19 @@ type AdminShellProps = {
 
 const COLLAPSE_KEY = 'eestec-admin-sidebar-collapsed';
 
+/** A page below a sidebar section adds its own last crumb ("Admin › Events › Workshop: AI…"). */
+const PageCrumbContext = React.createContext<(label: string | null) => void>(() => undefined);
+
+/** Renders nothing; sets the last breadcrumb of the top bar while the page is shown. */
+export function AdminPageCrumb({ label }: { label: string }) {
+  const setCrumb = React.use(PageCrumbContext);
+  React.useEffect(() => {
+    setCrumb(label);
+    return () => setCrumb(null);
+  }, [label, setCrumb]);
+  return null;
+}
+
 const isCurrent = (pathname: string, href: string) =>
   href === '/admin' ? pathname === '/admin' : pathname === href || pathname.startsWith(`${href}/`);
 
@@ -90,58 +103,62 @@ export function AdminShell({ groups, user, signOutAction, children }: AdminShell
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useStoredFlag(COLLAPSE_KEY);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [pageCrumb, setPageCrumb] = React.useState<string | null>(null);
   const t = useTranslations('admin.shell');
   const toggleCollapsed = () => setCollapsed(!collapsed);
 
   return (
-    <div className="flex min-h-dvh bg-surface text-ink">
-      <aside
-        className={cn(
-          'sticky top-0 hidden h-dvh shrink-0 overflow-y-auto border-r border-line bg-white md:block',
-          collapsed ? 'w-18' : 'w-18 xl:w-62',
-        )}
-      >
-        <SidebarNav
-          groups={groups}
-          pathname={pathname}
-          variant={collapsed ? 'rail' : 'responsive'}
-          onToggle={toggleCollapsed}
-          collapsed={collapsed}
-        />
-      </aside>
-
-      <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <SheetContent side="left" className="w-[300px] p-0">
-          <SheetTitle className="sr-only">{t('menu')}</SheetTitle>
-          <div className="flex items-center gap-3 border-b border-divider px-4 py-3 pr-14">
-            <InitialsAvatar initials={user.initials} size={34} />
-            <span className="flex flex-col text-small leading-tight">
-              <strong>{user.name}</strong>
-              <span className="text-muted-ink">{user.roleLabel}</span>
-            </span>
-          </div>
+    <PageCrumbContext value={setPageCrumb}>
+      <div className="flex min-h-dvh bg-surface text-ink">
+        <aside
+          className={cn(
+            'sticky top-0 hidden h-dvh shrink-0 overflow-y-auto border-r border-line bg-white md:block',
+            collapsed ? 'w-18' : 'w-18 xl:w-62',
+          )}
+        >
           <SidebarNav
             groups={groups}
             pathname={pathname}
-            variant="wide"
-            onNavigate={() => setDrawerOpen(false)}
+            variant={collapsed ? 'rail' : 'responsive'}
+            onToggle={toggleCollapsed}
+            collapsed={collapsed}
           />
-        </SheetContent>
-      </Sheet>
+        </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar
-          pathname={pathname}
-          groups={groups}
-          user={user}
-          signOutAction={signOutAction}
-          onOpenMenu={() => setDrawerOpen(true)}
-        />
-        <main id="main" tabIndex={-1} className="flex-1 outline-none">
-          {children}
-        </main>
+        <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
+          <SheetContent side="left" className="w-[300px] p-0">
+            <SheetTitle className="sr-only">{t('menu')}</SheetTitle>
+            <div className="flex items-center gap-3 border-b border-divider px-4 py-3 pr-14">
+              <InitialsAvatar initials={user.initials} size={34} />
+              <span className="flex flex-col text-small leading-tight">
+                <strong>{user.name}</strong>
+                <span className="text-muted-ink">{user.roleLabel}</span>
+              </span>
+            </div>
+            <SidebarNav
+              groups={groups}
+              pathname={pathname}
+              variant="wide"
+              onNavigate={() => setDrawerOpen(false)}
+            />
+          </SheetContent>
+        </Sheet>
+
+        <div className="flex min-w-0 flex-1 flex-col">
+          <Topbar
+            pathname={pathname}
+            groups={groups}
+            user={user}
+            signOutAction={signOutAction}
+            onOpenMenu={() => setDrawerOpen(true)}
+            pageCrumb={pageCrumb}
+          />
+          <main id="main" tabIndex={-1} className="flex-1 outline-none">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </PageCrumbContext>
   );
 }
 
@@ -299,12 +316,14 @@ function Topbar({
   user,
   signOutAction,
   onOpenMenu,
+  pageCrumb,
 }: {
   pathname: string;
   groups: AdminShellGroup[];
   user: AdminShellUser;
   signOutAction: () => Promise<void>;
   onOpenMenu: () => void;
+  pageCrumb: string | null;
 }) {
   const t = useTranslations('admin.shell');
   const tNav = useTranslations('admin.nav');
@@ -317,7 +336,11 @@ function Topbar({
     .find((item) => item.href !== '/admin' && isCurrent(pathname, item.href));
   // Pages outside the sidebar (e.g. /admin/design-system) show just "Admin".
   const current = section ? tNav(section.key) : pathname === '/admin' ? tNav('dashboard') : null;
-  const crumbs = [{ label: t('admin'), href: '/admin' }, ...(current ? [{ label: current }] : [])];
+  const crumbs: { label: string; href?: string }[] = [
+    { label: t('admin'), href: '/admin' },
+    ...(current ? [{ label: current, href: pageCrumb && section ? section.href : undefined }] : []),
+    ...(pageCrumb ? [{ label: pageCrumb }] : []),
+  ];
 
   const signOut = () =>
     startTransition(async () => {
@@ -348,7 +371,7 @@ function Topbar({
           {crumbs.map((crumb, index) => {
             const last = index === crumbs.length - 1;
             return (
-              <li key={crumb.label} className="flex min-w-0 items-center gap-2">
+              <li key={index} className="flex min-w-0 items-center gap-2">
                 {last ? (
                   <span aria-current="page" className="truncate font-medium text-ink">
                     {crumb.label}
