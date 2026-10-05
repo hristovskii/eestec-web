@@ -55,6 +55,8 @@ const avatarTones = {
   tint: 'bg-brand-tint text-brand-dark',
   /** On the red header. */
   white: 'bg-white text-brand-dark',
+  /** Admin users that aren't super admins (AdminUsers). */
+  light: 'bg-divider text-ink',
 } as const;
 
 /** Initials circle when there is no photo. Decorative: the name is always shown next to it. */

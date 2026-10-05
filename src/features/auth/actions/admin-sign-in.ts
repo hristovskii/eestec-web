@@ -19,7 +19,7 @@ export async function verifyTwoFactor(input: unknown): Promise<ActionResult<TwoF
   const parsed = twoFactorSchema.safeParse(input);
   if (!parsed.success)
     return { ok: false, error: 'validation', fieldErrors: fieldErrorsFrom(parsed.error.issues) };
-  return ok(await (await authRepository()).verifyTwoFactor(parsed.data));
+  return ok(await (await authRepository()).verifyTwoFactor({ ...parsed.data, now: now() }));
 }
 
 export async function requestPasswordReset(input: unknown): Promise<ActionResult> {

@@ -567,5 +567,123 @@
       "forbidden": "Only super admins can change settings.",
       "unexpected": "Couldn't save. Try again."
     }
+  },
+  "users": {
+    "title": "Admin users & roles",
+    "description": "Who can sign in to the admin and what they can change. Only super admins see this page.",
+    "invite": "Invite admin",
+    "list": "Admin users",
+    "count": "· {count}",
+    "twoFactorNote": "2FA is required for super admins",
+    "columns": {
+      "person": "Person",
+      "role": "Role",
+      "access": "Access",
+      "twoFactor": "2-step login",
+      "lastActive": "Last active"
+    },
+    "roleFor": "Role for {name}",
+    "you": "you",
+    "ownRole": "You can't change your own role.",
+    "access": {
+      "super_admin": "Everything",
+      "editor": "Content, pages and approvals",
+      "noEvents": "No events yet"
+    },
+    "twoFactor": {
+      "on": "On",
+      "off": "Off",
+      "not_set_up": "Not set up yet"
+    },
+    "lastActive": {
+      "now": "Now",
+      "today": "Today, {time}",
+      "yesterday": "Yesterday, {time}",
+      "invited": "Invited {when}"
+    },
+    "resend": "Resend invite",
+    "resent": "Invite sent again to {email}",
+    "menu": {
+      "editEvents": "Change events",
+      "resend": "Resend invite",
+      "remove": "Remove admin access"
+    },
+    "roleDialog": {
+      "title": "Make {name} {role, select, super_admin {a super admin} editor {an editor} other {an event manager}}?",
+      "eventsTitle": "Events {name} manages",
+      "toSuper": "Super admins can change everything, including settings and admin users. 2-step login becomes required.",
+      "toEditor": "Editors change content, pages and approvals, but not settings or admin users.",
+      "toEventManager": "Event managers only see and edit the events below, and their applications.",
+      "confirm": "Change role",
+      "saveEvents": "Save events",
+      "changed": "{name} is now {role, select, super_admin {a super admin} editor {an editor} other {an event manager}}",
+      "eventsSaved": "Events saved for {name}"
+    },
+    "inviteDialog": {
+      "title": "Invite an admin",
+      "text": "They get an e-mail to set a password and 2-step login.",
+      "name": "Name",
+      "email": "E-mail",
+      "role": "Role",
+      "events": "Events they manage",
+      "addEvent": "Add event",
+      "removeEvent": "Remove {event}",
+      "noMoreEvents": "All events are added",
+      "send": "Send invite",
+      "sending": "Sending…",
+      "sent": "Invite sent to {email}",
+      "errorSummary": "{count, plural, one {Fix # field} other {Fix # fields}}"
+    },
+    "removeDialog": {
+      "title": "Remove admin access for {name}?",
+      "text": "They can't open the admin any more. Their member profile, if they have one, stays.",
+      "textInvite": "The invite link stops working.",
+      "confirm": "Remove access",
+      "removed": "{name} no longer has admin access"
+    },
+    "matrix": {
+      "title": "Roles & permissions",
+      "hint": "Fixed roles · assigned per person above",
+      "area": "Area",
+      "member": "Member",
+      "editorHint": "board · PR · IT",
+      "full": "Full access",
+      "none": "No access",
+      "own": "Own events",
+      "ownUploads": "Own uploads",
+      "read": "Read-only",
+      "ownRead": "Own events, read-only",
+      "footer": "Members have no admin access. They edit only their own profile, Memories and applications on the public site. Event managers never create, delete or reassign events.",
+      "areas": {
+        "dashboard": "Dashboard",
+        "events": "Events & galleries",
+        "eventTypes": "Event types",
+        "applications": "Applications & form builder",
+        "approvals": "Approvals: members, Memories",
+        "inbox": "Inbox & CSV export",
+        "ideas": "Ideas & Feedback",
+        "pages": "Pages: Home, Map, Journey, Join Us, Sponsors, Contact",
+        "members": "Members, teams & board",
+        "memories": "Memories",
+        "media": "Media library",
+        "cvExport": "CV export (Main-package partners)",
+        "activityLog": "Activity log",
+        "settings": "Settings",
+        "adminUsers": "Admin users & roles"
+      }
+    },
+    "errors": {
+      "required": "Fill this in.",
+      "email": "Enter an e-mail like name@eestec.mk.",
+      "tooLong": "This is too long.",
+      "eventsRequired": "Pick at least one event.",
+      "unknownEvent": "One of these events doesn't exist any more. Reload the page.",
+      "alreadyAdmin": "This person already has admin access.",
+      "self": "You can't change or remove your own access.",
+      "lastSuperAdmin": "Keep at least one super admin.",
+      "forbidden": "Only super admins can change admin users.",
+      "not_found": "This admin isn't there any more. Reload the page.",
+      "unexpected": "Something went wrong. Try again."
+    }
   }
 }

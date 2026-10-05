@@ -21,11 +21,13 @@ const presets = {
 export type DatePreset = keyof typeof presets;
 
 export function formatDate(date: Date | string, locale: Locale, preset: DatePreset): string {
-  return new Intl.DateTimeFormat(INTL_LOCALE[locale], {
+  const text = new Intl.DateTimeFormat(INTL_LOCALE[locale], {
     ...presets[preset],
     timeZone: TIME_ZONE,
     hourCycle: 'h23',
   }).format(typeof date === 'string' ? new Date(date) : date);
+  // Newer ICU writes "Sept" in en-GB; the design uses three-letter months ("30 Sep").
+  return locale === 'en' ? text.replace(/\bSept\b/, 'Sep') : text;
 }
 
 /** Hour of the day in Skopje (0–23). */

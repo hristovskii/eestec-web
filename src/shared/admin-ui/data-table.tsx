@@ -36,7 +36,7 @@ type DataTableProps<T> = {
   rowLabel: (row: T) => string;
   /** Bulk actions for the selected rows; without it the table has no checkboxes. */
   bulkActions?: (selected: string[], clearSelection: () => void) => React.ReactNode;
-  /** Items of the row menu (DropdownMenuItem). */
+  /** Items of the row menu (DropdownMenuItem); null for a row without a menu. */
   rowActions?: (row: T) => React.ReactNode;
   /** The row as a card below 768 px (tables become cards on phones). */
   card?: (row: T) => React.ReactNode;
@@ -159,9 +159,7 @@ export function DataTable<T>({
                   ))}
                   {rowActions && (
                     <td className={cellClass}>
-                      <RowActions label={t('moreActions', { label: rowLabel(row) })}>
-                        {rowActions(row)}
-                      </RowActions>
+                      <RowMenu items={rowActions(row)} label={t('moreActions', { label: rowLabel(row) })} />
                     </td>
                   )}
                 </tr>
@@ -180,7 +178,7 @@ export function DataTable<T>({
             >
               <div className="min-w-0 flex-1">{card(row)}</div>
               {rowActions && (
-                <RowActions label={t('moreActions', { label: rowLabel(row) })}>{rowActions(row)}</RowActions>
+                <RowMenu items={rowActions(row)} label={t('moreActions', { label: rowLabel(row) })} />
               )}
             </li>
           ))}
@@ -231,6 +229,11 @@ function SortableHeader<T>({ column }: { column: Column<T> }) {
       </Link>
     </th>
   );
+}
+
+/** The row menu, or nothing when the row has no actions. */
+function RowMenu({ items, label }: { items: React.ReactNode; label: string }) {
+  return items == null || items === false ? null : <RowActions label={label}>{items}</RowActions>;
 }
 
 /** The ⋮ menu of a row; children are DropdownMenuItems. */
