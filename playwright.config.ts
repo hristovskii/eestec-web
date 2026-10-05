@@ -14,10 +14,12 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    // Production build, mock data, pinned clock. Run `pnpm build` first (CI does).
-    command: `pnpm start --port ${PORT}`,
+    // Production build with the e2e flags (flags and dev surfaces are read at build time),
+    // mock data, pinned clock.
+    command: `pnpm build && pnpm start --port ${PORT}`,
+    timeout: 300_000,
     port: PORT,
-    reuseExistingServer: !process.env.CI,
-    env: { FEATURE_FLAGS: 'phase2' },
+    reuseExistingServer: false,
+    env: { FEATURE_FLAGS: 'phase2', ENABLE_DEV_SURFACES: 'true' },
   },
 });

@@ -30,5 +30,44 @@
   },
   "placeholder": {
     "foundation": "Foundation is in place. Pages arrive milestone by milestone."
+  },
+  "ui": {
+    "close": "Close",
+    "breadcrumb": "Breadcrumb",
+    "removeFilter": "Remove filter: {filter}",
+    "samplePhoto": "Photo: {caption}",
+    "pagination": {
+      "label": "Pages",
+      "pageOf": "Page {page} of {pageCount}",
+      "page": "Page {page}",
+      "previous": "Previous page",
+      "next": "Next page",
+      "backToTop": "Back to top"
+    },
+    "countdown": {
+      "days": "{count, plural, one {day} other {days}}",
+      "hours": "{count, plural, one {hour} other {hours}}",
+      "minutes": "min",
+      "seconds": "sec",
+      "inline": "{days} d {hours} h {minutes} m"
+    },
+    "form": {
+      "optional": "optional",
+      "sending": "Sending…",
+      "honeypot": "Leave this empty",
+      "upload": "<strong>Upload a file</strong> or drag it here",
+      "removeFile": "Remove file",
+      "errorSummary": "{count, plural, one {Please fix # field} other {Please fix # fields}}"
+    },
+    "rating": {
+      "1": "Poor",
+      "2": "Okay",
+      "3": "Good",
+      "4": "Great",
+      "5": "Amazing",
+      "starLabel": "{stars} of 5: {label}",
+      "selected": "{stars} of 5 · {label}",
+      "notRated": "Not rated"
+    }
   }
 }

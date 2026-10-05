@@ -30,6 +30,8 @@ export function isEnabled(flag: Flag): boolean {
 
 /** Dev-only surfaces (/design-system, devtools): local dev and Vercel previews, never production. */
 export function devSurfacesEnabled(): boolean {
-  if (env.VERCEL_ENV) return env.VERCEL_ENV !== 'production';
+  if (env.VERCEL_ENV === 'production') return false;
+  if (env.ENABLE_DEV_SURFACES) return env.ENABLE_DEV_SURFACES === 'true';
+  if (env.VERCEL_ENV) return true;
   return env.NODE_ENV !== 'production';
 }

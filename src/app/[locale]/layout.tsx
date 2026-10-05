@@ -7,8 +7,11 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
 import { SITE_URL } from '@/shared/config/site';
+import { pinnedNow } from '@/shared/lib/now';
 import { routing } from '@/shared/i18n/routing';
 import { roboto } from '@/shared/styles/fonts';
+import { ClockProvider } from '@/shared/ui/clock-provider';
+import { Toaster } from '@/shared/ui/primitives/sonner';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -33,8 +36,11 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
   return (
     <html lang={locale} className={roboto.variable}>
       <body>
-        <NextIntlClientProvider messages={{ common: messages.common, error: messages.error }}>
-          {children}
+        <NextIntlClientProvider
+          messages={{ common: messages.common, error: messages.error, ui: messages.ui }}
+        >
+          <ClockProvider pinnedNow={pinnedNow()}>{children}</ClockProvider>
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -30,5 +30,44 @@
   },
   "placeholder": {
     "foundation": "Основата е поставена. Страниците доаѓаат чекор по чекор."
+  },
+  "ui": {
+    "close": "Затвори",
+    "breadcrumb": "Патека",
+    "removeFilter": "Отстрани филтер: {filter}",
+    "samplePhoto": "Фотографија: {caption}",
+    "pagination": {
+      "label": "Страници",
+      "pageOf": "Страница {page} од {pageCount}",
+      "page": "Страница {page}",
+      "previous": "Претходна страница",
+      "next": "Следна страница",
+      "backToTop": "Назад на врвот"
+    },
+    "countdown": {
+      "days": "{count, plural, one {ден} other {дена}}",
+      "hours": "{count, plural, one {час} other {часа}}",
+      "minutes": "мин",
+      "seconds": "сек",
+      "inline": "{days} д {hours} ч {minutes} м"
+    },
+    "form": {
+      "optional": "незадолжително",
+      "sending": "Се испраќа…",
+      "honeypot": "Оставете го празно",
+      "upload": "<strong>Прикачи датотека</strong> или довлечи ја тука",
+      "removeFile": "Отстрани ја датотеката",
+      "errorSummary": "{count, plural, one {Поправете # поле} other {Поправете # полиња}}"
+    },
+    "rating": {
+      "1": "Слабо",
+      "2": "Во ред",
+      "3": "Добро",
+      "4": "Многу добро",
+      "5": "Одлично",
+      "starLabel": "{stars} од 5: {label}",
+      "selected": "{stars} од 5 · {label}",
+      "notRated": "Без оценка"
+    }
   }
 }

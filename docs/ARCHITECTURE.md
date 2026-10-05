@@ -419,22 +419,18 @@ return <EventsArchive filters={filters} archive={archive} facets={facets} />;
   - Our own code uses `sm`, `lg` and `xl`.
 - **Admin density.** The admin root sets `data-density="compact"`, which switches `--btn-h` / `--input-h` to 36 px with no per-component props.
 
-**Primitives (`shared/ui/primitives`, shadcn restyled):**
+**Primitives (`shared/ui/primitives`, shadcn restyled).** Only primitives in use are generated; the rest are added in the milestone that first needs them.
 
-| Primitive                                                                                  | Variants / notes                                                                                                                          | Canvas                                                   |
-| ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| Button                                                                                     | primary, secondary, inverse (on red), outline-white, quiet, link, danger; sizes xl 52 · lg 48 · sm 40 · admin 36 (density); loading state | Main › Buttons, ApplyBox, *Form                          |
-| Input, Textarea, NativeSelect / Select, Checkbox, RadioGroup, Label                        | 48 px, `#8c8c8c` border, red focus ring, error 2 px red                                                                                   | Main › Forms, JoinForm, AuthForm                         |
-| Field (+ FieldLabel, FieldDescription, FieldError)                                         | label above, help, error with alert-circle icon, `aria-describedby`                                                                       | Main › Forms                                             |
-| Switch                                                                                     | public 44×26, admin 36×20                                                                                                                 | SubmitForm, AdminEventEdit                               |
-| ToggleGroup                                                                                | segmented chips (year of study, interests)                                                                                                | JoinForm `.seg`                                          |
-| InputOTP                                                                                   | 6-digit 2-step code                                                                                                                       | AdminLoginStates                                         |
-| Dialog / AlertDialog, Sheet                                                                | modals (radius 16, scrim 55%), mobile filter sheet, admin drawer                                                                          | MyProfileStates, AdminDialogs, EventsList-Mobile-Filters |
-| DropdownMenu, Popover, Command                                                             | account menu, add-to-calendar, kebabs, export popover, event combobox                                                                     | Header, ApplyBox, AdminInbox, MemoryEditor               |
-| Accordion                                                                                  | FAQ                                                                                                                                       | JoinPage                                                 |
-| Sonner (toasts)                                                                            | bottom-right, 5 s, errors persist                                                                                                         | AdminEditStates, MyProfileStates                         |
-| Skeleton, Progress, Slider, Avatar, Badge, Table, Separator, Tooltip, ScrollArea, Calendar | loading cards, upload / places bars, photo zoom, initials, admin tables, rail tooltips, admin dates                                       | EventCard, ApplyBox, MyProfileStates, AdminEvents        |
-| Sidebar                                                                                    | wide 248 / icon rail 72 / mobile drawer 300                                                                                               | AdminSidebar, AdminDashboard-Tablet, AdminMobile         |
+| Primitive                                                                       | Variants / notes                                                                                                                     | Canvas                                                   | Status |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ------ |
+| Button                                                                          | primary, secondary, inverse (on red), outlineWhite, quiet, danger, ghost; sizes xl 52 · lg 48 · sm 40; 36 in admin via `--control-h` | Main › Buttons, ApplyBox, *Form                          | M1     |
+| Input, Textarea, NativeSelect, Label                                            | 48 px, `#8c8c8c` border, red focus ring, error 2 px red                                                                              | Main › Forms                                             | M1     |
+| Switch                                                                          | public 44×26, admin 36×20                                                                                                            | SubmitForm, AdminEventEdit                               | M1     |
+| Dialog, Sheet                                                                   | modals (radius 16, scrim 55%), mobile filter sheet, admin drawer                                                                     | MyProfileStates, AdminDialogs, EventsList-Mobile-Filters | M1     |
+| DropdownMenu, Accordion, Sonner (toasts), Skeleton, Separator                   | account menu, FAQ, toasts (bottom-right, 5 s, errors persist), loading                                                               | Header, JoinPage, AdminEditStates, EventCard             | M1     |
+| InputOTP, Sidebar, Table, Popover, Command, Tooltip, Progress, Slider, Calendar | 2-step code, admin shell, admin tables, export popover, comboboxes, rail tooltips, upload bars, photo zoom, admin dates              | Admin*, MemoryEditor, MyProfileStates                    | M3+    |
+
+Checkbox, radio and segmented choices are **native inputs** styled like the canvas (`shared/ui/form/choice.tsx`, `segmented-choice.tsx`), not Radix: the canvas draws native 20 px controls, and native inputs submit with forms and need no extra JS.
 
 **Brand composites (`shared/ui`):**
 
@@ -733,6 +729,13 @@ return <EventsArchive filters={filters} archive={archive} facets={facets} />;
 | D15 | Committee map data               | Manual list in the admin (`/admin/pages/map`); no eestec.net API.                                                                                                                                                                                                                                          |
 | D16 | Contact map                      | Reuses the same Leaflet map component with one pin (no static image).                                                                                                                                                                                                                                      |
 | D17 | Board open points                | `/privacy` is built with placeholder text that is clearly marked as placeholder. The e-mail retention period is an admin setting, default 12 months.                                                                                                                                                       |
+
+**Notes from building (M1)**
+
+- `cn()` extends tailwind-merge with our theme scales; without it `text-body` (size) and `text-white` (colour) were merged away.
+- Secondary / inverse buttons use `#b81f24` text (the canvas draws `#e52a30`): CLAUDE.md's "red text under 24 px is `#b81f24`" wins.
+- White text on brand red is 4.46:1 (WCAG AA wants 4.5:1 for text under 18.66 px bold / 24 px). The canvas accepts it explicitly for Roboto 500/700 ≥ 14 px; the e2e axe check ignores exactly that pair and nothing else.
+- `/design-system` is prerendered, so its gate is read at build time; `ENABLE_DEV_SURFACES=true` turns it on for `next build` + `next start` (e2e builds with it).
 
 **Working rules while building**
 

@@ -61,10 +61,50 @@
   /* Elevation */
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.08);
   --shadow-card-hover: 0 0 0 2px #e52a30, 0 12px 28px rgba(0, 0, 0, 0.14);
+  --shadow-menu: 0 2px 4px rgba(0, 0, 0, 0.08), 0 16px 40px rgba(0, 0, 0, 0.18);
+  --shadow-form: 0 1px 2px rgba(0, 0, 0, 0.05), 0 12px 32px rgba(0, 0, 0, 0.06);
+  --shadow-badge: 0 1px 4px rgba(0, 0, 0, 0.18);
 
   /* Layout: Tailwind default breakpoints already match the design (sm 640 / lg 1024 / xl 1280).
      md (768) stays only because shadcn's Sidebar uses it. */
   --container-content: 1200px;
+}
+
+/* Typography scale (Main › Typography): mobile size first, desktop from lg (1024 px). */
+@utility type-h1 {
+  font-size: var(--text-h1-m);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  @media (width >= 64rem) {
+    font-size: var(--text-h1);
+  }
+}
+@utility type-h2 {
+  font-size: var(--text-h2-m);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  @media (width >= 64rem) {
+    font-size: var(--text-h2);
+  }
+}
+@utility type-h3 {
+  font-size: var(--text-h3-m);
+  line-height: 1.3;
+  font-weight: 700;
+  @media (width >= 64rem) {
+    font-size: var(--text-h3);
+  }
+}
+/* Eyebrow: 14 px, medium, uppercase, red text under 24 px uses #b81f24. */
+@utility eyebrow {
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-brand-dark);
 }
 
 /*
@@ -101,10 +141,10 @@
   --color-sidebar-ring: #e52a30;
 }
 
-/* Admin is denser: the admin root sets data-density="compact". */
+/* Admin is denser: the admin root sets data-density="compact". Buttons and inputs read
+   --control-h and fall back to their public size when it is not set. */
 [data-density='compact'] {
-  --btn-h: var(--admin-btn-h);
-  --input-h: var(--admin-input-h);
+  --control-h: var(--admin-btn-h);
 }
 
 @layer base {
