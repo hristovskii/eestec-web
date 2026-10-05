@@ -1,0 +1,68 @@
+// SAMPLE DATA — people from handoff/design-source (HeaderStates, AdminUsers, AdminDashboard,
+// MyProfileStates). Used only by the mock session (devtools persona switcher, mock admin login).
+import type { Session } from '../../types';
+
+export type Persona = Session & { personaId: string; label: string };
+
+export const personas: Persona[] = [
+  {
+    personaId: 'member',
+    label: 'Member',
+    userId: 'u-marija',
+    name: 'Marija Stojanovska',
+    initials: 'MS',
+    username: 'marija-stojanovska',
+    email: 'marija.s@students.feit.ukim.edu.mk',
+    headline: 'Events team · member since 2023',
+    memberStatus: 'active',
+    adminRole: null,
+  },
+  {
+    personaId: 'pending',
+    label: 'Pending member',
+    userId: 'u-elena',
+    name: 'Elena Petrovska',
+    initials: 'EP',
+    username: 'elena-petrovska',
+    email: 'elena.p@students.finki.ukim.mk',
+    headline: 'FINKI · 1st year',
+    memberStatus: 'pending',
+    adminRole: null,
+  },
+  {
+    personaId: 'event-manager',
+    label: 'Event manager',
+    userId: 'u-daniel',
+    name: 'Daniel Ristov',
+    initials: 'DR',
+    username: 'daniel-ristov',
+    email: 'daniel.r@eestec.mk',
+    headline: 'Events team · member since 2022',
+    memberStatus: 'active',
+    adminRole: 'event_manager',
+  },
+  {
+    personaId: 'editor',
+    label: 'Editor',
+    userId: 'u-stefan',
+    name: 'Stefan Nikolovski',
+    initials: 'SN',
+    username: 'stefan-nikolovski',
+    email: 'pr@eestec.mk',
+    headline: 'PR & media · Board 2026/2027',
+    memberStatus: 'active',
+    adminRole: 'editor',
+  },
+  {
+    personaId: 'super-admin',
+    label: 'Super admin',
+    userId: 'u-ana',
+    name: 'Ana Trajkovska',
+    initials: 'AT',
+    username: 'ana-trajkovska',
+    email: 'ana.t@eestec.mk',
+    headline: 'Chairperson · Board 2026/2027',
+    memberStatus: 'active',
+    adminRole: 'super_admin',
+  },
+];

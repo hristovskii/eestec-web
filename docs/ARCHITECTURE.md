@@ -737,6 +737,13 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - White text on brand red is 4.46:1 (WCAG AA wants 4.5:1 for text under 18.66 px bold / 24 px). The canvas accepts it explicitly for Roboto 500/700 ≥ 14 px; the e2e axe check ignores exactly that pair and nothing else.
 - `/design-system` is prerendered, so its gate is read at build time; `ENABLE_DEV_SURFACES=true` turns it on for `next build` + `next start` (e2e builds with it).
 
+**Notes from building (M2)**
+
+- Header: the full menu starts at **1280 px** (hamburger below). With 8 items and Macedonian labels it overflows at 1024 px by ~75 px; the canvas collapses only under 1024. At 1280 MK fits exactly, so new nav items need a re-check.
+- No `<Suspense>` around `usePathname` in the header: on our static / `generateStaticParams` routes it resolves at prerender, and a boundary made Next defer the whole header (fallback flash). Routes with unknown dynamic params would fail the build loudly, which is the signal to revisit.
+- Active nav pill and the language switch use `#b81f24` text on white (red text under 24 px rule), not the canvas `#e52a30`.
+- The header account slot reads the session through a promise resolved in `<Suspense>`, so pages stay prerendered; Phase 1 passes no promise at all (no "Log in").
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

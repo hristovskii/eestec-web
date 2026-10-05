@@ -10,6 +10,16 @@
     "localeNames": {
       "mk": "MK",
       "en": "EN"
+    },
+    "sampleData": "Преглед со примерни податоци. Имињата, настаните и бројките се привремени.",
+    "weekdaysPlural": {
+      "monday": "Секој понеделник",
+      "tuesday": "Секој вторник",
+      "wednesday": "Секоја среда",
+      "thursday": "Секој четврток",
+      "friday": "Секој петок",
+      "saturday": "Секоја сабота",
+      "sunday": "Секоја недела"
     }
   },
   "metadata": {
@@ -69,5 +79,50 @@
       "selected": "{stars} од 5 · {label}",
       "notRated": "Без оценка"
     }
+  },
+  "nav": {
+    "main": "Главно мени",
+    "home": "Почетна",
+    "events": "Настани",
+    "upcoming": "Претстојни настани",
+    "members": "Членови",
+    "memories": "Спомени",
+    "journey": "EESTEC патување",
+    "join": "Зачлени се",
+    "contact": "Контакт",
+    "openMenu": "Отвори мени",
+    "closeMenu": "Затвори мени",
+    "login": "Најава",
+    "memberLogin": "Најава за членови",
+    "becomeMember": "Стани EESTEC-овец",
+    "accountMenu": "Мени на профилот: {name}",
+    "myProfileOf": "Мој профил: {name}",
+    "myProfile": "Мој профил",
+    "createMemory": "Напиши спомен",
+    "adminPanel": "Администрација",
+    "logout": "Одјава"
+  },
+  "footer": {
+    "explore": "Истражи",
+    "getInvolved": "Вклучи се",
+    "contact": "Контакт",
+    "submit": "Испрати идеја или впечаток",
+    "partners": "За компании",
+    "meeting": "Неделен состанок: {day}, {time} · {room}",
+    "copyright": "© {year} {name} · Студентско здружение",
+    "registration": "ЕМБС {number}",
+    "tax": "ЕДБ {number}",
+    "privacy": "Политика за приватност",
+    "boardLogin": "Најава за одборот",
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn"
+    },
+    "eestecNet": "eestec.net ↗"
+  },
+  "privacy": {
+    "placeholderTitle": "Привремен текст",
+    "placeholderText": "Одборот сè уште ја нема доставено политиката за приватност. До тогаш оваа страница прикажува привремен текст."
   }
 }
