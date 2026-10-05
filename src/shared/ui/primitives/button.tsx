@@ -29,10 +29,13 @@ const buttonVariants = cva(
         outlineWhite: 'border-white bg-transparent text-white hover:bg-white/15 focus-visible:outline-white',
         /** Neutral action (header menu, filters sheet). */
         quiet:
-          'border border-line-strong bg-white text-ink hover:border-ink disabled:border-line disabled:text-muted-ink',
+          'border border-line-strong bg-white text-ink hover:border-ink disabled:border-line disabled:bg-surface disabled:text-muted-ink',
         /** Admin delete confirmations. */
         danger: 'border-brand-dark bg-brand-dark text-white hover:border-ink hover:bg-ink',
-        ghost: 'bg-transparent text-ink hover:bg-surface',
+        /** Admin bulk / row delete before the confirmation (AdminEvents). */
+        dangerOutline:
+          'border border-brand bg-white text-brand-dark hover:border-brand-dark hover:bg-brand-tint disabled:border-line disabled:text-muted-ink',
+        ghost: 'bg-transparent text-ink hover:bg-surface disabled:bg-surface disabled:text-muted-ink',
       },
       size: {
         xl: 'h-[var(--control-h,52px)] px-8 text-body',

@@ -31,7 +31,12 @@ export function DesignSystemPage() {
           <span className="h-7 w-px bg-line-strong" />
           <span className="text-small font-medium">eestec.mk · Design system</span>
           <span className="ml-auto text-small text-muted-ink">
-            Dev and preview only · source: handoff/design-source/Main.dc.html
+            Dev and preview only · source: handoff/design-source/Main.dc.html ·{' '}
+            {/* A separate root layout: a full page load is intended. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a href="/admin/design-system" className="font-medium text-brand-dark">
+              Admin patterns
+            </a>
           </span>
         </Container>
       </div>

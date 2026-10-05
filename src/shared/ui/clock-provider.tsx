@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 // Client "now". With mock data the server clock is pinned to the canvas moment; the client
 // follows the same pin (offset from the real clock) so countdowns match the server render.
@@ -33,4 +33,21 @@ export function useNow(initial: Date, intervalMs = 1000): Date {
   }, [pinnedNow, intervalMs]);
 
   return now;
+}
+
+/**
+ * Reads "now" on demand, for timestamps taken in event handlers (e.g. "Saved · just now").
+ * Follows the same pin as useNow, so both agree.
+ */
+export function useClockNow(): () => Date {
+  const pinnedNow = useContext(PinnedNowContext);
+  const mountedAt = useRef(0);
+  useEffect(() => {
+    mountedAt.current = Date.now();
+  }, []);
+  return () => {
+    if (!pinnedNow) return new Date();
+    const offset = new Date(pinnedNow).getTime() - (mountedAt.current || Date.now());
+    return new Date(Date.now() + offset);
+  };
 }

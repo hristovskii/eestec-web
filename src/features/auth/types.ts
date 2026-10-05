@@ -23,6 +23,9 @@ export type SignInResult =
   | { status: 'invalid'; attemptsLeft: number }
   | { status: 'locked'; until: string }
   /** Correct password, but the account has no admin role (members sign in on the main site). */
-  | { status: 'not_staff' };
+  | { status: 'not_staff' }
+  /** Mock sign-in on a production deployment (see availability.ts): nobody can sign in. */
+  | { status: 'unavailable' };
 
-export type TwoFactorResult = { status: 'signed_in' } | { status: 'invalid' } | { status: 'expired' };
+export type TwoFactorResult =
+  { status: 'signed_in' } | { status: 'invalid' } | { status: 'expired' } | { status: 'unavailable' };

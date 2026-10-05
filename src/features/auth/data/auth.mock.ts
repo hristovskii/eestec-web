@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 
 import { mockTable } from '@/shared/data/mock/store';
 
+import { mockSignInBlocked } from '../availability';
 import { MOCK_PERSONA_COOKIE } from '../session-cookie';
 
 import { type AttemptLog, emptyLog, lockState, recordFailure } from '../domain/lockout';
@@ -24,6 +25,7 @@ const toSession = ({ personaId: _id, label: _label, ...session }: Persona): Sess
 /**
  * Mock auth: a cookie names one of the sample personas (no cookie = visitor). Admin sign-in checks
  * the sample password, applies the real lockout rule in memory, and asks super admins for 2-step.
+ * On a production deployment it is switched off completely (no sessions, no sign-ins).
  */
 export function createMockAuthRepository(): AuthRepository {
   const attempts = mockTable<{ byEmail: Record<string, AttemptLog> }>('loginAttempts', () => ({
@@ -42,6 +44,7 @@ export function createMockAuthRepository(): AuthRepository {
 
   return {
     async getSession() {
+      if (mockSignInBlocked()) return null;
       const personaId = (await cookies()).get(MOCK_PERSONA_COOKIE)?.value;
       const persona = personas.find((p) => p.personaId === personaId);
       return persona ? toSession(persona) : null;
@@ -54,6 +57,7 @@ export function createMockAuthRepository(): AuthRepository {
     },
 
     async signInAdmin({ email, password, remember, now }) {
+      if (mockSignInBlocked()) return { status: 'unavailable' };
       const key = email.trim().toLowerCase();
       const log = attempts.byEmail[key] ?? emptyLog();
       const state = lockState(log, now);
@@ -85,6 +89,7 @@ export function createMockAuthRepository(): AuthRepository {
     },
 
     async verifyTwoFactor({ code, kind }) {
+      if (mockSignInBlocked()) return { status: 'unavailable' };
       const jar = await cookies();
       const pending = jar.get(MOCK_TWO_FACTOR_COOKIE)?.value;
       if (!pending) return { status: 'expired' };

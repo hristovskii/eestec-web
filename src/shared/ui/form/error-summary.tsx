@@ -1,7 +1,14 @@
 import { CircleAlert } from 'lucide-react';
 import * as React from 'react';
 
-export type FieldErrorItem = { fieldId: string; message: string };
+import { cn } from '@/shared/lib/cn';
+
+export type FieldErrorItem = {
+  fieldId: string;
+  message: string;
+  /** Field name as the link, message after it ("Title is empty", AdminEditStates). */
+  label?: string;
+};
 
 type ErrorSummaryProps = {
   title: string;
@@ -30,10 +37,14 @@ export function ErrorSummary({ title, errors, ref }: ErrorSummaryProps) {
             <li key={error.fieldId}>
               <a
                 href={`#${error.fieldId}`}
-                className="font-medium text-brand-dark no-underline hover:underline"
+                className={cn(
+                  'font-medium text-brand-dark',
+                  error.label ? 'underline' : 'no-underline hover:underline',
+                )}
               >
-                {error.message}
+                {error.label ?? error.message}
               </a>
+              {error.label && <> {error.message}</>}
             </li>
           ))}
         </ul>

@@ -34,6 +34,8 @@
     "verify": "Verify",
     "useBackup": "Use a backup code instead",
     "useAuthenticator": "Use the authenticator app instead",
+    "unavailableTitle": "Admin not available yet",
+    "unavailableText": "The admin panel opens once eestec.mk is connected to its database. Until then nobody can sign in here.",
     "errors": {
       "emailInvalid": "Enter an e-mail like name@eestec.mk",
       "passwordRequired": "Enter your password",
@@ -163,6 +165,80 @@
         "deadline_soon": "Closing soon",
         "waitlist": "Waitlist"
       }
+    }
+  },
+  "ui": {
+    "table": {
+      "selected": "{count} selected",
+      "clearSelection": "Clear selection",
+      "selectAll": "Select all on this page",
+      "selectRow": "Select {label}",
+      "bulkActions": "Bulk actions",
+      "actions": "Actions",
+      "moreActions": "More actions for {label}",
+      "sortAscending": "sorted ascending",
+      "sortDescending": "sorted descending"
+    },
+    "filters": {
+      "filters": "Filters",
+      "openFilters": "Filters ({count} active)",
+      "clear": "Clear filters",
+      "showResults": "Show results"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "showing": "Showing <strong>{from}–{to}</strong> of <strong>{total}</strong>",
+      "rowsPerPage": "Rows per page",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {page}",
+      "pageOf": "Page {page} of {count}"
+    },
+    "saveBar": {
+      "label": "Save",
+      "saved": "All changes saved",
+      "savedAgo": "All changes saved · {time}",
+      "unsaved": "Unsaved changes",
+      "unsavedLive": "Unsaved changes · the live page still shows the old version",
+      "saving": "Saving…",
+      "preview": "Preview",
+      "saveDraft": "Save draft",
+      "publish": "Publish",
+      "discard": "Discard",
+      "updateLive": "Update live page"
+    },
+    "publishErrors": "{count, plural, one {Can't publish yet: fix # field} other {Can't publish yet: fix # fields}}",
+    "dialogs": {
+      "cancel": "Cancel",
+      "close": "Close",
+      "typeToConfirm": "Type <strong>{word}</strong> to confirm",
+      "deleting": "Deleting…",
+      "reason": "Reason",
+      "optional": "optional",
+      "presets": "Common reasons",
+      "emailReason": "E-mail the reason to the author",
+      "reject": "Reject",
+      "rejecting": "Rejecting…",
+      "leaveTitle": "Leave without saving?",
+      "leaveText": "You have unsaved changes to “{title}”.",
+      "leaveTextUntitled": "You have unsaved changes on this page.",
+      "discardChanges": "Discard changes",
+      "stay": "Stay on page",
+      "saveAndLeave": "Save draft & leave"
+    },
+    "localized": {
+      "languages": "Language for {label}",
+      "mk": "MK",
+      "en": "EN",
+      "mkName": "Macedonian",
+      "enName": "English",
+      "enEmpty": "No English text yet",
+      "fallback": "Empty: the English page shows the Macedonian text."
+    },
+    "status": {
+      "published": "Published",
+      "draft": "Draft",
+      "hidden": "Hidden"
     }
   }
 }

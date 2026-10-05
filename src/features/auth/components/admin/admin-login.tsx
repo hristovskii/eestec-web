@@ -16,17 +16,20 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/shared/ui/primitives/in
 
 import { requestPasswordReset, signInAdmin, verifyTwoFactor } from '../../actions/admin-sign-in';
 
-type Step = 'signin' | 'forgot' | 'sent' | 'twofa' | 'backup';
+type Step = 'signin' | 'forgot' | 'sent' | 'twofa' | 'backup' | 'unavailable';
 type Alert =
   { kind: 'invalid'; attemptsLeft: number } | { kind: 'locked'; until: string } | { kind: 'notStaff' } | null;
 
 const RESEND_SECONDS = 45;
 
-/** /admin/login: sign in, wrong password, lockout, forgot, link sent, 2-step (AdminLogin, AdminLoginStates). */
-export function AdminLogin({ year }: { year: number }) {
+/**
+ * /admin/login: sign in, wrong password, lockout, forgot, link sent, 2-step (AdminLogin,
+ * AdminLoginStates). `available: false` (mock data on production) shows "Admin not available yet".
+ */
+export function AdminLogin({ year, available }: { year: number; available: boolean }) {
   const t = useTranslations('admin.login');
   const router = useRouter();
-  const [step, setStep] = React.useState<Step>('signin');
+  const [step, setStep] = React.useState<Step>(available ? 'signin' : 'unavailable');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [remember, setRemember] = React.useState(true);
@@ -91,6 +94,9 @@ export function AdminLogin({ year }: { year: number }) {
         case 'two_factor_required':
           go('twofa');
           return;
+        case 'unavailable':
+          go('unavailable');
+          return;
         case 'invalid':
           setAlert({ kind: 'invalid', attemptsLeft: outcome.attemptsLeft });
           break;
@@ -120,6 +126,8 @@ export function AdminLogin({ year }: { year: number }) {
       if (result.data.status === 'signed_in') {
         router.replace('/admin');
         router.refresh();
+      } else if (result.data.status === 'unavailable') {
+        go('unavailable');
       } else if (result.data.status === 'expired') {
         go('signin');
         setAlert(null);
@@ -170,6 +178,25 @@ export function AdminLogin({ year }: { year: number }) {
 
       <main className="flex items-start justify-center px-4 py-10 lg:items-center lg:px-12">
         <div className="flex w-full max-w-[400px] flex-col gap-6 [--control-h:44px]">
+          {step === 'unavailable' && (
+            <div className="flex flex-col gap-5">
+              <span
+                aria-hidden
+                className="flex size-13 items-center justify-center rounded-full bg-surface text-ink"
+              >
+                <Lock className="size-6" />
+              </span>
+              <div className="flex flex-col gap-2">
+                {heading(t('unavailableTitle'))}
+                <p className="text-body text-ink-2">{t('unavailableText')}</p>
+              </div>
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a href="/" className="w-fit text-small text-ink underline">
+                {t('backToSite')}
+              </a>
+            </div>
+          )}
+
           {step === 'signin' && (
             <form onSubmit={submitSignIn} noValidate className="flex flex-col gap-5">
               <div className="flex flex-col gap-1">
