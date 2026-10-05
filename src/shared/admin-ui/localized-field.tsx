@@ -84,7 +84,7 @@ export function LocalizedField({
         <div
           role="group"
           aria-label={t('languages', { label })}
-          className="inline-flex shrink-0 rounded-sm border border-line bg-white p-0.5"
+          className="-my-1 inline-flex shrink-0 rounded-sm border border-line bg-white p-0.5"
         >
           {(['mk', 'en'] as const).map((code) => (
             <button

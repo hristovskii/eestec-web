@@ -2,6 +2,7 @@
 
 import { refresh } from 'next/cache';
 
+import { recordActivity } from '@/features/activity/server';
 import { authorize } from '@/features/auth/server';
 import { type ActionResult, type FieldErrors, fieldErrorsFrom, ok } from '@/shared/forms/action-result';
 import { now } from '@/shared/lib/now';
@@ -62,6 +63,12 @@ export async function finishMediaUpload(input: unknown): Promise<ActionResult<Me
     now: now(),
   });
   if (!item) return { ok: false, error: 'not_found' };
+  await recordActivity(session, {
+    action: 'uploaded',
+    area: 'media',
+    target: item.fileName,
+    href: '/admin/media',
+  });
   refresh();
   return ok(item);
 }
@@ -91,9 +98,10 @@ export async function deleteMedia(input: unknown): Promise<ActionResult> {
   const repo = await mediaRepository();
   const existing = await repo.get(parsed.data.id);
   if (!existing) return { ok: false, error: 'not_found' };
-  if (!(await authorize('delete', 'media', { ownerId: existing.uploadedBy.userId })))
-    return { ok: false, error: 'forbidden' };
+  const session = await authorize('delete', 'media', { ownerId: existing.uploadedBy.userId });
+  if (!session) return { ok: false, error: 'forbidden' };
   await repo.remove(existing.id);
+  await recordActivity(session, { action: 'deleted', area: 'media', target: existing.fileName });
   refresh();
   return ok(undefined);
 }

@@ -1,7 +1,7 @@
 // SAMPLE DATA — handoff/design-source/AdminDashboard.dc.html (counters, pending approvals, activity,
 // applications for open events), relative to the canvas moment 2026-10-04 18:18 Europe/Skopje.
 // Each part is replaced by real aggregation when its feature lands (inbox M10–M12, approvals M14/M17,
-// ideas M18, applications M7, activity M4). Counts are consistent with each other, so they differ
+// ideas M18, applications M7, activity: features/activity). Counts are consistent with each other, so they differ
 // from the illustrative canvas numbers (e.g. Approvals 7 = 3 registrations + 4 Memories, D2).
 import type { DashboardData } from '../../types';
 
@@ -50,39 +50,6 @@ export const dashboardFixture: DashboardData = {
       meta: 'FINKI, 1st year',
       submittedAt: '2026-10-04T11:45:00+02:00',
     },
-  ],
-  activity: [
-    {
-      id: 'ac-1',
-      actor: { name: 'Ana Trajkovska', initials: 'AT' },
-      summary: 'published Workshop: AI at the Edge',
-      at: '2026-10-04T16:18:00+02:00',
-    },
-    {
-      id: 'ac-2',
-      actor: { name: 'Stefan Nikolovski', initials: 'SN' },
-      summary: 'edited Home page › Hero',
-      at: '2026-10-03T21:14:00+02:00',
-    },
-    {
-      id: 'ac-3',
-      actor: { name: 'Marija Stojanovska', initials: 'MS' },
-      summary: 'approved 3 Memories',
-      at: '2026-10-03T18:02:00+02:00',
-    },
-    {
-      id: 'ac-4',
-      actor: { name: 'Daniel Ristov', initials: 'DR' },
-      summary: 'exported applications for Leading Teams (CSV)',
-      at: '2026-10-02T16:40:00+02:00',
-    },
-    {
-      id: 'ac-5',
-      actor: { name: 'Ana Trajkovska', initials: 'AT' },
-      summary: 'added sponsor Gridnova (Gold)',
-      at: '2026-10-01T11:25:00+02:00',
-    },
-    { id: 'ac-6', actor: null, summary: 'Daily backup completed', at: '2026-10-04T03:00:00+02:00' },
   ],
   openEvents: [
     {

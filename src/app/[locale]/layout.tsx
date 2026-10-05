@@ -6,6 +6,7 @@ import { locale as rootLocale } from 'next/root-params';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
+import { getSiteSettings } from '@/features/settings/server';
 import { SITE_URL } from '@/shared/config/site';
 import { pinnedNow } from '@/shared/lib/now';
 import { routing } from '@/shared/i18n/routing';
@@ -17,12 +18,22 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// The shipped icon is app/icon.png; a replacement from Settings › Branding is linked explicitly.
+const DEFAULT_ICON = '/brand/eestecredsquare.png';
+
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('metadata');
+  const locale = await rootLocale();
+  const [t, settings] = await Promise.all([
+    getTranslations('metadata'),
+    getSiteSettings(locale === 'en' ? 'en' : 'mk'),
+  ]);
+  const icon = settings.branding.icon.src;
   return {
     metadataBase: SITE_URL,
-    title: { default: t('defaultTitle'), template: t('titleTemplate') },
+    // Title suffix " · <site name>" (Settings › SEO).
+    title: { default: settings.siteName, template: `%s · ${settings.siteName}` },
     description: t('defaultDescription'),
+    ...(icon !== DEFAULT_ICON ? { icons: { icon, apple: icon } } : {}),
   };
 }
 

@@ -11,7 +11,7 @@ export function createMockSettingsRepository(): SettingsRepository {
 
   return {
     getSiteSettings({ locale, now }) {
-      const { privacy: _privacy, ...record } = table.record;
+      const { privacy: _privacy, seo: _seo, notifications: _notifications, ...record } = table.record;
       return Promise.resolve({
         ...record,
         footerTagline: resolveLocalized(record.footerTagline, locale),
@@ -23,6 +23,24 @@ export function createMockSettingsRepository(): SettingsRepository {
         weeklyMeeting: { ...record.weeklyMeeting, room: resolveLocalized(record.weeklyMeeting.room, locale) },
         currentYear: now.getFullYear(),
       });
+    },
+
+    getPageSeo({ page, locale }) {
+      const seo = table.record.seo[page];
+      return Promise.resolve({
+        title: resolveLocalized(seo.title, locale),
+        description: resolveLocalized(seo.description, locale),
+        shareImage: seo.shareImage,
+      });
+    },
+
+    getRecord() {
+      return Promise.resolve(structuredClone(table.record));
+    },
+
+    save(input) {
+      table.record = { ...structuredClone(input), privacy: table.record.privacy };
+      return Promise.resolve(structuredClone(table.record));
     },
 
     getPrivacyPolicy({ locale }) {

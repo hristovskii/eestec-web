@@ -7,7 +7,7 @@ import * as React from 'react';
 import type { NavKey } from '@/shared/config/site';
 import { Link, usePathname, useRouter } from '@/shared/i18n/navigation';
 import { cn } from '@/shared/lib/cn';
-import { BrandLogo } from '@/shared/ui/brand-logo';
+import { BrandLogo, type LogoAsset } from '@/shared/ui/brand-logo';
 import { InitialsAvatar } from '@/shared/ui/cards';
 import { Button } from '@/shared/ui/primitives/button';
 import {
@@ -33,6 +33,8 @@ type SiteHeaderProps = {
    */
   account: Promise<HeaderAccount | null> | null;
   signOutAction: () => Promise<void>;
+  /** White logo from Settings › Branding. */
+  logo?: LogoAsset | null;
 };
 
 const isActive = (pathname: string, href: string) =>
@@ -46,7 +48,7 @@ const isActive = (pathname: string, href: string) =>
  * pathname resolves during prerender. A boundary here made Next defer the whole header (a flash of the
  * fallback). A route with unknown dynamic params would fail the build loudly instead.
  */
-export function SiteHeader({ items, account, signOutAction }: SiteHeaderProps) {
+export function SiteHeader({ items, account, signOutAction, logo }: SiteHeaderProps) {
   const pathname = usePathname();
   const t = useTranslations('nav');
   // The mobile menu is open for the page it was opened on: navigating closes it.
@@ -73,6 +75,7 @@ export function SiteHeader({ items, account, signOutAction }: SiteHeaderProps) {
         >
           <BrandLogo
             variant="white"
+            asset={logo}
             height={52}
             alt="EESTEC LC Skopje"
             priority

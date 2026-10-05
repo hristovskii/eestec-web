@@ -29,9 +29,10 @@ export function createMockMediaRepository(): MediaRepository {
       const sorted = [...filtered].sort((a, b) =>
         query.sort === 'name'
           ? a.fileName.localeCompare(b.fileName)
-          : query.sort === 'oldest'
-            ? a.uploadedAt.localeCompare(b.uploadedAt)
-            : b.uploadedAt.localeCompare(a.uploadedAt),
+          : // Compare times, not strings: dates mix offsets (+02:00) and UTC (Z).
+            query.sort === 'oldest'
+            ? Date.parse(a.uploadedAt) - Date.parse(b.uploadedAt)
+            : Date.parse(b.uploadedAt) - Date.parse(a.uploadedAt),
       );
       return Promise.resolve({
         ...paginate(sorted, query.page, query.pageSize),

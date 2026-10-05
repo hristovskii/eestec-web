@@ -23,7 +23,6 @@ export function createMockDashboardRepository(): DashboardRepository {
           },
         },
         pending: [],
-        activity: [],
       });
     },
   };

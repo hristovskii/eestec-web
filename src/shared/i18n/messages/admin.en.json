@@ -239,6 +239,14 @@
       "published": "Published",
       "draft": "Draft",
       "hidden": "Hidden"
+    },
+    "sortable": {
+      "handle": "Reorder {name}",
+      "instructions": "To reorder, press Space on the handle, move with the arrow keys, then press Space again to drop or Escape to cancel.",
+      "picked": "Picked up {name}.",
+      "over": "{name} is now at position {position} of {count}.",
+      "dropped": "{name} dropped at position {position} of {count}.",
+      "cancelled": "Reordering cancelled. {name} is back in place."
     }
   },
   "media": {
@@ -333,6 +341,231 @@
       "forbidden": "You can only change files you uploaded.",
       "not_found": "This file isn't there any more. Reload the page.",
       "unexpected": "Something went wrong. Try again."
+    },
+    "picker": {
+      "title": "Choose an image",
+      "text": "Images need alt text before they can be used.",
+      "search": "Search images",
+      "use": "Use image",
+      "upload": "Upload new",
+      "empty": "No images match.",
+      "loading": "Loading images…",
+      "unusableAlt": "Add alt text in the Media library first",
+      "unusableSample": "Sample placeholder: no file",
+      "more": "Show more",
+      "current": "In use"
+    }
+  },
+  "activity": {
+    "title": "Activity log",
+    "description": "Who changed what in the admin, newest first. Read-only.",
+    "recent": "Recent activity",
+    "openLog": "Open activity log",
+    "system": "System",
+    "actions": {
+      "created": "added {target}",
+      "updated": "edited {target}",
+      "published": "published {target}",
+      "deleted": "deleted {target}",
+      "approved": "approved {target}",
+      "rejected": "rejected {target}",
+      "exported": "exported {target}",
+      "uploaded": "uploaded {target}",
+      "backup": "{target} completed"
+    },
+    "areas": {
+      "events": "Events",
+      "applications": "Applications",
+      "approvals": "Approvals",
+      "pages": "Pages",
+      "partners": "Sponsors",
+      "media": "Media library",
+      "settings": "Settings",
+      "users": "Admin users",
+      "system": "System"
+    },
+    "filters": {
+      "area": "Area",
+      "areaAny": "All areas",
+      "person": "Person",
+      "personAny": "Everyone"
+    },
+    "columns": {
+      "when": "When",
+      "who": "Who",
+      "what": "What",
+      "area": "Area"
+    },
+    "empty": {
+      "title": "Nothing logged yet",
+      "filteredTitle": "Nothing matches these filters",
+      "clear": "Clear filters"
+    },
+    "perPage": "Entries per page"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Site-wide settings. Only super admins can change these.",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saved": "All changes saved",
+    "unsaved": "Unsaved changes",
+    "savedToast": "Settings saved. The site shows them within a minute.",
+    "errorSummary": "{count, plural, one {Can't save yet: fix # field} other {Can't save yet: fix # fields}}",
+    "sectionsNav": "Settings sections",
+    "sections": {
+      "branding": "Branding",
+      "events": "Events",
+      "contact": "Contact & legal",
+      "seo": "SEO",
+      "notifications": "E-mail notifications",
+      "languages": "Languages",
+      "activity": "Activity log",
+      "security": "Security & backups"
+    },
+    "branding": {
+      "hint": "Upload the provided files; they're never redrawn",
+      "fullColor": "Full-color logo",
+      "white": "White logo",
+      "icon": "Icon / favicon",
+      "fullColorUse": "Used on white backgrounds.",
+      "whiteUse": "Used in the red header and footer.",
+      "iconUse": "Favicon, app icon and share fallback.",
+      "replace": "Replace",
+      "download": "Download",
+      "siteName": "Site name",
+      "footerTagline": "Footer tagline"
+    },
+    "events": {
+      "types": "Manage event types",
+      "deadlineSoon": "“Closing soon” badge and red countdown",
+      "deadlineSoonBefore": "Starts",
+      "deadlineSoonAfter": "hours before the application deadline",
+      "justEnded": "“Just ended” badge in the archive",
+      "justEndedBefore": "Shows for",
+      "justEndedAfter": "days after the event ends",
+      "maxParticipants": "Default max participants for new events",
+      "maxParticipantsAfter": "places · can be changed per event",
+      "waitlist": "Waitlist on by default for new events",
+      "autoClose": "Close applications automatically at the deadline"
+    },
+    "contact": {
+      "hint": "Used on /contact and in the footer",
+      "mainEmail": "Main e-mail",
+      "address": "Address",
+      "officeRoom": "Office / meeting room",
+      "meeting": "Weekly meeting",
+      "meetingDay": "Day",
+      "meetingTime": "Time",
+      "meetingRoom": "Meeting place",
+      "onHome": "On Home",
+      "onHomeLabel": "Show the weekly meeting on the Home page",
+      "boardRoles": "Board roles & e-mails",
+      "dragHint": "drag to reorder",
+      "role": "Role",
+      "roleEmail": "E-mail",
+      "removeRole": "Remove {role}",
+      "addRole": "Add role",
+      "newRole": "New role",
+      "social": "Social links",
+      "socialHint": "Leave the link empty to hide it",
+      "handle": "{platform} name",
+      "url": "{platform} link",
+      "legalName": "Full registered name",
+      "legalNamePlaceholder": "As written in the Central Register",
+      "shortName": "Short name",
+      "registrationNumber": "Registration no. (EMBS)",
+      "taxNumber": "Tax no. (EDB)",
+      "bankAccount": "Bank account",
+      "bankName": "Bank",
+      "registeredSeat": "Registered seat"
+    },
+    "seo": {
+      "title": "SEO per page",
+      "suffix": "Title suffix: “ · {siteName}”",
+      "page": "Page",
+      "pageTitle": "Title",
+      "pageDescription": "Description",
+      "shareImage": "Share image",
+      "shareImageSize": "Share image (1200 × 630)",
+      "titleAim": "Aim for 50–60 characters.",
+      "descriptionAim": "Aim for 120–160 characters.",
+      "count": "{count} / {max}",
+      "missing": "Missing description",
+      "preview": "Search preview",
+      "edit": "Edit",
+      "done": "Done",
+      "noImage": "No share image: the icon is used.",
+      "choose": "Choose image",
+      "remove": "Remove",
+      "pages": {
+        "home": "Home",
+        "events": "Events",
+        "upcoming": "Upcoming Events",
+        "journey": "EESTEC Journey",
+        "join": "Join Us",
+        "partners": "For Companies",
+        "contact": "Contact",
+        "members": "Members",
+        "memories": "Memories",
+        "submit": "Ideas & feedback",
+        "privacy": "Privacy policy"
+      }
+    },
+    "notifications": {
+      "hint": "Who gets an e-mail when something new comes in",
+      "recipients": "Recipients",
+      "recipientsHelp": "Separate e-mails with commas.",
+      "kinds": {
+        "contactMessages": "Contact messages",
+        "partnerInquiries": "Partner inquiries",
+        "membershipApplications": "Membership applications",
+        "eventApplications": "Event applications",
+        "memberRegistrations": "Member registrations",
+        "memoriesToApprove": "Memories waiting for approval",
+        "ideasAndFeedback": "Ideas & feedback"
+      },
+      "contactNote": "Messages sent with a subject go to that subject's own e-mail first (Contact page settings)."
+    },
+    "languages": {
+      "hint": "Decided rules · not editable",
+      "mk": "Macedonian",
+      "mkText": "Default language, unprefixed URLs (eestec.mk/events). Every text needs a Macedonian version.",
+      "en": "English",
+      "enText": "Under /en (eestec.mk/en/events). Optional per text: when it's empty, the English page shows the Macedonian text.",
+      "default": "Default",
+      "optional": "Optional",
+      "admin": "The admin panel is in English."
+    },
+    "activity": {
+      "hint": "Latest changes"
+    },
+    "security": {
+      "hint": "Decided rules are shown for reference",
+      "twoStep": "2-step login",
+      "twoStepText": "Always required for super admins.",
+      "lockout": "Wrong passwords",
+      "lockoutText": "{attempts} wrong tries pause sign-in for {minutes} minutes.",
+      "links": "Links in e-mails",
+      "linksText": "Password reset links work for 30 minutes; sign-up confirmation links for 24 hours.",
+      "backups": "Backups",
+      "backupsText": "Daily database backup, kept by the hosting provider (set up with the database).",
+      "retention": "Delete e-mail addresses sent with ideas and contact messages after",
+      "retentionAfter": "months",
+      "retentionHelp": "Only where the sender's consent says so. Shown in the privacy policy."
+    },
+    "errors": {
+      "required": "Fill this in.",
+      "tooLong": "This is too long.",
+      "email": "Enter an e-mail like name@eestec.mk.",
+      "url": "Enter a full link starting with https://.",
+      "time": "Enter a time like 18:00.",
+      "number": "Enter a whole number.",
+      "range": "Enter a number between {min} and {max}.",
+      "tooMany": "That's too many.",
+      "recipientsRequired": "Add at least one e-mail, or switch these e-mails off.",
+      "forbidden": "Only super admins can change settings.",
+      "unexpected": "Couldn't save. Try again."
     }
   }
 }

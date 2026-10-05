@@ -13,11 +13,11 @@ import {
 import type { Route } from 'next';
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import { AdminPanel, StatCard } from '@/shared/admin-ui/stat-card';
 import { formatDate, hourInSkopje } from '@/shared/i18n/format';
 import { cn } from '@/shared/lib/cn';
-import { InitialsAvatar } from '@/shared/ui/cards';
 import { Button } from '@/shared/ui/primitives/button';
 
 import type { DashboardData } from '../../types';
@@ -40,6 +40,8 @@ type AdminDashboardProps = {
   now: string;
   /** Weekly meeting day, e.g. "Wednesday". */
   meetingDay: string;
+  /** Recent activity (ActivityFeed from the activity feature, composed by the route). */
+  activity?: ReactNode;
 };
 
 const linkClass =
@@ -51,7 +53,14 @@ function partOfDay(date: Date): 'morning' | 'afternoon' | 'evening' {
 }
 
 /** Admin › Dashboard (AdminDashboard, -Tablet, AdminMobileViews). */
-export function AdminDashboard({ data, access, firstName, now: nowIso, meetingDay }: AdminDashboardProps) {
+export function AdminDashboard({
+  data,
+  access,
+  firstName,
+  now: nowIso,
+  meetingDay,
+  activity,
+}: AdminDashboardProps) {
   const t = useTranslations('admin.dashboard');
   const format = useFormatter();
   const now = new Date(nowIso);
@@ -181,7 +190,7 @@ export function AdminDashboard({ data, access, firstName, now: nowIso, meetingDa
         ))}
       </div>
 
-      {(access.approvals || access.activityLog || data.activity.length > 0) && (
+      {(access.approvals || activity) && (
         <div className="grid gap-6 xl:grid-cols-[1.25fr_1fr]">
           {access.approvals && (
             <AdminPanel
@@ -234,7 +243,7 @@ export function AdminDashboard({ data, access, firstName, now: nowIso, meetingDa
               </ul>
             </AdminPanel>
           )}
-          {data.activity.length > 0 && (
+          {activity && (
             <AdminPanel
               title={t('activity.title')}
               action={
@@ -246,24 +255,7 @@ export function AdminDashboard({ data, access, firstName, now: nowIso, meetingDa
                 ) : undefined
               }
             >
-              <ul className="flex flex-col gap-4 px-5 py-4">
-                {data.activity.map((entry) => (
-                  <li key={entry.id} className="flex gap-3">
-                    <InitialsAvatar
-                      initials={entry.actor?.initials ?? 'SY'}
-                      size={32}
-                      tone={entry.actor ? 'dark' : 'grey'}
-                    />
-                    <span className="flex flex-col text-[15px]">
-                      <span>
-                        {entry.actor && <strong className="font-medium">{entry.actor.name} </strong>}
-                        {entry.summary}
-                      </span>
-                      <span className="text-[13px] text-muted-ink">{relative(entry.at)}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {activity}
             </AdminPanel>
           )}
         </div>

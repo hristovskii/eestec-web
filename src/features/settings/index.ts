@@ -1,5 +1,9 @@
 export type {
   BoardRole,
+  Branding,
+  ImageAsset,
+  ResolvedPageSeo,
+  SeoPageKey,
   EventSettings,
   LegalInfo,
   PrivacyPolicy,

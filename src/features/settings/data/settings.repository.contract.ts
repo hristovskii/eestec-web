@@ -41,5 +41,42 @@ export function describeSettingsRepository(
       expect(['mk', 'en']).toContain(en.lang);
       expect(mk.body.length).toBeGreaterThan(0);
     });
+
+    it('saves what Admin › Settings edits and keeps the privacy text', async () => {
+      const repo = await create();
+      const { privacy, ...input } = await repo.getRecord();
+      const saved = await repo.save({
+        ...input,
+        siteName: 'EESTEC LC Skopje (test)',
+        events: { ...input.events, deadlineSoonHours: 48 },
+        boardRoles: [...input.boardRoles].reverse(),
+      });
+      expect(saved.privacy).toEqual(privacy);
+      const settings = await repo.getSiteSettings({ locale: 'mk', now: NOW });
+      expect(settings.siteName).toBe('EESTEC LC Skopje (test)');
+      expect(settings.events.deadlineSoonHours).toBe(48);
+      expect(settings.boardRoles[0]).toEqual(input.boardRoles.at(-1));
+    });
+
+    it('resolves page SEO, falling back to Macedonian per field', async () => {
+      const repo = await create();
+      const { privacy: _privacy, ...input } = await repo.getRecord();
+      await repo.save({
+        ...input,
+        seo: {
+          ...input.seo,
+          join: {
+            title: { mk: 'Зачлени се' },
+            description: { mk: 'Опис', en: 'Description' },
+            shareImage: null,
+          },
+        },
+      });
+      await expect(repo.getPageSeo({ page: 'join', locale: 'en' })).resolves.toEqual({
+        title: 'Зачлени се',
+        description: 'Description',
+        shareImage: null,
+      });
+    });
   });
 }

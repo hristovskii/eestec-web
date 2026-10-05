@@ -2,12 +2,14 @@ import { useTranslations } from 'next-intl';
 
 import { EESTEC_NET_URL, type FooterNavKey } from '@/shared/config/site';
 import { Link } from '@/shared/i18n/navigation';
-import { BrandLogo } from '@/shared/ui/brand-logo';
+import { BrandLogo, type LogoAsset } from '@/shared/ui/brand-logo';
 import { SocialIcon, type SocialIconName } from '@/shared/ui/social-icon';
 
 /** What the footer needs from Settings (contact & legal, social links, branding). */
 export type FooterData = {
   siteName: string;
+  /** White logo from Settings › Branding. */
+  logo?: LogoAsset | null;
   tagline: string;
   address: string;
   email: string;
@@ -43,24 +45,27 @@ export function SiteFooter({ data, explore, getInvolved }: SiteFooterProps) {
           <div className="flex flex-col gap-4 lg:gap-5">
             <BrandLogo
               variant="white"
+              asset={data.logo}
               height={80}
               alt={data.siteName}
               className="-ml-1.5 h-[72px] w-auto self-start lg:h-20"
             />
             <p className="max-w-[320px] text-[15px] leading-[1.6]">{data.tagline}</p>
-            <ul className="flex gap-2">
-              {data.socialLinks.map((social) => (
-                <li key={social.platform}>
-                  <a
-                    href={social.url}
-                    aria-label={t(`social.${social.platform}`)}
-                    className="flex size-11 items-center justify-center rounded-full border border-white/60 text-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  >
-                    <SocialIcon name={social.platform} />
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {data.socialLinks.length > 0 && (
+              <ul className="flex gap-2">
+                {data.socialLinks.map((social) => (
+                  <li key={social.platform}>
+                    <a
+                      href={social.url}
+                      aria-label={t(`social.${social.platform}`)}
+                      className="flex size-11 items-center justify-center rounded-full border border-white/60 text-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    >
+                      <SocialIcon name={social.platform} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-6 text-[15px] lg:contents">
