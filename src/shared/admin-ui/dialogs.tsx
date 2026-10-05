@@ -36,6 +36,8 @@ type AdminDialogProps = {
   initialFocus?: React.RefObject<HTMLElement | null>;
   footer: React.ReactNode;
   footerClassName?: string;
+  /** md: 480 px (decisions); lg: 640 px (forms with lists, e.g. uploads). */
+  size?: 'md' | 'lg';
   children?: React.ReactNode;
 };
 
@@ -51,6 +53,7 @@ export function AdminDialog({
   initialFocus,
   footer,
   footerClassName,
+  size = 'md',
   children,
 }: AdminDialogProps) {
   const t = useTranslations('admin.ui.dialogs');
@@ -64,7 +67,10 @@ export function AdminDialog({
           event.preventDefault();
           initialFocus.current.focus();
         }}
-        className="flex max-w-[480px] flex-col gap-0 p-0 text-small sm:p-0"
+        className={cn(
+          'flex max-h-[calc(100dvh-32px)] flex-col gap-0 overflow-y-auto p-0 text-small sm:p-0',
+          size === 'lg' ? 'max-w-[640px]' : 'max-w-[480px]',
+        )}
       >
         <div className="flex items-start gap-3.5 px-5.5 pt-5.5">
           {icon && (

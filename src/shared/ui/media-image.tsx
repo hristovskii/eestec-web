@@ -41,8 +41,8 @@ export function MediaImage({ media, preset, priority, className }: MediaImagePro
   if (isSampleMedia(media)) {
     return (
       <div
-        role="img"
-        aria-label={media.alt}
+        // alt="" means decorative: hidden from screen readers, like <img alt="">.
+        {...(media.alt ? { role: 'img', 'aria-label': media.alt } : { 'aria-hidden': true })}
         className={cn(
           'absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center text-muted-ink',
           'bg-[repeating-linear-gradient(135deg,var(--color-divider)_0_12px,var(--color-line)_12px_24px)]',

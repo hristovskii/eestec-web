@@ -19,13 +19,24 @@ type TablePaginationProps = {
   total: number;
   /** URL param for "Rows per page" (changing it returns to page 1). */
   sizeParam?: string;
+  /** Choices for "Rows per page" (grids use multiples of 12). */
+  sizes?: readonly number[];
+  /** Label of the size select, e.g. "Files per page" on grids. */
+  sizeLabel?: string;
 };
 
 /**
  * "Showing 1–10 of 155", rows per page and page numbers (AdminEvents). On phones: "Page X of Y"
  * with previous / next. Pages are links (`?page=`), so they work without JavaScript.
  */
-export function TablePagination({ page, pageSize, total, sizeParam = 'size' }: TablePaginationProps) {
+export function TablePagination({
+  page,
+  pageSize,
+  total,
+  sizeParam = 'size',
+  sizes = PAGE_SIZES,
+  sizeLabel,
+}: TablePaginationProps) {
   const t = useTranslations('admin.ui.pagination');
   const { hrefWith, update } = useUrlParams();
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
@@ -44,13 +55,13 @@ export function TablePagination({ page, pageSize, total, sizeParam = 'size' }: T
       </span>
       <div className="flex items-center gap-3.5">
         <label className="hidden items-center gap-2 text-[13px] text-muted-ink md:flex">
-          {t('rowsPerPage')}
+          {sizeLabel ?? t('rowsPerPage')}
           <NativeSelect
             value={String(pageSize)}
             onChange={(event) => update({ [sizeParam]: event.target.value })}
             className="w-[76px] [--control-h:32px] [&_select]:text-small"
           >
-            {PAGE_SIZES.map((size) => (
+            {sizes.map((size) => (
               <NativeSelectOption key={size} value={size}>
                 {size}
               </NativeSelectOption>
