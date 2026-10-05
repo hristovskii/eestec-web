@@ -25,3 +25,16 @@ export async function requirePermission(
   if (!can(session, action, area, resource)) redirect('/admin?forbidden=1');
   return session;
 }
+
+/**
+ * For Server Actions: the session when the matrix allows the action, otherwise null (the action
+ * answers { ok: false, error: 'forbidden' } instead of redirecting).
+ */
+export async function authorize(
+  action: Action,
+  area: AdminArea,
+  resource?: Resource,
+): Promise<Session | null> {
+  const session = await getSession();
+  return session && can(session, action, area, resource) ? session : null;
+}

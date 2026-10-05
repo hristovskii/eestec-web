@@ -46,6 +46,8 @@ const badgeTones = {
   /** Hidden. */
   muted: 'bg-divider text-muted-ink',
   neutral: 'border border-line bg-surface text-ink-2',
+  /** Needs action (no alt text, 2-step off): red counts that need action are allowed (CLAUDE.md). */
+  attention: 'border border-brand/35 bg-brand-tint text-brand-dark',
 } as const;
 
 export type AdminBadgeTone = keyof typeof badgeTones;

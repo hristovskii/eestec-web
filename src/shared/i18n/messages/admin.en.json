@@ -240,5 +240,99 @@
       "draft": "Draft",
       "hidden": "Hidden"
     }
+  },
+  "media": {
+    "title": "Media library",
+    "description": "Photos, logos and documents used across the site. Every image needs alt text before it can be used.",
+    "descriptionOwn": "The files you uploaded. Every image needs alt text before it can be used.",
+    "upload": "Upload files",
+    "tabs": {
+      "label": "File type",
+      "all": "All",
+      "image": "Images",
+      "document": "Documents"
+    },
+    "filters": {
+      "search": "Search files",
+      "searchPlaceholder": "Search by file name or alt text",
+      "alt": "Alt text",
+      "altAny": "Any alt text",
+      "altMissing": "Missing alt text",
+      "uploader": "Uploaded by",
+      "uploaderAny": "Anyone",
+      "uploaderMe": "Me",
+      "sort": "Sort",
+      "sortNewest": "Newest first",
+      "sortOldest": "Oldest first",
+      "sortName": "File name"
+    },
+    "missingNotice": "{count, plural, one {# image has no alt text yet.} other {# images have no alt text yet.}} Pages show them only after it's added.",
+    "showMissing": "Show them",
+    "grid": "Files",
+    "noAlt": "No alt text",
+    "decorative": "Decorative",
+    "sample": "Sample",
+    "meta": "{dimensions} · {size}",
+    "empty": {
+      "noneTitle": "No files yet",
+      "noneText": "Upload photos, logos and PDFs here, then pick them in events and pages.",
+      "filteredTitle": "No files match these filters",
+      "filteredText": "Try clearing a filter or searching for another name.",
+      "clear": "Clear filters"
+    },
+    "details": {
+      "title": "File details",
+      "file": "File",
+      "dimensions": "Size",
+      "type": "Type",
+      "uploaded": "Uploaded",
+      "uploadedBy": "{date} by {name}",
+      "alt": "Alt text",
+      "altHelp": "Describe what the photo shows for people who can't see it, in a sentence.",
+      "decorative": "Decorative image (no alt text)",
+      "decorativeHelp": "Only for images that add nothing, like a background pattern.",
+      "credit": "Photo credit",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "copyLink": "Copy link",
+      "copied": "Link copied",
+      "download": "Download",
+      "noFile": "Sample file: there is nothing to download yet.",
+      "readOnly": "Only the person who uploaded this file can change it.",
+      "delete": "Delete",
+      "deleteTitle": "Delete “{name}”?",
+      "deleteText": "Pages that use it show the red fallback image instead. This can't be undone.",
+      "deleteConfirm": "Delete file",
+      "deleted": "File deleted"
+    },
+    "uploadDialog": {
+      "title": "Upload files",
+      "text": "Images up to 5 MB (JPG, PNG, WebP, GIF, SVG), PDFs up to 10 MB.",
+      "choose": "Choose files or drag them here",
+      "chooseMore": "Add more files",
+      "remove": "Remove {name}",
+      "submit": "{count, plural, =0 {Upload} one {Upload # file} other {Upload # files}}",
+      "uploading": "Uploading…",
+      "done": "{count, plural, one {# file uploaded} other {# files uploaded}}",
+      "status": {
+        "waiting": "Ready",
+        "uploading": "Uploading…",
+        "done": "Uploaded",
+        "failed": "Upload failed"
+      },
+      "needsAlt": "{count, plural, one {Add alt text to # image to upload it.} other {Add alt text to # images to upload them.}}"
+    },
+    "errors": {
+      "type": "This file type isn't accepted. Use JPG, PNG, WebP, GIF, SVG or PDF.",
+      "size": "Too big. Images can be up to 5 MB, PDFs up to 10 MB.",
+      "empty": "This file is empty.",
+      "altRequired": "Add alt text, or mark the image as decorative.",
+      "altTooLong": "Keep alt text under 250 characters.",
+      "creditTooLong": "Keep the credit under 120 characters.",
+      "forbidden": "You can only change files you uploaded.",
+      "not_found": "This file isn't there any more. Reload the page.",
+      "unexpected": "Something went wrong. Try again."
+    }
   }
 }
