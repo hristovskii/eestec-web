@@ -117,8 +117,10 @@ test.describe('admin foundation (M3)', () => {
     }
     await expect(page.getByRole('link', { name: 'Add event' })).toHaveCount(0);
     const table = page.getByRole('table');
-    await expect(table.getByRole('rowheader', { name: 'Workshop: AI at the Edge' })).toBeVisible();
-    await expect(table.getByRole('rowheader')).toHaveCount(1);
+    // Daniel manages Leading Teams and FPGA Basics (AdminUsers).
+    await expect(table.getByRole('rowheader', { name: 'Soft Skills Training: Leading Teams' })).toBeVisible();
+    await expect(table.getByRole('rowheader', { name: 'Hands-on: FPGA Basics' })).toBeVisible();
+    await expect(table.getByRole('rowheader')).toHaveCount(2);
   });
 
   test('tablet shows the icon rail, mobile the drawer', async ({ page, isMobile }) => {

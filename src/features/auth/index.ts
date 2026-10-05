@@ -14,4 +14,12 @@ export {
 } from './domain/permissions';
 export { LOCKOUT } from './domain/lockout';
 export { hasSessionCookie } from './session-cookie';
-export type { AdminRole, MemberStatus, Session, SignInResult, TwoFactorResult } from './types';
+export type {
+  AdminAccount,
+  AdminRole,
+  MemberStatus,
+  Session,
+  SignInResult,
+  TwoFactorResult,
+  TwoFactorStatus,
+} from './types';

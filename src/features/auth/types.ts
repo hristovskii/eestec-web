@@ -29,3 +29,23 @@ export type SignInResult =
 
 export type TwoFactorResult =
   { status: 'signed_in' } | { status: 'invalid' } | { status: 'expired' } | { status: 'unavailable' };
+
+export type TwoFactorStatus = 'on' | 'off' | 'not_set_up';
+
+/** An account that can open the admin (Admin users & roles). */
+export type AdminAccount = {
+  userId: string;
+  name: string;
+  email: string;
+  initials: string;
+  role: AdminRole;
+  /** Event managers only (D18). */
+  managedEventIds: string[];
+  twoFactor: TwoFactorStatus;
+  /** invited: the e-mail was sent; the person hasn't set a password yet. */
+  status: 'active' | 'invited';
+  lastActiveAt: string | null;
+  invitedAt: string | null;
+};
+
+export type InviteResult = { status: 'invited'; account: AdminAccount } | { status: 'already_admin' };

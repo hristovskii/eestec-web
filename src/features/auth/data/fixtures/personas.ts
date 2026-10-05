@@ -50,7 +50,8 @@ export const personas: Persona[] = [
     headline: 'Events team · member since 2022',
     memberStatus: 'active',
     adminRole: 'event_manager',
-    managedEventIds: ['ev-ai-at-the-edge', 'ev-new-year-social-2026'],
+    // AdminUsers: "Leading Teams, FPGA Basics".
+    managedEventIds: ['ev-leading-teams', 'ev-fpga-basics'],
   },
   {
     personaId: 'editor',

@@ -55,10 +55,13 @@ export type AdminBadgeTone = keyof typeof badgeTones;
 /** Small status pill with a dot (admin tables, save bar). Features map their statuses to a tone. */
 export function AdminBadge({
   tone,
+  dot = true,
   children,
   className,
 }: {
   tone: AdminBadgeTone;
+  /** Status pills have a dot (Published); value pills don't (2-step "On", "Own events"). */
+  dot?: boolean;
   children: React.ReactNode;
   className?: string;
 }) {
@@ -70,7 +73,7 @@ export function AdminBadge({
         className,
       )}
     >
-      <span aria-hidden className="size-1.5 rounded-full bg-current" />
+      {dot && <span aria-hidden className="size-1.5 rounded-full bg-current" />}
       {children}
     </span>
   );

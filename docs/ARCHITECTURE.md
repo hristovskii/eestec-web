@@ -735,6 +735,7 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 | D17 | Board open points                | `/privacy` is built with placeholder text that is clearly marked as placeholder. The e-mail retention period is an admin setting, default 12 months.                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | D18 | Permissions matrix               | Approved 2026-10-05. Super admin: everything. Editor: everything except Settings and Admin users; Activity log read-only (`/admin/activity`). Event manager: dashboard, events, applications and form builder for **assigned events only** (edit, save draft, publish; no create, delete or reassign), media (own uploads), Ideas & Feedback **read-only Event feedback and Ratings for their events**. Member: no admin access. 2-step login required for super admins, optional otherwise. Source of truth: `src/features/auth/domain/permissions.ts` (table-tested). |
 | D19 | Mock admin sign-in in production | Given 2026-10-05. With `DATA_SOURCE=mock` on `VERCEL_ENV=production`, `/admin/login` shows “Admin not available yet”, every sign-in and 2-step attempt is rejected, and mock session cookies are ignored. Local development and preview deployments keep the mock sign-in. Source: `src/features/auth/availability.ts`; tested in `auth.mock.test.ts` and `e2e/admin-production.spec.ts`.                                                                                                                                                                               |
+| D20 | M4b follow-ups                   | Confirmed 2026-10-05: no on/off switch for English; security values (2-step, lockout, link expiry) stay read-only in Settings; the site name is one Latin-script value ("EESTEC LC Skopje") in both languages; keep the Meeting place and social links fields.                                                                                                                                                                                                                                                                                                          |
 
 **Notes from building (M1)**
 
@@ -785,6 +786,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Not on the canvas, added to keep content out of code: a "Meeting place" field for the weekly meeting, and the social links in Contact & legal (an empty link is hidden on the site).
 - `SortableList` (dnd-kit) reorders with mouse, touch or keyboard (Space, arrows, Space), with screen-reader announcements; reused later for galleries, Home sections and sponsors.
 - Mock repositories compare times with `Date.parse`, never as strings (fixtures mix `+02:00` and `Z`).
+
+**Notes from building (M4c)**
+
+- Accounts (roles, managed events, 2-step status, invites, last active) live in the `auth` data layer, the single source for sessions and Admin users: a role change applies on that person's next request. `admin-users` is the screen and its actions, on top of `auth/server` (no feature cycle).
+- Rules (pure, tested): nobody changes or removes their own access; at least one active super admin stays; event managers manage at least one event; leaving event manager clears the events; an invite to a member's e-mail gives the role on their own account.
+- The Roles & permissions table is rendered from `PERMISSIONS` (D18), so it can't drift from what the admin enforces.
+- A minimal `events` feature (sample event list from AdminEvents) provides "Events they manage"; M5 builds the full events feature on it.
+- Canvas contradictions resolved: Daniel manages Leading Teams and FPGA Basics (AdminUsers); the "Marija Stojanovska · Editor" row is left out, because Marija is the member-only sample persona everywhere else.
+- English dates use three-letter months ("30 Sep"): newer ICU writes "Sept" in en-GB.
 
 **Working rules while building**
 

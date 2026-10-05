@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 type Violation = Awaited<ReturnType<AxeBuilder['analyze']>>['violations'][number];
 
@@ -23,4 +23,11 @@ export async function seriousViolations(page: Page) {
     }))
     .filter((v) => v.nodes.length > 0)
     .map((v) => ({ id: v.id, help: v.help, targets: v.nodes.map((n) => n.target.join(' ')) }));
+}
+
+/** Waits until the element's open/close animations are done (axe misreads half-faded colours). */
+export async function settled(locator: Locator) {
+  await locator.evaluate((element) =>
+    Promise.all(element.getAnimations({ subtree: true }).map((animation) => animation.finished)),
+  );
 }
