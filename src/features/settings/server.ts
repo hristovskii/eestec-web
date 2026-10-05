@@ -1,3 +1,3 @@
 import 'server-only';
 
-export { getPrivacyPolicy, getSiteSettings } from './queries';
+export { getPageSeo, pageMetadata, getPrivacyPolicy, getSettingsForEdit, getSiteSettings } from './queries';

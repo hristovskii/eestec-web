@@ -28,8 +28,8 @@ export function describeMediaRepository(
       const all = await repo.list(query());
       expect(all.total).toBe(all.counts.all);
       expect(all.counts.image + all.counts.document).toBe(all.counts.all);
-      const dates = all.items.map((item) => item.uploadedAt);
-      expect(dates).toEqual([...dates].sort().reverse());
+      const times = all.items.map((item) => Date.parse(item.uploadedAt));
+      expect(times).toEqual([...times].sort((a, b) => b - a));
 
       const documents = await repo.list(query({ kind: 'document' }));
       expect(documents.items.every((item) => item.kind === 'document')).toBe(true);

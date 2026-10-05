@@ -1,7 +1,1 @@
-export type {
-  ActivityEntry,
-  AdminBadgeCounts,
-  DashboardData,
-  OpenEventApplications,
-  PendingApproval,
-} from './types';
+export type { AdminBadgeCounts, DashboardData, OpenEventApplications, PendingApproval } from './types';

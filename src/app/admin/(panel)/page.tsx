@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { ActivityFeed } from '@/features/activity/admin';
+import { recentActivity } from '@/features/activity/server';
 import { accessTo, can } from '@/features/auth';
 import { requirePermission } from '@/features/auth/server';
 import { AdminDashboard } from '@/features/dashboard/admin';
@@ -15,13 +17,16 @@ export const metadata: Metadata = { title: 'Dashboard' };
 
 async function Dashboard({ searchParams }: { searchParams: Promise<{ forbidden?: string }> }) {
   const session = await requirePermission('view', 'dashboard');
-  const [data, settings, t, tDays, params] = await Promise.all([
+  const showActivity = can(session, 'view', 'activityLog');
+  const [data, settings, t, tDays, params, activity] = await Promise.all([
     getDashboard(session),
     getSiteSettings('en'),
     getTranslations('admin.dashboard'),
     getTranslations('admin.weekdays'),
     searchParams,
+    showActivity ? recentActivity(6) : Promise.resolve([]),
   ]);
+  const nowIso = now().toISOString();
   const phase2 = isEnabled('phase2');
 
   return (
@@ -36,7 +41,8 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ forbidden?:
       <AdminDashboard
         data={data}
         firstName={session.name.split(' ')[0] ?? session.name}
-        now={now().toISOString()}
+        now={nowIso}
+        activity={activity.length > 0 ? <ActivityFeed entries={activity} now={nowIso} /> : undefined}
         meetingDay={tDays(settings.weeklyMeeting.day)}
         access={{
           approvals: phase2 && accessTo(session, 'approvals') === 'full',
@@ -44,7 +50,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<{ forbidden?:
           ideas: phase2 && accessTo(session, 'ideas') === 'full',
           createEvent: can(session, 'create', 'events'),
           pages: accessTo(session, 'pages') === 'full',
-          activityLog: can(session, 'view', 'activityLog'),
+          activityLog: showActivity,
         }}
       />
     </>

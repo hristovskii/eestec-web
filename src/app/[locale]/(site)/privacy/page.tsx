@@ -1,22 +1,16 @@
 import type { Metadata } from 'next';
-import { locale as rootLocale } from 'next/root-params';
 import { getTranslations } from 'next-intl/server';
 
-import { getPrivacyPolicy } from '@/features/settings/server';
-import { hasLocale } from 'next-intl';
-import { routing } from '@/shared/i18n/routing';
+import { getPrivacyPolicy, pageMetadata } from '@/features/settings/server';
+import { currentLocale } from '@/shared/i18n/current-locale';
 import { PageHeader } from '@/shared/layout/site/page-header';
 import { Container } from '@/shared/ui/container';
 import { Notice } from '@/shared/ui/notice';
 
-async function currentLocale() {
-  const locale = await rootLocale();
-  return hasLocale(routing.locales, locale) ? locale : routing.defaultLocale;
-}
-
 export async function generateMetadata(): Promise<Metadata> {
-  const policy = await getPrivacyPolicy(await currentLocale());
-  return { title: policy.title };
+  const locale = await currentLocale();
+  const policy = await getPrivacyPolicy(locale);
+  return pageMetadata('privacy', locale, policy.title);
 }
 
 // /privacy: rich-text page from the admin (Contact page layout, routes.md). D17: placeholder text for now.

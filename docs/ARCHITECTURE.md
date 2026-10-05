@@ -775,6 +775,17 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Admin thumbnails are not optimized (`unoptimized`): SVG logos can't be, and previews are small. Public pages optimize through `MediaImage`.
 - Server Actions check permissions with `authorize()` (returns `forbidden` instead of redirecting) and call `refresh()` after a change (admin pages are uncached).
 
+**Notes from building (M4b)**
+
+- `activity` owns the log (dashboard feed, Settings › Activity log, `/admin/activity`). Entries are structured (actor, action, area, target) and rendered from `admin.activity.actions.*`. On mocks the Server Actions write them (`recordActivity`); in the backend phase database triggers do, and `record()` becomes a no-op.
+- Settings is one form with one "Save changes" (as on the canvas), validated by one zod schema with message keys. A save names the changed sections in the log ("edited Settings › Events, SEO") and calls `updateTag('settings')`, so the public site shows it on the next request.
+- Logos and share images are picked from the Media library (`MediaPicker`; only images with a file and alt text). The header and footer use the white logo from Settings, the favicon follows Settings › Icon, and the title suffix is " · <site name>". The site name is one value (Latin script, as on the logo), so the drafted Cyrillic MK title strings were removed.
+- Public pages get title, description and share image from `pageMetadata(page, locale)` (Home and Privacy now; each page as it is built).
+- Undrawn sections: E-mail notifications are editable (on/off + recipients per kind; Phase 2 kinds behind the flag). Languages and Security & backups show the decided rules read-only (MK default with EN fallback; 2-step for super admins; 5 tries / 15 minutes; link expiry; backups). Lockout and link expiry belong to the auth backend. Only the retention period is editable there (D17).
+- Not on the canvas, added to keep content out of code: a "Meeting place" field for the weekly meeting, and the social links in Contact & legal (an empty link is hidden on the site).
+- `SortableList` (dnd-kit) reorders with mouse, touch or keyboard (Space, arrows, Space), with screen-reader announcements; reused later for galleries, Home sections and sponsors.
+- Mock repositories compare times with `Date.parse`, never as strings (fixtures mix `+02:00` and `Z`).
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

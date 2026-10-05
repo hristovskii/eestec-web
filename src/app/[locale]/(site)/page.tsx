@@ -1,7 +1,15 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+
+import { pageMetadata } from '@/features/settings/server';
+import { currentLocale } from '@/shared/i18n/current-locale';
 
 import { Link } from '@/shared/i18n/navigation';
 import { routing } from '@/shared/i18n/routing';
+
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata('home', await currentLocale());
+}
 
 // Placeholder until the Home milestone (M8). Proves locale routing: / is MK, /en is EN.
 export default async function HomePage() {

@@ -13,7 +13,7 @@ export function describeDashboardRepository(
       expect(data.counters.openEventApplications.events).toBe(data.openEvents.length);
     });
 
-    it('limits event managers to their own events and hides approvals and activity', async () => {
+    it('limits event managers to their own events and hides approvals', async () => {
       const repo = await create();
       const all = await repo.getDashboard({});
       const first = all.openEvents[0]!;
@@ -21,7 +21,6 @@ export function describeDashboardRepository(
       expect(own.openEvents.map((row) => row.eventId)).toEqual([first.eventId]);
       expect(own.counters.openEventApplications.total).toBe(first.total);
       expect(own.pending).toEqual([]);
-      expect(own.activity).toEqual([]);
     });
   });
 }

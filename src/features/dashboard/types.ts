@@ -17,14 +17,6 @@ export type PendingApproval = {
   submittedAt: string;
 };
 
-export type ActivityEntry = {
-  id: string;
-  actor: { name: string; initials: string } | null;
-  /** Rendered summary, e.g. "published Workshop: AI at the Edge". System entries have no actor. */
-  summary: string;
-  at: string;
-};
-
 export type OpenEventApplications = {
   eventId: string;
   title: string;
@@ -38,7 +30,6 @@ export type OpenEventApplications = {
 export type DashboardData = {
   counters: DashboardCounters;
   pending: PendingApproval[];
-  activity: ActivityEntry[];
   openEvents: OpenEventApplications[];
 };
 

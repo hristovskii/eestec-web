@@ -47,7 +47,12 @@ export default async function SiteLayout({ children }: LayoutProps<'/[locale]'>)
         {t('skipToContent')}
       </a>
       {env.VERCEL_ENV && env.DATA_SOURCE === 'mock' && <SampleDataRibbon />}
-      <SiteHeader items={visibleNav(MAIN_NAV, phase2)} account={account} signOutAction={signOut} />
+      <SiteHeader
+        items={visibleNav(MAIN_NAV, phase2)}
+        account={account}
+        signOutAction={signOut}
+        logo={settings.branding.white}
+      />
       <main id="main" tabIndex={-1} className="outline-none">
         {children}
       </main>
@@ -56,6 +61,7 @@ export default async function SiteLayout({ children }: LayoutProps<'/[locale]'>)
         getInvolved={visibleNav(FOOTER_NAV.getInvolved, phase2)}
         data={{
           siteName: settings.siteName,
+          logo: settings.branding.white,
           tagline: settings.footerTagline,
           address: settings.contact.address,
           email: settings.contact.mainEmail,
@@ -64,7 +70,8 @@ export default async function SiteLayout({ children }: LayoutProps<'/[locale]'>)
             time: settings.weeklyMeeting.time,
             room: settings.weeklyMeeting.room,
           },
-          socialLinks: settings.socialLinks,
+          // A link left empty in Settings is hidden.
+          socialLinks: settings.socialLinks.filter((link) => link.url),
           legal: settings.legal,
           year: settings.currentYear,
         }}
