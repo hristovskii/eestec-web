@@ -96,8 +96,14 @@ export function EventsAdminList({
       const result = await setEventsStatus({ ids, status });
       if (!result.ok) return failed(result);
       clear();
-      const { changed, notReady } = result.data;
-      if (changed > 0) toast.success(t(`toasts.${status}`, { count: changed }));
+      const { changed, notReady, defaultCover } = result.data;
+      if (changed > 0)
+        toast.success(t(`toasts.${status}`, { count: changed }), {
+          description:
+            defaultCover.length > 0
+              ? t('toasts.defaultCover', { count: defaultCover.length, title: defaultCover[0]! })
+              : undefined,
+        });
       else if (notReady.length === 0) toast(t('toasts.unchanged'));
       if (notReady.length > 0)
         toast.error(t('toasts.notReady', { count: notReady.length, title: notReady[0]! }), {

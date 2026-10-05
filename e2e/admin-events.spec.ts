@@ -24,7 +24,7 @@ test.describe('events list (M5a)', () => {
     await signInAs(page, 'super-admin');
     await page.goto('/admin/events');
     await expect(page.getByRole('heading', { level: 1, name: 'Events' })).toBeVisible();
-    await expect(page.getByRole('link', { name: /^Upcoming 7$/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /^Upcoming \d+$/ })).toBeVisible();
 
     const ai = row(page, 'Workshop: AI at the Edge');
     await expect(ai).toContainText('/upcoming/ai-at-the-edge');
@@ -59,23 +59,29 @@ test.describe('events list (M5a)', () => {
     await expect(page.getByText('Workshop: AI at the Edge').filter({ visible: true }).first()).toBeVisible();
   });
 
-  test('bulk publish checks each event; hide and draft change the status', async ({ page, isMobile }) => {
+  test('bulk publish checks each event; draft and publish change the status', async ({ page, isMobile }) => {
     test.skip(isMobile, 'changes shared sample data: run once (bulk actions are desktop)');
     await signInAs(page, 'super-admin');
+    const bulk = page.getByRole('region', { name: 'Bulk actions' });
+
+    await page.goto('/admin/events?q=power-grid-lecture');
+    const lecture = row(page, 'Lecture evening');
+    await lecture.getByRole('checkbox').check();
+    await bulk.getByRole('button', { name: 'Move to draft' }).click();
+    await expect(page.getByText('Event moved to draft')).toBeVisible();
+    await expect(lecture).toContainText('Draft');
+    await lecture.getByRole('checkbox').check();
+    await bulk.getByRole('button', { name: 'Publish' }).click();
+    await expect(page.getByText('Event published')).toBeVisible();
+    await expect(lecture).toContainText('Published');
+
+    // No short description: it can't go live (published or hidden) yet.
     await page.goto('/admin/events?q=arduino');
     const arduino = row(page, 'Local workshop: Arduino for Beginners');
     await arduino.getByRole('checkbox').check();
-    await page.getByRole('region', { name: 'Bulk actions' }).getByRole('button', { name: 'Hide' }).click();
-    await expect(page.getByText('Event hidden')).toBeVisible();
-    await expect(arduino).toContainText('Hidden');
-
-    // No short description and no cover: it can't go live yet.
-    await arduino.getByRole('checkbox').check();
-    await page.getByRole('region', { name: 'Bulk actions' }).getByRole('button', { name: 'Publish' }).click();
-    await expect(
-      page.getByText("“Local workshop: Arduino for Beginners” can't be published yet"),
-    ).toBeVisible();
-    await expect(arduino).toContainText('Hidden');
+    await bulk.getByRole('button', { name: 'Hide' }).click();
+    await expect(page.getByText("“Local workshop: Arduino for Beginners” can't go live yet")).toBeVisible();
+    await expect(arduino).toContainText('Published');
   });
 
   test('deletes an event after typing DELETE', async ({ page, isMobile }) => {

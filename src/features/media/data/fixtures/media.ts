@@ -170,7 +170,7 @@ export const mediaFixture: MediaItem[] = [
     photo(
       `media-ai-edge-gallery-${index + 1}`,
       `ai-at-the-edge-${String(index + 1).padStart(2, '0')}.jpg`,
-      `Photo ${index + 1}`,
+      alt?.toLowerCase() ?? `photo ${index + 1} of the gallery`,
       alt,
       ana,
       `2026-10-04T15:${String(40 + index).padStart(2, '0')}:00+02:00`,

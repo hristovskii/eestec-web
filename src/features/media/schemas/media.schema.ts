@@ -47,6 +47,11 @@ const altFields = {
 
 export const finishUploadSchema = z.object({
   uploadId: z.uuid(),
+  /**
+   * Gallery uploads (several photos dropped at once): the alt text is written where the photo is
+   * used, and publishing waits for it. The library shows the file as "No alt text" until then.
+   */
+  altLater: z.boolean().default(false),
   width: z.number().int().positive().optional(),
   height: z.number().int().positive().optional(),
   ...altFields,

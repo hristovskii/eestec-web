@@ -37,10 +37,10 @@ describe('events fixture', () => {
   });
 
   it('lacks only texts the canvas never gives', () => {
-    // Archive cards give no short description or cover for some events, and AdminEventEdit shows
-    // photo 3 of AI at the Edge without alt text. They stay published; the edit form asks for the
-    // missing fields before "Update live page".
-    const allowed = new Set(['shortDescription.mk', 'cover', 'gallery.2.alt']);
+    // Archive cards give no short description for some events, and AdminEventEdit shows photo 3
+    // of AI at the Edge without alt text. They stay published; the edit form asks for the missing
+    // fields before "Update live page". A missing cover is only a warning (D21).
+    const allowed = new Set(['shortDescription.mk', 'gallery.2.alt']);
     for (const event of eventsFixture.filter((candidate) => candidate.status !== 'draft')) {
       const issues = publishIssues(event).map((issue) => issue.path.join('.'));
       expect(

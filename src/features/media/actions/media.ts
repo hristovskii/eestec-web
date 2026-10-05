@@ -52,11 +52,12 @@ export async function finishMediaUpload(input: unknown): Promise<ActionResult<Me
   const upload = await repo.getUpload(uploadId, session.userId);
   if (!upload?.received) return { ok: false, error: 'not_found' };
   const isImage = kindOf(upload.mimeType) === 'image';
-  if (altMissing(parsed.data, isImage)) return altRequired();
+  const later = parsed.data.altLater && altMissing(parsed.data, isImage);
+  if (altMissing(parsed.data, isImage) && !later) return altRequired();
   const item = await repo.confirmUpload({
     uploadId,
     userId: session.userId,
-    alt: storedAlt(parsed.data, isImage),
+    alt: later ? null : storedAlt(parsed.data, isImage),
     credit,
     width,
     height,

@@ -1,3 +1,5 @@
+'use client';
+
 import { CircleAlert } from 'lucide-react';
 import * as React from 'react';
 
@@ -37,6 +39,14 @@ export function ErrorSummary({ title, errors, ref }: ErrorSummaryProps) {
             <li key={error.fieldId}>
               <a
                 href={`#${error.fieldId}`}
+                // Move focus to the field itself (a fragment link only scrolls).
+                onClick={(event) => {
+                  const field = document.getElementById(error.fieldId);
+                  if (!field) return;
+                  event.preventDefault();
+                  field.scrollIntoView({ block: 'center' });
+                  field.focus({ preventScroll: true });
+                }}
                 className={cn(
                   'font-medium text-brand-dark',
                   error.label ? 'underline' : 'no-underline hover:underline',

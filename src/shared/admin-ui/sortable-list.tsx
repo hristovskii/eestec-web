@@ -13,6 +13,7 @@ import {
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
   arrayMove,
+  rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
@@ -34,6 +35,8 @@ type SortableListProps<T extends { id: string }> = {
   itemName: (item: T) => string;
   /** One row; `handle` is the drag handle to place in it. */
   renderItem: (item: T, handle: React.ReactNode) => React.ReactNode;
+  /** grid: tiles that move in both directions (photo galleries); `className` sets the columns. */
+  layout?: 'list' | 'grid';
   className?: string;
 };
 
@@ -47,6 +50,7 @@ export function SortableList<T extends { id: string }>({
   label,
   itemName,
   renderItem,
+  layout = 'list',
   className,
 }: SortableListProps<T>) {
   const t = useTranslations('admin.ui.sortable');
@@ -74,7 +78,7 @@ export function SortableList<T extends { id: string }>({
       id={id}
       sensors={sensors}
       collisionDetection={closestCenter}
-      modifiers={[restrictToVerticalAxis]}
+      modifiers={layout === 'list' ? [restrictToVerticalAxis] : []}
       onDragEnd={onDragEnd}
       accessibility={{
         screenReaderInstructions: { draggable: t('instructions') },
@@ -92,10 +96,18 @@ export function SortableList<T extends { id: string }>({
         },
       }}
     >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        items={items}
+        strategy={layout === 'grid' ? rectSortingStrategy : verticalListSortingStrategy}
+      >
         <ul aria-label={label} className={cn('m-0 list-none p-0', className)}>
           {items.map((item) => (
-            <SortableRow key={item.id} id={item.id} handleLabel={t('handle', { name: itemName(item) })}>
+            <SortableRow
+              key={item.id}
+              id={item.id}
+              layout={layout}
+              handleLabel={t('handle', { name: itemName(item) })}
+            >
               {(handle) => renderItem(item, handle)}
             </SortableRow>
           ))}
@@ -107,10 +119,12 @@ export function SortableList<T extends { id: string }>({
 
 function SortableRow({
   id,
+  layout,
   handleLabel,
   children,
 }: {
   id: string;
+  layout: 'list' | 'grid';
   handleLabel: string;
   children: (handle: React.ReactNode) => React.ReactNode;
 }) {
@@ -133,8 +147,12 @@ function SortableRow({
       ref={setNodeRef}
       style={{ transform: CSS.Translate.toString(transform), transition }}
       className={cn(
-        'relative bg-white',
-        isDragging && 'z-10 bg-surface-2 shadow-[inset_0_0_0_2px_var(--color-ink)]',
+        'relative',
+        layout === 'list' && 'bg-white',
+        isDragging &&
+          (layout === 'list'
+            ? 'z-10 bg-surface-2 shadow-[inset_0_0_0_2px_var(--color-ink)]'
+            : 'z-10 -rotate-2 drop-shadow-[0_14px_30px_rgb(0_0_0/0.22)]'),
       )}
     >
       {children(handle)}

@@ -108,7 +108,10 @@ test.describe('admin patterns (M3b)', () => {
 
   test('the MK / EN field falls back to Macedonian when English is empty', async ({ page }) => {
     await openLab(page);
-    await page.getByRole('button', { name: 'English' }).click();
+    await page
+      .getByRole('group', { name: 'Language for Title' })
+      .getByRole('button', { name: 'English' })
+      .click();
     await expect(page.getByLabel(/^Title/)).toHaveValue('');
     await expect(page.getByText('Empty: the English page shows the Macedonian text.')).toBeVisible();
     await expect(page.getByLabel(/^Title/)).toHaveAttribute('lang', 'en');

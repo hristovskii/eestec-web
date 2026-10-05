@@ -116,9 +116,9 @@ export function publishIssues(event: EventDraftInput): Issue[] {
   need(event.location.mk !== '', ['location', 'mk']);
   event.agenda.forEach((item, index) => need(item.title.mk !== '', ['agenda', index, 'title', 'mk']));
   need(Date.parse(event.endsAt) >= Date.parse(event.startsAt), ['endsAt'], 'endBeforeStart');
-  need(event.cover !== null, ['cover']);
-  need(event.cover === null || event.cover.alt !== null, ['cover', 'alt'], 'altRequired');
-  event.gallery.forEach((photo, index) => need(photo.alt !== null, ['gallery', index, 'alt'], 'altRequired'));
+  // D21: the cover is optional (a warning, see publishWarnings); a chosen cover needs alt text.
+  need(event.cover === null || !!event.cover.alt, ['cover', 'alt'], 'altRequired');
+  event.gallery.forEach((photo, index) => need(!!photo.alt, ['gallery', index, 'alt'], 'altRequired'));
 
   const apps = event.applications;
   if (apps.enabled && apps.via === 'external') need(apps.externalUrl !== '', ['applications', 'externalUrl']);
@@ -138,6 +138,13 @@ export function publishIssues(event: EventDraftInput): Issue[] {
       );
   }
   return issues;
+}
+
+export type PublishWarning = 'defaultCover';
+
+/** Allowed, but worth saying when publishing (D21: no cover → the designed red cover). */
+export function publishWarnings(event: Pick<EventDraftInput, 'cover'>): PublishWarning[] {
+  return event.cover === null ? ['defaultCover'] : [];
 }
 
 /** The draft schema plus the publish rules (the edit form's "Publish" and bulk Publish). */

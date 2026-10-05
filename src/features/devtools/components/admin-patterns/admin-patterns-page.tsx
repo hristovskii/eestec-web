@@ -9,6 +9,7 @@ import { Button } from '@/shared/ui/primitives/button';
 
 import { DialogsDemo, EditFormDemo, SaveBarStates, ToastsDemo } from './edit-demos';
 import { EventsTableDemo } from './events-table-demo';
+import { FieldDemos } from './field-demos';
 import { listSampleEvents, parseSampleListQuery } from './sample-events';
 
 const PATH = '/admin/design-system';
@@ -169,6 +170,14 @@ export function AdminPatternsPage({
           link: the leave-without-saving dialog opens.
         </p>
         <EditFormDemo savedAt={savedAt} />
+      </LabSection>
+
+      <LabSection
+        id="fields"
+        title="Edit form fields: address, rich text, chips, sortable grid"
+        source="AdminEventEdit (the full form is /admin/events/[id])"
+      >
+        <FieldDemos />
       </LabSection>
 
       <LabSection

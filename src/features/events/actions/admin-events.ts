@@ -12,7 +12,7 @@ import { SLUG_MAX } from '@/shared/lib/slug';
 
 import { eventTags } from '../cache-tags';
 import { eventsRepository } from '../data';
-import { publishIssues } from '../schemas/event.schema';
+import { publishIssues, publishWarnings } from '../schemas/event.schema';
 import { CONTENT_STATUSES, type EventRecord } from '../types';
 
 const idsSchema = z.array(z.string().min(1).max(64)).min(1).max(100);
@@ -45,9 +45,11 @@ export type StatusChangeResult = {
   changed: number;
   /** Titles that can't be published yet (missing cover, alt text, deadline…). */
   notReady: string[];
+  /** Went live without a cover: they use the default red cover (D21). */
+  defaultCover: string[];
 };
 
-/** Bulk Publish / Move to draft / Hide. Publishing checks each event like the edit form does. */
+/** Bulk Publish / Move to draft / Hide. Going live checks each event like the edit form does. */
 export async function setEventsStatus(input: unknown): Promise<ActionResult<StatusChangeResult>> {
   const parsed = statusInputSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: 'unexpected' };
@@ -56,7 +58,10 @@ export async function setEventsStatus(input: unknown): Promise<ActionResult<Stat
   if (!context || context.events.length === 0) return { ok: false, error: 'forbidden' };
   const { session, repo, events } = context;
 
-  const notReady = status === 'published' ? events.filter((event) => publishIssues(event).length > 0) : [];
+  // Published and hidden events are both on the site (hidden: by link only), so both need the
+  // publish rules; going back to draft always works.
+  const goesLive = status !== 'draft';
+  const notReady = goesLive ? events.filter((event) => publishIssues(event).length > 0) : [];
   const ready = events.filter((event) => !notReady.includes(event));
   const changedIds = ready.length
     ? await repo.setStatus(
@@ -77,7 +82,16 @@ export async function setEventsStatus(input: unknown): Promise<ActionResult<Stat
     });
     changed();
   }
-  return ok({ changed: changedIds.length, notReady: notReady.map((event) => event.title.mk) });
+  const defaultCover = goesLive
+    ? ready.filter(
+        (event) => changedIds.includes(event.id) && publishWarnings(event).includes('defaultCover'),
+      )
+    : [];
+  return ok({
+    changed: changedIds.length,
+    notReady: notReady.map((event) => event.title.mk),
+    defaultCover: defaultCover.map((event) => event.title.mk),
+  });
 }
 
 /** Delete events (row menu or bulk). Event managers can't delete (D18). */
