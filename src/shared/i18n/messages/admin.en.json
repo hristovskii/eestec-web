@@ -1,4 +1,168 @@
 {
   "title": "Admin panel",
-  "placeholder": "Admin foundation is in place. The admin shell arrives in M3."
+  "login": {
+    "panelTitle": "Admin panel",
+    "panelText": "Events, approvals, pages and settings for eestec.mk. For the board and organizing teams only.",
+    "copyright": "© {year} EESTEC LC Skopje",
+    "signInTitle": "Sign in",
+    "signInText": "Use your admin e-mail. Members sign in on the main site.",
+    "email": "E-mail",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "remember": "Keep me signed in on this device for 14 days",
+    "signIn": "Sign in",
+    "working": "Checking…",
+    "backToSite": "← Back to eestec.mk",
+    "adminsOnly": "Admins only",
+    "backToSignIn": "Back to sign in",
+    "forgotTitle": "Reset your password",
+    "forgotText": "Enter your admin e-mail and we'll send you a link to choose a new password.",
+    "sendLink": "Send reset link",
+    "noAccess": "No access to this e-mail any more? Ask a super admin to update your account.",
+    "sentTitle": "Check your inbox",
+    "sentText": "If <strong>{email}</strong> has an admin account, a reset link is on its way. The link works for 30 minutes.",
+    "resendIn": "Resend link in {time}",
+    "resend": "Resend link",
+    "sentHelp": "Not there? Check spam, or ask a super admin.",
+    "twoFactorTitle": "2-step login",
+    "twoFactorText": "Enter the 6-digit code from your authenticator app.",
+    "backupText": "Enter one of the backup codes you saved when you set up 2-step login.",
+    "code": "Code",
+    "backupCode": "Backup code",
+    "verify": "Verify",
+    "useBackup": "Use a backup code instead",
+    "useAuthenticator": "Use the authenticator app instead",
+    "errors": {
+      "emailInvalid": "Enter an e-mail like name@eestec.mk",
+      "passwordRequired": "Enter your password",
+      "typeAgain": "Type your password again",
+      "codeRequired": "Enter the 6-digit code",
+      "codeWrong": "That code didn't work. Codes change every 30 seconds; try the newest one.",
+      "backupWrong": "That backup code didn't work. Each code works once.",
+      "wrongTitle": "E-mail or password is wrong",
+      "wrongText": "{count, plural, =0 {Sign-in now pauses for 15 minutes.} one {1 more try, then sign-in pauses for 15 minutes.} other {# more tries, then sign-in pauses for 15 minutes.}}",
+      "lockedTitle": "Sign-in is paused",
+      "lockedText": "Too many wrong tries. You can try again after {time}, or reset your password.",
+      "notStaffTitle": "This account has no admin access",
+      "notStaffText": "Members sign in on the main site. Ask a super admin if you should have access."
+    }
+  },
+  "roles": {
+    "super_admin": "Super admin",
+    "editor": "Editor",
+    "event_manager": "Event manager"
+  },
+  "weekdays": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "approvals": "Approvals",
+    "inbox": "Inbox",
+    "events": "Events",
+    "applications": "Applications",
+    "members": "Members",
+    "memories": "Memories",
+    "ideas": "Ideas & Feedback",
+    "home": "Home page",
+    "map": "Map / Committees",
+    "journey": "EESTEC Journey",
+    "join": "Join Us",
+    "sponsors": "Sponsors",
+    "contact": "Contact",
+    "media": "Media library",
+    "settings": "Settings",
+    "users": "Admin users",
+    "groups": {
+      "main": "Overview",
+      "content": "Content",
+      "pages": "Pages",
+      "system": "System"
+    }
+  },
+  "shell": {
+    "sections": "Admin sections",
+    "menu": "Admin menu",
+    "openMenu": "Open admin menu",
+    "admin": "Admin",
+    "breadcrumb": "Breadcrumb",
+    "viewSite": "View site",
+    "collapse": "Collapse menu",
+    "expand": "Expand menu",
+    "signOut": "Sign out",
+    "account": "Account: {name}, {role}",
+    "waiting": "{count} waiting"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
+      "evening": "Good evening, {name}"
+    },
+    "attention": "{count, plural, one {<strong># item</strong> needs your attention} other {<strong># items</strong> need your attention}}",
+    "needsReview": "needs review",
+    "forbiddenTitle": "You don't have access to that page",
+    "forbiddenText": "Ask a super admin if you need it.",
+    "quick": {
+      "approveMemories": "Approve memories",
+      "addSponsor": "Add sponsor",
+      "addEvent": "Add event"
+    },
+    "stats": {
+      "memberRegistrations": "Member registrations to approve",
+      "memoriesToApprove": "Memories to approve",
+      "ideas": "New ideas & feedback",
+      "ideasDetail": "{ideas} ideas · {feedback} feedback",
+      "membershipApplications": "New membership applications",
+      "sinceMeeting": "Since {day}'s meeting",
+      "messages": "New messages",
+      "messagesDetail": "{contact} contact · {partners} companies",
+      "openEventApplications": "Applications for open events",
+      "applicationsDetail": "{events, plural, one {Across # event} other {Across # events}} · {count} new",
+      "oldest": "Oldest: {time}"
+    },
+    "pending": {
+      "title": "Pending approvals",
+      "openQueue": "Open queue ({count})",
+      "review": "Review",
+      "approve": "Approve: {title}",
+      "reject": "Reject: {title}",
+      "type": {
+        "member": "Member",
+        "memory": "Memory"
+      }
+    },
+    "activity": {
+      "title": "Recent activity",
+      "log": "Activity log"
+    },
+    "openEvents": {
+      "title": "Applications for open events",
+      "all": "All applications",
+      "empty": "No events are taking applications right now.",
+      "event": "Event",
+      "deadline": "Deadline",
+      "applications": "Applications",
+      "places": "Places",
+      "status": "Status",
+      "actions": "Actions",
+      "new": "{count} new",
+      "full": "{places} · full",
+      "view": "View applications: {title}",
+      "viewShort": "View",
+      "statuses": {
+        "open": "Open",
+        "deadline_soon": "Closing soon",
+        "waitlist": "Waitlist"
+      }
+    }
+  }
 }

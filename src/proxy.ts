@@ -1,6 +1,7 @@
 import createIntlMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { hasSessionCookie } from '@/features/auth';
 import { routing } from '@/shared/i18n/routing';
 
 const intl = createIntlMiddleware(routing);
@@ -14,7 +15,15 @@ const isUnder = (pathname: string, prefix: string) =>
 //   Scoped 301 lookups for ended /upcoming/:slug and old event slugs arrive in M7.
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  if (isUnder(pathname, '/admin') || isUnder(pathname, '/api')) return NextResponse.next();
+  if (isUnder(pathname, '/admin')) {
+    // Visitors without any session go straight to sign-in (a real 307, before rendering).
+    const signedIn = hasSessionCookie(request.cookies.getAll().map((cookie) => cookie.name));
+    if (!signedIn && !isUnder(pathname, '/admin/login')) {
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
+    return NextResponse.next();
+  }
+  if (isUnder(pathname, '/api')) return NextResponse.next();
   return intl(request);
 }
 

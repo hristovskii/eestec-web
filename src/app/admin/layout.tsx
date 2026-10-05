@@ -7,6 +7,8 @@ import { getMessages } from 'next-intl/server';
 import { SITE_URL } from '@/shared/config/site';
 import { roboto } from '@/shared/styles/fonts';
 import { Toaster } from '@/shared/ui/primitives/sonner';
+import { DevToolbarSlot } from '@/features/devtools/server';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   metadataBase: SITE_URL,
@@ -25,6 +27,9 @@ export default async function AdminRootLayout({ children }: LayoutProps<'/admin'
         >
           {children}
           <Toaster />
+          <Suspense fallback={null}>
+            <DevToolbarSlot />
+          </Suspense>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -2,9 +2,8 @@ import { hasLocale } from 'next-intl';
 import { getRequestConfig } from 'next-intl/server';
 import { locale as rootLocale } from 'next/root-params';
 
+import { TIME_ZONE } from './format';
 import { routing } from './routing';
-
-export const TIME_ZONE = 'Europe/Skopje';
 
 export default getRequestConfig(async ({ locale: override }) => {
   const segment = override ?? (await rootLocale());

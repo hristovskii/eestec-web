@@ -2,11 +2,11 @@ import 'server-only';
 
 import { cache } from 'react';
 
-import { sessionRepository } from './data';
+import { authRepository } from './data';
 import { personas } from './data/fixtures/personas';
 
 /** The current session, once per request. Reads cookies: call it inside <Suspense> (dynamic). */
-export const getSession = cache(async () => (await sessionRepository()).getSession());
+export const getSession = cache(async () => (await authRepository()).getSession());
 
 /** The persona of the current mock session (devtools). Reads cookies: dynamic. */
 export async function getMockPersonaId(): Promise<string | null> {
