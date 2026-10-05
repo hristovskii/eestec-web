@@ -6,7 +6,7 @@ import { env } from '@/shared/config/env';
 import { devSurfacesEnabled } from '@/shared/config/flags';
 
 import { personas } from '../data/fixtures/personas';
-import { MOCK_PERSONA_COOKIE } from '../data/session.mock';
+import { MOCK_PERSONA_COOKIE } from '../session-cookie';
 
 /** Devtools only: sign in as a sample persona (or `null` for a visitor). Mock data only. */
 export async function switchMockPersona(personaId: string | null): Promise<void> {

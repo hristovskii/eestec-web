@@ -26,7 +26,9 @@ test.describe('foundation (M0)', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Страницата не е пронајдена');
   });
 
-  test('unknown admin URL renders the admin 404 page', async ({ page }) => {
+  test('unknown admin URL renders the admin 404 page (signed in)', async ({ page, context, baseURL }) => {
+    // Visitors are redirected to sign-in first (M3); a signed-in admin gets the 404.
+    await context.addCookies([{ name: 'eestec_mock_persona', value: 'editor', url: baseURL! }]);
     const response = await page.goto('/admin/does-not-exist');
     expect(response?.status()).toBe(404);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Page not found');

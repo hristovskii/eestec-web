@@ -4,6 +4,14 @@ import type { Session } from '../../types';
 
 export type Persona = Session & { personaId: string; label: string };
 
+/**
+ * Mock admin sign-in (test values for this app only, never real credentials): every persona signs
+ * in with SAMPLE_PASSWORD; super admins then enter SAMPLE_TOTP_CODE (or a backup code).
+ */
+export const SAMPLE_PASSWORD = 'eestec-sample';
+export const SAMPLE_TOTP_CODE = '123456';
+export const SAMPLE_BACKUP_CODE = 'SAMPLE-BACKUP-0001';
+
 export const personas: Persona[] = [
   {
     personaId: 'member',
@@ -16,6 +24,7 @@ export const personas: Persona[] = [
     headline: 'Events team · member since 2023',
     memberStatus: 'active',
     adminRole: null,
+    managedEventIds: [],
   },
   {
     personaId: 'pending',
@@ -28,6 +37,7 @@ export const personas: Persona[] = [
     headline: 'FINKI · 1st year',
     memberStatus: 'pending',
     adminRole: null,
+    managedEventIds: [],
   },
   {
     personaId: 'event-manager',
@@ -40,6 +50,7 @@ export const personas: Persona[] = [
     headline: 'Events team · member since 2022',
     memberStatus: 'active',
     adminRole: 'event_manager',
+    managedEventIds: ['ev-ai-at-the-edge', 'ev-new-year-social-2026'],
   },
   {
     personaId: 'editor',
@@ -52,6 +63,7 @@ export const personas: Persona[] = [
     headline: 'PR & media · Board 2026/2027',
     memberStatus: 'active',
     adminRole: 'editor',
+    managedEventIds: [],
   },
   {
     personaId: 'super-admin',
@@ -64,5 +76,6 @@ export const personas: Persona[] = [
     headline: 'Chairperson · Board 2026/2027',
     memberStatus: 'active',
     adminRole: 'super_admin',
+    managedEventIds: [],
   },
 ];
