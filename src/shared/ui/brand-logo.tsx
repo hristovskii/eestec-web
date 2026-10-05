@@ -21,6 +21,15 @@ export function BrandLogo({ variant, height, alt, priority, className }: BrandLo
   const file = logos[variant];
   const width = Math.round((file.width / file.height) * height);
   return (
-    <Image src={file} alt={alt} width={width} height={height} priority={priority} className={className} />
+    <Image
+      src={file}
+      alt={alt}
+      width={width}
+      height={height}
+      priority={priority}
+      className={className}
+      // CSS may resize the height (e.g. smaller on mobile); keep the aspect ratio.
+      style={{ width: 'auto' }}
+    />
   );
 }

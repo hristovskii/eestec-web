@@ -10,6 +10,16 @@
     "localeNames": {
       "mk": "MK",
       "en": "EN"
+    },
+    "sampleData": "Preview with sample data. Names, events and numbers are placeholders.",
+    "weekdaysPlural": {
+      "monday": "Mondays",
+      "tuesday": "Tuesdays",
+      "wednesday": "Wednesdays",
+      "thursday": "Thursdays",
+      "friday": "Fridays",
+      "saturday": "Saturdays",
+      "sunday": "Sundays"
     }
   },
   "metadata": {
@@ -69,5 +79,50 @@
       "selected": "{stars} of 5 · {label}",
       "notRated": "Not rated"
     }
+  },
+  "nav": {
+    "main": "Main",
+    "home": "Home",
+    "events": "Events",
+    "upcoming": "Upcoming Events",
+    "members": "Members",
+    "memories": "Memories",
+    "journey": "EESTEC Journey",
+    "join": "Join Us",
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "login": "Log in",
+    "memberLogin": "Member log in",
+    "becomeMember": "Become an EESTECer",
+    "accountMenu": "Account menu: {name}",
+    "myProfileOf": "My profile: {name}",
+    "myProfile": "My profile",
+    "createMemory": "Create a Memory",
+    "adminPanel": "Admin panel",
+    "logout": "Log out"
+  },
+  "footer": {
+    "explore": "Explore",
+    "getInvolved": "Get involved",
+    "contact": "Contact",
+    "submit": "Submit an idea or impression",
+    "partners": "For Companies",
+    "meeting": "Weekly meeting: {day}, {time} · {room}",
+    "copyright": "© {year} {name} · Student association",
+    "registration": "Reg. no. {number}",
+    "tax": "Tax no. {number}",
+    "privacy": "Privacy policy",
+    "boardLogin": "Board login",
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn"
+    },
+    "eestecNet": "eestec.net ↗"
+  },
+  "privacy": {
+    "placeholderTitle": "Placeholder text",
+    "placeholderText": "The board has not supplied the privacy policy yet. This page shows placeholder text until then."
   }
 }

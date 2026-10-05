@@ -37,7 +37,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
     <html lang={locale} className={roboto.variable}>
       <body>
         <NextIntlClientProvider
-          messages={{ common: messages.common, error: messages.error, ui: messages.ui }}
+          messages={{ common: messages.common, error: messages.error, ui: messages.ui, nav: messages.nav }}
         >
           <ClockProvider pinnedNow={pinnedNow()}>{children}</ClockProvider>
           <Toaster />
