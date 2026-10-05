@@ -124,6 +124,8 @@ test.describe('settings (M4b)', () => {
       'aria-disabled',
       'true',
     );
+    // Newest first, 24 at a time: search for the older brand file.
+    await picker.getByRole('searchbox').fill('eestecredsquare');
     await picker.getByRole('radio', { name: 'eestecredsquare.png' }).click();
     await picker.getByRole('button', { name: 'Use image' }).click();
     await expect(page.locator('#branding')).toContainText('eestecredsquare.png · 4167 × 4167');

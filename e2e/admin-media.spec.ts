@@ -25,10 +25,11 @@ test.describe('media library (M4a)', () => {
     await signInAs(page, 'super-admin');
     await page.goto('/admin/media');
     await expect(page.getByRole('heading', { level: 1, name: 'Media library' })).toBeVisible();
-    await expect(grid(page).getByRole('button', { name: /partnership-offer-2026\.pdf/ })).toBeVisible();
+    await expect(grid(page).getByRole('button', { name: /cover-ai-edge\.jpg/ })).toBeVisible();
 
     await page.getByRole('link', { name: /^Documents/ }).click();
     await expect(page).toHaveURL(/kind=document/);
+    await expect(grid(page).getByRole('button', { name: /partnership-offer-2026\.pdf/ })).toBeVisible();
     await expect(grid(page).getByRole('button', { name: /\.jpg/ })).toHaveCount(0);
 
     await page.goto('/admin/media?alt=missing');

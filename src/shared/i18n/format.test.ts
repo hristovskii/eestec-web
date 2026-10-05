@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatDate, hourInSkopje } from './format';
+import { formatDate, formatDateRange, hourInSkopje } from './format';
 
 const canvasNow = new Date('2026-10-04T18:18:00+02:00');
 
@@ -18,5 +18,29 @@ describe('formatDate', () => {
 
   it('formats Macedonian dates', () => {
     expect(formatDate(canvasNow, 'mk', 'date')).toMatch(/2026/);
+  });
+});
+
+describe('formatDateRange', () => {
+  it('writes ranges like the canvas', () => {
+    expect(formatDateRange('2026-11-07T10:00:00+01:00', '2026-11-13T14:00:00+01:00', 'en')).toBe(
+      '7–13 Nov 2026',
+    );
+    expect(formatDateRange('2026-11-14T10:00:00+01:00', '2026-11-14T18:00:00+01:00', 'en')).toBe(
+      '14 Nov 2026',
+    );
+    expect(formatDateRange('2026-09-12T10:00:00+02:00', '2026-09-14T14:00:00+02:00', 'en')).toBe(
+      '12–14 Sep 2026',
+    );
+    expect(formatDateRange('2026-11-28T10:00:00+01:00', '2026-12-02T14:00:00+01:00', 'en')).toBe(
+      '28 Nov – 2 Dec 2026',
+    );
+    expect(formatDateRange('2026-12-30T10:00:00+01:00', '2027-01-02T14:00:00+01:00', 'en')).toBe(
+      '30 Dec 2026 – 2 Jan 2027',
+    );
+  });
+
+  it('uses Skopje days (a late-evening end stays on its day)', () => {
+    expect(formatDateRange('2026-11-14T22:00:00Z', '2026-11-14T22:30:00Z', 'en')).toBe('14 Nov 2026');
   });
 });

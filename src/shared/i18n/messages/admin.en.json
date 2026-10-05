@@ -685,5 +685,151 @@
       "not_found": "This admin isn't there any more. Reload the page.",
       "unexpected": "Something went wrong. Try again."
     }
+  },
+  "events": {
+    "title": "Events",
+    "description": "All past and upcoming events. Past events move to the archive automatically.",
+    "descriptionOwn": "The events you manage. Past events move to the archive automatically.",
+    "eventTypes": "Event types",
+    "export": "Export CSV",
+    "add": "Add event",
+    "untitled": "Untitled event",
+    "tabs": {
+      "label": "Event timing",
+      "all": "All",
+      "upcoming": "Upcoming",
+      "past": "Past"
+    },
+    "filters": {
+      "search": "Search events",
+      "searchPlaceholder": "Search by title or slug",
+      "status": "Status",
+      "statusAny": "Any status",
+      "type": "Type",
+      "typeAny": "Any type",
+      "year": "Year",
+      "yearAny": "Any year",
+      "scope": "Category",
+      "scopeAll": "All"
+    },
+    "scopes": {
+      "local": "Local",
+      "international": "International"
+    },
+    "columns": {
+      "event": "Event",
+      "dates": "Dates",
+      "type": "Type",
+      "category": "Category",
+      "status": "Status",
+      "applications": "Applications",
+      "edited": "Last edited"
+    },
+    "applications": {
+      "none": "—",
+      "external": "External",
+      "full": "{count} · full",
+      "count": "{count, plural, one {# application} other {# applications}}"
+    },
+    "edited": {
+      "today": "Today, {time}",
+      "yesterday": "Yesterday"
+    },
+    "bulk": {
+      "publish": "Publish",
+      "draft": "Move to draft",
+      "hide": "Hide",
+      "delete": "Delete"
+    },
+    "row": {
+      "edit": "Edit",
+      "view": "View on site",
+      "duplicate": "Duplicate",
+      "delete": "Delete"
+    },
+    "empty": {
+      "filteredTitle": "No events match these filters",
+      "filteredText": "Nothing found{query, select, none {} other { for “{query}”}}{filters, select, none {} other { in {filters}}}. Try clearing a filter, or create the event if it's missing.",
+      "clear": "Clear filters",
+      "noneTitle": "No events yet",
+      "noneText": "Add the first event. It stays a draft until you publish it.",
+      "noneOwnTitle": "No events assigned to you",
+      "noneOwnText": "Ask a super admin to add you to an event.",
+      "upcomingTitle": "No upcoming events",
+      "upcomingText": "Events show here until their end date.",
+      "pastTitle": "No past events yet",
+      "pastText": "Events move here after their end date."
+    },
+    "delete": {
+      "titleOne": "Delete “{title}”?",
+      "titleMany": "Delete {count} events?",
+      "textOne": "This also removes its gallery and {applications, plural, =0 {its applications} one {<strong># application</strong>} other {<strong># applications</strong>}}. The photos stay in the Media library. This can't be undone.",
+      "textMany": "This also removes their galleries and applications. The photos stay in the Media library. This can't be undone.",
+      "confirmOne": "Delete event",
+      "confirmMany": "Delete events"
+    },
+    "toasts": {
+      "published": "{count, plural, one {Event published} other {# events published}}",
+      "draft": "{count, plural, one {Event moved to draft} other {# events moved to draft}}",
+      "hidden": "{count, plural, one {Event hidden} other {# events hidden}}",
+      "unchanged": "Nothing changed: they already had that status.",
+      "notReady": "{count, plural, one {“{title}” can't be published yet} other {# events can't be published yet}}",
+      "notReadyText": "Open it to see what's missing.",
+      "notReadyTextMany": "Open them to see what's missing.",
+      "deleted": "{count, plural, one {Event deleted} other {# events deleted}}",
+      "duplicated": "Copy created as a draft",
+      "forbidden": "You can't change these events.",
+      "unexpected": "Something went wrong. Try again."
+    },
+    "taxonomy": {
+      "title": "Event types & topics",
+      "description": "Types are the filters on the events pages; topics are tags you can pick on each event. Drag to change the order.",
+      "back": "Back to events",
+      "types": "Event types",
+      "typesHelp": "Every event has one type. The order here is the order of the filters.",
+      "topics": "Topics",
+      "topicsHelp": "Pick any on an event · used for filters",
+      "usage": "{count, plural, =0 {Not used} one {# event} other {# events}}",
+      "name": "Name",
+      "add": {
+        "types": "Add type",
+        "topics": "Add topic"
+      },
+      "addTitle": {
+        "types": "Add an event type",
+        "topics": "Add a topic"
+      },
+      "renameTitle": {
+        "types": "Rename event type",
+        "topics": "Rename topic"
+      },
+      "rename": "Rename",
+      "remove": "Delete",
+      "save": "Save",
+      "saving": "Saving…",
+      "removeTitle": "Delete “{name}”?",
+      "removeTopicText": "{count, plural, =0 {No event uses it.} one {It's taken off # event.} other {It's taken off # events.}} This can't be undone.",
+      "removeTypeUnused": "No event uses it. This can't be undone.",
+      "removeTypeUsed": "{count, plural, one {# event has} other {# events have}} this type. Choose the type they get instead.",
+      "replacement": "Move the events to",
+      "replacementPick": "Choose a type",
+      "removeConfirm": "Delete",
+      "removing": "Deleting…",
+      "lastType": "An event needs a type, so the last one can't be deleted.",
+      "toasts": {
+        "added": "Added",
+        "renamed": "Renamed",
+        "removed": "Deleted",
+        "reordered": "Order saved",
+        "conflict": "The list changed meanwhile. It has been reloaded."
+      },
+      "errors": {
+        "required": "Enter a name",
+        "tooLong": "Use at most 60 characters",
+        "duplicate": "There's already one with this name",
+        "replacementRequired": "Choose the type for its events",
+        "unexpected": "Something went wrong. Try again."
+      }
+    }
   }
 }
