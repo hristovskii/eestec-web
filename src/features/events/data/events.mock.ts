@@ -20,7 +20,6 @@ import {
   eventsFixture,
   eventTopicsFixture,
   eventTypesFixture,
-  sampleApplicationCounts,
   slugRedirectsFixture,
 } from './fixtures/events';
 
@@ -30,8 +29,6 @@ type Tables = {
   topics: EventTopic[];
   /** Old slug → event id. */
   redirects: Record<string, string>;
-  /** SAMPLE: applications per event until the applications feature lands (M7). */
-  applications: Record<string, { count: number; full: boolean }>;
 };
 
 const tables = () =>
@@ -40,18 +37,16 @@ const tables = () =>
     types: eventTypesFixture,
     topics: eventTopicsFixture,
     redirects: slugRedirectsFixture,
-    applications: sampleApplicationCounts,
   }));
 
 const newId = (prefix: string) => `${prefix}-${crypto.randomUUID().slice(0, 8)}`;
 const byStart = (a: EventRecord, b: EventRecord) => Date.parse(a.startsAt) - Date.parse(b.startsAt);
 
-function applicationsOf(event: EventRecord, db: Tables): ApplicationsSummary {
-  if (event.applications.via === 'external')
-    return event.applications.enabled ? { kind: 'external' } : { kind: 'none' };
-  // Past events keep their count after applications are switched off.
-  const sample = db.applications[event.id];
-  return sample ? { kind: 'count', ...sample } : { kind: 'none' };
+/** The Applications column before counting (the applications feature fills in the numbers). */
+function applicationsOf(event: EventRecord): ApplicationsSummary {
+  const { enabled, via } = event.applications;
+  if (!enabled) return { kind: 'none' };
+  return via === 'external' ? { kind: 'external' } : { kind: 'count', count: 0, full: false };
 }
 
 export function createMockEventsRepository(): EventsRepository {
@@ -216,7 +211,8 @@ export function createMockEventsRepository(): EventsRepository {
           scope: event.scope,
           status: event.status,
           cover: event.cover ? { mediaId: event.cover.mediaId, alt: event.cover.alt } : null,
-          applications: applicationsOf(event, db),
+          applications: applicationsOf(event),
+          applicationSettings: structuredClone(event.applications),
           updatedAt: event.updatedAt,
           updatedBy: event.updatedBy,
         })),
@@ -278,7 +274,6 @@ export function createMockEventsRepository(): EventsRepository {
       db.events = db.events.filter((event) => !removed.includes(event.id));
       for (const [slug, id] of Object.entries(db.redirects))
         if (removed.includes(id)) delete db.redirects[slug];
-      for (const id of removed) delete db.applications[id];
       return Promise.resolve(removed);
     },
 

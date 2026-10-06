@@ -18,6 +18,7 @@ const applications = (patch: Partial<EventApplicationSettings>): EventApplicatio
   resultsOn: '2026-10-25',
   maxParticipants: 24,
   waitlist: true,
+  admission: 'selection',
   ...patch,
 });
 const state = (patch: Partial<EventApplicationSettings>, taken = 0, waitlist = 0) =>

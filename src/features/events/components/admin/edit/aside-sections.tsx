@@ -137,6 +137,7 @@ export function ApplicationsSection() {
   const apps = values.applications;
   const set = (recipe: (draft: typeof apps) => void) => update((draft) => recipe(draft.applications));
   const viaName = React.useId();
+  const admissionName = React.useId();
 
   return (
     <section
@@ -280,6 +281,29 @@ export function ApplicationsSection() {
                     )}
                   </FormField>
                 </div>
+                <fieldset className="flex flex-col gap-2.5" id={fieldId('applications.admission')}>
+                  <legend className="mb-2 text-small font-medium">{t('fields.admission')}</legend>
+                  {(['selection', 'first_come'] as const).map((admission) => (
+                    <ChoiceLabel
+                      key={admission}
+                      control={
+                        <Radio
+                          name={admissionName}
+                          checked={apps.admission === admission}
+                          onChange={() => set((draft) => void (draft.admission = admission))}
+                        />
+                      }
+                      className="text-small"
+                    >
+                      {admission === 'selection'
+                        ? t('fields.admissionSelection')
+                        : t('fields.admissionFirstCome')}
+                    </ChoiceLabel>
+                  ))}
+                  {apps.admission === 'first_come' && (
+                    <p className="text-[13px] text-muted-ink">{t('fields.admissionHelp')}</p>
+                  )}
+                </fieldset>
                 <SwitchRow
                   id={fieldId('applications.waitlist')}
                   label={t('fields.waitlist')}

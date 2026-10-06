@@ -33,4 +33,10 @@ export type DashboardData = {
   openEvents: OpenEventApplications[];
 };
 
+/** What the dashboard's own repository holds; applications come from the applications feature (M7b). */
+export type DashboardSummary = {
+  counters: Omit<DashboardCounters, 'openEventApplications'>;
+  pending: PendingApproval[];
+};
+
 export type AdminBadgeCounts = { approvals: number; inbox: number; ideas: number };

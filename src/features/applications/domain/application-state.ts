@@ -29,6 +29,7 @@ export type ApplyState = {
   late: boolean;
   /** "Results by 25 Oct" (YYYY-MM-DD). */
   resultsOn: string | null;
+  admission: EventApplicationSettings['admission'];
   /** Internal form only: places and the waitlist. */
   places: { max: number | null; taken: number; waitlist: number } | null;
   /** The application form takes submissions right now (open, closing soon, or the waitlist). */
@@ -63,6 +64,7 @@ export function applicationState(
     closedAt: null,
     late: false,
     resultsOn: applications.resultsOn,
+    admission: applications.admission,
     places: external
       ? null
       : {
@@ -79,7 +81,10 @@ export function applicationState(
     return { ...base, phase: 'opening_soon' };
 
   const places = base.places;
-  if (places && places.max !== null && places.taken >= places.max) {
+  // First come: while anyone is waiting, newcomers queue behind them (D22).
+  const queue =
+    applications.admission === 'first_come' && applications.waitlist && (places?.waitlist ?? 0) > 0;
+  if (places && ((places.max !== null && places.taken >= places.max) || queue)) {
     return applications.waitlist
       ? { ...base, phase: 'full_waitlist', canApply: true }
       : { ...base, phase: 'full' };

@@ -4,6 +4,7 @@ export {
   exportAdminEvents,
   getEventEditor,
   listAdminEvents,
+  listApplicationEvents,
   listEventOptions,
   listEventTaxonomy,
 } from './queries';

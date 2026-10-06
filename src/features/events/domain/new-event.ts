@@ -57,6 +57,7 @@ export function newEventInput(
       resultsOn: null,
       maxParticipants: defaults.maxParticipants,
       waitlist: defaults.waitlist,
+      admission: 'selection',
     },
     seo: { title: { ...empty }, description: { ...empty }, shareImageId: null },
   };

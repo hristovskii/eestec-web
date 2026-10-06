@@ -6,6 +6,8 @@
 // - FPGA Basics: "20 / 20 places · 7 on the waitlist" = 20 accepted + 7 on the waitlist.
 // - Soft Skills Academy 2026 (past): 41, still pending (the canvas gives no outcome).
 // - Power Up (past): 64, of which the 24 participants (EventDetail) were accepted.
+// - "New" (not opened in the admin yet): 6 for AI at the Edge and 4 for Leading Teams, the latest
+//   ones (AdminDashboard: "10 new", 6 + 4 + 0).
 // The form of AI at the Edge is the one on UpcomingDetail (= the default fields); other events use
 // the default fields too.
 import { DEFAULT_APPLICATION_FIELDS, DEFAULT_FORM_INTRO } from '../../domain/default-form';
@@ -24,6 +26,8 @@ type Batch = {
   from: string;
   to: string;
   statuses: [ApplicationStatus, number][];
+  /** The latest ones are still unread. */
+  unread?: number;
 };
 
 const batches: Batch[] = [
@@ -34,6 +38,7 @@ const batches: Batch[] = [
     from: '2026-10-01T09:00:00+02:00',
     to: '2026-10-04T17:40:00+02:00',
     statuses: [['pending', 38]],
+    unread: 6,
   },
   {
     eventId: 'ev-leading-teams',
@@ -42,6 +47,7 @@ const batches: Batch[] = [
     from: '2026-09-25T10:00:00+02:00',
     to: '2026-10-04T15:10:00+02:00',
     statuses: [['pending', 23]],
+    unread: 4,
   },
   {
     eventId: 'ev-fpga-basics',
@@ -96,6 +102,7 @@ function rows(batch: Batch): Application[] {
       locale: 'mk',
       consentAt: createdAt,
       createdAt,
+      readAt: index >= total - (batch.unread ?? 0) ? null : createdAt,
     };
   });
 }

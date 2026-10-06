@@ -16,6 +16,10 @@ describe('applications fixture', () => {
     expect(count('ev-ai-at-the-edge') + count('ev-leading-teams') + count('ev-fpga-basics')).toBe(88);
   });
 
+  it('has 10 new applications, as on the dashboard', () => {
+    expect(applicationsFixture.filter((row) => !row.readAt).length).toBe(10);
+  });
+
   it('has unique ids and references', () => {
     expect(new Set(applicationsFixture.map((row) => row.id)).size).toBe(applicationsFixture.length);
     expect(new Set(applicationsFixture.map((row) => row.reference)).size).toBe(applicationsFixture.length);

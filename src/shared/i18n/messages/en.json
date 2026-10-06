@@ -325,7 +325,9 @@
       "follow": "Follow @{handle} on Instagram for the announcement.",
       "missed": "Missed it? <link>See the other upcoming events.</link>",
       "waitlistCloses": "The waitlist closes on {date}.",
-      "externalTip": "LC Skopje members: ask the board for a motivation letter review."
+      "externalTip": "LC Skopje members: ask the board for a motivation letter review.",
+      "placesLeft": "{count, plural, =0 {No places left} one {# place left} other {# places left}}",
+      "firstCome": "First come, first served"
     },
     "calendar": {
       "button": "Add to calendar",
@@ -395,7 +397,9 @@
         "event": "Event",
         "submitted": "Submitted",
         "reference": "Reference",
-        "back": "Back to Upcoming Events"
+        "back": "Back to Upcoming Events",
+        "titleAccepted": "You have a place!",
+        "acceptedText": "Thanks, {name}. Your place is confirmed. We sent the details to <strong>{email}</strong>."
       }
     }
   }

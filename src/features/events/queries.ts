@@ -9,7 +9,7 @@ import { eventsAdminRepository, eventTaxonomyRepository } from './data';
 import { newEventInput } from './domain/new-event';
 import type { AdminEventsParams } from './schemas/admin-events-params.schema';
 import type { EventDraftInput } from './schemas/event.schema';
-import type { AdminEventsQuery, EventRecord } from './types';
+import type { AdminEventRow, AdminEventsQuery, ApplicationCountsLoader, EventRecord } from './types';
 
 /** Every event as a choice (admin forms: "Events they manage"). */
 export async function listEventOptions() {
@@ -34,17 +34,36 @@ const toQuery = (actor: Actor, params: AdminEventsParams): AdminEventsQuery => (
   now: now(),
 });
 
+/** Fills the Applications column; events with applications keep their count after switching them off. */
+async function withCounts(rows: AdminEventRow[], loadCounts?: ApplicationCountsLoader) {
+  if (!loadCounts) return rows;
+  const counts = await loadCounts(rows);
+  return rows.map((row): AdminEventRow => {
+    const found = counts[row.id];
+    if (row.applications.kind === 'external' || !found) return row;
+    if (found.count === 0 && row.applications.kind === 'none') return row;
+    return { ...row, applications: { kind: 'count', ...found } };
+  });
+}
+
 /** /admin/events: one page of rows, the tab counts, and the choices of the filters. */
-export async function listAdminEvents(actor: Actor, params: AdminEventsParams) {
+export async function listAdminEvents(
+  actor: Actor,
+  params: AdminEventsParams,
+  loadCounts?: ApplicationCountsLoader,
+) {
   const [repo, taxonomy] = await Promise.all([eventsAdminRepository(), eventTaxonomyRepository()]);
   const [page, facets, types] = await Promise.all([
     repo.adminList(toQuery(actor, params)),
     repo.adminFacets({ onlyIds: onlyIdsFor(actor) }),
     taxonomy.list('types'),
   ]);
-  const covers = await getMediaItems(page.items.flatMap((row) => (row.cover ? [row.cover.mediaId] : [])));
+  const [items, covers] = await Promise.all([
+    withCounts(page.items, loadCounts),
+    getMediaItems(page.items.flatMap((row) => (row.cover ? [row.cover.mediaId] : []))),
+  ]);
   return {
-    page,
+    page: { ...page, items },
     years: facets.years,
     types: types.map(({ id, name }) => ({ id, name: name.mk })),
     covers: Object.fromEntries(covers.map((item) => [item.id, item])),
@@ -52,10 +71,30 @@ export async function listAdminEvents(actor: Actor, params: AdminEventsParams) {
 }
 
 /** Export CSV: every row that matches the filters (not just the page). */
-export async function exportAdminEvents(actor: Actor, params: AdminEventsParams) {
+export async function exportAdminEvents(
+  actor: Actor,
+  params: AdminEventsParams,
+  loadCounts?: ApplicationCountsLoader,
+) {
   const repo = await eventsAdminRepository();
   const first = await repo.adminList({ ...toQuery(actor, params), page: 1, pageSize: 10_000 });
-  return first.items;
+  return withCounts(first.items, loadCounts);
+}
+
+/**
+ * Events that take (or took) applications on this site, for Admin › Applications: every row,
+ * event managers only theirs (D18).
+ */
+export async function listApplicationEvents(actor: Actor) {
+  const repo = await eventsAdminRepository();
+  const all = await repo.adminList({
+    onlyIds: accessTo(actor, 'applications') === 'own' ? (actor.managedEventIds ?? []) : undefined,
+    sort: 'smart',
+    page: 1,
+    pageSize: 10_000,
+    now: now(),
+  });
+  return all.items.filter((row) => row.applicationSettings.via === 'form');
 }
 
 /** Event types or topics with how many events use each (Event types & topics). */

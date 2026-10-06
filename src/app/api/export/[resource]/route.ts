@@ -1,8 +1,10 @@
+import { applicationCounts, applicationsCsvResponse } from '@/features/applications/server';
 import { eventsCsvResponse } from '@/features/events/server';
 
-// CSV downloads of admin lists (permission-checked by each feature). Applications follow in M7.
+// CSV downloads of admin lists (permission-checked by each feature).
 const EXPORTS: Record<string, (searchParams: URLSearchParams) => Promise<Response>> = {
-  events: eventsCsvResponse,
+  events: (searchParams) => eventsCsvResponse(searchParams, applicationCounts),
+  applications: applicationsCsvResponse,
 };
 
 export async function GET(request: Request, { params }: RouteContext<'/api/export/[resource]'>) {

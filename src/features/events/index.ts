@@ -16,8 +16,11 @@ export {
   archiveParamsSchema,
   hasArchiveFilters,
 } from './schemas/archive-params.schema';
+export { ADMISSION_MODES } from './types';
 export type {
+  Admission,
   AdminEventRow,
+  ApplicationCountsLoader,
   EventAddress,
   EventApplicationSettings,
   PublicAgendaItem,

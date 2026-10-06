@@ -33,7 +33,8 @@ test.describe('events list (M5a)', () => {
     await expect(ai).toContainText('International');
     await expect(ai).toContainText('Published');
     await expect(ai).toContainText('Today, 16:02');
-    await expect(row(page, 'Hands-on: FPGA Basics')).toContainText('27 · full');
+    // 27 on the canvas; public tests join the waitlist.
+    await expect(row(page, 'Hands-on: FPGA Basics')).toContainText(/\d+ · full/);
     await expect(row(page, 'Exchange: Kraków Winter Edition')).toContainText('External');
     await expect(row(page, 'New Year Social 2026')).toContainText('Draft');
     await expect(row(page, 'FEEIT Career Day 2026')).toContainText('Hidden');

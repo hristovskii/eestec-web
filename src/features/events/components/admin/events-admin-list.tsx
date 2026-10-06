@@ -39,6 +39,9 @@ import {
 import type { AdminEventCounts, AdminEventRow, ContentStatus } from '../../types';
 import { EventThumb } from './event-thumb';
 
+const applicationCount = (row: AdminEventRow) =>
+  row.applications.kind === 'count' ? row.applications.count : 0;
+
 const STATUS_TONE: Record<ContentStatus, AdminBadgeTone> = {
   published: 'dark',
   draft: 'outline',
@@ -415,13 +418,25 @@ export function EventsAdminList({
             : t('delete.titleMany', { count: toDelete?.length ?? 0 })
         }
         description={
-          toDelete?.length === 1
-            ? t.rich('delete.textOne', {
-                applications:
-                  toDelete[0]!.applications.kind === 'count' ? toDelete[0]!.applications.count : 0,
+          toDelete?.length === 1 ? (
+            <>
+              {t.rich('delete.textOne', {
+                applications: applicationCount(toDelete[0]!),
                 strong: (chunks) => <strong className="text-ink">{chunks}</strong>,
-              })
-            : t('delete.textMany')
+              })}
+              {applicationCount(toDelete[0]!) > 0 && (
+                <a
+                  href={`/api/export/applications?event=${toDelete[0]!.id}`}
+                  download
+                  className="mt-2 block font-medium text-brand-dark"
+                >
+                  {t('delete.exportFirst', { count: applicationCount(toDelete[0]!) })}
+                </a>
+              )}
+            </>
+          ) : (
+            t('delete.textMany')
+          )
         }
         confirmLabel={toDelete?.length === 1 ? t('delete.confirmOne') : t('delete.confirmMany')}
         onConfirm={async () => {

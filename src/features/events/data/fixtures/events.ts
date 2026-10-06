@@ -48,8 +48,10 @@ const ana: EventEditor = { userId: 'u-ana', name: 'Ana Trajkovska' };
 const daniel: EventEditor = { userId: 'u-daniel', name: 'Daniel Ristov' };
 const stefan: EventEditor = { userId: 'u-stefan', name: 'Stefan Nikolovski' };
 
-type Sample = Partial<EventRecord> &
-  Pick<EventRecord, 'slug' | 'title' | 'scope' | 'typeId' | 'startsAt' | 'endsAt' | 'location'>;
+type Sample = Partial<Omit<EventRecord, 'applications'>> &
+  Pick<EventRecord, 'slug' | 'title' | 'scope' | 'typeId' | 'startsAt' | 'endsAt' | 'location'> & {
+    applications?: Partial<EventRecord['applications']>;
+  };
 
 /** One-day event without times (the canvas gives only the date). */
 const allDay = (day: string, until = day) => ({
@@ -101,6 +103,8 @@ const event = (sample: Sample): EventRecord => ({
     resultsOn: null,
     maxParticipants: 24,
     waitlist: true,
+    // The canvas never says; Selection is the default (D22).
+    admission: 'selection',
     ...sample.applications,
   },
 });
@@ -547,13 +551,5 @@ export const eventsFixture: EventRecord[] = [
 ];
 
 /** SAMPLE: applications per event (AdminEvents, AdminDashboard) until the applications feature (M7). */
-export const sampleApplicationCounts: Record<string, { count: number; full: boolean }> = {
-  'ev-ai-at-the-edge': { count: 38, full: false },
-  'ev-leading-teams': { count: 23, full: false },
-  'ev-fpga-basics': { count: 27, full: true },
-  'ev-soft-skills-academy-2026': { count: 41, full: false },
-  'ev-power-up-2026': { count: 64, full: false },
-};
-
 /** Old addresses (none on the canvas). */
 export const slugRedirectsFixture: Record<string, string> = {};
