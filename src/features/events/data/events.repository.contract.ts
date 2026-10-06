@@ -158,7 +158,9 @@ export function describeEventsRepository(
       const event = await create(repo, { status: 'published' });
       const renamed = `${event.slug}-renamed`;
       await repo.save({ ...eventInput({ slug: renamed, status: 'published' }), id: event.id }, editor, NOW);
-      expect(await repo.redirectFor(event.slug)).toBe(renamed);
+      // Upcoming (December): the old address points at the new one, still under /upcoming.
+      expect(await repo.resolveAddress(event.slug, NOW)).toEqual({ slug: renamed, timing: 'upcoming' });
+      expect(await repo.resolveAddress(renamed, NOW)).toEqual({ slug: renamed, timing: 'upcoming' });
       // The old address now belongs to this event: nobody else can take it.
       expect(await repo.slugTaken(event.slug)).toBe(true);
       expect(await repo.slugTaken(event.slug, event.id)).toBe(false);
@@ -168,7 +170,7 @@ export function describeEventsRepository(
       const repo = await createRepo();
       const event = await create(repo);
       await repo.save({ ...eventInput({ slug: `${event.slug}-x` }), id: event.id }, editor, NOW);
-      expect(await repo.redirectFor(event.slug)).toBeNull();
+      expect(await repo.resolveAddress(event.slug, NOW)).toBeNull();
     });
 
     it('changes the status of several events at once', async () => {
@@ -276,6 +278,79 @@ export function describeEventsRepository(
       if (prev) expect(Date.parse(prev.startsAt)).toBeLessThanOrEqual(Date.parse(middle.startsAt));
       if (next) expect(Date.parse(next.startsAt)).toBeGreaterThan(Date.parse(middle.startsAt));
       expect(await repo.archiveSlugs(NOW)).toContain(middle.slug);
+    });
+
+    it('lists upcoming events soonest first, until they end', async () => {
+      const repo = await createRepo();
+      const marker = `Upcoming ${unique()}`;
+      const at = (day: string, patch: Partial<EventInput> = {}) =>
+        create(repo, {
+          status: 'published',
+          title: { mk: marker },
+          startsAt: `${day}T10:00:00+01:00`,
+          endsAt: `${day}T18:00:00+01:00`,
+          ...patch,
+        });
+      const later = await at('2026-12-20', { nextUp: true });
+      const sooner = await at('2026-11-20');
+      // Started yesterday, ends next week: still upcoming.
+      const ongoing = await at('2026-10-03', { endsAt: '2026-10-10T18:00:00+02:00' });
+      await at('2026-11-21', { status: 'draft' });
+      await at('2026-11-22', { status: 'hidden' });
+      await at('2026-09-01', { endsAt: '2026-09-01T18:00:00+02:00' });
+
+      const mine = (await repo.listUpcoming(context)).filter((event) => event.title.text === marker);
+      expect(mine.map((event) => event.id)).toEqual([ongoing.id, sooner.id, later.id]);
+      expect(mine.at(-1)?.nextUp).toBe(true);
+      expect(mine[0]?.applications).toEqual(eventInput().applications);
+      expect(await repo.upcomingSlugs(NOW)).toEqual(expect.arrayContaining([sooner.slug, later.slug]));
+      expect(await repo.archiveSlugs(NOW)).not.toContain(sooner.slug);
+    });
+
+    it('resolves public addresses to where the event lives now', async () => {
+      const repo = await createRepo();
+      const upcoming = await create(repo, { status: 'published' });
+      const pastEvent = await create(repo, past('2026-05-01'));
+      const hidden = await create(repo, { ...past('2026-05-01'), status: 'hidden' });
+      const draft = await create(repo, { status: 'draft' });
+      expect(await repo.resolveAddress(upcoming.slug, NOW)).toEqual({
+        slug: upcoming.slug,
+        timing: 'upcoming',
+      });
+      expect(await repo.resolveAddress(pastEvent.slug, NOW)).toEqual({
+        slug: pastEvent.slug,
+        timing: 'past',
+      });
+      expect(await repo.resolveAddress(hidden.slug, NOW)).toEqual({ slug: hidden.slug, timing: 'past' });
+      expect(await repo.resolveAddress(draft.slug, NOW)).toBeNull();
+      expect(await repo.resolveAddress('no-such-event', NOW)).toBeNull();
+    });
+
+    it('gives the upcoming page its programme, requirements, fee and application settings', async () => {
+      const repo = await createRepo();
+      const event = await create(repo, {
+        status: 'published',
+        agenda: [
+          { id: 'a1', date: '2026-12-01', title: { mk: 'Ден 1', en: 'Day one' }, text: { mk: 'Текст' } },
+        ],
+        requirements: { mk: '<ul><li><p>Students</p></li></ul><script>x</script>' },
+        fee: { price: { mk: '€60' }, note: { mk: 'Covers meals.' } },
+        contactEmail: 'team@eestec.mk',
+      });
+      const detail = await repo.findBySlug(event.slug, context);
+      expect(detail?.timing).toBe('upcoming');
+      expect(detail?.agenda).toEqual([
+        {
+          id: 'a1',
+          date: '2026-12-01',
+          title: { text: 'Day one', lang: 'en' },
+          text: { text: 'Текст', lang: 'mk' },
+        },
+      ]);
+      expect(detail?.requirements.text).toBe('<ul><li><p>Students</p></li></ul>');
+      expect(detail?.fee.price.text).toBe('€60');
+      expect(detail?.contactEmail).toBe('team@eestec.mk');
+      expect(detail?.applications).toEqual(event.applications);
     });
 
     it('deletes events', async () => {

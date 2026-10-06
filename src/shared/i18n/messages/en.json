@@ -233,5 +233,170 @@
       "newestShort": "Newest event in the archive",
       "seeUpcoming": "See upcoming events →"
     }
+  },
+  "upcoming": {
+    "title": "Upcoming Events",
+    "lead": "Apply for workshops, trainings and exchanges right here. Events abroad link to their application on eestec.net.",
+    "leadShort": "Apply for workshops, trainings and exchanges right here.",
+    "pastEvents": "Past events",
+    "filters": {
+      "label": "Filter by category",
+      "all": "All · {count}",
+      "local": "Local · {count}",
+      "international": "International · {count}"
+    },
+    "soonest": "Soonest first",
+    "nextUp": "Next up",
+    "more": "More upcoming events",
+    "seeDetails": "See details",
+    "idea": {
+      "title": "Have an idea for an event?",
+      "text": "Tell the board. Good ideas often end up on this page.",
+      "action": "Submit an idea"
+    },
+    "empty": {
+      "title": "No upcoming events right now",
+      "text": "Follow us on Instagram so you don't miss the next one. New events are usually announced there first.",
+      "textShort": "Follow us on Instagram so you don't miss the next one.",
+      "follow": "Follow @{handle}",
+      "past": "Browse past events",
+      "meetingTitle": "Meanwhile, come to a weekly meeting",
+      "meetingText": "{day}, {time} · {room}",
+      "ideaText": "Tell the board what you'd like to see next.",
+      "ideaShort": "Submit an idea for an event",
+      "scopeTitle": "No upcoming {scope, select, local {local} other {international}} events right now",
+      "scopeText": "See the events of the other category, or come back soon.",
+      "scopeAction": "See all upcoming events"
+    },
+    "back": "← Upcoming Events"
+  },
+  "applications": {
+    "badge": {
+      "open": "Applications open",
+      "closing": "Closing soon",
+      "soon": "Opening soon",
+      "closed": "Applications closed",
+      "full": "Full",
+      "fullWaitlist": "Full · waitlist open"
+    },
+    "card": {
+      "closesIn": "Applications close in {days, plural, one {# day} other {# days}}",
+      "closesInHours": "Applications close in {hours} h",
+      "closing": "Closes in {days, plural, =0 {} one {# day } other {# days }}{hours} h",
+      "closingMinutes": "Closes in {minutes} min",
+      "late": "Late applications still accepted",
+      "opens": "Applications open {date}",
+      "opensExternal": "Applications open {date} on {host}",
+      "closed": "Closed on {date}",
+      "closedSelection": "Closed on {date} · selection in progress",
+      "places": "{taken} / {max} places",
+      "placesWaitlist": "{taken} / {max} places · {waitlist} on the waitlist",
+      "ctaApply": "Details & application",
+      "ctaWaitlist": "Join the waitlist",
+      "ctaView": "View details"
+    },
+    "box": {
+      "title": "Application",
+      "closesIn": "Applications close in",
+      "closesInUrgent": "Last chance! Applications close in",
+      "opensIn": "Applications open in",
+      "closesInExternal": "Applications on {host} close in",
+      "deadline": "Deadline: {date}",
+      "opensAt": "Opens: {date}",
+      "closedMessage": "Applications closed on {date}.",
+      "resultsMessage": "Selected participants will get an e-mail by {date}.",
+      "fullWaitlistMessage": "All places are taken. Join the waitlist and we will e-mail you if a place opens up.",
+      "fullMessage": "All places are taken.",
+      "lateMessage": "The deadline has passed, but late applications are still accepted.",
+      "externalOrganizer": "Organized by {organizer}.",
+      "externalHandled": "Applications are handled on {host}{eestec, select, yes { with your EESTEC account} other {}}.",
+      "placesTaken": "Places taken",
+      "placesValue": "{taken} / {max}",
+      "waitlistCount": "{count, plural, =0 {Nobody on the waitlist yet} one {# person on the waitlist} other {# people on the waitlist}}",
+      "apply": "Apply now",
+      "waitlist": "Join the waitlist",
+      "full": "Full",
+      "opens": "Opens {date}",
+      "closed": "Applications closed",
+      "external": "Apply on {host}",
+      "newTab": "(opens in a new tab)",
+      "places": "{count, plural, one {# place} other {# places}}",
+      "results": "Results by {date}",
+      "follow": "Follow @{handle} on Instagram for the announcement.",
+      "missed": "Missed it? <link>See the other upcoming events.</link>",
+      "waitlistCloses": "The waitlist closes on {date}.",
+      "externalTip": "LC Skopje members: ask the board for a motivation letter review."
+    },
+    "calendar": {
+      "button": "Add to calendar",
+      "google": "Google Calendar",
+      "apple": "Apple Calendar (.ics)",
+      "outlook": "Outlook (.ics)",
+      "addEvent": "Add event to calendar"
+    },
+    "bar": {
+      "label": "Apply for this event",
+      "closesIn": "Applications close in",
+      "full": "All places are taken",
+      "lateLabel": "Late applications open"
+    },
+    "detail": {
+      "aside": "Application and event details",
+      "programme": "Programme",
+      "day": "Day {number}",
+      "whoCanApply": "Who can apply",
+      "fee": "Participation fee",
+      "questions": "Questions? Write to the organizing team at <link>{email}</link>."
+    },
+    "form": {
+      "title": "Apply",
+      "titleWaitlist": "Join the waitlist",
+      "deadline": "Deadline: {date}.",
+      "required": "Fields marked <req>*</req> are required.",
+      "waitlistIntro": "All places are taken: your application joins the waitlist, and we will e-mail you if a place opens up.",
+      "name": "Full name",
+      "email": "E-mail",
+      "choose": "Choose…",
+      "maxChars": "Max {max} characters.",
+      "counter": "{count} / {max}",
+      "consent": "I agree that {site} processes my personal data to handle this application. <link>Privacy policy</link>",
+      "submit": "Submit application",
+      "submitWaitlist": "Join the waitlist",
+      "afterSubmit": "You'll get a confirmation e-mail right away.",
+      "errorItem": "{label}: {error}",
+      "consentLabel": "Consent",
+      "errors": {
+        "required": "Fill in this field.",
+        "name": "Enter your full name.",
+        "email": "Enter a valid e-mail address, like name@example.com.",
+        "tooLong": "This is too long (max {max} characters).",
+        "choose": "Choose an option.",
+        "checkbox": "Tick this box to continue.",
+        "fileType": "Upload a PDF file.",
+        "fileSize": "The file is larger than 5 MB.",
+        "fileRequired": "Upload a file.",
+        "consent": "Tick the box to agree to the processing of your data."
+      },
+      "failed": {
+        "closed": "Applications for this event closed in the meantime. Your answers were not sent.",
+        "full": "All places were taken in the meantime. Your answers were not sent.",
+        "duplicate": "You have already applied to this event with this e-mail address. To change something, write to {email}.",
+        "spam": "We couldn't send this. Please wait a moment and try again.",
+        "tooFast": "That was quick! Please check your answers and send the form again.",
+        "notFound": "This event no longer takes applications.",
+        "unexpected": "Something went wrong and your application was not sent. Please try again."
+      },
+      "success": {
+        "title": "Application sent!",
+        "titleWaitlist": "You're on the waitlist",
+        "text": "Thanks, {name}. We sent a confirmation to <strong>{email}</strong>.",
+        "results": "The organizing team will let you know by <strong>{date}</strong>.",
+        "waitlistText": "Thanks, {name}. You are number {position} on the waitlist. We sent a confirmation to <strong>{email}</strong> and will e-mail you if a place opens up.",
+        "event": "Event",
+        "submitted": "Submitted",
+        "reference": "Reference",
+        "back": "Back to Upcoming Events"
+      }
+    }
   }
 }

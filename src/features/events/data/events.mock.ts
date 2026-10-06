@@ -6,7 +6,14 @@ import { yearInSkopje } from '@/shared/i18n/format';
 import { resolveLocalized } from '@/shared/i18n/localized';
 
 import { eventTiming } from '../domain/event-timing';
-import { isListed, isReachable, toDetail, toLink, toSummary } from '../domain/public-event';
+import {
+  isListed,
+  isReachable,
+  toDetail,
+  toLink,
+  toSummary,
+  toUpcomingSummary,
+} from '../domain/public-event';
 import type { AdminEventRow, ApplicationsSummary, EventRecord, EventTopic, EventType } from '../types';
 import type { EventsRepository, EventTaxonomyRepository, TaxonomyKind } from './events.repository';
 import {
@@ -55,6 +62,9 @@ export function createMockEventsRepository(): EventsRepository {
   };
 
   const typeLocalized = (id: string) => db.types.find((candidate) => candidate.id === id)?.name ?? { mk: '' };
+  /** Listed upcoming events, soonest first. */
+  const upcoming = (now: Date) =>
+    db.events.filter((event) => isListed(event, now) && eventTiming(event, now) === 'upcoming').sort(byStart);
   /** Listed past events, newest first. */
   const archive = (now: Date) =>
     db.events
@@ -94,6 +104,27 @@ export function createMockEventsRepository(): EventsRepository {
         years,
         firstYear: years.at(-1) ?? null,
       });
+    },
+
+    listUpcoming(context) {
+      return Promise.resolve(
+        upcoming(context.now).map((event) =>
+          toUpcomingSummary(event, { ...context, typeName: typeLocalized }),
+        ),
+      );
+    },
+
+    upcomingSlugs(now) {
+      return Promise.resolve(upcoming(now).map((event) => event.slug));
+    },
+
+    resolveAddress(slug, now) {
+      const event =
+        db.events.find((candidate) => candidate.slug === slug) ??
+        db.events.find((candidate) => candidate.id === db.redirects[slug]);
+      return Promise.resolve(
+        event && isReachable(event, now) ? { slug: event.slug, timing: eventTiming(event, now) } : null,
+      );
     },
 
     findBySlug(slug, context) {
@@ -254,11 +285,6 @@ export function createMockEventsRepository(): EventsRepository {
     slugTaken(slug, exceptId) {
       const owner = db.events.find((event) => event.slug === slug)?.id ?? db.redirects[slug];
       return Promise.resolve(owner !== undefined && owner !== exceptId);
-    },
-
-    redirectFor(slug) {
-      const id = db.redirects[slug];
-      return Promise.resolve(db.events.find((event) => event.id === id)?.slug ?? null);
     },
   };
 }

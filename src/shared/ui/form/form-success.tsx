@@ -9,11 +9,21 @@ type FormSuccessProps = {
   steps?: React.ReactNode[];
   /** Summary rows, e.g. Subject / Sent / Reference. */
   details?: { label: React.ReactNode; value: React.ReactNode }[];
+  /** rows: label and value side by side; columns: one column per item (UpcomingStates). */
+  detailsLayout?: 'rows' | 'columns';
   actions?: React.ReactNode;
 };
 
 /** Replaces the form after sending (JoinFormStates, ContactStates…). Announced politely. */
-export function FormSuccess({ title, children, nextTitle, steps, details, actions }: FormSuccessProps) {
+export function FormSuccess({
+  title,
+  children,
+  nextTitle,
+  steps,
+  details,
+  detailsLayout = 'rows',
+  actions,
+}: FormSuccessProps) {
   return (
     <div role="status" className="flex flex-col items-start gap-5">
       <span aria-hidden className="flex size-16 items-center justify-center rounded-full bg-brand text-white">
@@ -23,7 +33,17 @@ export function FormSuccess({ title, children, nextTitle, steps, details, action
         <h2 className="text-[28px] leading-[1.2] font-bold">{title}</h2>
         {children && <div className="text-body text-ink-2">{children}</div>}
       </div>
-      {details && details.length > 0 && (
+      {details && details.length > 0 && detailsLayout === 'columns' && (
+        <dl className="grid w-full gap-4 rounded-md bg-surface px-5 py-4.5 sm:grid-cols-3">
+          {details.map((row, index) => (
+            <div key={index}>
+              <dt className="text-small text-muted-ink">{row.label}</dt>
+              <dd className="mt-0.5 font-medium">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {details && details.length > 0 && detailsLayout === 'rows' && (
         <dl className="grid w-full grid-cols-[auto_1fr] gap-x-6 gap-y-2 rounded-md bg-surface p-4 text-small">
           {details.map((row, index) => (
             <React.Fragment key={index}>

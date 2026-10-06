@@ -20,8 +20,13 @@ type CountdownProps = {
   variant?: 'cells' | 'timer' | 'inline';
   /** Red cells for the last 72 hours ("Closing soon"). */
   urgent?: boolean;
-  /** Text shown before the countdown for screen readers, e.g. "Applications close in". */
-  label: string;
+  /** Dark numbers: counting down to an opening, not a deadline ("Opening soon"). */
+  neutral?: boolean;
+  /**
+   * Text before the countdown for screen readers, e.g. "Applications close in". Leave it out for
+   * the inline variant when the label is already visible next to it.
+   */
+  label?: string;
   className?: string;
 };
 
@@ -32,6 +37,7 @@ export function Countdown({
   now: initialNow,
   variant = 'cells',
   urgent,
+  neutral,
   label,
   className,
 }: CountdownProps) {
@@ -42,7 +48,7 @@ export function Countdown({
   if (variant === 'inline') {
     return (
       <span className={className}>
-        <span className="sr-only">{label} </span>
+        {label && <span className="sr-only">{label} </span>}
         {t('inline', { days: parts.days, hours: pad(parts.hours), minutes: pad(parts.minutes) })}
       </span>
     );
@@ -73,7 +79,7 @@ export function Countdown({
           <span
             className={cn(
               'text-[28px] leading-[1.1] font-bold tabular-nums',
-              urgent ? 'text-white' : 'text-brand',
+              urgent ? 'text-white' : neutral ? 'text-ink' : 'text-brand',
             )}
           >
             {variant === 'cells' ? cell.value : pad(cell.value)}

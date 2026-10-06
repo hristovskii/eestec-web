@@ -1,5 +1,6 @@
 import { Calendar, MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type * as React from 'react';
 
 import { formatDateRange } from '@/shared/i18n/format';
 import type { Locale } from '@/shared/i18n/routing';
@@ -27,20 +28,23 @@ export function OrganizedBadge({ className }: { className?: string }) {
 
 /**
  * The event card (EventCard): cover, type and category chips, title, dates and place, "View
- * event". Past events show "Just ended" for Settings › Events days. Upcoming states (applications
- * open, closing soon…) arrive with Upcoming Events (M7).
+ * event". Past events show "Just ended" for Settings › Events days. On /upcoming the applications
+ * feature passes the status badge, the deadline line and the call to action (UpcomingStates).
  */
 export function EventCard({
   event,
   locale,
   href,
   headingLevel,
+  status,
 }: {
   event: EventCardModel;
   locale: Locale;
   /** Defaults to the archive page of the event. */
   href?: string;
   headingLevel?: 'h2' | 'h3';
+  /** Upcoming events: badge on the cover, a line under the place, and the link text. */
+  status?: { badge?: React.ReactNode; line?: React.ReactNode; cta?: string };
 }) {
   const t = useTranslations('events');
   return (
@@ -49,10 +53,12 @@ export function EventCard({
       title={event.title.text}
       titleLang={event.title.lang !== locale ? event.title.lang : undefined}
       cover={event.cover}
-      ctaLabel={t('card.view')}
+      ctaLabel={status?.cta ?? t('card.view')}
       headingLevel={headingLevel}
       badge={
-        event.justEnded ? (
+        status ? (
+          status.badge
+        ) : event.justEnded ? (
           <StatusBadge tone="dark" overlay>
             {t('card.justEnded')}
           </StatusBadge>
@@ -78,6 +84,7 @@ export function EventCard({
           <span lang={event.place.lang !== locale ? event.place.lang : undefined}>{event.place.text}</span>
         </MediaCardMeta>
       </div>
+      {status?.line}
     </MediaCard>
   );
 }

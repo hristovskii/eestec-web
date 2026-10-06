@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatDate, formatDateRange, hourInSkopje } from './format';
+import { formatDate, formatDateRange, formatDayRange, hourInSkopje } from './format';
 
 const canvasNow = new Date('2026-10-04T18:18:00+02:00');
 
@@ -44,5 +44,22 @@ describe('formatDateRange', () => {
 
   it('uses Skopje days (a late-evening end stays on its day)', () => {
     expect(formatDateRange('2026-11-14T22:00:00Z', '2026-11-14T22:30:00Z', 'en')).toBe('14 Nov 2026');
+  });
+});
+
+describe('formatDayRange', () => {
+  it('adds weekdays and closes up the shared month and year', () => {
+    expect(formatDayRange('2026-11-07T10:00:00+01:00', '2026-11-13T14:00:00+01:00', 'en')).toBe(
+      'Sat 7 – Fri 13 Nov 2026',
+    );
+    expect(formatDayRange('2026-11-28T10:00:00+01:00', '2026-12-02T14:00:00+01:00', 'en')).toBe(
+      'Sat 28 Nov – Wed 2 Dec 2026',
+    );
+    expect(formatDayRange('2026-12-30T10:00:00+01:00', '2027-01-02T14:00:00+01:00', 'en')).toBe(
+      'Wed 30 Dec 2026 – Sat 2 Jan 2027',
+    );
+    expect(formatDayRange('2026-11-14T00:00:00+01:00', '2026-11-14T23:59:00+01:00', 'en')).toBe(
+      'Sat 14 Nov 2026',
+    );
   });
 });

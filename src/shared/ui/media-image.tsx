@@ -11,6 +11,8 @@ import { BrandLogo } from './brand-logo';
 const sizes = {
   card: '(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw',
   cover: '(min-width: 1248px) 1200px, 100vw',
+  /** Next-up card: the image takes 7 of 13 columns. */
+  feature: '(min-width: 1024px) 660px, 100vw',
   thumb: '(min-width: 1024px) 240px, 33vw',
   lightbox: '(min-width: 1280px) 1040px, 100vw',
   full: '100vw',

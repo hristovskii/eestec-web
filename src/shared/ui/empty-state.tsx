@@ -16,6 +16,8 @@ type EmptyStateProps = {
    * list: dashed box with a grey icon under a list's filters (EventsList-Empty).
    */
   variant?: 'compact' | 'page' | 'admin' | 'list';
+  /** list: red icon on pink instead of grey (UpcomingList-Empty). */
+  accent?: boolean;
   className?: string;
 };
 
@@ -27,6 +29,7 @@ export function EmptyState({
   tags,
   actions,
   variant = 'page',
+  accent,
   className,
 }: EmptyStateProps) {
   return (
@@ -49,6 +52,7 @@ export function EmptyState({
           variant !== 'admin' && variant !== 'list' && 'text-brand',
           variant === 'list' &&
             'flex size-16 items-center justify-center rounded-full bg-surface text-muted-ink sm:size-18 [&_svg]:size-7 sm:[&_svg]:size-8',
+          variant === 'list' && accent && 'bg-brand-tint text-brand sm:size-20',
           variant === 'page' && 'mb-1 flex size-16 items-center justify-center rounded-full bg-brand-tint',
           variant === 'admin' &&
             'flex size-14 items-center justify-center rounded-full bg-surface text-muted-ink [&_svg]:size-6.5',

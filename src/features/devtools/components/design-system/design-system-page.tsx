@@ -2,6 +2,7 @@ import { BrandLogo } from '@/shared/ui/brand-logo';
 import { Container } from '@/shared/ui/container';
 
 import { BadgesAndTitleSection, ButtonsSection } from './actions';
+import { ApplicationsSection } from './applications';
 import { CardsSection } from './cards';
 import { FormsSection } from './forms';
 import { ColorsSection, LayoutAndIconsSection, LogosSection, TypographySection } from './foundations';
@@ -15,6 +16,7 @@ const toc = [
   ['buttons', 'Buttons'],
   ['badges', 'Badges & chips'],
   ['cards', 'Cards'],
+  ['applications', 'Application box'],
   ['forms', 'Forms'],
   ['navigation', 'Lists'],
   ['overlays', 'Overlays'],
@@ -64,6 +66,7 @@ export function DesignSystemPage() {
         <ButtonsSection />
         <BadgesAndTitleSection />
         <CardsSection />
+        <ApplicationsSection />
         <FormsSection />
         <NavigationSection />
         <OverlaysSection />

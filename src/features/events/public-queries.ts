@@ -14,7 +14,16 @@ import type { AnyMedia, Media } from '@/shared/types/media';
 import { eventTags } from './cache-tags';
 import { eventsRepository, eventTaxonomyRepository } from './data';
 import { ARCHIVE_PAGE_SIZE, type ArchiveParams } from './schemas/archive-params.schema';
-import type { ArchiveTypeOption, EventCardModel, EventMediaRef, EventPageModel, EventSummary } from './types';
+import type {
+  ArchiveTypeOption,
+  EventAddress,
+  EventCardModel,
+  EventDetail,
+  EventMediaRef,
+  EventPageModel,
+  EventSummary,
+  UpcomingEventCard,
+} from './types';
 
 // Public reads for /events (docs/ARCHITECTURE.md §4.3): cached, tagged, refreshed by every admin
 // change (updateTag) and at least every 10 minutes for the time-based states (cacheLife 'events').
@@ -138,11 +147,45 @@ export async function getEventPage(slug: string, locale: Locale) {
 }
 
 /**
- * Old address of an event → its current one, for the proxy's 301 (decided rule). Only asked for
- * /events/<slug> requests; the proxy can't use 'use cache', and the lookup is one indexed read.
+ * Where /events/<slug> or /upcoming/<slug> points right now, for the proxy's redirects (decided
+ * rules: old addresses and ended upcoming events are a 301). The proxy can't use 'use cache'; the
+ * lookup is one indexed read and runs only for those two paths. On mock data it reads the
+ * in-memory sample store, which the proxy shares with the pages in `next dev` / `next start`.
  */
-export async function findEventRedirect(slug: string): Promise<string | null> {
-  return (await eventsRepository()).redirectFor(slug);
+export async function resolveEventAddress(slug: string): Promise<EventAddress | null> {
+  return (await eventsRepository()).resolveAddress(slug, now());
+}
+
+/** /upcoming: listed events that haven't ended, soonest first, with their covers. */
+export async function getUpcomingEvents(locale: Locale): Promise<UpcomingEventCard[]> {
+  'use cache';
+  cacheTag(eventTags.list);
+  cacheLife('events');
+  const [repo, settings] = await Promise.all([eventsRepository(), getSiteSettings(locale)]);
+  const items = await repo.listUpcoming({
+    locale,
+    now: now(),
+    justEndedDays: settings.events.justEndedDays,
+  });
+  const files = await filesFor(items.map((item) => item.cover?.mediaId));
+  return items.map((item) => ({ ...item, cover: item.cover ? toImage(item.cover, files) : null }));
+}
+
+/**
+ * The event as it is right now, uncached: actions that act on the current state (the application
+ * form checks the deadline and the places again before saving).
+ */
+export async function findPublicEvent(slug: string, locale: Locale): Promise<EventDetail | null> {
+  const [repo, settings] = await Promise.all([eventsRepository(), getSiteSettings(locale)]);
+  return repo.findBySlug(slug, { locale, now: now(), justEndedDays: settings.events.justEndedDays });
+}
+
+/** Upcoming addresses to prerender. */
+export async function getUpcomingSlugs(): Promise<string[]> {
+  'use cache';
+  cacheTag(eventTags.list);
+  cacheLife('events');
+  return (await eventsRepository()).upcomingSlugs(now());
 }
 
 /** Addresses to prerender (every listed past event). */

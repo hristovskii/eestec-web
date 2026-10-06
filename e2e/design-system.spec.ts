@@ -43,7 +43,8 @@ test.describe('design system (M1)', () => {
 
   test('countdown follows the pinned mock clock', async ({ page }) => {
     await page.goto('/en/design-system');
-    const timer = page.getByRole('timer', { name: 'Applications close in', exact: true });
+    // The first one (Badges › Countdown); the Application box section has more.
+    const timer = page.getByRole('timer', { name: 'Applications close in', exact: true }).first();
     // 4 Oct 2026 18:18 → 18 Oct 2026 23:59: 14 days 5 hours.
     await expect(timer).toContainText('14');
     await expect(timer).toContainText('05');

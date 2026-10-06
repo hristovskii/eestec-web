@@ -8,8 +8,10 @@ import { FieldError } from './form-field';
 type Option = { value: string; label: React.ReactNode };
 
 type SegmentedChoiceProps = {
-  /** Field name; also the id prefix. */
+  /** Field name; also the id prefix unless `id` is given. */
   name: string;
+  /** Id of the fieldset and prefix of the inputs' ids (when several forms share field names). */
+  id?: string;
   legend: React.ReactNode;
   options: Option[];
   /** radio: pick one (year of study); checkbox: pick any (interests). */
@@ -30,6 +32,7 @@ type SegmentedChoiceProps = {
  */
 export function SegmentedChoice({
   name,
+  id: groupId = name,
   legend,
   options,
   type,
@@ -41,8 +44,8 @@ export function SegmentedChoice({
   error,
   hint,
 }: SegmentedChoiceProps) {
-  const errorId = error ? `${name}-error` : undefined;
-  const helpId = help ? `${name}-help` : undefined;
+  const errorId = error ? `${groupId}-error` : undefined;
+  const helpId = help ? `${groupId}-help` : undefined;
   const selected = value ?? defaultValue ?? [];
 
   const toggle = (optionValue: string, checked: boolean) => {
@@ -53,7 +56,7 @@ export function SegmentedChoice({
 
   return (
     <fieldset
-      id={name}
+      id={groupId}
       aria-describedby={[errorId, helpId].filter(Boolean).join(' ') || undefined}
       aria-invalid={error ? true : undefined}
       className="m-0 min-w-0 border-0 p-0"
@@ -70,7 +73,7 @@ export function SegmentedChoice({
       </legend>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => {
-          const id = `${name}-${option.value}`;
+          const id = `${groupId}-${option.value}`;
           const isOn = selected.includes(option.value);
           return (
             <label

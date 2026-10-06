@@ -5,7 +5,7 @@ import { getMediaItems } from '@/features/media/server';
 import { getSiteSettings } from '@/features/settings/server';
 import { now } from '@/shared/lib/now';
 
-import { eventsRepository, eventTaxonomyRepository } from './data';
+import { eventsAdminRepository, eventTaxonomyRepository } from './data';
 import { newEventInput } from './domain/new-event';
 import type { AdminEventsParams } from './schemas/admin-events-params.schema';
 import type { EventDraftInput } from './schemas/event.schema';
@@ -13,7 +13,7 @@ import type { AdminEventsQuery, EventRecord } from './types';
 
 /** Every event as a choice (admin forms: "Events they manage"). */
 export async function listEventOptions() {
-  return (await eventsRepository()).listOptions();
+  return (await eventsAdminRepository()).listOptions();
 }
 
 /** Event managers see only the events they manage (D18). */
@@ -36,7 +36,7 @@ const toQuery = (actor: Actor, params: AdminEventsParams): AdminEventsQuery => (
 
 /** /admin/events: one page of rows, the tab counts, and the choices of the filters. */
 export async function listAdminEvents(actor: Actor, params: AdminEventsParams) {
-  const [repo, taxonomy] = await Promise.all([eventsRepository(), eventTaxonomyRepository()]);
+  const [repo, taxonomy] = await Promise.all([eventsAdminRepository(), eventTaxonomyRepository()]);
   const [page, facets, types] = await Promise.all([
     repo.adminList(toQuery(actor, params)),
     repo.adminFacets({ onlyIds: onlyIdsFor(actor) }),
@@ -53,7 +53,7 @@ export async function listAdminEvents(actor: Actor, params: AdminEventsParams) {
 
 /** Export CSV: every row that matches the filters (not just the page). */
 export async function exportAdminEvents(actor: Actor, params: AdminEventsParams) {
-  const repo = await eventsRepository();
+  const repo = await eventsAdminRepository();
   const first = await repo.adminList({ ...toQuery(actor, params), page: 1, pageSize: 10_000 });
   return first.items;
 }
@@ -78,7 +78,7 @@ const mediaIdsOf = (event: EventDraftInput) => [
  * files it uses, and the types and topics to choose from. Callers check the permission.
  */
 export async function getEventEditor(id: string | null) {
-  const [repo, taxonomy] = await Promise.all([eventsRepository(), eventTaxonomyRepository()]);
+  const [repo, taxonomy] = await Promise.all([eventsAdminRepository(), eventTaxonomyRepository()]);
   const [record, types, topics] = await Promise.all([
     id ? repo.get(id) : Promise.resolve(null),
     taxonomy.list('types'),
