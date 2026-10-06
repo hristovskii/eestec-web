@@ -2,6 +2,7 @@
 export { EventCard, EventCardSkeleton, OrganizedBadge } from './components/event-card';
 export { EventDetail } from './components/event-detail';
 export { EventsArchive, EventsArchiveSkeleton } from './components/events-archive';
+export { UpcomingEventDetail } from './components/upcoming-event-detail';
 export { eventPath, eventTiming, justEnded } from './domain/event-timing';
 export {
   type AdminEventsParams,
@@ -17,6 +18,10 @@ export {
 } from './schemas/archive-params.schema';
 export type {
   AdminEventRow,
+  EventAddress,
+  EventApplicationSettings,
+  PublicAgendaItem,
+  UpcomingEventCard,
   ArchiveTypeOption,
   EventCardModel,
   EventLink,

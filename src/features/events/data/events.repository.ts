@@ -6,9 +6,11 @@ import type {
   AdminEventCounts,
   ArchiveFacets,
   ArchiveQuery,
+  EventAddress,
   EventDetail,
   EventLink,
   EventSummary,
+  UpcomingEventSummary,
   AdminEventFacets,
   AdminEventRow,
   AdminEventsQuery,
@@ -31,13 +33,15 @@ export type SaveEventResult =
 export type PublicContext = { locale: Locale; now: Date; justEndedDays: number };
 
 /**
- * Events (one table for upcoming and past, D1). The upcoming list arrives with M7. Public reads
- * return localized read models and never drafts.
+ * Public reads of events (one table for upcoming and past, D1): localized read models, never
+ * drafts. Hidden events are reachable by their address but never listed.
  */
-export interface EventsRepository {
+export interface EventsPublicRepository {
   /** /events: past, listed events of one category. */
   listArchive(query: ArchiveQuery): Promise<Paged<EventSummary>>;
   archiveFacets(query: { now: Date }): Promise<ArchiveFacets>;
+  /** /upcoming: listed events that haven't ended, soonest first (both categories). */
+  listUpcoming(context: PublicContext): Promise<UpcomingEventSummary[]>;
   /** A published or hidden event by its current address; null for drafts and unknown slugs. */
   findBySlug(slug: string, context: PublicContext): Promise<EventDetail | null>;
   /** Neighbours in the archive by start date (listed past events, any category). */
@@ -45,9 +49,19 @@ export interface EventsRepository {
     slug: string,
     context: PublicContext,
   ): Promise<{ prev: EventLink | null; next: EventLink | null }>;
-  /** Addresses of listed past events (static params). */
+  /** Addresses of listed past events (static params of /events/[slug]). */
   archiveSlugs(now: Date): Promise<string[]>;
+  /** Addresses of listed upcoming events (static params of /upcoming/[slug]). */
+  upcomingSlugs(now: Date): Promise<string[]>;
+  /**
+   * Where a public address points right now (the proxy's 301s): the event's current slug, also for
+   * old addresses kept after a rename, and whether it is upcoming or past. null: no public event.
+   */
+  resolveAddress(slug: string, now: Date): Promise<EventAddress | null>;
+}
 
+/** Admin reads and writes (write models carry both languages). */
+export interface EventsAdminRepository {
   /** Every event as a choice, newest first (admin forms). */
   listOptions(): Promise<EventOption[]>;
   /** /admin/events: filtered, sorted, paged; counts per tab ignore the tab but not `onlyIds`. */
@@ -65,9 +79,10 @@ export interface EventsRepository {
   remove(ids: readonly string[]): Promise<string[]>;
   /** Is this address used by another event (or kept as a redirect of one)? */
   slugTaken(slug: string, exceptId?: string): Promise<boolean>;
-  /** Old addresses → current slug (the proxy uses them in M6). */
-  redirectFor(slug: string): Promise<string | null>;
 }
+
+/** One implementation serves both (one aggregate); split by audience since M7 (§4.1, ISP). */
+export type EventsRepository = EventsPublicRepository & EventsAdminRepository;
 
 export type TaxonomyKind = 'types' | 'topics';
 type TaxonomyItem = EventType | EventTopic;

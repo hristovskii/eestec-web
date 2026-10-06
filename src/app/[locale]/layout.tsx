@@ -58,6 +58,11 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
               filters: messages.events.filters,
               detail: { playVideo: messages.events.detail.playVideo },
             },
+            applications: {
+              form: messages.applications.form,
+              calendar: messages.applications.calendar,
+              box: { newTab: messages.applications.box.newTab },
+            },
           }}
         >
           <ClockProvider pinnedNow={pinnedNow()}>{children}</ClockProvider>

@@ -3,7 +3,15 @@ import { resolveText } from '@/shared/i18n/localized';
 import { sanitizeRichText } from '@/shared/lib/sanitize-html';
 import type { Localized } from '@/shared/types/localized';
 
-import type { EventDetail, EventImage, EventLink, EventMediaRef, EventRecord, EventSummary } from '../types';
+import type {
+  EventDetail,
+  EventImage,
+  EventLink,
+  EventMediaRef,
+  EventRecord,
+  EventSummary,
+  UpcomingEventSummary,
+} from '../types';
 import { splitLeadingHeading } from './event-content';
 import { eventTiming, justEnded } from './event-timing';
 
@@ -49,6 +57,21 @@ export function toSummary(
   };
 }
 
+/** /upcoming card: the summary plus what the application state is computed from. */
+export function toUpcomingSummary(event: EventRecord, context: Context): UpcomingEventSummary {
+  return {
+    ...toSummary(event, context),
+    shortDescription: resolveText(event.shortDescription, context.locale),
+    applications: structuredClone(event.applications),
+    nextUp: event.nextUp,
+  };
+}
+
+const sanitizedText = (value: Localized, locale: Locale) => {
+  const text = resolveText(value, locale);
+  return { text: sanitizeRichText(text.text).trim(), lang: text.lang };
+};
+
 export function toDetail(event: EventRecord, context: Context): EventDetail {
   const { locale, now } = context;
   const description = resolveText(event.description, locale);
@@ -68,6 +91,16 @@ export function toDetail(event: EventRecord, context: Context): EventDetail {
     gallery: event.gallery.map(imageRef).filter((image) => image !== null),
     infoPackId: event.infoPackId,
     videoUrl: event.videoUrl,
+    agenda: event.agenda.map((item) => ({
+      id: item.id,
+      date: item.date,
+      title: resolveText(item.title, locale),
+      text: resolveText(item.text, locale),
+    })),
+    requirements: sanitizedText(event.requirements, locale),
+    fee: { price: resolveText(event.fee.price, locale), note: resolveText(event.fee.note, locale) },
+    contactEmail: event.contactEmail,
+    applications: structuredClone(event.applications),
     seo: {
       title: seoTitle || resolveText(event.title, locale).text,
       description: seoDescription || resolveText(event.shortDescription, locale).text,

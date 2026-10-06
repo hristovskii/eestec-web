@@ -11,7 +11,7 @@ import { now } from '@/shared/lib/now';
 import { SLUG_MAX } from '@/shared/lib/slug';
 
 import { eventTags } from '../cache-tags';
-import { eventsRepository } from '../data';
+import { eventsAdminRepository } from '../data';
 import { publishIssues, publishWarnings } from '../schemas/event.schema';
 import { CONTENT_STATUSES, type EventRecord } from '../types';
 
@@ -27,7 +27,7 @@ const describe = (events: EventRecord[]) =>
 async function allowed(ids: readonly string[], action: 'publish' | 'delete' | 'create') {
   const session = await getSession();
   if (!session) return null;
-  const repo = await eventsRepository();
+  const repo = await eventsAdminRepository();
   const events = (await Promise.all(ids.map((id) => repo.get(id)))).filter((event) => event !== null);
   return {
     session,
@@ -113,7 +113,7 @@ export async function duplicateEvent(input: unknown): Promise<ActionResult<{ id:
   if (!parsed.success) return { ok: false, error: 'unexpected' };
   const session = await getSession();
   if (!session || !can(session, 'create', 'events')) return { ok: false, error: 'forbidden' };
-  const repo = await eventsRepository();
+  const repo = await eventsAdminRepository();
   const source = await repo.get(parsed.data);
   if (!source) return { ok: false, error: 'not_found' };
 

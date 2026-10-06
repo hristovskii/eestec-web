@@ -42,7 +42,7 @@ export type AgendaItem = {
   text: Localized;
 };
 
-/** Applications box of the edit form. The application form itself is built in M7. */
+/** Applications box of the edit form. The form itself is edited in Applications (form builder). */
 export type EventApplicationSettings = {
   enabled: boolean;
   via: ApplyVia;
@@ -197,6 +197,20 @@ export type ArchiveQuery = {
 /** Tab counts and the years that have past events (for the year filter). */
 export type ArchiveFacets = { counts: Record<EventScope, number>; years: number[]; firstYear: number | null };
 
+/** /upcoming: an event that hasn't ended, with what the applications feature needs for its state. */
+export type UpcomingEventSummary = EventSummary & {
+  shortDescription: ResolvedText;
+  applications: EventApplicationSettings;
+  /** "Show as Next up": the big card on /upcoming (and Home). */
+  nextUp: boolean;
+};
+
+/** Where an event lives right now: its current slug (old addresses resolve to it) and its timing. */
+export type EventAddress = { slug: string; timing: EventTiming };
+
+/** One day of the programme, in one language. */
+export type PublicAgendaItem = { id: string; date: string | null; title: ResolvedText; text: ResolvedText };
+
 /** "Previous event" / "Next event" at the bottom of a detail page. */
 export type EventLink = {
   slug: string;
@@ -222,11 +236,21 @@ export type EventDetail = EventSummary & {
   gallery: EventMediaRef[];
   infoPackId: string | null;
   videoUrl: string;
+  /** Upcoming page (UpcomingDetail): programme, "Who can apply", fee, questions e-mail. */
+  agenda: PublicAgendaItem[];
+  /** Sanitized HTML; '' when empty. */
+  requirements: ResolvedText;
+  fee: { price: ResolvedText; note: ResolvedText };
+  /** '' when the event has none (pages then use the main e-mail from Settings). */
+  contactEmail: string;
+  applications: EventApplicationSettings;
   seo: { title: string; description: string; shareImageId: string | null };
 };
 
 /** A card or page image, resolved from the Media library (sample placeholders on mocks). */
 export type EventCardModel = Omit<EventSummary, 'cover'> & { cover: AnyMedia | null };
+
+export type UpcomingEventCard = Omit<UpcomingEventSummary, 'cover'> & { cover: AnyMedia | null };
 
 export type EventPageModel = Omit<EventDetail, 'cover' | 'gallery' | 'infoPackId'> & {
   cover: AnyMedia | null;

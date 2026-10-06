@@ -16,6 +16,8 @@ const presets = {
   dateTime: { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' },
   /** Sat 7 Nov, 10:00 */
   shortDateTime: { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' },
+  /** Sat 7 Nov */
+  weekdayDate: { weekday: 'short', day: 'numeric', month: 'short' },
   /** Sat 14 Nov 2026 */
   dayDate: { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' },
   /** Mon 9 Dec 2024, 18:00 */
@@ -74,4 +76,29 @@ export function formatDateRange(start: Date | string, end: Date | string, locale
     .replace(/[\u2009\u202f\u00a0]/g, ' ')
     .replace(/^(\d+)\s*–\s*(\d+)(?=\s)/, '$1–$2');
   return locale === 'en' ? text.replace(/\bSept\b/, 'Sep') : text;
+}
+
+/**
+ * With weekdays, for event pages: "Sat 7 – Fri 13 Nov 2026", "Sat 28 Nov – Wed 2 Dec 2026",
+ * "Sat 14 Nov 2026" (UpcomingDetail).
+ */
+export function formatDayRange(start: Date | string, end: Date | string, locale: Locale): string {
+  const [from, to] = [new Date(start), new Date(end)];
+  const part = (date: Date, options: Intl.DateTimeFormatOptions) => {
+    const text = new Intl.DateTimeFormat(INTL_LOCALE[locale], { ...options, timeZone: TIME_ZONE }).format(
+      date,
+    );
+    return locale === 'en' ? text.replace(/^([A-Z][a-z]{2}),/, '$1') : text;
+  };
+  const full = (date: Date) => formatDate(date, locale, 'dayDate');
+  if (dayInSkopje(from) === dayInSkopje(to)) return full(from);
+  const sameYear = yearInSkopje(from) === yearInSkopje(to);
+  const sameMonth = sameYear && dayInSkopje(from).slice(0, 7) === dayInSkopje(to).slice(0, 7);
+  const first = sameMonth
+    ? part(from, { weekday: 'short', day: 'numeric' })
+    : sameYear
+      ? part(from, { weekday: 'short', day: 'numeric', month: 'short' })
+      : full(from);
+  const text = `${first} – ${full(to)}`;
+  return locale === 'en' ? text.replace(/\bSept\b/g, 'Sep') : text;
 }

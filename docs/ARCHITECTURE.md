@@ -111,7 +111,7 @@ src/proxy.ts                         Next 16 proxy (formerly middleware), one pe
 - **Two root layouts.** The public site is localized under `[locale]`. The admin is English-only and outside it, so no locale prefixes appear in admin URLs and the admin can use its own density and theme.
 - **Route groups by audience.** `(site)` holds the public chrome, `(auth)` guest-only pages, `(member)` the session guard, and `(panel)` the admin shell and guard. Guards sit in layouts, and every server action re-checks permissions, because a layout guard alone is not a security boundary.
 - **URLs.** With `localePrefix: 'as-needed'` and default `mk`, Macedonian URLs are exactly the ones in `routes.md`; English adds `/en`.
-- **`(list)` groups.** The list pages' `loading.tsx` must not wrap `[slug]`. Once a loading shell has streamed, the status is already 200, so `notFound()` and redirects could no longer set a real status. Detail pages therefore resolve their status before streaming, and the decided **301 redirects happen in the proxy**. The lookup is scoped to the two slug patterns and cached briefly.
+- **`(list)` groups.** The list pages' `loading.tsx` must not wrap `[slug]`. Once a loading shell has streamed, the status is already 200, so `notFound()` and redirects could no longer set a real status. Detail pages therefore resolve their status before streaming, and the decided **301 redirects happen in the proxy**. The lookup is scoped to the two slug patterns (one indexed read; the proxy can't use `'use cache'`).
 - **No dots in segment names.** The calendar route is `[slug]/calendar` and returns `Content-Disposition: attachment; filename=<slug>.ics`. next-intl's matcher skips paths that contain a dot, so a `calendar.ics` folder would 404 under the MK locale.
 
 ### 1.4 `src/features` — one folder per domain
@@ -837,10 +837,34 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
   - Previous / next follow the archive by start date across both categories. The newest one links to Upcoming.
   - "Just ended" (Settings › Events days) shows the ended box. Its "Share your impression" button, and "Were you there?", only show with Phase 2.
   - Event partners arrive with sponsors (M11), Memories from this event with M17.
-- An event that hasn't ended redirects from `/events/<slug>` to `/upcoming/<slug>` (built in M7). Old addresses of published events are a real 301 in the proxy (`findEventRedirect`, only for `/events/<slug>` paths).
+- An event that hasn't ended redirects from `/events/<slug>` to `/upcoming/<slug>` (built in M7). Old addresses of published events are a real 301 in the proxy (only for `/events/<slug>` paths; `resolveEventAddress` since M7a).
 - Next 16 keeps hidden copies of previous pages mounted, so e2e tests target visible elements and regions.
 - The events repository now has 15 methods (past the "about a dozen" in §4.1). It is split into public and admin interfaces when M7 adds the upcoming list.
 - Off-token lightbox greys (#141414, #2a2a2a) map to `--color-ink` / `--color-ink-2` (D10).
+
+**Notes from building (M7a)**
+
+- M7 is split in two: M7a is the public side (`/upcoming`, the event page, ApplyBox, the application form, calendar, redirects); M7b is the admin side (applications list, statuses, CSV, form builder, real counts in Events and the dashboard).
+- The events repository is split into `EventsPublicRepository` and `EventsAdminRepository` (one mock implements both). Public reads use the cookie-less `public` scope.
+- Proxy redirects for `/(en/)?(events|upcoming)/:slug` use one lookup, `resolveEventAddress` (current slug + upcoming / past):
+  - old addresses and ended upcoming events → 301;
+  - an event that hasn't ended, opened under `/events` → 307 to `/upcoming` (it moves back by itself later, so not permanent).
+  - **Flagged in M0:** the plan was to read the sample files in the proxy, because the Next 16 docs say the proxy shouldn't rely on shared globals. It reads the in-memory sample store through the repository instead (since M6). `next dev` / `next start` run the proxy in the same process, so admin renames redirect at once (e2e proves it). In production on sample data the admin is off (D19), so the store equals the files. On preview deployments the proxy may not see an admin edit made on another instance. With Supabase it is one indexed database read, which the docs allow.
+- Applications feature (`features/applications`): form definitions, applications, places. It depends on events; the upcoming list and the event page are composed here (`UpcomingList`, `UpcomingEventPage`), with the event layout from events (`UpcomingEventDetail`, slots for the box, the form and the bar).
+- Application state (`domain/application-state.ts`, table-tested): `off | opening_soon | open | deadline_soon | closed | full_waitlist | full`. External applications (eestec.net) are a channel, not a state: they go through the same dates and are never full.
+  - Places taken = **accepted** applications (AI at the Edge has 38 applications for 24 places and is open; FPGA Basics is 20 accepted + 7 on the waitlist). When they fill the places, new applications join the waitlist with a position, or are refused without one (D11). The repository decides this in one step.
+  - Applications close at the deadline (decided rule), or when the event starts if there is no deadline. With "Auto-close" off they stay open after the deadline until the event starts ("late applications").
+  - The waitlist closes with the applications. The canvas footnote "Waitlist closes when the event starts" became "The waitlist closes on <date>", because the decided rule closes the form at the deadline.
+- Application form: built from the event's form definition (`buildApplicationSchema`), validated in the browser and again in the action, together with the spam guard (honeypot + 3 s fill time, `shared/forms/spam-guard.ts`), the event's state at that moment, and the CV's content (`%PDF`, max 5 MB; Server Actions accept 6 MB).
+  - Events without their own form use the default fields: the example list of spec 03 with the UpcomingDetail labels. The form builder (M7b) edits them per event.
+  - One application per e-mail per event. References are `AIE-2026-0042` (three letters of the address, the event year, a running number).
+  - Confirmation e-mails are sent by the e-mail jobs (M22); the confirmation copy already says one is sent.
+  - The confirmation uses the shared `FormSuccess` (red check, like every other form); UpcomingStates draws it dark.
+- Sample applications are placeholders behind the canvas counts ("Sample applicant 07", example.com, no answers): the canvas gives numbers, never applicants.
+- Card wording is generic: the canvas's "Sign-ups close in 71 days" (New Year Social) and "Registration opens 1 Feb 2027" (EESTech Challenge) belong to drafts and would need a per-event label; every card says "Applications".
+- Countdowns: the server renders the state and the numbers at the cached moment; the browser ticks from there. A state change (open → closing soon → closed) appears within 10 minutes (`cacheLife('events')`), and the action re-checks before saving.
+- Phones: the ApplyBox follows the header, and a sticky bar keeps the deadline and "Apply now" on screen until the form is in view. It sits at the end of the page, so it never covers the footer.
+- `/upcoming/[slug]/calendar` serves the .ics file (UTC times, all-day events as dates); the Google Calendar link is built on the server.
 
 **Working rules while building**
 

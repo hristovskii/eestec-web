@@ -14,7 +14,7 @@ import { SLUG_MAX, slugify } from '@/shared/lib/slug';
 import type { Localized } from '@/shared/types/localized';
 
 import { eventTags } from '../cache-tags';
-import { eventsRepository, eventTaxonomyRepository } from '../data';
+import { eventsAdminRepository, eventTaxonomyRepository } from '../data';
 import {
   type EventDraftInput,
   eventDraftSchema,
@@ -84,7 +84,7 @@ export async function saveEvent(input: unknown): Promise<ActionResult<SaveEventR
   const { id, intent, autoSlug } = request.data;
 
   const session = await getSession();
-  const repo = await eventsRepository();
+  const repo = await eventsAdminRepository();
   const existing = id ? await repo.get(id) : null;
   if (id && !existing) return { ok: false, error: 'not_found' };
   // New events: create (not event managers, D18). Existing: edit; going live: publish.
