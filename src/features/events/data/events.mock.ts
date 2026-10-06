@@ -6,6 +6,7 @@ import { yearInSkopje } from '@/shared/i18n/format';
 import { resolveLocalized } from '@/shared/i18n/localized';
 
 import { eventTiming } from '../domain/event-timing';
+import { isListed, isReachable, toDetail, toLink, toSummary } from '../domain/public-event';
 import type { AdminEventRow, ApplicationsSummary, EventRecord, EventTopic, EventType } from '../types';
 import type { EventsRepository, EventTaxonomyRepository, TaxonomyKind } from './events.repository';
 import {
@@ -53,7 +54,72 @@ export function createMockEventsRepository(): EventsRepository {
     return type ? resolveLocalized(type.name, 'mk') : '—';
   };
 
+  const typeLocalized = (id: string) => db.types.find((candidate) => candidate.id === id)?.name ?? { mk: '' };
+  /** Listed past events, newest first. */
+  const archive = (now: Date) =>
+    db.events
+      .filter((event) => isListed(event, now) && eventTiming(event, now) === 'past')
+      .sort((a, b) => byStart(b, a));
+
   return {
+    listArchive(query) {
+      const context = { ...query, typeName: typeLocalized };
+      const needle = query.q?.toLocaleLowerCase(query.locale);
+      const rows = archive(query.now)
+        .filter(
+          (event) =>
+            event.scope === query.scope &&
+            (!query.typeId || event.typeId === query.typeId) &&
+            (!query.year || yearInSkopje(event.startsAt) === query.year),
+        )
+        .map((event) => toSummary(event, context))
+        .filter((summary) => !needle || summary.title.text.toLocaleLowerCase(query.locale).includes(needle));
+      const sorted =
+        query.sort === 'oldest'
+          ? [...rows].reverse()
+          : query.sort === 'title'
+            ? [...rows].sort((a, b) => a.title.text.localeCompare(b.title.text, query.locale))
+            : rows;
+      return Promise.resolve(paginate(sorted, query.page, query.pageSize));
+    },
+
+    archiveFacets({ now }) {
+      const past = archive(now);
+      const years = [...new Set(past.map((event) => yearInSkopje(event.startsAt)))].sort((a, b) => b - a);
+      return Promise.resolve({
+        counts: {
+          local: past.filter((event) => event.scope === 'local').length,
+          international: past.filter((event) => event.scope === 'international').length,
+        },
+        years,
+        firstYear: years.at(-1) ?? null,
+      });
+    },
+
+    findBySlug(slug, context) {
+      const event = db.events.find((candidate) => candidate.slug === slug);
+      return Promise.resolve(
+        event && isReachable(event, context.now)
+          ? toDetail(event, { ...context, typeName: typeLocalized })
+          : null,
+      );
+    },
+
+    findAdjacent(slug, { locale, now }) {
+      const event = db.events.find((candidate) => candidate.slug === slug);
+      if (!event) return Promise.resolve({ prev: null, next: null });
+      const others = archive(now).filter((other) => other.id !== event.id);
+      const start = Date.parse(event.startsAt);
+      // Archive order is newest first: "previous" is the next older one.
+      const prev = others.find((other) => Date.parse(other.startsAt) <= start) ?? null;
+      const next = [...others].reverse().find((other) => Date.parse(other.startsAt) > start) ?? null;
+      return Promise.resolve({ prev: prev && toLink(prev, locale), next: next && toLink(next, locale) });
+    },
+
+    archiveSlugs(now) {
+      return Promise.resolve(archive(now).map((event) => event.slug));
+    },
+
     listOptions() {
       return Promise.resolve(
         [...db.events]

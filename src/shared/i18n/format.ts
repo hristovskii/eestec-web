@@ -16,6 +16,17 @@ const presets = {
   dateTime: { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' },
   /** Sat 7 Nov, 10:00 */
   shortDateTime: { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' },
+  /** Sat 14 Nov 2026 */
+  dayDate: { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' },
+  /** Mon 9 Dec 2024, 18:00 */
+  dayDateTime: {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  },
   /** 18:00 */
   time: { hour: '2-digit', minute: '2-digit' },
 } satisfies Record<string, Intl.DateTimeFormatOptions>;
@@ -28,8 +39,9 @@ export function formatDate(date: Date | string, locale: Locale, preset: DatePres
     timeZone: TIME_ZONE,
     hourCycle: 'h23',
   }).format(typeof date === 'string' ? new Date(date) : date);
-  // Newer ICU writes "Sept" in en-GB; the design uses three-letter months ("30 Sep").
-  return locale === 'en' ? text.replace(/\bSept\b/, 'Sep') : text;
+  // Newer ICU writes "Sept" in en-GB; the design uses three-letter months ("30 Sep") and no comma
+  // after the weekday ("Mon 9 Dec 2024").
+  return locale === 'en' ? text.replace(/\bSept\b/, 'Sep').replace(/^([A-Z][a-z]{2}),/, '$1') : text;
 }
 
 /** Hour of the day in Skopje (0–23). */

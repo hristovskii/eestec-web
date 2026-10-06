@@ -22,7 +22,8 @@ test.describe('events list (M5a)', () => {
   }) => {
     test.skip(isMobile, 'table columns are checked on desktop; phones get cards');
     await signInAs(page, 'super-admin');
-    await page.goto('/admin/events');
+    // 50 rows: other tests add events that would push sample rows to page 2.
+    await page.goto('/admin/events?size=50');
     await expect(page.getByRole('heading', { level: 1, name: 'Events' })).toBeVisible();
     await expect(page.getByRole('link', { name: /^Upcoming \d+$/ })).toBeVisible();
 
@@ -36,7 +37,7 @@ test.describe('events list (M5a)', () => {
     await expect(row(page, 'Exchange: Kraków Winter Edition')).toContainText('External');
     await expect(row(page, 'New Year Social 2026')).toContainText('Draft');
     await expect(row(page, 'FEEIT Career Day 2026')).toContainText('Hidden');
-    await expect(page.getByText(/Showing 1–10 of \d+/)).toBeVisible();
+    await expect(page.getByText(/Showing 1–\d+ of \d+/)).toBeVisible();
 
     expect(await seriousViolations(page)).toEqual([]);
   });
@@ -59,25 +60,40 @@ test.describe('events list (M5a)', () => {
     await expect(page.getByText('Workshop: AI at the Edge').filter({ visible: true }).first()).toBeVisible();
   });
 
+  /** Duplicates a sample event (a draft copy) and returns the copy's address. */
+  async function duplicate(page: Page, slug: string, title: string) {
+    await page.goto(`/admin/events?q=${slug}`);
+    await row(page, title)
+      .first()
+      .getByRole('button', { name: /More actions/ })
+      .click();
+    await page.getByRole('menuitem', { name: 'Duplicate' }).click();
+    await expect(page).toHaveURL(/\/admin\/events\/ev-/);
+    return page.locator('[id^="e-ev-"][id$="-slug"]').inputValue();
+  }
+
   test('bulk publish checks each event; draft and publish change the status', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'changes shared sample data: run once (bulk actions are desktop)');
+    test.skip(isMobile, 'changes data: run once (bulk actions are desktop)');
     await signInAs(page, 'super-admin');
     const bulk = page.getByRole('region', { name: 'Bulk actions' });
 
-    await page.goto('/admin/events?q=power-grid-lecture');
+    // A copy of the lecture evening (a complete event), so the public sample stays as it is.
+    const copy = await duplicate(page, 'power-grid-lecture', 'Lecture evening');
+    await page.goto(`/admin/events?q=${copy}`);
     const lecture = row(page, 'Lecture evening');
-    await lecture.getByRole('checkbox').check();
-    await bulk.getByRole('button', { name: 'Move to draft' }).click();
-    await expect(page.getByText('Event moved to draft')).toBeVisible();
     await expect(lecture).toContainText('Draft');
     await lecture.getByRole('checkbox').check();
     await bulk.getByRole('button', { name: 'Publish' }).click();
     await expect(page.getByText('Event published')).toBeVisible();
     await expect(lecture).toContainText('Published');
+    await lecture.getByRole('checkbox').check();
+    await bulk.getByRole('button', { name: 'Move to draft' }).click();
+    await expect(page.getByText('Event moved to draft')).toBeVisible();
+    await expect(lecture).toContainText('Draft');
 
     // No short description: it can't go live (published or hidden) yet.
-    await page.goto('/admin/events?q=arduino');
-    const arduino = row(page, 'Local workshop: Arduino for Beginners');
+    await page.goto('/admin/events?q=arduino-beginners');
+    const arduino = row(page, 'Local workshop: Arduino for Beginners').first();
     await arduino.getByRole('checkbox').check();
     await bulk.getByRole('button', { name: 'Hide' }).click();
     await expect(page.getByText("“Local workshop: Arduino for Beginners” can't go live yet")).toBeVisible();
@@ -85,14 +101,15 @@ test.describe('events list (M5a)', () => {
   });
 
   test('deletes an event after typing DELETE', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'changes shared sample data: run once');
+    test.skip(isMobile, 'changes data: run once');
     await signInAs(page, 'super-admin');
-    await page.goto('/admin/events?q=embedded-rust');
-    await row(page, 'Intro to Embedded Rust')
+    const copy = await duplicate(page, 'embedded-rust-2025', 'Intro to Embedded Rust');
+    await page.goto(`/admin/events?q=${copy}`);
+    await row(page, 'Intro to Embedded Rust (copy)')
       .getByRole('button', { name: /More actions/ })
       .click();
     await page.getByRole('menuitem', { name: 'Delete' }).click();
-    const dialog = page.getByRole('alertdialog', { name: 'Delete “Intro to Embedded Rust”?' });
+    const dialog = page.getByRole('alertdialog', { name: 'Delete “Intro to Embedded Rust (copy)”?' });
     const confirm = dialog.getByRole('button', { name: 'Delete event' });
     await expect(confirm).toBeDisabled();
     await dialog.getByLabel(/Type DELETE/).fill('DELETE');

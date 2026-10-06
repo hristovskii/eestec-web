@@ -9,6 +9,8 @@ describe('formatDate', () => {
     expect(formatDate(canvasNow, 'en', 'long')).toBe('Sunday, 4 October 2026');
     expect(formatDate('2026-10-18T23:59:00+02:00', 'en', 'dateTime')).toBe('18 Oct 2026, 23:59');
     expect(formatDate('2026-09-30T12:40:00+02:00', 'en', 'shortDateTime')).toBe('Wed 30 Sep, 12:40');
+    expect(formatDate('2024-12-09T18:00:00+01:00', 'en', 'dayDateTime')).toBe('Mon 9 Dec 2024, 18:00');
+    expect(formatDate('2026-11-14T00:00:00+01:00', 'en', 'dayDate')).toBe('Sat 14 Nov 2026');
   });
 
   it('formats in Skopje time regardless of the server time zone', () => {
