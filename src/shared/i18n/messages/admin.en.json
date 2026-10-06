@@ -808,7 +808,8 @@
       "textOne": "This also removes its gallery and {applications, plural, =0 {its applications} one {<strong># application</strong>} other {<strong># applications</strong>}}. The photos stay in the Media library. This can't be undone.",
       "textMany": "This also removes their galleries and applications. The photos stay in the Media library. This can't be undone.",
       "confirmOne": "Delete event",
-      "confirmMany": "Delete events"
+      "confirmMany": "Delete events",
+      "exportFirst": "Export the {count, plural, one {# application} other {# applications}} first (CSV)"
     },
     "toasts": {
       "published": "{count, plural, one {Event published} other {# events published}}",
@@ -1002,6 +1003,10 @@
         "resultsOn": "Results by",
         "maxParticipants": "Max participants",
         "waitlist": "Waitlist when full",
+        "admission": "Admission",
+        "admissionSelection": "Selection: the board accepts applicants",
+        "admissionFirstCome": "First come, first served",
+        "admissionHelp": "First come: each application is accepted at once until the places are full, then the waitlist starts.",
         "formLater": "The application form builder comes with Applications.",
         "seoTitle": "Page title",
         "seoTitleHelp": "Empty: the event title.",
@@ -1093,6 +1098,124 @@
         "seoDescription": "SEO › description",
         "shareImage": "SEO › share image"
       }
+    }
+  },
+  "applications": {
+    "title": "Applications",
+    "description": "Applications sent through the forms on eestec.mk, per event.",
+    "descriptionOwn": "Applications for the events you manage.",
+    "tabs": {
+      "label": "Events",
+      "upcoming": "Upcoming",
+      "past": "Past"
+    },
+    "columns": {
+      "event": "Event",
+      "deadline": "Deadline",
+      "applications": "Applications",
+      "places": "Places",
+      "status": "Status"
+    },
+    "newCount": "{count} new",
+    "places": "{taken} / {max}",
+    "placesNoLimit": "{taken} accepted",
+    "noDeadline": "When it starts",
+    "view": "View",
+    "viewLabel": "View applications: {title}",
+    "phase": {
+      "off": "Applications off",
+      "opening_soon": "Opening soon",
+      "open": "Open",
+      "deadline_soon": "Closing soon",
+      "closed": "Closed",
+      "full_waitlist": "Full · waitlist",
+      "full": "Full"
+    },
+    "empty": {
+      "upcomingTitle": "No upcoming event takes applications",
+      "upcomingText": "Turn on applications in an event's edit form (Applications › Accept) to collect them here.",
+      "pastTitle": "No past applications",
+      "pastText": "Events that took applications on this site show up here after they end."
+    },
+    "event": {
+      "back": "All applications",
+      "summary": "{total, plural, one {# application} other {# applications}} · {accepted} accepted{max, select, none {} other { of {max} places}} · {waitlist} on the waitlist",
+      "admission": "{admission, select, first_come {First come, first served} other {Selection}}",
+      "editEvent": "Edit event",
+      "viewOnSite": "View on site",
+      "export": "Export CSV",
+      "emailAccepted": "E-mail accepted ({count})",
+      "emailAcceptedHelp": "Opens your e-mail app with the accepted applicants in Bcc.",
+      "overLimit": "{accepted} accepted for {max} places: {count, plural, one {# more} other {# more}} than the event has.",
+      "tabs": {
+        "label": "Statuses",
+        "all": "All",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "waitlist": "Waitlist",
+        "rejected": "Rejected"
+      },
+      "filters": {
+        "search": "Search applications",
+        "searchPlaceholder": "Name, e-mail or reference",
+        "sort": "Sort",
+        "newest": "Newest first",
+        "oldest": "Oldest first",
+        "name": "Name A–Z",
+        "waitlist": "Waitlist order"
+      },
+      "columns": {
+        "applicant": "Applicant",
+        "reference": "Reference",
+        "submitted": "Submitted",
+        "status": "Status"
+      },
+      "new": "New",
+      "waitlistPosition": "Waitlist #{position}",
+      "open": "Open",
+      "openLabel": "Open the application of {name}",
+      "bulk": {
+        "accept": "Accept",
+        "waitlist": "Waitlist",
+        "reject": "Reject",
+        "pending": "Back to pending"
+      },
+      "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "waitlist": "Waitlist",
+        "rejected": "Rejected"
+      },
+      "empty": {
+        "noneTitle": "No applications yet",
+        "noneText": "Applications sent through the form on the event page appear here.",
+        "filteredTitle": "No applications match",
+        "filteredText": "Try another status or search.",
+        "clear": "Clear search"
+      },
+      "toasts": {
+        "changed": "{count, plural, one {Application moved} other {# applications moved}} to {status}",
+        "unchanged": "Nothing changed: they already have that status.",
+        "forbidden": "You can only change applications for the events you manage.",
+        "unexpected": "Something went wrong. Please try again."
+      }
+    },
+    "detail": {
+      "title": "Application {reference}",
+      "submitted": "Submitted {date}",
+      "language": "Language",
+      "languages": {
+        "mk": "Macedonian",
+        "en": "English"
+      },
+      "email": "E-mail",
+      "answers": "Answers",
+      "noAnswer": "—",
+      "download": "Download {name} ({size})",
+      "yes": "Yes",
+      "status": "Status",
+      "setStatus": "Change status",
+      "consent": "Agreed to the processing of personal data on {date}."
     }
   }
 }

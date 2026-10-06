@@ -8,7 +8,7 @@ The website of EESTEC LC Skopje (eestec.mk): a public site, member accounts (Pha
 
 ## Sources of truth (read before changing anything)
 
-0. `docs/ARCHITECTURE.md`: the approved architecture, folder rules, milestones and the decisions log (§9, D1–D21). It overrides everything below where they differ.
+0. `docs/ARCHITECTURE.md`: the approved architecture, folder rules, milestones and the decisions log (§9, D1–D22). It overrides everything below where they differ.
 1. `specs/00-overview-and-design-system.md` … `specs/11-admin-panel.md` (the original specs)
 2. `handoff/docs/rules-and-settings.md` (decisions made during design; they override the specs where they differ)
 3. `handoff/docs/routes.md`, `handoff/docs/components.md`, `handoff/docs/data-model.md`, `handoff/supabase/schema.sql`
@@ -35,7 +35,7 @@ The website of EESTEC LC Skopje (eestec.mk): a public site, member accounts (Pha
 ## Decided behaviour (summary — full list in rules-and-settings.md)
 
 - Events and Upcoming Events are one table. `/upcoming/[slug]` → 301 to `/events/[slug]` after the end date.
-- "Deadline soon" 72 h and "Just ended" 14 days are admin settings. Waitlist on/off and max participants per event.
+- "Deadline soon" 72 h and "Just ended" 14 days are admin settings. Waitlist on/off, max participants and admission (Selection / First come, D22) per event.
 - Roles: Super admin / Editor / Event manager (own events + their applications only) / Member.
 - Security: 2-step login required for super admins; 5 failed log-ins → 15-minute pause; reset links 30 min; confirmation links 24 h.
 - Member sign-up → confirm e-mail → board approval. Default visibility "Members only", enforced by RLS.

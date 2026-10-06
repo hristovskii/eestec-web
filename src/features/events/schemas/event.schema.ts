@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { SLUG_MAX, SLUG_PATTERN } from '@/shared/lib/slug';
 
-import { CONTENT_STATUSES, EVENT_SCOPES } from '../types';
+import { ADMISSION_MODES, CONTENT_STATUSES, EVENT_SCOPES } from '../types';
 
 // Two schemas per entity (docs/ARCHITECTURE.md §7): the draft schema is lenient ("Save draft
 // always works": only shapes and lengths), the publish schema adds what the public page needs.
@@ -92,6 +92,7 @@ export const eventDraftSchema = z.object({
     resultsOn: day.nullable(),
     maxParticipants: z.number().int('number').min(1, 'number').max(10_000, 'number').nullable(),
     waitlist: z.boolean(),
+    admission: z.enum(ADMISSION_MODES).default('selection'),
   }),
   seo: z.object({
     title: localized(EVENT_LIMITS.seoTitle),

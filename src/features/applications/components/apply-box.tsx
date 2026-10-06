@@ -108,6 +108,13 @@ export function ApplyBox({
       case 'deadline_soon': {
         if (external) return t('externalTip');
         const max = state.places?.max;
+        if (state.admission === 'first_come')
+          return [
+            max ? t('placesLeft', { count: Math.max(0, max - state.places!.taken) }) : null,
+            t('firstCome'),
+          ]
+            .filter(Boolean)
+            .join(' · ');
         return (
           [
             max ? t('places', { count: max }) : null,

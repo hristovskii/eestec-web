@@ -8,7 +8,7 @@ import { now } from '@/shared/lib/now';
 
 import { exportAdminEvents } from './queries';
 import { adminEventsParamsSchema } from './schemas/admin-events-params.schema';
-import type { AdminEventRow } from './types';
+import type { AdminEventRow, ApplicationCountsLoader } from './types';
 
 const COLUMNS: CsvColumn<AdminEventRow>[] = [
   { header: 'Title', value: (row) => row.title },
@@ -32,11 +32,14 @@ const COLUMNS: CsvColumn<AdminEventRow>[] = [
 ];
 
 /** Admin › Events › Export CSV: the rows matching the list's filters (event managers: their own). */
-export async function eventsCsvResponse(searchParams: URLSearchParams): Promise<Response> {
+export async function eventsCsvResponse(
+  searchParams: URLSearchParams,
+  loadCounts?: ApplicationCountsLoader,
+): Promise<Response> {
   const session = await authorize('view', 'events');
   if (!session) return new Response('Forbidden', { status: 403 });
   const params = adminEventsParamsSchema.parse(Object.fromEntries(searchParams));
-  const rows = await exportAdminEvents(session, params);
+  const rows = await exportAdminEvents(session, params, loadCounts);
   await recordActivity(session, {
     action: 'exported',
     area: 'events',

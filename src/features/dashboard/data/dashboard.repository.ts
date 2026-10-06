@@ -1,6 +1,6 @@
-import type { DashboardData } from '../types';
+import type { DashboardSummary } from '../types';
 
-/** Admin dashboard summary. Event managers get only their own events (D18). */
+/** Admin dashboard summary. Event managers see no approvals (D18). */
 export interface DashboardRepository {
-  getDashboard(query: { eventIds?: readonly string[] }): Promise<DashboardData>;
+  getDashboard(query: { own: boolean }): Promise<DashboardSummary>;
 }

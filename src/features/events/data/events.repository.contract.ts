@@ -55,6 +55,7 @@ export const eventInput = (patch: Partial<EventInput> = {}): EventInput => ({
     resultsOn: null,
     maxParticipants: 24,
     waitlist: true,
+    admission: 'selection',
   },
   seo: { title: { mk: '' }, description: { mk: '' }, shareImageId: null },
   ...patch,

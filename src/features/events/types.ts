@@ -33,6 +33,14 @@ export type EventImage = { mediaId: string; alt: string | null; credit?: string 
 
 export type ApplyVia = 'form' | 'external';
 
+/**
+ * Who gets a place (D22). selection: the board accepts applicants after reading them (places =
+ * accepted applications). first_come: each application is accepted at once while places are free,
+ * then the waitlist starts.
+ */
+export const ADMISSION_MODES = ['selection', 'first_come'] as const;
+export type Admission = (typeof ADMISSION_MODES)[number];
+
 /** One day of the programme ("Day 3 · Mon 9 Nov · Lab: models on microcontrollers"). */
 export type AgendaItem = {
   id: string;
@@ -54,6 +62,7 @@ export type EventApplicationSettings = {
   resultsOn: string | null;
   maxParticipants: number | null;
   waitlist: boolean;
+  admission: Admission;
 };
 
 /** The full event as the admin edits it (write model; texts in both languages, D8). */
@@ -108,7 +117,7 @@ export type EventRecord = {
   updatedBy: EventEditor;
 };
 
-/** Applications column: a count (M7 replaces the sample numbers), "External" or "—". */
+/** Applications column: a count, "External" or "—". */
 export type ApplicationsSummary =
   { kind: 'none' } | { kind: 'external' } | { kind: 'count'; count: number; full: boolean };
 
@@ -127,9 +136,19 @@ export type AdminEventRow = {
   status: ContentStatus;
   cover: { mediaId: string; alt: string | null } | null;
   applications: ApplicationsSummary;
+  /** What the applications feature counts with (places, form or external). */
+  applicationSettings: EventApplicationSettings;
   updatedAt: string;
   updatedBy: EventEditor;
 };
+
+/**
+ * Application numbers per event, from the applications feature: the admin routes pass it in, so
+ * events doesn't depend on applications (which depends on events).
+ */
+export type ApplicationCountsLoader = (
+  rows: readonly Pick<AdminEventRow, 'id' | 'applicationSettings'>[],
+) => Promise<Record<string, { count: number; full: boolean }>>;
 
 export type AdminEventCounts = { all: number; upcoming: number; past: number };
 

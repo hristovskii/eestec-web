@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
+import { applicationCounts } from '@/features/applications/server';
 import { accessTo, can } from '@/features/auth';
 import { requirePermission } from '@/features/auth/server';
 import { adminEventsParamsSchema } from '@/features/events';
@@ -13,7 +14,7 @@ export const metadata: Metadata = { title: 'Events' };
 async function Events({ searchParams }: { searchParams: PageProps<'/admin/events'>['searchParams'] }) {
   const session = await requirePermission('view', 'events');
   const params = adminEventsParamsSchema.parse(await searchParams);
-  const { page, years, types, covers } = await listAdminEvents(session, params);
+  const { page, years, types, covers } = await listAdminEvents(session, params, applicationCounts);
   return (
     <EventsAdminList
       page={page}

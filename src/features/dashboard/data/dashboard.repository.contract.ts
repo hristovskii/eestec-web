@@ -7,19 +7,14 @@ export function describeDashboardRepository(
   create: () => DashboardRepository | Promise<DashboardRepository>,
 ) {
   describe(`DashboardRepository (${name})`, () => {
-    it('returns everything for editors and super admins', async () => {
-      const data = await (await create()).getDashboard({});
-      expect(data.openEvents.length).toBeGreaterThan(0);
-      expect(data.counters.openEventApplications.events).toBe(data.openEvents.length);
+    it('returns the counters and pending approvals for editors and super admins', async () => {
+      const data = await (await create()).getDashboard({ own: false });
+      expect(data.pending.length).toBeGreaterThan(0);
+      expect(data.counters.membershipApplications.count).toBeGreaterThanOrEqual(0);
     });
 
-    it('limits event managers to their own events and hides approvals', async () => {
-      const repo = await create();
-      const all = await repo.getDashboard({});
-      const first = all.openEvents[0]!;
-      const own = await repo.getDashboard({ eventIds: [first.eventId] });
-      expect(own.openEvents.map((row) => row.eventId)).toEqual([first.eventId]);
-      expect(own.counters.openEventApplications.total).toBe(first.total);
+    it('hides approvals from event managers', async () => {
+      const own = await (await create()).getDashboard({ own: true });
       expect(own.pending).toEqual([]);
     });
   });

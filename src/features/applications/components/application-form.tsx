@@ -160,10 +160,18 @@ export function ApplicationForm({
 
   if (receipt) {
     const onWaitlist = receipt.status === 'waitlist';
+    const accepted = receipt.status === 'accepted';
+    const strong = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
     return (
       <div ref={successRef} tabIndex={-1} className="outline-none">
         <FormSuccess
-          title={onWaitlist ? t('success.titleWaitlist') : t('success.title')}
+          title={
+            onWaitlist
+              ? t('success.titleWaitlist')
+              : accepted
+                ? t('success.titleAccepted')
+                : t('success.title')
+          }
           detailsLayout="columns"
           details={[
             { label: t('success.event'), value: eventTitle },
@@ -185,21 +193,13 @@ export function ApplicationForm({
                   name: receipt.firstName,
                   email: receipt.email,
                   position: receipt.waitlistPosition ?? 1,
-                  strong: (chunks) => <strong>{chunks}</strong>,
+                  strong,
                 })
-              : t.rich('success.text', {
-                  name: receipt.firstName,
-                  email: receipt.email,
-                  strong: (chunks) => <strong>{chunks}</strong>,
-                })}
-            {!onWaitlist && resultsBy && (
-              <>
-                {' '}
-                {t.rich('success.results', {
-                  date: resultsBy,
-                  strong: (chunks) => <strong>{chunks}</strong>,
-                })}
-              </>
+              : accepted
+                ? t.rich('success.acceptedText', { name: receipt.firstName, email: receipt.email, strong })
+                : t.rich('success.text', { name: receipt.firstName, email: receipt.email, strong })}
+            {receipt.status === 'pending' && resultsBy && (
+              <> {t.rich('success.results', { date: resultsBy, strong })}</>
             )}
           </p>
         </FormSuccess>

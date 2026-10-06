@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { getMediaItems } from '@/features/media/server';
 
 import { eventDraftSchema, publishIssues } from '../../schemas/event.schema';
-import { eventsFixture, eventTopicsFixture, eventTypesFixture, sampleApplicationCounts } from './events';
+import { eventsFixture, eventTopicsFixture, eventTypesFixture } from './events';
 
 // The sample events are one consistent dataset (docs/ARCHITECTURE.md §4.2).
 
@@ -32,8 +32,6 @@ describe('events fixture', () => {
     ]);
     const found = new Set((await getMediaItems(mediaIds)).map((item) => item.id));
     expect(mediaIds.filter((id) => !found.has(id))).toEqual([]);
-    const eventIds = new Set(eventsFixture.map((event) => event.id));
-    expect(Object.keys(sampleApplicationCounts).filter((id) => !eventIds.has(id))).toEqual([]);
   });
 
   it('lacks only texts the canvas never gives', () => {

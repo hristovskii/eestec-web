@@ -30,8 +30,8 @@ import type { AnswerValue } from '../types';
 export type ApplicationReceipt = {
   reference: string;
   submittedAt: string;
-  /** Pending, or on the waitlist (all places taken). */
-  status: 'pending' | 'waitlist';
+  /** Pending (selection), accepted (first come) or on the waitlist (all places taken). */
+  status: 'pending' | 'accepted' | 'waitlist';
   waitlistPosition: number | null;
   firstName: string;
   email: string;
@@ -109,6 +109,7 @@ export async function submitApplication(data: FormData): Promise<ActionResult<Ap
       eventStartsAt: event.startsAt,
       maxParticipants: event.applications.maxParticipants,
       waitlist: event.applications.waitlist,
+      admission: event.applications.admission,
     },
     now(),
   );
@@ -122,7 +123,7 @@ export async function submitApplication(data: FormData): Promise<ActionResult<Ap
   return ok({
     reference: application.reference,
     submittedAt: application.createdAt,
-    status: application.status === 'waitlist' ? 'waitlist' : 'pending',
+    status: application.status === 'rejected' ? 'pending' : application.status,
     waitlistPosition: application.waitlistPosition,
     firstName: application.name.split(/\s+/)[0] ?? application.name,
     email: application.email,

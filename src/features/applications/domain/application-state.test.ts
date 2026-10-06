@@ -14,6 +14,7 @@ const applications = (patch: Partial<EventApplicationSettings> = {}): EventAppli
   resultsOn: '2026-10-25',
   maxParticipants: 24,
   waitlist: true,
+  admission: 'selection',
   ...patch,
 });
 const event = (patch: Partial<EventApplicationSettings> = {}, startsAt = '2026-11-07T10:00:00+01:00') => ({
@@ -97,6 +98,15 @@ describe('applicationState', () => {
     expect(closed).toMatchObject({ phase: 'full', canApply: false });
     // No limit: never full.
     expect(phase(event({ maxParticipants: null }), now, settings, { taken: 500, waitlist: 0 })).toBe('open');
+  });
+
+  it('first come: queues newcomers behind the waitlist even when a place is free (D22)', () => {
+    const now = at('2026-10-04T18:18+02:00');
+    const e = event({ maxParticipants: 20, admission: 'first_come' });
+    expect(phase(e, now, settings, { taken: 19, waitlist: 0 })).toBe('open');
+    expect(phase(e, now, settings, { taken: 19, waitlist: 2 })).toBe('full_waitlist');
+    // Selection: the board decides, so a free place means open.
+    expect(phase(event({ maxParticipants: 20 }), now, settings, { taken: 19, waitlist: 2 })).toBe('open');
   });
 
   it('follows the same dates for external applications, which are never full and never use the form', () => {

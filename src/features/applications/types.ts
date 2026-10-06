@@ -1,3 +1,4 @@
+import type { Admission } from '@/features/events';
 import type { Localized } from '@/shared/types/localized';
 
 // Event applications (docs/ARCHITECTURE.md §3): per-event form definitions, the applications sent
@@ -74,6 +75,8 @@ export type Application = {
   locale: 'mk' | 'en';
   consentAt: string;
   createdAt: string;
+  /** First opened in the admin; null = "new" (dashboard and the list). */
+  readAt: string | null;
 };
 
 /** What a public form submission creates (the repository sets id, reference, status, position). */
@@ -84,7 +87,44 @@ export type ApplicationInput = Pick<Application, 'eventId' | 'name' | 'email' | 
   /** Places of the event: when they are all taken, the application joins the waitlist. */
   maxParticipants: number | null;
   waitlist: boolean;
+  /** First come: accepted at once while places are free and nobody is waiting (D22). */
+  admission: Admission;
 };
 
 /** Places per event: accepted applications fill them; the waitlist is counted separately. */
 export type Availability = { taken: number; waitlist: number };
+
+// ─── Admin (Applications list) ───
+
+/** One row of /admin/applications?event= (the answers are in the detail). */
+export type ApplicationRow = Pick<
+  Application,
+  'id' | 'eventId' | 'reference' | 'name' | 'email' | 'status' | 'waitlistPosition' | 'createdAt' | 'readAt'
+>;
+
+export type ApplicationSort = 'newest' | 'oldest' | 'name' | 'waitlist';
+
+export type ApplicationsQuery = {
+  eventId: string;
+  status?: ApplicationStatus;
+  /** Name, e-mail or reference. */
+  q?: string;
+  sort: ApplicationSort;
+  page: number;
+  pageSize: number;
+};
+
+/** Tab counts of one event's list (they ignore the status filter, not the search). */
+export type StatusCounts = Record<ApplicationStatus | 'all', number>;
+
+/** Per event, for the overview, the Events list and the dashboard. */
+export type ApplicationsSummary = {
+  eventId: string;
+  total: number;
+  /** Not opened in the admin yet. */
+  newCount: number;
+  byStatus: Record<ApplicationStatus, number>;
+};
+
+/** A stored upload with its content (admin download only). */
+export type StoredUpload = ApplicationFile & { type: string; bytes: Uint8Array };
