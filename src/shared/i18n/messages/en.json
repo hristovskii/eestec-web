@@ -76,6 +76,23 @@
       "starLabel": "{stars} of 5: {label}",
       "selected": "{stars} of 5 · {label}",
       "notRated": "Not rated"
+    },
+    "lightbox": {
+      "position": "Photo {index} of {count}",
+      "positionShort": "{index} / {count}",
+      "close": "Close gallery",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "thumb": "Photo {index}",
+      "swipe": "Swipe to browse",
+      "credit": "Photo: {credit}",
+      "open": "Open photo: {caption}",
+      "more": "+{count}",
+      "morePhotos": "more photos",
+      "moreShort": "more",
+      "openMore": "Open gallery, {count} more photos",
+      "viewAll": "View all {count} photos",
+      "labelPrefix": "Photo gallery:"
     }
   },
   "nav": {
@@ -122,5 +139,99 @@
   "privacy": {
     "placeholderTitle": "Placeholder text",
     "placeholderText": "The board has not supplied the privacy policy yet. This page shows placeholder text until then."
+  },
+  "events": {
+    "title": "Events",
+    "lead": "Every workshop, exchange, training and social LC Skopje has organized or joined: {count, plural, one {# event} other {# events}} since {year}.",
+    "upcomingLink": "Upcoming Events",
+    "tabs": {
+      "label": "Event category",
+      "local": "Local Events",
+      "international": "International Events",
+      "localShort": "Local",
+      "internationalShort": "International"
+    },
+    "scopes": {
+      "local": "Local",
+      "international": "International"
+    },
+    "filters": {
+      "search": "Search events by title",
+      "searchPlaceholder": "Search events by title",
+      "searchPlaceholderShort": "Search events",
+      "year": "Year",
+      "allYears": "All years",
+      "sort": "Sort",
+      "newest": "Newest first",
+      "oldest": "Oldest first",
+      "title": "Title A–Z",
+      "types": "Filter by type",
+      "allTypes": "All types",
+      "open": "Filters",
+      "openCount": "Filters, {count} active",
+      "close": "Close filters",
+      "typeLegend": "Event type",
+      "yearLegend": "Year",
+      "clear": "Clear",
+      "show": "{count, plural, =0 {No events} one {Show # event} other {Show # events}}"
+    },
+    "results": {
+      "showing": "Showing <strong>{from}–{to}</strong> of <strong>{total}</strong> {scope, select, local {local events} other {international events}}",
+      "found": "<strong>{count}</strong> {scope, select, local {local events} other {international events}} found",
+      "loading": "Loading events…",
+      "searchTag": "“{query}”",
+      "clearAll": "Clear all"
+    },
+    "empty": {
+      "title": "No events match your search",
+      "text": "We couldn't find {scope, select, local {a local} other {an international}}{type, select, none {} other { {type}}} event{query, select, none {} other { called “{query}”}}{year, select, none {} other { in {year}}}. Try another year or type, or clear the filters.",
+      "clear": "Clear all filters",
+      "otherTab": "Search {scope, select, local {Local} other {International}} Events",
+      "upcoming": "Or see what's coming up next →",
+      "noneTitle": "No {scope, select, local {local} other {international}} events in the archive yet",
+      "noneText": "Events show up here after their end date."
+    },
+    "card": {
+      "view": "View event",
+      "organized": "Organized by LC Skopje",
+      "justEnded": "Just ended",
+      "date": "Date",
+      "place": "Place"
+    },
+    "detail": {
+      "eventDetails": "Event details",
+      "date": "Date",
+      "dates": "Dates",
+      "location": "Location",
+      "type": "Type",
+      "organizedBy": "Organized by",
+      "participants": "Participants",
+      "lcSkopje": "LC Skopje",
+      "datesValue": "{range} · {days, plural, one {# day} other {# days}}",
+      "participantsValue": "{count, plural, one {# participant} other {# students}}{countries, plural, =0 {} one { from # country} other { from # countries}}",
+      "about": "About this event",
+      "video": "Aftermovie",
+      "playVideo": "Play video: {title}",
+      "gallery": "Photo gallery",
+      "photos": "{count, plural, one {# photo} other {# photos}}",
+      "infoPack": "Info pack (PDF, {size})",
+      "back": "← Back to {scope, select, local {Local} other {International}} Events",
+      "backShort": "← {scope, select, local {Local} other {International}} Events",
+      "endedTitle": "This event ended on {date}",
+      "endedThanks": "Thanks to all {count} participants.",
+      "endedArchive": "Applications are closed and the event is now part of the archive.",
+      "endedPhotos": "Photos and the aftermovie will appear here once the organizers upload them.",
+      "shareImpression": "Were you there? Share your impression",
+      "shareShort": "Share your impression",
+      "seeNext": "See what's next",
+      "wereYouThere": "Were you there?",
+      "wereYouThereText": "Share a photo or a few words. Approved stories show up here and in Memories.",
+      "moreEvents": "More events",
+      "previous": "Previous event",
+      "next": "Next event",
+      "newest": "This is the newest event in the archive",
+      "newestShort": "Newest event in the archive",
+      "seeUpcoming": "See upcoming events →"
+    }
   }
 }

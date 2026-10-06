@@ -76,6 +76,23 @@
       "starLabel": "{stars} од 5: {label}",
       "selected": "{stars} од 5 · {label}",
       "notRated": "Без оценка"
+    },
+    "lightbox": {
+      "position": "Фотографија {index} од {count}",
+      "positionShort": "{index} / {count}",
+      "close": "Затвори галерија",
+      "previous": "Претходна фотографија",
+      "next": "Следна фотографија",
+      "thumb": "Фотографија {index}",
+      "swipe": "Повлечете за да прелистувате",
+      "credit": "Фото: {credit}",
+      "open": "Отвори фотографија: {caption}",
+      "more": "+{count}",
+      "morePhotos": "уште фотографии",
+      "moreShort": "уште",
+      "openMore": "Отвори галерија, уште {count} фотографии",
+      "viewAll": "Види ги сите {count} фотографии",
+      "labelPrefix": "Фотогалерија:"
     }
   },
   "nav": {
@@ -122,5 +139,99 @@
   "privacy": {
     "placeholderTitle": "Привремен текст",
     "placeholderText": "Одборот сè уште ја нема доставено политиката за приватност. До тогаш оваа страница прикажува привремен текст."
+  },
+  "events": {
+    "title": "Настани",
+    "lead": "Секоја работилница, размена, обука и дружење што LC Skopje ги организирал или на кои учествувал: {count, plural, one {# настан} other {# настани}} од {year} година.",
+    "upcomingLink": "Претстојни настани",
+    "tabs": {
+      "label": "Категорија на настани",
+      "local": "Локални настани",
+      "international": "Меѓународни настани",
+      "localShort": "Локални",
+      "internationalShort": "Меѓународни"
+    },
+    "scopes": {
+      "local": "Локален",
+      "international": "Меѓународен"
+    },
+    "filters": {
+      "search": "Пребарај настани по наслов",
+      "searchPlaceholder": "Пребарај настани по наслов",
+      "searchPlaceholderShort": "Пребарај настани",
+      "year": "Година",
+      "allYears": "Сите години",
+      "sort": "Подреди",
+      "newest": "Најнови прво",
+      "oldest": "Најстари прво",
+      "title": "Наслов А–Ш",
+      "types": "Филтрирај по вид",
+      "allTypes": "Сите видови",
+      "open": "Филтри",
+      "openCount": "Филтри, {count} активни",
+      "close": "Затвори филтри",
+      "typeLegend": "Вид на настан",
+      "yearLegend": "Година",
+      "clear": "Исчисти",
+      "show": "{count, plural, =0 {Нема настани} one {Прикажи # настан} other {Прикажи # настани}}"
+    },
+    "results": {
+      "showing": "Прикажани <strong>{from}–{to}</strong> од <strong>{total}</strong> {scope, select, local {локални настани} other {меѓународни настани}}",
+      "found": "Пронајдени <strong>{count}</strong> {scope, select, local {локални настани} other {меѓународни настани}}",
+      "loading": "Се вчитуваат настаните…",
+      "searchTag": "„{query}“",
+      "clearAll": "Исчисти сè"
+    },
+    "empty": {
+      "title": "Нема настани што одговараат на пребарувањето",
+      "text": "Не најдовме {scope, select, local {локален} other {меѓународен}}{type, select, none {} other { настан од видот {type}}}{type, select, none { настан} other {}}{query, select, none {} other { со наслов „{query}“}}{year, select, none {} other { во {year}}}. Обидете се со друга година или вид, или исчистете ги филтрите.",
+      "clear": "Исчисти ги сите филтри",
+      "otherTab": "Пребарај {scope, select, local {локални} other {меѓународни}} настани",
+      "upcoming": "Или видете што следува →",
+      "noneTitle": "Сè уште нема {scope, select, local {локални} other {меѓународни}} настани во архивата",
+      "noneText": "Настаните се појавуваат тука по нивниот краен датум."
+    },
+    "card": {
+      "view": "Види настан",
+      "organized": "Организира LC Skopje",
+      "justEnded": "Штотуку заврши",
+      "date": "Датум",
+      "place": "Место"
+    },
+    "detail": {
+      "eventDetails": "Детали за настанот",
+      "date": "Датум",
+      "dates": "Датуми",
+      "location": "Локација",
+      "type": "Вид",
+      "organizedBy": "Организатор",
+      "participants": "Учесници",
+      "lcSkopje": "LC Skopje",
+      "datesValue": "{range} · {days, plural, one {# ден} other {# дена}}",
+      "participantsValue": "{count, plural, one {# учесник} other {# студенти}}{countries, plural, =0 {} one { од # држава} other { од # држави}}",
+      "about": "За настанот",
+      "video": "Видео од настанот",
+      "playVideo": "Пушти видео: {title}",
+      "gallery": "Фотогалерија",
+      "photos": "{count, plural, one {# фотографија} other {# фотографии}}",
+      "infoPack": "Информативен пакет (PDF, {size})",
+      "back": "← Назад кон {scope, select, local {локалните} other {меѓународните}} настани",
+      "backShort": "← {scope, select, local {Локални} other {Меѓународни}} настани",
+      "endedTitle": "Овој настан заврши на {date}",
+      "endedThanks": "Благодариме на сите {count} учесници.",
+      "endedArchive": "Пријавувањето е затворено и настанот сега е дел од архивата.",
+      "endedPhotos": "Фотографиите и видеото ќе се појават тука штом организаторите ги прикачат.",
+      "shareImpression": "Бевте таму? Споделете впечаток",
+      "shareShort": "Споделете впечаток",
+      "seeNext": "Видете што следува",
+      "wereYouThere": "Бевте таму?",
+      "wereYouThereText": "Споделете фотографија или неколку зборови. Одобрените приказни се појавуваат тука и во Спомени.",
+      "moreEvents": "Други настани",
+      "previous": "Претходен настан",
+      "next": "Следен настан",
+      "newest": "Ова е најновиот настан во архивата",
+      "newestShort": "Најнов настан во архивата",
+      "seeUpcoming": "Видете ги претстојните настани →"
+    }
   }
 }

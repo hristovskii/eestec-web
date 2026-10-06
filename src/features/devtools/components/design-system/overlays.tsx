@@ -3,6 +3,7 @@
 import { LogOut, PenLine, Shield, User } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { GalleryGrid } from '@/shared/ui/gallery';
 import { Notice } from '@/shared/ui/notice';
 import {
   Accordion,
@@ -38,6 +39,24 @@ import {
 } from '@/shared/ui/primitives/sheet';
 
 import { DsLabel, DsSection } from './ds-section';
+
+// SAMPLE DATA from handoff/design-source/EventDetail.dc.html and Lightbox.dc.html (captions).
+const GALLERY = [
+  'Opening session at FEEIT',
+  'High-voltage lab day',
+  'Solar plant visit',
+  'Grid simulation challenge',
+  'Team presentations',
+  'International night',
+  'Ohrid old town walk',
+  'Closing ceremony',
+  'Group photo',
+].map((caption) => ({
+  sample: true as const,
+  caption,
+  alt: caption,
+  ...(caption === 'Team presentations' ? { credit: 'Ana Trajkovska' } : {}),
+}));
 
 export function OverlaysSection() {
   return (
@@ -163,6 +182,10 @@ export function OverlaysSection() {
             </AccordionItem>
           </Accordion>
         </div>
+      </div>
+      <div className="flex flex-col gap-3">
+        <DsLabel>Gallery grid + lightbox (9 photos: 7 + “+2 more”; arrows, swipe, Esc)</DsLabel>
+        <GalleryGrid photos={GALLERY} title="Power Up — Renewable Grids" />
       </div>
     </DsSection>
   );

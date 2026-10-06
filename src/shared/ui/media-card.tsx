@@ -23,6 +23,8 @@ type MediaCardProps = {
   children?: React.ReactNode;
   /** Heading level inside lists (h2 when the list has no section heading). */
   headingLevel?: 'h2' | 'h3';
+  /** Language of the title when it falls back to Macedonian on an English page. */
+  titleLang?: string;
 };
 
 /**
@@ -40,6 +42,7 @@ export function MediaCard({
   chips,
   children,
   headingLevel = 'h3',
+  titleLang,
 }: MediaCardProps) {
   const Heading = headingLevel;
   return (
@@ -59,7 +62,10 @@ export function MediaCard({
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
         {chips && <div className="flex flex-wrap gap-1.5">{chips}</div>}
-        <Heading className="line-clamp-2 text-[20px] leading-[1.3] font-bold group-hover:text-brand-dark">
+        <Heading
+          lang={titleLang}
+          className="line-clamp-2 text-[20px] leading-[1.3] font-bold group-hover:text-brand-dark"
+        >
           {title}
         </Heading>
         {children}

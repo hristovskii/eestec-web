@@ -16,6 +16,7 @@ export type SampleMedia = {
   /** The canvas caption, e.g. "participants in a group exercise". */
   caption: string;
   alt: string;
+  credit?: string;
 };
 
 export type AnyMedia = Media | SampleMedia;

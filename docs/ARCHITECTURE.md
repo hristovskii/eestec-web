@@ -819,6 +819,29 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Not built yet: Preview (needs the public pages, M6), Crop (needs real image processing, backend phase), "Edit application form" (M7) and event partners (M11). The aside isn't sticky, because with Applications open it is taller than a laptop screen.
 - `SettingsPanel` / `SwitchRow` moved to `shared/admin-ui/form-section.tsx` (`FormSection`, `SwitchRow`, `EditFormLayout`). The admin lab shows the new field patterns.
 
+**Notes from building (M6)**
+
+- `/events` lists past events that are **listed**: published, and past their "Publish on". Hidden events open by link only; drafts are 404.
+  - Tabs are Local / International (no "All", as on the canvas).
+  - Type chips use a slug of the type's Macedonian name (`?type=competition`), so URLs are the same in both languages.
+  - The page header is prerendered; the list reads the URL inside `<Suspense>` behind the designed loading state.
+  - On phones, type and year sit in a bottom sheet. Its chips are links, so the results and "Show N events" update behind it.
+- Public reads go through `features/events/public-queries.ts` (`'use cache'`, tag `events` / `event:<slug>`, `cacheLife('events')`). Every admin save already calls `updateTag`.
+  - Write models map to read models in one shared, pure place (`domain/public-event.ts`), so Supabase will render the same.
+  - Images without alt text never reach a public page.
+- Event page:
+  - The description's first heading becomes the section title ("About the workshop" / "About the lecture"). That is how the canvas content is written.
+  - Mobile shows the same description as desktop (the canvas has a separate shorter text; one content, D8).
+  - The video loads only when played (privacy-enhanced YouTube / Vimeo; no request before).
+  - The info pack is a download button in the details panel.
+  - Previous / next follow the archive by start date across both categories. The newest one links to Upcoming.
+  - "Just ended" (Settings › Events days) shows the ended box. Its "Share your impression" button, and "Were you there?", only show with Phase 2.
+  - Event partners arrive with sponsors (M11), Memories from this event with M17.
+- An event that hasn't ended redirects from `/events/<slug>` to `/upcoming/<slug>` (built in M7). Old addresses of published events are a real 301 in the proxy (`findEventRedirect`, only for `/events/<slug>` paths).
+- Next 16 keeps hidden copies of previous pages mounted, so e2e tests target visible elements and regions.
+- The events repository now has 15 methods (past the "about a dozen" in §4.1). It is split into public and admin interfaces when M7 adds the upcoming list.
+- Off-token lightbox greys (#141414, #2a2a2a) map to `--color-ink` / `--color-ink-2` (D10).
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

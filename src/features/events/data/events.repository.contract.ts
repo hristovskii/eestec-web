@@ -180,6 +180,104 @@ export function describeEventsRepository(
       expect((await repo.get(a.id))?.status).toBe('hidden');
     });
 
+    const context = { locale: 'en' as const, now: NOW, justEndedDays: 14 };
+    const archiveQuery = (patch: Partial<Parameters<EventsRepository['listArchive']>[0]> = {}) => ({
+      scope: 'local' as const,
+      sort: 'newest' as const,
+      page: 1,
+      pageSize: 100,
+      ...context,
+      ...patch,
+    });
+    const past = (day: string, patch: Partial<EventInput> = {}) =>
+      eventInput({
+        status: 'published',
+        startsAt: `${day}T10:00:00+02:00`,
+        endsAt: `${day}T18:00:00+02:00`,
+        ...patch,
+      });
+
+    it('lists only past, published events of a category in the archive, newest first', async () => {
+      const repo = await createRepo();
+      const marker = `Archive ${unique()}`;
+      const make = async (patch: Partial<EventInput>) =>
+        (await repo.save(past('2026-06-01', { title: { mk: marker }, ...patch }), editor, NOW)).status;
+      await make({ startsAt: '2026-06-02T10:00:00+02:00', endsAt: '2026-06-02T18:00:00+02:00' });
+      await make({});
+      await make({ status: 'draft' });
+      await make({ status: 'hidden' });
+      await make({ scope: 'international' });
+      await make({ publishAt: '2027-01-01T00:00:00+01:00' });
+      await make({ startsAt: '2026-12-01T10:00:00+01:00', endsAt: '2026-12-01T18:00:00+01:00' });
+
+      const { items } = await repo.listArchive(archiveQuery({ q: marker.toLowerCase() }));
+      expect(items.map((event) => event.startsAt)).toEqual([
+        '2026-06-02T10:00:00+02:00',
+        '2026-06-01T10:00:00+02:00',
+      ]);
+      const all = await repo.listArchive(archiveQuery());
+      expect(all.items.every((event) => Date.parse(event.endsAt) < NOW.getTime())).toBe(true);
+      const oldest = await repo.listArchive(archiveQuery({ q: marker.toLowerCase(), sort: 'oldest' }));
+      expect(oldest.items[0]?.startsAt).toBe('2026-06-01T10:00:00+02:00');
+    });
+
+    it('filters the archive by type and year and counts both categories', async () => {
+      const repo = await createRepo();
+      const marker = `Facet ${unique()}`;
+      await repo.save(past('2019-03-01', { title: { mk: marker }, typeId: 'type-social' }), editor, NOW);
+      const byYear = await repo.listArchive(
+        archiveQuery({ q: marker.toLowerCase(), year: 2019, typeId: 'type-social' }),
+      );
+      expect(byYear.total).toBe(1);
+      expect((await repo.listArchive(archiveQuery({ q: marker.toLowerCase(), year: 2020 }))).total).toBe(0);
+      const facets = await repo.archiveFacets({ now: NOW });
+      expect(facets.years).toContain(2019);
+      expect(facets.years).toEqual([...facets.years].sort((a, b) => b - a));
+      const local = await repo.listArchive(archiveQuery());
+      expect(facets.counts.local).toBe(local.total);
+    });
+
+    it('finds published and hidden events by address, never drafts', async () => {
+      const repo = await createRepo();
+      const published = await create(repo, { ...past('2026-05-01'), title: { mk: 'Македонски', en: '' } });
+      const hidden = await create(repo, { ...past('2026-05-01'), status: 'hidden' });
+      const draft = await create(repo, { ...past('2026-05-01'), status: 'draft' });
+      const detail = await repo.findBySlug(published.slug, context);
+      // English falls back to Macedonian, and says so.
+      expect(detail?.title).toEqual({ text: 'Македонски', lang: 'mk' });
+      expect(detail?.timing).toBe('past');
+      expect(await repo.findBySlug(hidden.slug, context)).not.toBeNull();
+      expect(await repo.findBySlug(draft.slug, context)).toBeNull();
+      expect(await repo.findBySlug('no-such-event', context)).toBeNull();
+    });
+
+    it('lifts the first heading of the description and drops images without alt text', async () => {
+      const repo = await createRepo();
+      const event = await create(repo, {
+        ...past('2026-05-01'),
+        description: { mk: '<h3>About the lecture</h3><p>Text</p>' },
+        cover: { mediaId: 'media-soft-skills', alt: null },
+        gallery: [
+          { mediaId: 'media-power-up', alt: 'Solar plant' },
+          { mediaId: 'media-career-day', alt: null },
+        ],
+      });
+      const detail = await repo.findBySlug(event.slug, context);
+      expect(detail?.aboutTitle?.text).toBe('About the lecture');
+      expect(detail?.description.text).toBe('<p>Text</p>');
+      expect(detail?.cover).toBeNull();
+      expect(detail?.gallery.map((photo) => photo.mediaId)).toEqual(['media-power-up']);
+    });
+
+    it('links to the previous and next event in the archive', async () => {
+      const repo = await createRepo();
+      const middle = await create(repo, past('2013-06-15'));
+      const { prev, next } = await repo.findAdjacent(middle.slug, context);
+      if (prev) expect(Date.parse(prev.startsAt)).toBeLessThanOrEqual(Date.parse(middle.startsAt));
+      if (next) expect(Date.parse(next.startsAt)).toBeGreaterThan(Date.parse(middle.startsAt));
+      expect(await repo.archiveSlugs(NOW)).toContain(middle.slug);
+    });
+
     it('deletes events', async () => {
       const repo = await createRepo();
       const event = await create(repo);

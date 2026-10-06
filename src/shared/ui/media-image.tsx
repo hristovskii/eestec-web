@@ -12,6 +12,7 @@ const sizes = {
   card: '(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw',
   cover: '(min-width: 1248px) 1200px, 100vw',
   thumb: '(min-width: 1024px) 240px, 33vw',
+  lightbox: '(min-width: 1280px) 1040px, 100vw',
   full: '100vw',
 } as const;
 
@@ -20,6 +21,8 @@ type MediaImageProps = {
   preset: keyof typeof sizes;
   /** LCP image (hero / detail cover). Everything else lazy-loads. */
   priority?: boolean;
+  /** contain: the whole photo (lightbox); cover (default): fill the box. */
+  fit?: 'cover' | 'contain';
   className?: string;
 };
 
@@ -27,7 +30,7 @@ type MediaImageProps = {
  * Fills its (relative, sized) parent. No media → the designed fallback (white logo on red).
  * Sample fixtures → the canvas's striped "Photo: …" placeholder.
  */
-export function MediaImage({ media, preset, priority, className }: MediaImageProps) {
+export function MediaImage({ media, preset, priority, fit = 'cover', className }: MediaImageProps) {
   const t = useTranslations('ui');
 
   if (!media) {
@@ -64,7 +67,7 @@ export function MediaImage({ media, preset, priority, className }: MediaImagePro
       fill
       sizes={sizes[preset]}
       priority={priority}
-      className={cn('object-cover', className)}
+      className={cn(fit === 'contain' ? 'object-contain' : 'object-cover', className)}
     />
   );
 }

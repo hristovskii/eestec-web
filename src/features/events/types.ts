@@ -1,4 +1,6 @@
-import type { Localized } from '@/shared/types/localized';
+import type { Locale } from '@/shared/i18n/routing';
+import type { Localized, ResolvedText } from '@/shared/types/localized';
+import type { AnyMedia, Media } from '@/shared/types/media';
 
 /** "Category" on the canvas: Local or International (the /events tabs). */
 export const EVENT_SCOPES = ['local', 'international'] as const;
@@ -153,3 +155,86 @@ export type AdminEventFacets = { years: number[] };
 
 /** An event as a choice in admin forms ("Events they manage"). */
 export type EventOption = { id: string; title: string; startsAt: string };
+
+// ─── Public read models (already in one language; EN falls back to MK per field, D8) ───
+
+/** A library file an event uses, before the media feature resolves it to an image. */
+export type EventMediaRef = { mediaId: string; alt: string; credit?: string };
+
+/** EventCard on /events (and later Home, Upcoming, profiles). */
+export type EventSummary = {
+  id: string;
+  slug: string;
+  title: ResolvedText;
+  startsAt: string;
+  endsAt: string;
+  allDay: boolean;
+  typeName: string;
+  scope: EventScope;
+  /** Short place for cards: the city, or the location when there is no city. */
+  place: ResolvedText;
+  cover: EventMediaRef | null;
+  organizedByLc: boolean;
+  /** Past, and ended at most Settings › Events "Just ended" days ago. */
+  justEnded: boolean;
+};
+
+export type ArchiveSort = 'newest' | 'oldest' | 'title';
+
+export type ArchiveQuery = {
+  scope: EventScope;
+  typeId?: string;
+  year?: number;
+  q?: string;
+  sort: ArchiveSort;
+  page: number;
+  pageSize: number;
+  locale: Locale;
+  now: Date;
+  justEndedDays: number;
+};
+
+/** Tab counts and the years that have past events (for the year filter). */
+export type ArchiveFacets = { counts: Record<EventScope, number>; years: number[]; firstYear: number | null };
+
+/** "Previous event" / "Next event" at the bottom of a detail page. */
+export type EventLink = {
+  slug: string;
+  title: ResolvedText;
+  startsAt: string;
+  endsAt: string;
+  place: ResolvedText;
+};
+
+/** /events/[slug]. */
+export type EventDetail = EventSummary & {
+  timing: EventTiming;
+  shortDescription: ResolvedText;
+  /** First heading of the description, shown as the section title ("About the workshop"). */
+  aboutTitle: ResolvedText | null;
+  /** Sanitized HTML without that heading; '' when there is no description. */
+  description: ResolvedText;
+  location: ResolvedText;
+  /** null: LC Skopje; '' when unknown (row hidden). */
+  organizer: string | null;
+  participantCount: number | null;
+  countryCount: number | null;
+  gallery: EventMediaRef[];
+  infoPackId: string | null;
+  videoUrl: string;
+  seo: { title: string; description: string; shareImageId: string | null };
+};
+
+/** A card or page image, resolved from the Media library (sample placeholders on mocks). */
+export type EventCardModel = Omit<EventSummary, 'cover'> & { cover: AnyMedia | null };
+
+export type EventPageModel = Omit<EventDetail, 'cover' | 'gallery' | 'infoPackId'> & {
+  cover: AnyMedia | null;
+  gallery: AnyMedia[];
+  /** null when there is none, or the sample file has no download yet. */
+  infoPack: { src: string; fileName: string; size: number } | null;
+  shareImage: Media | null;
+};
+
+/** A type as a filter chip: `?type=<slug>`. */
+export type ArchiveTypeOption = { id: string; slug: string; name: string };
