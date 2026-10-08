@@ -195,3 +195,113 @@
     @apply bg-background text-body text-foreground antialiased;
   }
 }
+
+/*
+ * Map (shared/ui/map): Leaflet's own CSS is unlayered, so these overrides are too, and a bit more
+ * specific. Pins are plain divs (no marker images); colours are the design's (D10: #2b2b2b → ink-2).
+ */
+.leaflet-container {
+  font-family: inherit;
+  background: #eef0f2;
+}
+.leaflet-container .leaflet-tile-pane {
+  /* The canvas map is pale and quiet: tone down the colourful OpenStreetMap tiles. On the whole
+     pane, not on each tile: filtering tiles one by one leaves hairline seams between them. */
+  filter: grayscale(1) contrast(0.8) brightness(1.14);
+}
+.leaflet-container:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: -3px;
+}
+.leaflet-container .map-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  outline-offset: 3px;
+}
+.leaflet-container .map-pin:focus-visible {
+  outline: 3px solid var(--color-ink);
+}
+.leaflet-container .map-pin::after {
+  /* A bigger area to tap than the visible dot. */
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+}
+.leaflet-container .map-pin__halo {
+  position: absolute;
+  border-radius: 50%;
+  background: rgb(229 42 48 / 0.22);
+  pointer-events: none;
+}
+.leaflet-container .map-pin__dot {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  border-style: solid;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+}
+.leaflet-container .map-pin__dot--dark {
+  background: var(--color-ink-2);
+  border-color: #fff;
+}
+.leaflet-container .map-pin__dot--hollow {
+  background: #fff;
+  border-color: var(--color-ink-2);
+}
+.leaflet-container .map-pin__dot--brand {
+  background: var(--color-brand);
+  border-color: #fff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.3);
+}
+.leaflet-container .map-pin__dot.is-selected {
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px var(--color-ink);
+}
+.leaflet-container .map-pin__dot--brand.is-selected {
+  box-shadow:
+    0 0 0 1px var(--color-brand),
+    0 2px 6px rgb(0 0 0 / 0.3);
+}
+.leaflet-container .leaflet-bar {
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.18);
+  overflow: hidden;
+}
+.leaflet-container .leaflet-bar a {
+  width: 36px;
+  height: 36px;
+  line-height: 34px;
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-ink);
+  font-size: 20px;
+  font-weight: 400;
+}
+.leaflet-container .leaflet-bar a:last-child {
+  border-bottom: 0;
+}
+.leaflet-container .leaflet-bar a:hover {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+.leaflet-container .leaflet-bar a:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: -3px;
+}
+.leaflet-container .leaflet-control-attribution {
+  background: rgb(255 255 255 / 0.85);
+  color: #4a4a4a;
+  font-size: 11px;
+}
+.leaflet-container .leaflet-control-attribution a {
+  color: #4a4a4a;
+  text-decoration: underline;
+}

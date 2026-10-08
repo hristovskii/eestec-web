@@ -889,6 +889,19 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - The admin shows each question's English label when there is one, else the Macedonian one (the admin UI is English; MK is the required language, D8).
 - No preview of the public form yet: "View event page" opens it.
 
+**Notes from building (M8a)**
+
+- M8 is split in three: **M8a** committees and the map (this), **M8b** Home content and `/admin/pages/home`, **M8c** the public Home. The journey teaser and the partner strip are slots in M8c that stay hidden until M9 and M11 supply their data; the Memories row only shows with Phase 2 (M17).
+- `shared/ui/map/leaflet-map.tsx` is the one map (the committee map now, Contact with one pin in M12, D16). Leaflet is imported in the browser only (`import('leaflet')` inside an effect), so the page renders a placeholder first and `pnpm build` needs nothing from the environment. Pins are styled `<div>` icons (no Leaflet marker images), the popup is our own React dialog positioned over the map, and the tile layer is greyscaled on the whole pane (per-tile filters leave seams).
+- Tiles and attribution are one value in `shared/config/map.ts`; `next.config.ts` builds the CSP `img-src` from it, so swapping provider is one edit.
+- Accessibility: the map is a named region; every pin is a button (Tab, Enter or Space opens it, focus moves into the popup, Escape closes it and returns to the pin; Leaflet's own Enter handling needs the old `keypress` event, so the pins handle the keys themselves); a "Skip the map" link jumps past 35 tab stops; the **List view** shows the same committees as text and is the phone fallback (no separate /committees page); axe passes in both views (e2e).
+- Phones (map under 720 px wide): smaller pins, no popup; the selected committee shows as a card under the map (Home-Mobile), with a one-line legend.
+- Countries are stored as ISO codes and named by `Intl.DisplayNames` **on the server**: the Macedonian names are not in every browser's data (the test browser lacked them), Node always has them. The city is board content in both languages (`city: Localized`); sample cities are the same in both until the board supplies Macedonian (D14).
+- Exactly one committee is ours (`isHome`, the red pin). Marking another moves it; the one that is ours can't be un-marked or deleted until another is marked. CSV import never moves it.
+- Name + country is unique. CSV import (`name, type, city, country, lat, lng, link`; comma or semicolon; decimal comma accepted; `type` LC / Observer / JLC; `country` as a name in English or Macedonian, or the two-letter code) is checked in the browser first: the dialog lists the rows that failed with the field and the reason, and imports the valid ones; the action checks again. Same name and country are updated, others are added; up to 500 rows. "Export CSV" writes the same columns, so an export can be edited and imported again.
+- Sample data: the 34 canvas pins + LC Skopje (the filter counts "All · 35 / 23 / 8 / 4" match the canvas). The canvas draws pins on a picture and has no coordinates; real city coordinates are used. See `docs/sample-data.md` for what the board must replace before launch.
+- The big Home numbers ("35 Local Committees", "21 Countries"…) are separate statistics edited in `/admin/pages/home` (M8b); the map and its filters count this list. The admin page says so.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

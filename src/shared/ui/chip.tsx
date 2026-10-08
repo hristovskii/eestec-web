@@ -104,6 +104,13 @@ type FilterChipProps = {
   count?: number;
 };
 
+const filterChipClasses = (pressed: boolean) =>
+  cn(
+    'inline-flex h-10 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-4 text-small font-medium whitespace-nowrap no-underline',
+    'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand',
+    pressed ? 'border-brand bg-brand text-white' : 'border-line-strong bg-white text-ink hover:border-ink',
+  );
+
 /** Filter chip as a link (type chips on list pages): 40 px, red when selected. */
 export function FilterChip({ href, pressed, children, count }: FilterChipProps) {
   return (
@@ -111,16 +118,27 @@ export function FilterChip({ href, pressed, children, count }: FilterChipProps) 
       href={href}
       scroll={false}
       aria-current={pressed ? 'true' : undefined}
-      className={cn(
-        'inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-small font-medium whitespace-nowrap no-underline',
-        'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand',
-        pressed
-          ? 'border-brand bg-brand text-white'
-          : 'border-line-strong bg-white text-ink hover:border-ink',
-      )}
+      className={filterChipClasses(pressed)}
     >
       {children}
       {count !== undefined && <span className="text-[13px] font-normal opacity-80">{count}</span>}
     </Link>
+  );
+}
+
+/** The same chip as a toggle button, for filters that change the page without a new address (the committee map). */
+export function FilterToggle({
+  pressed,
+  onClick,
+  children,
+}: {
+  pressed: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button type="button" aria-pressed={pressed} onClick={onClick} className={filterChipClasses(pressed)}>
+      {children}
+    </button>
   );
 }
