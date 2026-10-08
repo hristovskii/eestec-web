@@ -20,4 +20,5 @@ written by the board in the admin.
 | M7a       | `upcoming.*` (list, Next up, empty states)                         | ☐ needs review      |
 | M7a       | `applications.*` (states, ApplyBox, form, errors, confirmation)    | ☐ needs review      |
 | M7a       | Default application fields (`applications/domain/default-form.ts`) | ☐ needs review      |
+| M8a       | `committees.*` (map, filters, legend, popup, list view)            | ☐ needs review      |
 | —         | Fixed label decided in D7: `deadline_soon` → "Се затвора наскоро"  | ✓ given by the user |
