@@ -69,6 +69,27 @@ export function createMockApplicationsRepository(): ApplicationsRepository {
       return Promise.resolve(form ? structuredClone(form) : null);
     },
 
+    saveForm(form) {
+      const stored = structuredClone(form);
+      const at = db.forms.findIndex((candidate) => candidate.eventId === form.eventId);
+      if (at >= 0) db.forms[at] = stored;
+      else db.forms.push(stored);
+      return Promise.resolve(structuredClone(stored));
+    },
+
+    deleteForm(eventId) {
+      db.forms = db.forms.filter((candidate) => candidate.eventId !== eventId);
+      return Promise.resolve();
+    },
+
+    answerCounts(eventId) {
+      const counts: Record<string, number> = {};
+      for (const row of ofEvent(eventId))
+        for (const [key, value] of Object.entries(row.answers))
+          if (value !== '' && value !== false) counts[key] = (counts[key] ?? 0) + 1;
+      return Promise.resolve(counts);
+    },
+
     availability(eventIds) {
       const result: Record<string, { taken: number; waitlist: number }> = {};
       for (const row of db.applications) {

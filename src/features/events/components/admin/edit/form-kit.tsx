@@ -24,6 +24,8 @@ export type EventFormContextValue = {
   canAddTopics: boolean;
   canDelete: boolean;
   isNew: boolean;
+  /** "Edit application form · 8 questions": null when this admin may not edit it. */
+  applicationForm: { href: string; questions: number } | null;
   /**
    * Field ids follow the value path, so the error summary can link to them. They include the
    * event id: Next keeps the previous page mounted (hidden) for back/forward, and two forms on

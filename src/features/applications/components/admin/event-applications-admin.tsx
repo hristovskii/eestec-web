@@ -196,6 +196,11 @@ export function EventApplicationsAdmin({
                 <Link href={`/admin/events/${event.id}` as Route}>{t('editEvent')}</Link>
               </Button>
             )}
+            {canEdit && event.applicationSettings.via === 'form' && (
+              <Button asChild variant="ghost" size="sm">
+                <Link href={`/admin/applications/${event.id}/form` as Route}>{t('editForm')}</Link>
+              </Button>
+            )}
             <Button asChild variant="quiet" size="sm">
               <a href={exportHref} download>
                 <Download aria-hidden />
@@ -418,6 +423,18 @@ function ApplicationSheet({
     return <span className="whitespace-pre-line">{value}</span>;
   };
 
+  // Answers to questions the board has since removed from the form.
+  const removed: ApplicationField[] = Object.keys(application?.answers ?? {})
+    .filter((key) => !fields.some((field) => field.key === key))
+    .map((key) => ({
+      key,
+      type: 'text',
+      label: { mk: key },
+      required: false,
+      help: { mk: '' },
+      placeholder: { mk: '' },
+    }));
+
   return (
     <Sheet open={application !== null} onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="right" className="w-[520px] max-w-full">
@@ -488,6 +505,22 @@ function ApplicationSheet({
                   ))}
                 </dl>
               </section>
+              {removed.length > 0 && (
+                <section aria-labelledby="application-removed" className="flex flex-col gap-2">
+                  <h3 id="application-removed" className="text-[16px] font-bold">
+                    {t('removed')}
+                  </h3>
+                  <p className="text-[13px] text-muted-ink">{t('removedHelp')}</p>
+                  <dl className="flex flex-col divide-y divide-divider text-small">
+                    {removed.map((field) => (
+                      <div key={field.key} className="flex flex-col gap-1 py-2.5">
+                        <dt className="text-muted-ink">{field.key}</dt>
+                        <dd>{answer(field)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              )}
               <p className="text-[13px] text-muted-ink">
                 {t('consent', { date: formatDate(application.consentAt, 'en', 'dateTime') })}
               </p>

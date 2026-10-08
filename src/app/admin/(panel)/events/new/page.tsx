@@ -18,6 +18,7 @@ async function NewEvent() {
       {...editor}
       canDelete={false}
       canAddTopics={can(session, 'edit', 'eventTypes')}
+      applicationForm={null}
       now={now().toISOString()}
     />
   );

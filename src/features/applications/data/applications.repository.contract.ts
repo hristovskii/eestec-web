@@ -178,6 +178,31 @@ export function describeApplicationsRepository(
       );
     });
 
+    it('saves, replaces and resets an event form, and counts answers per question', async () => {
+      const repo = await createRepo();
+      const eventId = `ev-contract-${unique()}`;
+      expect(await repo.getForm(eventId)).toBeNull();
+      const field = {
+        key: 'diet-note',
+        type: 'text' as const,
+        label: { mk: 'Бележка', en: 'Note' },
+        required: false,
+        help: { mk: '' },
+        placeholder: { mk: '' },
+      };
+      await repo.saveForm({ eventId, intro: { mk: 'Кратко.' }, fields: [field] });
+      expect((await repo.getForm(eventId))?.fields.map((item) => item.key)).toEqual(['diet-note']);
+      await repo.saveForm({ eventId, intro: { mk: 'Кратко.' }, fields: [] });
+      expect((await repo.getForm(eventId))?.fields).toEqual([]);
+
+      await repo.submit(input({ eventId, answers: { 'diet-note': 'No nuts', faculty: 'FEEIT' } }), NOW);
+      await repo.submit(input({ eventId, answers: { faculty: 'FINKI' } }), NOW);
+      expect(await repo.answerCounts(eventId)).toEqual({ 'diet-note': 1, faculty: 2 });
+
+      await repo.deleteForm(eventId);
+      expect(await repo.getForm(eventId)).toBeNull();
+    });
+
     it('returns the event form, or null for the default fields', async () => {
       const repo = await createRepo();
       expect((await repo.getForm('ev-ai-at-the-edge'))?.fields.map((field) => field.key)).toContain(
