@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
+import { getFormLink } from '@/features/applications/server';
 import { can } from '@/features/auth';
 import { requirePermission } from '@/features/auth/server';
 import { EventEditForm } from '@/features/events/admin';
@@ -16,6 +17,7 @@ async function EditEvent({ params }: { params: PageProps<'/admin/events/[id]'>['
   const session = await requirePermission('edit', 'events', { eventId: id });
   const editor = await getEventEditor(id);
   if (!editor) notFound();
+  const applicationForm = await getFormLink(session, id);
   return (
     <EventEditForm
       // A different event (e.g. after Duplicate) starts with fresh form state.
@@ -23,6 +25,7 @@ async function EditEvent({ params }: { params: PageProps<'/admin/events/[id]'>['
       {...editor}
       canDelete={can(session, 'delete', 'events', { eventId: id })}
       canAddTopics={can(session, 'edit', 'eventTypes')}
+      applicationForm={applicationForm}
       now={now().toISOString()}
     />
   );

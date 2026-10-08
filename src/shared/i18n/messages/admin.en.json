@@ -1007,7 +1007,7 @@
         "admissionSelection": "Selection: the board accepts applicants",
         "admissionFirstCome": "First come, first served",
         "admissionHelp": "First come: each application is accepted at once until the places are full, then the waitlist starts.",
-        "formLater": "The application form builder comes with Applications.",
+        "formLater": "Save the event first to edit its application form.",
         "seoTitle": "Page title",
         "seoTitleHelp": "Empty: the event title.",
         "seoDescription": "Description",
@@ -1017,7 +1017,9 @@
         "shareImageChoose": "Choose image",
         "shareImageRemove": "Remove share image",
         "deleteText": "Removes the event, its gallery and its applications. The photos stay in the Media library. This can't be undone.",
-        "deleteButton": "Delete event…"
+        "deleteButton": "Delete event…",
+        "formLink": "Edit application form",
+        "formQuestions": "{count, plural, one {# question} other {# questions}}"
       },
       "statuses": {
         "draft": "Draft",
@@ -1198,7 +1200,8 @@
         "unchanged": "Nothing changed: they already have that status.",
         "forbidden": "You can only change applications for the events you manage.",
         "unexpected": "Something went wrong. Please try again."
-      }
+      },
+      "editForm": "Edit form"
     },
     "detail": {
       "title": "Application {reference}",
@@ -1215,7 +1218,123 @@
       "yes": "Yes",
       "status": "Status",
       "setStatus": "Change status",
-      "consent": "Agreed to the processing of personal data on {date}."
+      "consent": "Agreed to the processing of personal data on {date}.",
+      "removed": "Removed questions",
+      "removedHelp": "These questions are no longer on the form. The answers were sent before."
+    },
+    "builder": {
+      "title": "Application form",
+      "back": "Back to applications",
+      "subtitle": "{event} · changes are live when you save",
+      "status": {
+        "default": "Default questions",
+        "custom": "Custom form"
+      },
+      "intro": {
+        "title": "Introduction",
+        "label": "Short intro",
+        "help": "Shown under “Apply”. The deadline and “Fields marked * are required” are added automatically."
+      },
+      "fixed": {
+        "title": "Always asked",
+        "text": "Every application has these. They can't be removed.",
+        "name": "Full name",
+        "email": "E-mail",
+        "consent": "Consent to the processing of personal data"
+      },
+      "questions": {
+        "title": "Questions",
+        "count": "{count} of {max}",
+        "label": "Questions of the form",
+        "empty": "No extra questions. Applicants only give their name and e-mail.",
+        "add": "Add question",
+        "addLabel": "Add a question",
+        "newQuestion": "New question",
+        "types": {
+          "text": "Short text",
+          "long_text": "Long text",
+          "select": "Choice",
+          "checkbox": "Checkbox",
+          "file": "File upload (PDF)"
+        },
+        "required": "Required",
+        "answers": "{count, plural, one {# answer} other {# answers}}",
+        "edit": "Edit question {number}: {name}",
+        "collapse": "Close question {number}: {name}",
+        "remove": "Remove question {number}: {name}"
+      },
+      "card": {
+        "type": "Type",
+        "label": "Question",
+        "help": "Help text",
+        "placeholder": "Placeholder",
+        "required": "Answer required",
+        "requiredCheckbox": "Must be ticked",
+        "format": "Format",
+        "formats": {
+          "plain": "Text",
+          "phone": "Phone number"
+        },
+        "maxLength": "Max characters",
+        "appearance": "Show as",
+        "appearances": {
+          "dropdown": "Dropdown",
+          "buttons": "Buttons"
+        },
+        "options": "Options",
+        "optionMk": "Option {number} (Macedonian)",
+        "optionEn": "Option {number} (English, optional)",
+        "addOption": "Add option",
+        "removeOption": "Remove option {number}",
+        "moveUp": "Move option {number} up",
+        "moveDown": "Move option {number} down",
+        "fileHelp": "Applicants upload a PDF, up to 5 MB.",
+        "checkboxHelp": "Applicants tick a box, for example to confirm a rule.",
+        "typeLocked": "The type can't change once applications have been sent.",
+        "firstSelected": "Optional dropdowns start on their first option. Put “No preference” first, or make the answer required."
+      },
+      "aside": {
+        "title": "Good to know",
+        "live": "Changes are live as soon as you save.",
+        "sent": "{count, plural, =0 {No applications have been sent yet.} one {# application was sent already; it keeps its answers.} other {# applications were sent already; they keep their answers.}}",
+        "reset": "Back to the default questions",
+        "viewEvent": "View event page",
+        "editEvent": "Edit event"
+      },
+      "remove": {
+        "title": "Remove “{name}”?",
+        "text": "{count, plural, one {# application answered it. The answer stays} other {# applications answered it. Their answers stay}} in the application, under “Removed questions”.",
+        "confirm": "Remove question",
+        "cancel": "Cancel"
+      },
+      "reset": {
+        "title": "Go back to the default questions?",
+        "text": "Your questions are replaced by the default ones. Answers already sent stay in their applications.",
+        "confirm": "Reset form"
+      },
+      "summary": "{count, plural, one {Please fix # field} other {Please fix # fields}}",
+      "labels": {
+        "intro": "Intro",
+        "question": "Question {number}",
+        "option": "Question {number}, option {option}",
+        "fields": "Questions"
+      },
+      "errors": {
+        "required": "Fill in this field.",
+        "tooLong": "This is too long.",
+        "tooMany": "A form can have at most 30 questions.",
+        "twoOptions": "A choice needs at least two options.",
+        "duplicate": "This is used twice.",
+        "number": "Enter a whole number from 1 to 5000.",
+        "key": "This question has an invalid internal name. Remove it and add it again.",
+        "unexpected": "Something is wrong with this field."
+      },
+      "toasts": {
+        "saved": "Application form saved. It's live on the event page.",
+        "reset": "Back to the default questions.",
+        "forbidden": "You can only change the form of the events you manage.",
+        "unexpected": "Something went wrong. Please try again."
+      }
     }
   }
 }

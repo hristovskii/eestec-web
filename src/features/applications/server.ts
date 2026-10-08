@@ -3,6 +3,8 @@ import 'server-only';
 export {
   applicationCounts,
   getApplicationsOverview,
+  getFormBuilder,
+  getFormLink,
   getEventApplications,
   listApplicationOverview,
   type ApplicationEvent,

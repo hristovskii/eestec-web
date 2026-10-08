@@ -2,3 +2,4 @@
 export { markApplicationRead, setApplicationsStatus } from './actions/admin/admin-applications';
 export { ApplicationsAdmin } from './components/admin/applications-admin';
 export { EventApplicationsAdmin } from './components/admin/event-applications-admin';
+export { FormBuilder } from './components/admin/form-builder';

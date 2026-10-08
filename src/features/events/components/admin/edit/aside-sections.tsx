@@ -1,6 +1,8 @@
 'use client';
 
 import { ChevronDown, X } from 'lucide-react';
+import type { Route } from 'next';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
@@ -133,7 +135,7 @@ export function CategorySection({ types }: { types: { id: string; name: Localize
 
 export function ApplicationsSection() {
   const t = useTranslations('admin.events.edit');
-  const { values, update, error, fieldId } = useEventForm();
+  const { values, update, error, fieldId, isNew, applicationForm } = useEventForm();
   const apps = values.applications;
   const set = (recipe: (draft: typeof apps) => void) => update((draft) => recipe(draft.applications));
   const viaName = React.useId();
@@ -310,7 +312,20 @@ export function ApplicationsSection() {
                   checked={apps.waitlist}
                   onChange={(waitlist) => set((draft) => void (draft.waitlist = waitlist))}
                 />
-                <p className="text-[13px] text-muted-ink">{t('fields.formLater')}</p>
+                {isNew ? (
+                  <p className="text-[13px] text-muted-ink">{t('fields.formLater')}</p>
+                ) : (
+                  applicationForm && (
+                    <Button asChild variant="quiet" size="sm" className="justify-between">
+                      <Link href={applicationForm.href as Route}>
+                        {t('fields.formLink')}
+                        <span className="text-[13px] font-normal text-muted-ink">
+                          {t('fields.formQuestions', { count: applicationForm.questions })} →
+                        </span>
+                      </Link>
+                    </Button>
+                  )
+                )}
               </>
             )}
           </>

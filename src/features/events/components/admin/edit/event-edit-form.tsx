@@ -50,6 +50,8 @@ type EventEditFormProps = {
   topics: Taxonomy;
   canDelete: boolean;
   canAddTopics: boolean;
+  /** The form builder of this event, for "Edit application form" (applications feature). */
+  applicationForm: { href: string; questions: number } | null;
   /** Server "now" (ISO): upcoming or past, for the page address. */
   now: string;
 };
@@ -97,6 +99,7 @@ export function EventEditForm({
   topics: initialTopics,
   canDelete,
   canAddTopics,
+  applicationForm,
   now,
 }: EventEditFormProps) {
   const t = useTranslations('admin.events.edit');
@@ -261,6 +264,7 @@ export function EventEditForm({
     canAddTopics,
     canDelete,
     isNew: record === null,
+    applicationForm,
     fieldId,
   };
 

@@ -32,6 +32,12 @@ export type UploadInput = { name: string; type: string; bytes: Uint8Array };
 export interface ApplicationsRepository {
   /** The event's own form; null: it uses the default fields. */
   getForm(eventId: string): Promise<ApplicationForm | null>;
+  /** Form builder: replaces the event's form (applications already sent keep their answers). */
+  saveForm(form: ApplicationForm): Promise<ApplicationForm>;
+  /** Form builder: back to the default questions. */
+  deleteForm(eventId: string): Promise<void>;
+  /** Per question key: how many applications answered it (the builder warns before removing). */
+  answerCounts(eventId: string): Promise<Record<string, number>>;
   /** Accepted and waitlisted applications per event (events without any are left out). */
   availability(eventIds: readonly string[]): Promise<Record<string, Availability>>;
   /**

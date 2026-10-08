@@ -9,6 +9,7 @@ import { now } from '@/shared/lib/now';
 import { applicationsRepository } from './data';
 import { applicationState, type ApplyState } from './domain/application-state';
 import { DEFAULT_APPLICATION_FIELDS } from './domain/default-form';
+import { defaultForm, isDefaultForm } from './domain/form-definition';
 import { type AdminApplicationsParams, sortOf } from './schemas/admin-applications-params.schema';
 import type { Application, ApplicationField, ApplicationsSummary } from './types';
 
@@ -135,4 +136,38 @@ export async function exportEventApplications(actor: Actor, params: AdminApplica
   });
   const rows = (await Promise.all(all.items.map((row) => repo.get(row.id)))).filter((row) => row !== null);
   return { event: loaded.event, fields: loaded.fields, rows };
+}
+
+/**
+ * Admin › Applications › Application form: the event, its questions (the default ones until the
+ * board changes them) and how many applications answered each. null: unknown or not allowed.
+ */
+export async function getFormBuilder(actor: Actor, eventId: string) {
+  if (!can(actor, 'view', 'applications', { eventId })) return null;
+  const event = (await listApplicationEvents(actor)).find((row) => row.id === eventId);
+  if (!event) return null;
+  const repo = await applicationsRepository();
+  const [stored, answerCounts, summaries] = await Promise.all([
+    repo.getForm(eventId),
+    repo.answerCounts(eventId),
+    repo.summaries([eventId]),
+  ]);
+  return {
+    event: { id: event.id, slug: event.slug, title: event.title },
+    form: stored ?? { eventId, ...defaultForm() },
+    isDefault: stored === null || isDefaultForm(stored),
+    answerCounts,
+    applicationCount: summaries[eventId]?.total ?? 0,
+    canEdit: can(actor, 'edit', 'applications', { eventId }),
+  };
+}
+
+/** For the event edit form: "Edit application form · 8 questions →", when this admin may edit it. */
+export async function getFormLink(actor: Actor, eventId: string) {
+  if (!can(actor, 'edit', 'applications', { eventId })) return null;
+  const form = await (await applicationsRepository()).getForm(eventId);
+  return {
+    href: `/admin/applications/${eventId}/form`,
+    questions: (form?.fields ?? DEFAULT_APPLICATION_FIELDS).length,
+  };
 }

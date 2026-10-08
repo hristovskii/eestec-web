@@ -817,7 +817,7 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - New events take their address from the title (transliterated, `-2` when taken) until it's edited by hand. A live address never changes by itself.
 - Gallery uploads go up several at a time with progress and cancel, using XHR because fetch can't report upload progress. The alt text is written on the event, so the library keeps such photos as "No alt text" (`altLater`). The cover and the gallery can also pick from the Media library, sample placeholders included. The info pack picks a PDF from the library.
 - Next 16 keeps the previous page mounted (hidden) for back / forward. So field ids include the event id (`e-<id>-<path>`), and the `/new` form resets itself after creating an event instead of turning into it. Error-summary links now move focus to the field.
-- Not built yet: Preview (needs the public pages, M6), Crop (needs real image processing, backend phase), "Edit application form" (M7) and event partners (M11). The aside isn't sticky, because with Applications open it is taller than a laptop screen.
+- Not built yet: Preview (needs the public pages, M6), Crop (needs real image processing, backend phase), "Edit application form" (built in M7c) and event partners (M11). The aside isn't sticky, because with Applications open it is taller than a laptop screen.
 - `SettingsPanel` / `SwitchRow` moved to `shared/admin-ui/form-section.tsx` (`FormSection`, `SwitchRow`, `EditFormLayout`). The admin lab shows the new field patterns.
 
 **Notes from building (M6)**
@@ -878,6 +878,16 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - CVs download through `/api/applications/files/<id>`, checked against the event of the application they were sent with (private bucket + signed links with Supabase).
 - Counts across features without a cycle: events defines `ApplicationCountsLoader`; the admin routes pass in `applicationCounts` from applications (Events list, its CSV). The dashboard depends on applications directly (§3). The sample counts in the events fixtures are gone.
 - Deleting an event leaves its applications in the mock store (they are no longer listed, since the lists start from events); in Supabase they go with it (`on delete cascade`). The delete dialog offers "Export the N applications first (CSV)".
+
+**Notes from building (M7c)**
+
+- Form builder at `/admin/applications/<event id>/form` (the canvas link uses the slug; ids are what every other admin route uses). Reached from the event edit form ("Edit application form · 8 questions →", saved events only) and from the event's applications page ("Edit form"). Event managers: their own events only (D18).
+- Questions: short text (plain or phone), long text, choice (dropdown or buttons, 2–30 options, each in MK + optional EN), checkbox, file upload (PDF, 5 MB). Required switch, help text, placeholder, max characters; drag (or keyboard) to reorder; max 30 questions. Full name, e-mail and the consent box are always asked and not editable.
+- The form is live when saved (the event page reads it at once, `updateTag`); there is no draft. "Back to the default questions" deletes the event's own form. An event shows "Default questions" until its form differs from the spec 03 list.
+- Question keys (`q-a1b2c3`) are fixed when a question is added: answers are stored under them, so renaming never loses answers. The type of a saved question can't change once applications exist. Removing a question that was answered asks first; its answers stay in each application, shown under "Removed questions" (and are not in the CSV, which follows the current form).
+- An optional dropdown starts on its first option (as the canvas "Dietary needs: None" does); the builder says so. Use buttons, make it required, or put "No preference" first.
+- The admin shows each question's English label when there is one, else the Macedonian one (the admin UI is English; MK is the required language, D8).
+- No preview of the public form yet: "View event page" opens it.
 
 **Working rules while building**
 
