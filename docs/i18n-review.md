@@ -26,4 +26,5 @@ written by the board in the admin.
 | M10b      | `join.*` (hero, menu, section labels, rules, FAQ)                                  | ☐ needs review      |
 | M10c      | `join.form.*`, `join.success.*`, `join.closed.*`, `join.apply.*` (membership form) | ☐ needs review      |
 | M11b      | `partners.*` (logo, marquee, offer), `home.partners.*` (Home partner strip)        | ☐ needs review      |
+| M12b      | `contact.*` (contact info, copy buttons, map, legal info labels)                   | ☐ needs review      |
 | —         | Fixed label decided in D7: `deadline_soon` → "Се затвора наскоро"                  | ✓ given by the user |

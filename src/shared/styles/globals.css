@@ -280,6 +280,20 @@
     0 0 0 1px var(--color-brand),
     0 2px 6px rgb(0 0 0 / 0.3);
 }
+.leaflet-container .leaflet-tooltip.map-label {
+  /* The always-visible label of a single pin (Contact): dark chip, white text. */
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--color-ink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: none;
+}
+.leaflet-container .leaflet-tooltip-top.map-label::before {
+  border-top-color: var(--color-ink);
+}
 .leaflet-container .leaflet-bar {
   border: 0;
   border-radius: 8px;
