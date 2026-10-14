@@ -4,38 +4,47 @@ import { Library, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
-import type { MediaItem } from '@/features/media';
-import { MediaPicker, MediaThumb } from '@/features/media/admin';
 import { LocalizedField } from '@/shared/admin-ui/localized-field';
+import type { MediaRef } from '@/shared/types/media';
 import { MediaImage } from '@/shared/ui/media-image';
 import { Button } from '@/shared/ui/primitives/button';
 
-import { HOME_LIMITS } from '../../schemas/home.schema';
-import type { HomeImage } from '../../types';
-import { fieldId, type SectionProps } from './form-kit';
+import type { MediaItem } from '../../types';
+import { MediaPicker } from './media-picker';
+import { MediaThumb } from './media-thumb';
 
-type ImageFieldProps = Pick<SectionProps, 'media' | 'addMedia' | 'error'> & {
-  /** Value path, e.g. "milestones.2.photo". */
-  path: string;
+type MediaRefFieldProps = {
+  /** Id of the alt-text field (the error summary links to it). */
+  altId: string;
   label: string;
-  value: HomeImage | null;
-  onChange: (value: HomeImage | null) => void;
-  /** Where the photo is used, for the empty note. */
+  value: MediaRef | null;
+  onChange: (value: MediaRef | null) => void;
+  /** Library files used on the page, by id, and how to add one that was just picked. */
+  media: Record<string, MediaItem>;
+  addMedia: (item: MediaItem) => void;
+  /** Translated error of the Macedonian alt text, if any. */
+  altError?: string;
+  maxAlt: number;
+  /** Shown while there is no photo ("No photo. It is optional."). */
   empty: string;
 };
 
-/** A photo from the Media library with its own alt text (required in Macedonian, English optional). */
-export function HomeImageField({
-  path,
+/**
+ * A photo from the Media library with its own alt text for this use (required in Macedonian,
+ * English optional): Home, Journey and the other page editors.
+ */
+export function MediaRefField({
+  altId,
   label,
   value,
   onChange,
   media,
   addMedia,
-  error,
+  altError,
+  maxAlt,
   empty,
-}: ImageFieldProps) {
-  const t = useTranslations('admin.home.image');
+}: MediaRefFieldProps) {
+  const t = useTranslations('admin.media.refField');
   const [picking, setPicking] = React.useState(false);
   const item = value ? media[value.mediaId] : undefined;
 
@@ -66,14 +75,14 @@ export function HomeImageField({
         <div className="flex flex-col gap-3">
           {value ? (
             <LocalizedField
-              id={fieldId(`${path}.alt`)}
+              id={altId}
               label={t('alt')}
               required
               help={t('altHelp')}
               value={value.alt}
               onChange={(alt) => onChange({ ...value, alt })}
-              error={error(`${path}.alt.mk`)}
-              maxLength={HOME_LIMITS.alt}
+              error={altError}
+              maxLength={maxAlt}
               multiline
               rows={2}
             />

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { localized, mediaRef, rowId, siteHref, text, whole } from '@/shared/forms/page-schema';
+
 import { ACTIVITY_ICONS, HOME_SECTION_KEYS } from '../types';
 
 // Admin › Pages › Home. Messages are keys of `admin.home.errors` (the client translates them).
@@ -25,35 +27,9 @@ export const HOME_LIMITS = {
   value: [0, 99_999_999],
 } as const;
 
-const text = (max: number) => z.string().trim().max(max, 'tooLong');
-const required = (max: number) => text(max).min(1, 'required');
-
-/** { mk, en? }: Macedonian required when `mkRequired`, English always optional (D8). */
-const localized = (max: number, mkRequired = false) =>
-  z.object({ mk: mkRequired ? required(max) : text(max), en: text(max).optional() });
-
-/** "/join" (this site) or an https link. */
-const href = z
-  .string()
-  .trim()
-  .min(1, 'required')
-  .max(HOME_LIMITS.href, 'tooLong')
-  .refine(
-    (value) => /^\/(?!\/)\S*$/.test(value) || z.url({ protocol: /^https$/ }).safeParse(value).success,
-    'url',
-  );
-
-const button = z.object({ label: localized(HOME_LIMITS.button, true), href });
-
-const image = z.object({
-  mediaId: z.string().min(1, 'required'),
-  alt: localized(HOME_LIMITS.alt, true),
-});
-
-const id = z.string().regex(/^[\w-]{1,64}$/, 'unexpected');
-
-const whole = ([min, max]: readonly [number, number]) =>
-  z.number('number').int('number').min(min, 'range').max(max, 'range');
+const button = z.object({ label: localized(HOME_LIMITS.button, true), href: siteHref(HOME_LIMITS.href) });
+const image = mediaRef(HOME_LIMITS.alt);
+const id = rowId;
 
 export const homeInputSchema = z.object({
   hero: z.object({

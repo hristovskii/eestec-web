@@ -167,6 +167,55 @@ export const mediaFixture: MediaItem[] = [
     ana,
     '2026-09-01T10:04:00+02:00',
   ),
+  // Journey steps (Journey, JourneyStep photos).
+  photo(
+    'media-journey-meeting',
+    'journey-meeting.jpg',
+    'a Wednesday meeting in room 117',
+    'Students sitting around a table at a Wednesday meeting in room 117',
+    ana,
+    '2026-09-02T10:00:00+02:00',
+  ),
+  photo(
+    'media-journey-workshop',
+    'journey-workshop.jpg',
+    'students soldering at a local workshop',
+    'Students soldering at a local workshop',
+    ana,
+    '2026-09-02T10:00:00+02:00',
+  ),
+  photo(
+    'media-journey-team',
+    'journey-team.jpg',
+    'organizing team planning on a whiteboard',
+    'An organizing team planning an event at a whiteboard',
+    ana,
+    '2026-09-02T10:00:00+02:00',
+  ),
+  photo(
+    'media-journey-exchange',
+    'journey-exchange.jpg',
+    'exchange group in front of TU Delft',
+    'An exchange group posing in front of TU Delft',
+    ana,
+    '2026-09-02T10:00:00+02:00',
+  ),
+  photo(
+    'media-journey-congress',
+    'journey-congress.jpg',
+    'LC Skopje delegation at Congress',
+    'The LC Skopje delegation at an EESTEC Congress',
+    ana,
+    '2026-09-02T10:00:00+02:00',
+  ),
+  photo(
+    'media-journey-alumni',
+    'journey-alumni.jpg',
+    'alumni talk at the career day',
+    'An alumnus giving a talk at the career day',
+    ana,
+    '2026-09-02T10:00:00+02:00',
+  ),
   // Event covers and galleries (AdminEventEdit, EventDetail, EventsList, UpcomingList captions).
   {
     ...photo(

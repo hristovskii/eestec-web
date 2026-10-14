@@ -280,6 +280,12 @@
       "newLabel": "Name of the new topic",
       "add": "Add",
       "cancel": "Cancel"
+    },
+    "pageEditor": {
+      "saving": "Saving…",
+      "saved": "All changes saved",
+      "unsaved": "Unsaved changes",
+      "save": "Save changes"
     }
   },
   "media": {
@@ -396,6 +402,13 @@
       "use": "Use PDF",
       "empty": "No PDFs match.",
       "loading": "Loading PDFs…"
+    },
+    "refField": {
+      "choose": "Choose from Media library",
+      "replace": "Replace photo",
+      "remove": "Remove {label}",
+      "alt": "Alt text",
+      "altHelp": "Describe the photo for people who can't see it. Required."
     }
   },
   "activity": {
@@ -1468,10 +1481,6 @@
   "home": {
     "title": "Home page",
     "description": "The text, photos and numbers of the Home page, and the order of its sections.",
-    "save": "Save changes",
-    "saving": "Saving…",
-    "saved": "All changes saved",
-    "unsaved": "Unsaved changes",
     "savedToast": "Home page saved. The site shows it within a minute.",
     "errorSummary": "{count, plural, one {Can't save yet: fix # field} other {Can't save yet: fix # fields}}",
     "sectionsNav": "Home page sections",
@@ -1499,13 +1508,6 @@
       "image": "Background photo",
       "imageEmpty": "No photo: the hero is red, as in the design.",
       "countdownNote": "The countdown to the next upcoming event appears in the hero by itself, and is hidden when no event is coming up."
-    },
-    "image": {
-      "choose": "Choose from Media library",
-      "replace": "Replace photo",
-      "remove": "Remove {label}",
-      "alt": "Alt text",
-      "altHelp": "Describe the photo for people who can't see it. Required."
     },
     "about": {
       "aside": "Paragraphs, and the cards below",
@@ -1590,6 +1592,88 @@
       "tooMany": "That's too many.",
       "layout": "The list of sections is not complete. Reload the page.",
       "forbidden": "Only editors and super admins can change the Home page.",
+      "unexpected": "Couldn't save. Try again."
+    }
+  },
+  "journey": {
+    "title": "EESTEC Journey",
+    "description": "The Journey page and the teaser on Home: the steps, their benefits, photos and quotes, and the final call to action.",
+    "savedToast": "Journey page saved. The site shows it within a minute.",
+    "errorSummary": "{count, plural, one {Can't save yet: fix # field} other {Can't save yet: fix # fields}}",
+    "sectionsNav": "Journey page sections",
+    "readOnly": "You can look at this page, but only editors and super admins can change it.",
+    "homeHint": "The first six steps also appear as the Journey teaser on Home (hide or move it in Home page › Section order). At most {max} steps.",
+    "sections": {
+      "hero": "Page title",
+      "steps": "Steps",
+      "cta": "Final call to action"
+    },
+    "hero": {
+      "aside": "The red top of the page",
+      "eyebrow": "Line above the title",
+      "eyebrowHelp": "Optional. Leave empty to hide it.",
+      "title": "Title",
+      "lead": "Lead"
+    },
+    "steps": {
+      "aside": "Shown top to bottom, numbered 1, 2, 3…",
+      "list": "Journey steps, in the order shown",
+      "new": "New step",
+      "icon": "Icon",
+      "title": "Title",
+      "text": "Short text",
+      "button": "Button",
+      "photo": "Photo (shown when the step is opened)",
+      "photoEmpty": "No photo. It is optional.",
+      "bullets": "Benefits",
+      "bulletsHelp": "Shown when the step is opened. Two or three short lines work best.",
+      "bullet": "Benefit {number}",
+      "addBullet": "Add benefit",
+      "removeBullet": "Remove benefit {number} of {name}",
+      "quote": "Quote",
+      "quoteText": "Quote",
+      "quoteAuthor": "Who said it",
+      "quoteAuthorHelp": "Name and a few words, like “Name · member since 2023”.",
+      "quoteEmpty": "No quote. It is optional.",
+      "addQuote": "Add a quote",
+      "removeQuote": "Remove quote",
+      "add": "Add step",
+      "remove": "Remove {name}",
+      "full": "At most {max} steps.",
+      "homeNote": "Home shows the first six.",
+      "icons": {
+        "user-plus": "Person with a plus",
+        "calendar": "Calendar",
+        "heart": "Heart",
+        "globe": "Globe",
+        "flag": "Flag",
+        "link": "Chain link",
+        "users": "People",
+        "graduation": "Graduation cap",
+        "lightbulb": "Light bulb",
+        "trophy": "Trophy"
+      }
+    },
+    "button": {
+      "label": "Button text",
+      "link": "Link",
+      "linkHelp": "A page of this site (like /join) or a full https:// link.",
+      "memberPage": "This page needs member accounts. The button stays hidden on the site until members are switched on."
+    },
+    "cta": {
+      "aside": "The red band at the end of the page",
+      "title": "Title",
+      "text": "Text",
+      "button": "Button",
+      "meetingNote": "Under the button the page shows the weekly meeting from Settings, when “Show on Home” is on there."
+    },
+    "errors": {
+      "required": "Fill this in.",
+      "tooLong": "This is too long.",
+      "url": "Enter a page of this site like /join, or a full link starting with https://.",
+      "tooMany": "That's too many.",
+      "tooFew": "Add at least one step.",
+      "forbidden": "Only editors and super admins can change the Journey page.",
       "unexpected": "Couldn't save. Try again."
     }
   }
