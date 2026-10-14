@@ -451,6 +451,59 @@
       "none": "—",
       "ours": "our committee",
       "count": "{count, plural, one {# committee} other {# committees}} shown"
+    },
+    "section": {
+      "eyebrow": "The network",
+      "title": "EESTEC across Europe",
+      "intro": "Every pin is a committee. Select one to see where it is and how to reach it.",
+      "introShort": "Tap a pin to see the committee."
+    }
+  },
+  "home": {
+    "nextEvent": {
+      "eyebrow": "Next event",
+      "startsIn": "Until the event starts",
+      "started": "Happening now",
+      "details": "Event details"
+    },
+    "about": {
+      "eyebrow": "About",
+      "title": "What is EESTEC?",
+      "visit": "Visit eestec.net",
+      "newTab": "(opens in a new tab)"
+    },
+    "tradition": {
+      "eyebrow": "Since {year}",
+      "title": "Tradition of LC Skopje",
+      "previous": "Previous milestones",
+      "next": "Next milestones",
+      "region": "Milestones of LC Skopje"
+    },
+    "numbers": {
+      "title": "EESTEC in numbers"
+    },
+    "meeting": {
+      "eyebrow": "Weekly meetings",
+      "text": "We meet every <b>{day}</b> at <b>{time}</b> in <b>{room}</b>.",
+      "open": "Open to every student. Come once and see if it's for you.",
+      "directions": "Get directions",
+      "newTab": "(opens in a new tab)",
+      "weekdays": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    },
+    "latest": {
+      "eyebrow": "Latest activity",
+      "title": "What we've been up to",
+      "pastEvents": "Past events",
+      "viewAll": "View all events",
+      "viewAllShort": "View all"
     }
   }
 }

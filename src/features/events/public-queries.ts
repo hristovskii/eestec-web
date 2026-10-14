@@ -108,6 +108,26 @@ export async function getEventsArchive(params: ArchiveParams, locale: Locale) {
   return { ...page, items: page.items.map((item) => toCard(item, files)) };
 }
 
+/** Home › Latest activity: the newest listed past events of both categories, with their covers. */
+export async function getLatestEvents(locale: Locale, count = 3): Promise<EventCardModel[]> {
+  'use cache';
+  cacheTag(eventTags.list);
+  cacheLife('events');
+  const settings = await getSiteSettings(locale);
+  const page = await (
+    await eventsRepository()
+  ).listArchive({
+    sort: 'newest',
+    page: 1,
+    pageSize: count,
+    locale,
+    now: now(),
+    justEndedDays: settings.events.justEndedDays,
+  });
+  const files = await filesFor(page.items.map((item) => item.cover?.mediaId));
+  return page.items.map((item) => toCard(item, files));
+}
+
 /** /events/[slug]: the event, its images and files, and the previous / next event. null = 404. */
 export async function getEventPage(slug: string, locale: Locale) {
   'use cache';

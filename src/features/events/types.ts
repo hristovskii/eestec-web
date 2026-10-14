@@ -201,7 +201,8 @@ export type EventSummary = {
 export type ArchiveSort = 'newest' | 'oldest' | 'title';
 
 export type ArchiveQuery = {
-  scope: EventScope;
+  /** Without a scope: local and international together (Home › Latest activity). */
+  scope?: EventScope;
   typeId?: string;
   year?: number;
   q?: string;

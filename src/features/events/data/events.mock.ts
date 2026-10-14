@@ -73,7 +73,7 @@ export function createMockEventsRepository(): EventsRepository {
       const rows = archive(query.now)
         .filter(
           (event) =>
-            event.scope === query.scope &&
+            (!query.scope || event.scope === query.scope) &&
             (!query.typeId || event.typeId === query.typeId) &&
             (!query.year || yearInSkopje(event.startsAt) === query.year),
         )
