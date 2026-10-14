@@ -1,6 +1,7 @@
 // Sponsors and For Companies: client-safe exports (types, the icon of a card, the logo rules, the public sections).
 export { CompanyForm } from './components/public/company-form';
 export { PartnerIconView } from './components/partner-icon';
+export { EventPartners } from './components/public/event-partners';
 export { PartnerStrip } from './components/public/partner-strip';
 export {
   PackagesSection,

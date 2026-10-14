@@ -33,6 +33,7 @@ import {
   BasicInfoSection,
   DatePlaceSection,
   DescriptionSection,
+  PartnersSection,
   PracticalSection,
   ProgrammeSection,
   TopicsSection,
@@ -48,6 +49,8 @@ type EventEditFormProps = {
   media: MediaItem[];
   types: Taxonomy;
   topics: Taxonomy;
+  /** The sponsors to pick the event's partners from. */
+  partners: { id: string; label: string }[];
   canDelete: boolean;
   canAddTopics: boolean;
   /** The form builder of this event, for "Edit application form" (applications feature). */
@@ -97,6 +100,7 @@ export function EventEditForm({
   media: initialMedia,
   types,
   topics: initialTopics,
+  partners,
   canDelete,
   canAddTopics,
   applicationForm,
@@ -319,6 +323,7 @@ export function EventEditForm({
               <ProgrammeSection />
               <PracticalSection />
               <TopicsSection topics={topics} onCreateTopic={createTopic} />
+              <PartnersSection partners={partners} />
               <CoverSection />
               <GallerySection />
               <DocumentsSection />

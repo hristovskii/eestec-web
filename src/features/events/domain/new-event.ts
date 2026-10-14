@@ -27,6 +27,7 @@ export function newEventInput(
     scope: 'local',
     typeId: defaults.typeId,
     topicIds: [],
+    partnerIds: [],
     startsAt: zonedToIso(day, '10:00')!,
     endsAt: zonedToIso(day, '18:00')!,
     allDay: false,

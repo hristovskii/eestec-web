@@ -10,6 +10,14 @@ const ready = eventInput({
 const paths = (event: Parameters<typeof publishIssues>[0]) =>
   publishIssues(event).map((i) => i.path.join('.'));
 
+describe('event partners', () => {
+  it('takes a list of sponsor ids, at most 12', () => {
+    expect(eventDraftSchema.safeParse({ ...ready, partnerIds: ['sponsor-voltline'] }).success).toBe(true);
+    const many = Array.from({ length: 13 }, (_, index) => `sponsor-${index}`);
+    expect(eventDraftSchema.safeParse({ ...ready, partnerIds: many }).success).toBe(false);
+  });
+});
+
 describe('publish rules', () => {
   it('passes a complete event', () => {
     expect(publishIssues(ready)).toEqual([]);

@@ -25,6 +25,7 @@ export const EVENT_LIMITS = {
   seoTitle: 60,
   seoDescription: 160,
   topics: 20,
+  partners: 12,
   gallery: 100,
 } as const;
 
@@ -79,6 +80,7 @@ export const eventDraftSchema = z.object({
   cover: image.nullable(),
   gallery: z.array(image).max(EVENT_LIMITS.gallery, 'tooMany'),
   infoPackId: id.nullable(),
+  partnerIds: z.array(id).max(EVENT_LIMITS.partners, 'tooMany'),
   videoUrl: z.union([z.literal(''), z.string().trim().regex(VIDEO_URL, 'videoUrl')]),
   status: z.enum(CONTENT_STATUSES),
   publishAt: dateTime.nullable(),

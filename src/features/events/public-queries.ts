@@ -4,6 +4,7 @@ import { cacheLife, cacheTag } from 'next/cache';
 
 import type { MediaItem } from '@/features/media';
 import { getMediaItems } from '@/features/media/server';
+import { getEventPartners } from '@/features/partners/server';
 import { getSiteSettings } from '@/features/settings/server';
 import type { Locale } from '@/shared/i18n/routing';
 import { resolveText } from '@/shared/i18n/localized';
@@ -146,7 +147,8 @@ export async function getEventPage(slug: string, locale: Locale) {
       detail.seo.shareImageId,
     ]),
   ]);
-  const { cover, gallery, infoPackId, ...rest } = detail;
+  const partners = await getEventPartners(detail.partnerIds, locale);
+  const { cover, gallery, infoPackId, partnerIds: _partnerIds, ...rest } = detail;
   const pack = infoPackId ? files.get(infoPackId) : undefined;
   const share = rest.seo.shareImageId ? files.get(rest.seo.shareImageId) : undefined;
   const shareImage: Media | null =
@@ -161,6 +163,7 @@ export async function getEventPage(slug: string, locale: Locale) {
       pack?.src && pack.kind === 'document'
         ? { src: pack.src, fileName: pack.fileName, size: pack.size }
         : null,
+    partners,
     shareImage,
   };
   return { event: page, ...adjacent };

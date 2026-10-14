@@ -990,6 +990,12 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Confirmation ("Thanks, Petra! Your inquiry is in."): Company / Interested in / Reference, "Partnership offer (PDF)" when the library file exists (not for the sample PDF), and "See our recent events". The contact person's e-mail, from Admin › Pages › Sponsors, is the one in "Prefer e-mail?" and in the failure messages.
 - The component lab has the live form (`/design-system#company-form-states`); the error, sending and confirmation states are reached by using it, and the e2e suite does that.
 
+**Notes from building (M11d, event partners)**
+
+- An event has `partnerIds` (sponsor ids, in the order shown; at most 12). The event editor has a "Partners" section (chips, like Topics) that lists the sponsors that are switched on; the sponsors come from `partners/server › listSponsorOptions`. This adds the dependency **events → partners** (through the partners feature's public entries only; partners never imports events).
+- The event page shows "Event partners" (a panel under the details on desktop, below the page on phones, three logos to a row; `partners/EventPartners`, `PartnerLogo compact`). `getEventPartners(ids, locale)` keeps the board's order and **includes past partners** (an old event keeps the companies that supported it), but leaves out switched-off sponsors and deleted ones. The panel is hidden without partners. Only the archive page (`/events/<slug>`) has it, as on the canvas; the upcoming page does not.
+- A deleted sponsor stays in an event's list until that event is saved again; the page ignores it.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".
