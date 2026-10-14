@@ -8,6 +8,9 @@ Next.js 16, TypeScript, Tailwind v4 + shadcn/ui, next-intl. Runs on sample data 
 - Architecture, decisions and milestones: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 - Rules for working on the code: [`CLAUDE.md`](CLAUDE.md)
 - Design handoff: [`handoff/README.md`](handoff/README.md)
+- Sample content to replace before launch: [`docs/sample-data.md`](docs/sample-data.md) · Macedonian strings to review: [`docs/i18n-review.md`](docs/i18n-review.md)
+
+**Status.** Phase 1 is built on mock data through M11: foundation, admin (media, settings, users, events, applications), the public events, upcoming, Home, Journey, Join Us and For Companies pages and their admin editors. Next: M12 (Contact and Inbox), then M13 (Phase 1 hardening). Phase 2 (members, Memories, ideas) and the Supabase backend follow. Milestones and decisions: `docs/ARCHITECTURE.md` §8 and §9.
 
 ```bash
 pnpm install

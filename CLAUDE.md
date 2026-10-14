@@ -14,6 +14,8 @@ The website of EESTEC LC Skopje (eestec.mk): a public site, member accounts (Pha
 3. `handoff/docs/routes.md`, `handoff/docs/components.md`, `handoff/docs/data-model.md`, `handoff/supabase/schema.sql`
 4. `handoff/screens/*.jpg` (what it must look like) and `handoff/design-source/*.dc.html` (exact markup, spacing, copy, states). Find a frame in `handoff/docs/frames.md`.
 
+Also read before building: `docs/sample-data.md` (every kind of sample content and who replaces it) and `docs/i18n-review.md` (Macedonian strings still to be reviewed).
+
 ## Stack
 
 - Next.js 16 (App Router, Cache Components, TypeScript strict), React Server Components by default; client components only for interactivity. Next 16 differs from older versions: check `node_modules/next/dist/docs/` before using an API (e.g. `proxy.ts` replaces middleware, `next/root-params`).
@@ -58,3 +60,15 @@ The website of EESTEC LC Skopje (eestec.mk): a public site, member accounts (Pha
 - Match the screenshots closely; when the screenshot and the design source disagree, the design source wins.
 - Never invent content: seed the database with the sample content from the design sources and mark it as sample data.
 - Ask before changing a DECIDED rule, a status list or the colour palette.
+- Milestones ship as small PRs (M10a, b, c…), one branch each, conventional commits, opened with `gh`. Under the owner's standing instruction Claude merges its own PRs once CI is green, then stops at the end of the milestone with a report and waits for "go". When a milestone adds sample content, update `docs/sample-data.md`; when it adds Macedonian strings, add a row to `docs/i18n-review.md`; add "Notes from building (Mx)" to `docs/ARCHITECTURE.md`.
+
+## Gotchas learned while building
+
+- The mock store lives on `globalThis` and survives hot reloads: restart `pnpm dev` after changing a fixture.
+- Client components only get the i18n namespaces listed in `src/app/[locale]/layout.tsx`: add the namespace there when a client component needs strings.
+- A `'use client'` file's non-component exports (constants, lists) cannot be used by server code: keep them in `types.ts`.
+- Move focus after a state change (error summary, confirmation, failure notice) in a `useEffect`, never in `requestAnimationFrame` or a timer: it races with rendering.
+- Tailwind: no arbitrary colours (lint); use the theme tokens (`border-line`, `text-ink-2`…). `better-tailwindcss` also rejects unnecessary classes.
+- Boundaries: a feature's tests cannot import another feature's fixtures; features talk through `index.ts` / `server.ts` only.
+- Cache Components: call `now()` only inside cached or dynamic code. Next keeps the previous page mounted, so ids can duplicate: e2e tests target visible elements and regions.
+- e2e: the mock store is shared by tests running in parallel, so tests that change content restore it, and new content is created switched off or hidden. dnd-kit starts listening for arrow keys one task after pick-up: wait about 150 ms after Space. Wait out animations before axe.
