@@ -671,6 +671,57 @@
       "metaNoPages": "PDF · {size}",
       "sample": "sample file, no download yet"
     },
-    "years": "Partner in"
+    "years": "Partner in",
+    "form": {
+      "title": "Partnership inquiry",
+      "required": "We reply within 2 working days. Fields marked <req>*</req> are required.",
+      "company": "Company name",
+      "companyPlaceholder": "e.g. Voltline",
+      "person": "Contact person",
+      "personPlaceholder": "Full name",
+      "email": "E-mail",
+      "phone": "Phone",
+      "interests": {
+        "sponsorship": "Sponsorship",
+        "workshop": "Workshop",
+        "job_fair": "Job fair",
+        "other": "Other"
+      },
+      "interestsShort": "What you’re interested in",
+      "pickAny": "Pick any",
+      "message": "Message",
+      "messagePlaceholder": "Tell us what you have in mind: an event, a workshop topic, a timeframe…",
+      "maxChars": "Max {max} characters.",
+      "counter": "{count} / {max}",
+      "consent": "I agree that {site} stores these contact details to reply to this inquiry, as described in the <link>privacy policy</link>.",
+      "consentShort": "Agreement to store your details",
+      "submit": "Send inquiry",
+      "preferEmail": "Prefer e-mail? <mail>{email}</mail>",
+      "errors": {
+        "required": "This is required.",
+        "tooLong": "This is too long.",
+        "tooShort": "Tell us a little more (at least {min} characters).",
+        "email": "Enter a valid e-mail address.",
+        "phone": "Enter a phone number, for example +389 2 123 4567.",
+        "interests": "Pick at least one option.",
+        "consent": "Please agree so we can reply to you.",
+        "invalid": "This is not valid."
+      },
+      "failed": {
+        "spam": "We couldn’t send this. Please try again, or write to us at {email}.",
+        "tooFast": "That was very quick. Please check your answers and send again.",
+        "unexpected": "Something went wrong and the inquiry was not sent. Please try again, or write to us at {email}."
+      },
+      "success": {
+        "title": "Thanks, {name}! Your inquiry is in.",
+        "text": "Our fundraising team will reply to <strong>{email}</strong> within 2 working days. We also sent you a copy of your message.",
+        "company": "Company",
+        "interested": "Interested in",
+        "reference": "Reference",
+        "offer": "Partnership offer (PDF)",
+        "events": "See our recent events"
+      },
+      "interestsLegend": "What are you interested in?"
+    }
   }
 }
