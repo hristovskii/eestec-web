@@ -227,7 +227,7 @@ test.describe('sponsors admin (M11a)', () => {
       }
       // An empty tier can be removed from the list (nothing is saved here).
       await expect(page.getByRole('button', { name: 'Remove Silver partners' })).toBeEnabled();
-      await expect(page.getByText('3 sponsors in this tier. It can’t be removed.')).toBeVisible();
+      await expect(page.getByText("3 sponsors in this tier. It can't be removed.").first()).toBeVisible();
     });
   });
 
