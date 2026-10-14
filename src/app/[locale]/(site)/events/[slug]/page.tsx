@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { EventDetail } from '@/features/events';
 import { getArchiveSlugs, getEventPage } from '@/features/events/server';
+import { socialMetadata } from '@/features/settings/server';
 import { isEnabled } from '@/shared/config/flags';
 import { currentLocale } from '@/shared/i18n/current-locale';
 import { redirect } from '@/shared/i18n/navigation';
@@ -18,24 +19,13 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/events/[
   const [{ slug }, locale] = await Promise.all([params, currentLocale()]);
   const page = await getEventPage(slug, locale);
   if (!page) return {};
-  const { seo, shareImage } = page.event;
+  const { seo, shareImage, timing } = page.event;
   return {
     title: seo.title,
     description: seo.description,
-    ...(shareImage
-      ? {
-          openGraph: {
-            images: [
-              {
-                url: shareImage.src,
-                width: shareImage.width,
-                height: shareImage.height,
-                alt: shareImage.alt,
-              },
-            ],
-          },
-        }
-      : {}),
+    ...(await socialMetadata(`/${timing === 'upcoming' ? 'upcoming' : 'events'}/${slug}`, locale, {
+      image: shareImage,
+    })),
   };
 }
 

@@ -5,12 +5,13 @@ import { cacheLife, cacheTag } from 'next/cache';
 
 import type { Locale } from '@/shared/i18n/routing';
 
-import type { SeoPageKey } from './types';
 import { now } from '@/shared/lib/now';
 import { sanitizeRichText } from '@/shared/lib/sanitize-html';
+import { alternatesFor, localizedPath, openGraphLocales } from '@/shared/seo/alternates';
 
 import { settingsTags } from './cache-tags';
 import { settingsRepository } from './data';
+import { SEO_PAGE_PATHS, type SeoPageKey } from './types';
 
 export async function getSiteSettings(locale: Locale) {
   'use cache';
@@ -51,9 +52,48 @@ export async function getSettingsForEdit() {
   return repo.getRecord();
 }
 
+const FALLBACK_SHARE_IMAGE = {
+  src: '/brand/LC_Skopje_red_background.png',
+  width: 4167,
+  height: 2942,
+} as const;
+
+type ShareImage = { src: string; width: number; height: number; alt: string };
+
+/**
+ * What the board never has to write: canonical address, hreflang links, Open Graph and Twitter
+ * card. `path` is the Macedonian address ("/events/spring-camp"); `image` is the page's own share
+ * image, or the brand image when there is none.
+ */
+export async function socialMetadata(
+  path: string,
+  locale: Locale,
+  options: { image?: ShareImage | null; type?: 'website' | 'article' } = {},
+): Promise<Metadata> {
+  const { siteName } = await getSiteSettings(locale);
+  const image = options.image ?? {
+    src: FALLBACK_SHARE_IMAGE.src,
+    width: FALLBACK_SHARE_IMAGE.width,
+    height: FALLBACK_SHARE_IMAGE.height,
+    alt: siteName,
+  };
+  return {
+    alternates: alternatesFor(path, locale),
+    openGraph: {
+      type: options.type ?? 'website',
+      siteName,
+      url: localizedPath(path, locale),
+      ...openGraphLocales(locale),
+      images: [{ url: image.src, width: image.width, height: image.height, alt: image.alt }],
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
 /**
  * Metadata of a public page from Settings › SEO: title (Home without the " · site name" suffix),
- * description and share image. `fallbackTitle` is used while the board hasn't written one.
+ * description and share image, plus the canonical / hreflang / social tags. `fallbackTitle` is used
+ * while the board hasn't written a title.
  */
 export async function pageMetadata(
   page: SeoPageKey,
@@ -65,19 +105,6 @@ export async function pageMetadata(
   return {
     ...(title ? { title: page === 'home' ? { absolute: title } : title } : {}),
     ...(seo.description ? { description: seo.description } : {}),
-    ...(seo.shareImage
-      ? {
-          openGraph: {
-            images: [
-              {
-                url: seo.shareImage.src,
-                width: seo.shareImage.width,
-                height: seo.shareImage.height,
-                alt: seo.shareImage.alt,
-              },
-            ],
-          },
-        }
-      : {}),
+    ...(await socialMetadata(SEO_PAGE_PATHS[page], locale, { image: seo.shareImage })),
   };
 }
