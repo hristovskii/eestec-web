@@ -70,6 +70,28 @@ export type SeoPageKey = (typeof SEO_PAGES)[number];
 /** Phase 2 pages: shown in Settings › SEO only when member accounts are on. */
 export const PHASE2_SEO_PAGES: readonly SeoPageKey[] = ['members', 'memories', 'submit'];
 
+/** Where each page lives (the Macedonian address; English adds /en). */
+export const SEO_PAGE_PATHS: Record<SeoPageKey, string> = {
+  home: '/',
+  events: '/events',
+  upcoming: '/upcoming',
+  journey: '/journey',
+  join: '/join',
+  partners: '/partners',
+  contact: '/contact',
+  members: '/members',
+  memories: '/memories',
+  submit: '/submit',
+  privacy: '/privacy',
+};
+
+/** The addresses of the pages visitors can reach: the member pages only while accounts are on. */
+export function publicPagePaths(phase2: boolean): string[] {
+  return SEO_PAGES.filter((page) => phase2 || !PHASE2_SEO_PAGES.includes(page)).map(
+    (page) => SEO_PAGE_PATHS[page],
+  );
+}
+
 export type PageSeo = { title: Localized; description: Localized; shareImage: ImageAsset | null };
 
 /** Settings › E-mail notifications: who hears about new submissions. */

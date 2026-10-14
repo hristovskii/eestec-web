@@ -7,4 +7,6 @@ export {
   getSettingsForEdit,
   getSiteSettings,
   pageMetadata,
+  socialMetadata,
 } from './queries';
+export { publicPagePaths } from './types';

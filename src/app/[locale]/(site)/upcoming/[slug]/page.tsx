@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { UpcomingEventPage } from '@/features/applications';
 import { getUpcomingPage } from '@/features/applications/server';
 import { getUpcomingSlugs } from '@/features/events/server';
-import { getSiteSettings } from '@/features/settings/server';
+import { getSiteSettings, socialMetadata } from '@/features/settings/server';
 import { currentLocale } from '@/shared/i18n/current-locale';
 import { redirect } from '@/shared/i18n/navigation';
 
@@ -21,24 +21,13 @@ export async function generateMetadata({
   const [{ slug }, locale] = await Promise.all([params, currentLocale()]);
   const page = await getUpcomingPage(slug, locale);
   if (!page) return {};
-  const { seo, shareImage } = page.event;
+  const { seo, shareImage, timing } = page.event;
   return {
     title: seo.title,
     description: seo.description,
-    ...(shareImage
-      ? {
-          openGraph: {
-            images: [
-              {
-                url: shareImage.src,
-                width: shareImage.width,
-                height: shareImage.height,
-                alt: shareImage.alt,
-              },
-            ],
-          },
-        }
-      : {}),
+    ...(await socialMetadata(`/${timing === 'past' ? 'events' : 'upcoming'}/${slug}`, locale, {
+      image: shareImage,
+    })),
   };
 }
 
