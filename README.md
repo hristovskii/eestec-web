@@ -10,7 +10,7 @@ Next.js 16, TypeScript, Tailwind v4 + shadcn/ui, next-intl. Runs on sample data 
 - Design handoff: [`handoff/README.md`](handoff/README.md)
 - Sample content to replace before launch: [`docs/sample-data.md`](docs/sample-data.md) · Macedonian strings to review: [`docs/i18n-review.md`](docs/i18n-review.md)
 
-**Status.** Phase 1 is built on mock data through M12: foundation, admin (media, settings, users, events, applications, Inbox), the public events, upcoming, Home, Journey, Join Us, For Companies and Contact pages and their admin editors. Next: M13 (Phase 1 hardening). Phase 2 (members, Memories, ideas) and the Supabase backend follow. Milestones and decisions: `docs/ARCHITECTURE.md` §8 and §9.
+**Status.** Phase 1 is built on mock data through M13: foundation, admin (media, settings, users, events, applications, Inbox), the public events, upcoming, Home, Journey, Join Us, For Companies and Contact pages and their admin editors. M13 hardened it: canonical and hreflang links, sitemap, structured data, an accessibility and keyboard sweep, and Lighthouse 90+ on every public page (`docs/reports/lighthouse.md`). Next: Phase 2 (members, Memories, ideas) and the Supabase backend follow. Milestones and decisions: `docs/ARCHITECTURE.md` §8 and §9.
 
 ```bash
 pnpm install
@@ -18,6 +18,7 @@ pnpm dev          # http://localhost:3000 · component lab at /design-system
 pnpm check        # typecheck, lint, format, unit tests, i18n keys
 pnpm build        # must pass with no environment variables
 pnpm e2e          # Playwright (builds with the e2e flags first)
+pnpm lighthouse   # Lighthouse (mobile) on the production build; see docs/ARCHITECTURE.md, M13d
 ```
 
 No environment variables are needed; see `.env.example` for the optional ones.

@@ -26,11 +26,12 @@ export async function generateMetadata({
   const page = await getUpcomingPage(slug, locale);
   if (!page) return {};
   const { seo, shareImage, timing } = page.event;
+  const description = seo.description || page.event.shortDescription.text;
   return {
     title: seo.title,
-    // The board's SEO description, else the short description of the event card.
-    // Neither written: the site's default description (from the layout) applies.
-    description: seo.description || page.event.shortDescription.text || undefined,
+    // The board's SEO description, else the short description of the event card. Neither written:
+    // the key is left out, so the site's default description (from the layout) applies.
+    ...(description ? { description } : {}),
     ...(await socialMetadata(`/${timing === 'past' ? 'events' : 'upcoming'}/${slug}`, locale, {
       image: shareImage,
     })),
