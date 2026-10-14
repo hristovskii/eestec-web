@@ -126,6 +126,8 @@ test.describe('committees admin (M8a)', () => {
 
     // The public map got it (pins are the committees).
     await page.goto('/en/design-system');
+    // The map loads when it is about to be seen.
+    await page.locator('#committee-map').scrollIntoViewIfNeeded();
     await expect(
       page
         .locator('#committee-map')

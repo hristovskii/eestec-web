@@ -1,10 +1,10 @@
 'use client';
 
 import { CircleAlert } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { useLocale, useTranslations } from 'next-intl';
 import * as React from 'react';
 
-import { AddToCalendar } from '@/features/applications';
 import { type FieldErrors, fieldErrorsFrom } from '@/shared/forms/action-result';
 import { SPAM_FIELDS } from '@/shared/forms/spam-guard';
 import { Link } from '@/shared/i18n/navigation';
@@ -20,14 +20,25 @@ import { NativeSelect, NativeSelectOption } from '@/shared/ui/primitives/native-
 
 import { type MembershipReceipt, submitMembership } from '../../actions/submit-membership';
 import {
-  buildMembershipSchema,
   MEMBERSHIP_FIELDS,
   MEMBERSHIP_LIMITS,
   type MembershipFailure,
   readMembershipForm,
   YEARS_OF_STUDY,
-} from '../../domain/membership';
+} from '../../domain/membership-fields';
 import type { PublicJoin } from '../../types';
+
+// The schema (and zod with it, about 90 KB) is fetched when the form is first used, not with the page.
+const loadSchema = () => import('../../domain/membership');
+
+// "Add to calendar" is only shown in the confirmation, so it is fetched then (the applications entry
+// also carries code the form page doesn't need).
+const AddToCalendar = dynamic(
+  () => import('@/features/applications').then((module) => module.AddToCalendar),
+  {
+    loading: () => null,
+  },
+);
 
 type JoinFormProps = {
   apply: PublicJoin['apply'];
@@ -58,16 +69,6 @@ export function JoinForm({ apply, siteName, meeting }: JoinFormProps) {
   const summaryRef = React.useRef<HTMLDivElement>(null);
   const failureRef = React.useRef<HTMLDivElement>(null);
   const successRef = React.useRef<HTMLDivElement>(null);
-
-  const schema = React.useMemo(
-    () =>
-      buildMembershipSchema({
-        faculties: apply.faculties.map((option) => option.value),
-        interests: apply.interests.map((option) => option.value),
-        heardFrom: apply.heardFrom.map((option) => option.value),
-      }),
-    [apply],
-  );
 
   // Spam guard: the time the form was shown (people need a few seconds to fill it in).
   React.useEffect(() => {
@@ -122,12 +123,17 @@ export function JoinForm({ apply, siteName, meeting }: JoinFormProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors]);
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.set(SPAM_FIELDS.startedAt, String(startedAt.current));
     setFailure(null);
-    const checked = schema.safeParse(readMembershipForm(data));
+    const { buildMembershipSchema } = await loadSchema();
+    const checked = buildMembershipSchema({
+      faculties: apply.faculties.map((option) => option.value),
+      interests: apply.interests.map((option) => option.value),
+      heardFrom: apply.heardFrom.map((option) => option.value),
+    }).safeParse(readMembershipForm(data));
     if (!checked.success) {
       setErrors(fieldErrorsFrom(checked.error.issues));
       return;
@@ -201,6 +207,7 @@ export function JoinForm({ apply, siteName, meeting }: JoinFormProps) {
       <form
         noValidate
         onSubmit={onSubmit}
+        onFocus={() => void loadSchema()}
         aria-labelledby={idOf('title')}
         className="flex flex-col gap-5.5"
         aria-busy={sending || undefined}

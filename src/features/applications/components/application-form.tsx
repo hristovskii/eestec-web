@@ -23,15 +23,17 @@ import { Textarea } from '@/shared/ui/primitives/textarea';
 
 import { type ApplicationReceipt, submitApplication } from '../actions/submit-application';
 import {
-  buildApplicationSchema,
   EMAIL_MAX,
   FORM_FIELDS,
   maxLengthOf,
   NAME_MAX,
   readApplicationForm,
-} from '../domain/application-schema';
+} from '../domain/application-fields';
 import type { PublicApplicationField, PublicApplicationForm } from '../types';
 import { AddToCalendar, type CalendarLinks } from './add-to-calendar';
+
+// The schema (and zod with it, about 90 KB) is fetched when the form is first used, not with the page.
+const loadSchema = () => import('../domain/application-schema');
 
 type ApplicationFormProps = {
   eventSlug: string;
@@ -80,7 +82,6 @@ export function ApplicationForm({
   const summaryRef = React.useRef<HTMLDivElement>(null);
   const failureRef = React.useRef<HTMLDivElement>(null);
   const successRef = React.useRef<HTMLDivElement>(null);
-  const schema = React.useMemo(() => buildApplicationSchema(form.fields), [form.fields]);
 
   // Spam guard: the time the form was shown (people need a few seconds to fill it in).
   React.useEffect(() => {
@@ -121,12 +122,13 @@ export function ApplicationForm({
     if (receipt) successRef.current?.focus();
   }, [receipt]);
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.set(SPAM_FIELDS.startedAt, String(startedAt.current));
     setFailure(null);
-    const checked = schema.safeParse(readApplicationForm(data, form.fields));
+    const { buildApplicationSchema } = await loadSchema();
+    const checked = buildApplicationSchema(form.fields).safeParse(readApplicationForm(data, form.fields));
     if (!checked.success) {
       setErrors(fieldErrorsFrom(checked.error.issues));
       requestAnimationFrame(() => summaryRef.current?.focus());
@@ -221,6 +223,7 @@ export function ApplicationForm({
       <form
         noValidate
         onSubmit={onSubmit}
+        onFocus={() => void loadSchema()}
         aria-labelledby={`${eventSlug}-apply-title`}
         className="flex flex-col gap-6"
         aria-busy={sending || undefined}

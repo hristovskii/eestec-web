@@ -18,7 +18,8 @@ export default defineConfig({
     {
       // Production build with the e2e flags (flags and dev surfaces are read at build time),
       // mock data, pinned clock.
-      command: `pnpm build && pnpm start --port ${PORT}`,
+      // A failed font download at build time (next/font fetches Roboto from Google) is retried once.
+      command: `(pnpm build || pnpm build) && pnpm start --port ${PORT}`,
       timeout: 300_000,
       port: PORT,
       reuseExistingServer: false,

@@ -28,7 +28,9 @@ export async function generateMetadata({
   const { seo, shareImage, timing } = page.event;
   return {
     title: seo.title,
-    description: seo.description,
+    // The board's SEO description, else the short description of the event card.
+    // Neither written: the site's default description (from the layout) applies.
+    description: seo.description || page.event.shortDescription.text || undefined,
     ...(await socialMetadata(`/${timing === 'past' ? 'events' : 'upcoming'}/${slug}`, locale, {
       image: shareImage,
     })),

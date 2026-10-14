@@ -20,7 +20,7 @@ import {
   SheetTrigger,
 } from '@/shared/ui/primitives/sheet';
 
-import { archiveHref, type ArchiveParams } from '../schemas/archive-params.schema';
+import { archiveHref, type ArchiveParams } from '../schemas/archive-href';
 import type { ArchiveTypeOption } from '../types';
 
 type ArchiveFiltersProps = {

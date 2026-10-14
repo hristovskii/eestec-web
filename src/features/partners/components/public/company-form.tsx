@@ -23,10 +23,12 @@ import {
   INQUIRY_FIELDS,
   INQUIRY_LIMITS,
   type InquiryFailure,
-  inquirySchema,
   readInquiryForm,
-} from '../../domain/inquiry';
+} from '../../domain/inquiry-fields';
 import { INQUIRY_INTERESTS } from '../../types';
+
+// The schema (and zod with it, about 90 KB) is fetched when the form is first used, not with the page.
+const loadSchema = () => import('../../domain/inquiry');
 
 type CompanyFormProps = {
   siteName: string;
@@ -97,11 +99,12 @@ export function CompanyForm({ siteName, email, offerUrl }: CompanyFormProps) {
     if (failure) failureRef.current?.focus();
   }, [failure]);
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.set(SPAM_FIELDS.startedAt, String(startedAt.current));
     setFailure(null);
+    const { inquirySchema } = await loadSchema();
     const checked = inquirySchema.safeParse(readInquiryForm(data));
     if (!checked.success) {
       setErrors(fieldErrorsFrom(checked.error.issues));
@@ -178,6 +181,7 @@ export function CompanyForm({ siteName, email, offerUrl }: CompanyFormProps) {
       <form
         noValidate
         onSubmit={onSubmit}
+        onFocus={() => void loadSchema()}
         aria-labelledby={idOf('title')}
         className="flex flex-col gap-5.5"
         aria-busy={sending || undefined}

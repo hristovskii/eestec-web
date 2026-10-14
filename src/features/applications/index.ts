@@ -18,7 +18,6 @@ export {
   type ApplyState,
   countdownTarget,
 } from './domain/application-state';
-export { buildApplicationSchema } from './domain/application-schema';
 export { DEFAULT_APPLICATION_FIELDS } from './domain/default-form';
 export type {
   Application,

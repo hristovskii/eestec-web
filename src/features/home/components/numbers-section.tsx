@@ -50,11 +50,12 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
 
   return (
     <span ref={ref}>
-      <span className="sr-only">
+      {/* Browsers' number data can differ from the server's (the grouping of 5000), which is not a mismatch worth a re-render. */}
+      <span className="sr-only" suppressHydrationWarning>
         {format.number(value)}
         {suffix}
       </span>
-      <span aria-hidden>
+      <span aria-hidden suppressHydrationWarning>
         {format.number(shown)}
         {suffix}
       </span>

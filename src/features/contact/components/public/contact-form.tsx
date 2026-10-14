@@ -23,13 +23,15 @@ import { Textarea } from '@/shared/ui/primitives/textarea';
 
 import { type MessageReceipt, submitMessage } from '../../actions/submit-message';
 import {
-  buildContactSchema,
   MESSAGE_FIELDS,
   MESSAGE_LIMITS,
   type MessageFailure,
   readContactForm,
-} from '../../domain/message';
+} from '../../domain/message-fields';
 import type { PublicContact } from '../../types';
+
+// The schema (and zod with it, about 90 KB) is fetched when the form is first used, not with the page.
+const loadSchema = () => import('../../domain/message');
 
 type ContactFormProps = {
   form: PublicContact['form'];
@@ -66,7 +68,6 @@ export function ContactForm({ form, subjects, siteName, email }: ContactFormProp
   const failureRef = React.useRef<HTMLDivElement>(null);
   const successRef = React.useRef<HTMLDivElement>(null);
 
-  const schema = React.useMemo(() => buildContactSchema(subjects.map((item) => item.id)), [subjects]);
   const chosen = subjects.find((item) => item.id === subject);
   const suggestion = chosen?.suggestion ?? null;
 
@@ -107,12 +108,13 @@ export function ContactForm({ form, subjects, siteName, email }: ContactFormProp
     if (failure) failureRef.current?.focus();
   }, [failure]);
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.set(SPAM_FIELDS.startedAt, String(startedAt.current));
     setFailure(null);
-    const result = schema.safeParse(readContactForm(data));
+    const { buildContactSchema } = await loadSchema();
+    const result = buildContactSchema(subjects.map((item) => item.id)).safeParse(readContactForm(data));
     if (!result.success) {
       setErrors(fieldErrorsFrom(result.error.issues));
       return;
@@ -196,6 +198,7 @@ export function ContactForm({ form, subjects, siteName, email }: ContactFormProp
       <form
         noValidate
         onSubmit={onSubmit}
+        onFocus={() => void loadSchema()}
         aria-labelledby={idOf('title')}
         className="flex flex-col gap-5.5"
         aria-busy={sending || undefined}

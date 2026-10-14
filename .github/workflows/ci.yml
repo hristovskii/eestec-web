@@ -28,7 +28,8 @@ jobs:
       - run: pnpm test
       - run: pnpm i18n:check
       # The app must build with an empty environment (docs/ARCHITECTURE.md §6).
-      - run: pnpm build
+      # next/font downloads Roboto from Google at build time; a failed download is retried once.
+      - run: pnpm build || (sleep 10 && pnpm build)
       - run: pnpm exec playwright install --with-deps chromium
       # Builds again with the e2e flags (phase 2 + dev surfaces).
       - run: pnpm e2e
