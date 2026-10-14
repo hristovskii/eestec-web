@@ -446,6 +446,34 @@ export function TopicsSection({
   );
 }
 
+/** Pick the sponsors that supported the event; their logos show on the event page. */
+export function PartnersSection({ partners }: { partners: { id: string; label: string }[] }) {
+  const t = useTranslations('admin.events.edit');
+  const { values, update, error, fieldId } = useEventForm();
+  return (
+    <FormSection id="s-partners" title={t('sections.partners')} aside={t('sections.partnersAside')}>
+      {partners.length === 0 ? (
+        <p className="text-small text-muted-ink">{t('fields.partnersEmpty')}</p>
+      ) : (
+        <>
+          <ChipMultiSelect
+            label={t('fields.partners')}
+            options={partners}
+            value={values.partnerIds}
+            onChange={(ids) => update((draft) => void (draft.partnerIds = ids))}
+          />
+          <p className="-mt-2 text-small text-muted-ink">{t('fields.partnersHelp')}</p>
+        </>
+      )}
+      {error('partnerIds') && (
+        <p id={fieldId('partnerIds')} role="alert" className="text-small font-medium text-brand-dark">
+          {error('partnerIds')}
+        </p>
+      )}
+    </FormSection>
+  );
+}
+
 export function AfterEventSection() {
   const t = useTranslations('admin.events.edit');
   const { values, update, error, fieldId } = useEventForm();

@@ -86,6 +86,7 @@ const event = (sample: Sample): EventRecord => ({
   gallery: [],
   infoPackId: null,
   videoUrl: '',
+  partnerIds: [],
   status: 'published',
   publishAt: null,
   nextUp: false,
@@ -209,6 +210,8 @@ export const eventsFixture: EventRecord[] = [
       'Closing ceremony certificates',
     ].map((alt, index) => ({ mediaId: `media-ai-edge-gallery-${index + 1}`, alt })),
     infoPackId: 'media-doc-ai-edge-pack',
+    // SAMPLE: two of the fictional companies and the faculty, as on the canvas.
+    partnerIds: ['sponsor-voltline', 'sponsor-gridnova', 'sponsor-feeit'],
     nextUp: true,
     applications: {
       enabled: true,
@@ -397,6 +400,8 @@ export const eventsFixture: EventRecord[] = [
     scope: 'international',
     typeId: 'type-workshop',
     topicIds: ['topic-power-energy'],
+    // SAMPLE: two of the fictional companies and the faculty, as on the canvas.
+    partnerIds: ['sponsor-voltline', 'sponsor-gridnova', 'sponsor-feeit'],
     ...allDay('2026-05-18', '2026-05-24'),
     location: both('Skopje & Ohrid, North Macedonia'),
     city: both('Skopje & Ohrid'),
@@ -444,6 +449,8 @@ export const eventsFixture: EventRecord[] = [
     title: both('EESTech Challenge 2026 — Local Round Skopje'),
     scope: 'local',
     typeId: 'type-competition',
+    // SAMPLE: a current partner and a past one (an old event keeps the companies that supported it).
+    partnerIds: ['sponsor-teravolt', 'sponsor-orbitel'],
     ...allDay('2026-03-14'),
     location: both('FEEIT, Skopje'),
     cover: cover('media-eestech-jury', 'A student team presenting their project to three jury members'),

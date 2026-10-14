@@ -2,6 +2,7 @@ import 'server-only';
 
 import { accessTo, type Actor } from '@/features/auth';
 import { getMediaItems } from '@/features/media/server';
+import { listSponsorOptions } from '@/features/partners/server';
 import { getSiteSettings } from '@/features/settings/server';
 import { now } from '@/shared/lib/now';
 
@@ -137,12 +138,14 @@ export async function getEventEditor(id: string | null) {
       waitlist: events.defaultWaitlistEnabled,
     });
   }
-  const media = await getMediaItems(mediaIdsOf(input));
+  const [media, partners] = await Promise.all([getMediaItems(mediaIdsOf(input)), listSponsorOptions()]);
   return {
     record: record satisfies EventRecord | null,
     input,
     media,
     types: types.map(({ id: typeId, name }) => ({ id: typeId, name })),
     topics: topics.map(({ id: topicId, name }) => ({ id: topicId, name })),
+    /** The sponsors to pick the event's partners from. */
+    partners,
   };
 }

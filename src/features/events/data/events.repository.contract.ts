@@ -25,6 +25,7 @@ export const eventInput = (patch: Partial<EventInput> = {}): EventInput => ({
   scope: 'local',
   typeId: 'type-workshop',
   topicIds: [],
+  partnerIds: [],
   startsAt: '2026-12-01T10:00:00+01:00',
   endsAt: '2026-12-01T18:00:00+01:00',
   allDay: false,

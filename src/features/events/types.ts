@@ -1,3 +1,4 @@
+import type { PublicSponsor } from '@/features/partners';
 import type { Locale } from '@/shared/i18n/routing';
 import type { Localized, ResolvedText } from '@/shared/types/localized';
 import type { AnyMedia, Media } from '@/shared/types/media';
@@ -105,6 +106,8 @@ export type EventRecord = {
   gallery: EventImage[];
   infoPackId: string | null;
   videoUrl: string;
+  /** The sponsors that supported the event (Partners feature), in the order shown. */
+  partnerIds: string[];
   status: ContentStatus;
   /** Scheduled publishing: a published event stays off the site until then. */
   publishAt: string | null;
@@ -256,6 +259,7 @@ export type EventDetail = EventSummary & {
   gallery: EventMediaRef[];
   infoPackId: string | null;
   videoUrl: string;
+  partnerIds: string[];
   /** Upcoming page (UpcomingDetail): programme, "Who can apply", fee, questions e-mail. */
   agenda: PublicAgendaItem[];
   /** Sanitized HTML; '' when empty. */
@@ -272,11 +276,13 @@ export type EventCardModel = Omit<EventSummary, 'cover'> & { cover: AnyMedia | n
 
 export type UpcomingEventCard = Omit<UpcomingEventSummary, 'cover'> & { cover: AnyMedia | null };
 
-export type EventPageModel = Omit<EventDetail, 'cover' | 'gallery' | 'infoPackId'> & {
+export type EventPageModel = Omit<EventDetail, 'cover' | 'gallery' | 'infoPackId' | 'partnerIds'> & {
   cover: AnyMedia | null;
   gallery: AnyMedia[];
   /** null when there is none, or the sample file has no download yet. */
   infoPack: { src: string; fileName: string; size: number } | null;
+  /** "Event partners": the sponsors, resolved by the Partners feature; empty hides the panel. */
+  partners: PublicSponsor[];
   shareImage: Media | null;
 };
 

@@ -231,7 +231,8 @@
       "next": "Next event",
       "newest": "This is the newest event in the archive",
       "newestShort": "Newest event in the archive",
-      "seeUpcoming": "See upcoming events →"
+      "seeUpcoming": "See upcoming events →",
+      "partners": "Event partners"
     }
   },
   "upcoming": {

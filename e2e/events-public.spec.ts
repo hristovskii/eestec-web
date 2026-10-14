@@ -160,6 +160,26 @@ test.describe('event page (M6)', () => {
     expect(await seriousViolations(page)).toEqual([]);
   });
 
+  test('shows the event partners, past partners included, and hides the panel without any', async ({
+    page,
+  }) => {
+    await page.goto('/en/events/power-up-2026');
+    const partners = page.getByRole('region', { name: 'Event partners' }).filter({ visible: true });
+    await expect(partners.getByRole('link', { name: 'Voltline (opens in a new tab)' })).toBeVisible();
+    await expect(partners.getByRole('link')).toHaveCount(2);
+    // FEEIT has no website: its name, not a link.
+    await expect(partners).toContainText('FEEIT');
+    await page.goto('/en/events/eestech-challenge-2026-skopje');
+    await expect(
+      page
+        .getByRole('region', { name: 'Event partners' })
+        .filter({ visible: true })
+        .getByRole('link', { name: 'Orbitel (opens in a new tab)' }),
+    ).toBeVisible();
+    await page.goto('/en/events/robomac-2026');
+    await expect(page.getByRole('region', { name: 'Event partners' })).toHaveCount(0);
+  });
+
   test('the lightbox opens at a photo and browses with the keyboard', async ({ page }) => {
     await page.goto('/en/events/power-up-2026');
     await page.getByRole('button', { name: 'Open photo: Team presentations' }).click();

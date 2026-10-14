@@ -14,6 +14,7 @@ import { useTranslations } from 'next-intl';
 import type * as React from 'react';
 
 import { formatBytes } from '@/features/media';
+import { EventPartners } from '@/features/partners';
 import { formatDate, formatDateRange } from '@/shared/i18n/format';
 import { Link } from '@/shared/i18n/navigation';
 import type { Locale } from '@/shared/i18n/routing';
@@ -184,6 +185,7 @@ export function EventDetail({ event, prev, next, locale, phase2 }: EventDetailPr
             {details}
           </div>
           {event.infoPack && <InfoPackLink pack={event.infoPack} />}
+          <EventPartners title={t('detail.partners')} sponsors={event.partners} />
           <Link href={scopeHref} className="pl-1 text-small font-medium text-brand-dark">
             {t('detail.back', { scope: event.scope })}
           </Link>
@@ -193,6 +195,7 @@ export function EventDetail({ event, prev, next, locale, phase2 }: EventDetailPr
             <InfoPackLink pack={event.infoPack} />
           </div>
         )}
+        <EventPartners title={t('detail.partners')} sponsors={event.partners} className="lg:hidden" />
       </Container>
 
       <AdjacentEvents prev={prev} next={next} locale={locale} />

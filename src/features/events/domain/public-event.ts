@@ -91,6 +91,7 @@ export function toDetail(event: EventRecord, context: Context): EventDetail {
     gallery: event.gallery.map(imageRef).filter((image) => image !== null),
     infoPackId: event.infoPackId,
     videoUrl: event.videoUrl,
+    partnerIds: event.partnerIds,
     agenda: event.agenda.map((item) => ({
       id: item.id,
       date: item.date,

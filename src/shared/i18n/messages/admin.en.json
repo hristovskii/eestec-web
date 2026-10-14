@@ -917,7 +917,9 @@
         "publishing": "Publishing",
         "category": "Category & type",
         "applications": "Applications",
-        "seo": "SEO & sharing"
+        "seo": "SEO & sharing",
+        "partners": "Partners",
+        "partnersAside": "Pick any · logos on the event page"
       },
       "fields": {
         "title": "Title",
@@ -1032,7 +1034,10 @@
         "deleteText": "Removes the event, its gallery and its applications. The photos stay in the Media library. This can't be undone.",
         "deleteButton": "Delete event…",
         "formLink": "Edit application form",
-        "formQuestions": "{count, plural, one {# question} other {# questions}}"
+        "formQuestions": "{count, plural, one {# question} other {# questions}}",
+        "partners": "Event partners",
+        "partnersHelp": "The companies and institutions that supported this event. Their logos show in “Event partners” on the page. Add sponsors in Pages › Sponsors.",
+        "partnersEmpty": "No sponsors yet. Add them in Pages › Sponsors, then pick them here."
       },
       "statuses": {
         "draft": "Draft",
@@ -1111,7 +1116,8 @@
         "maxParticipants": "Max participants",
         "seoTitle": "SEO › page title",
         "seoDescription": "SEO › description",
-        "shareImage": "SEO › share image"
+        "shareImage": "SEO › share image",
+        "partnerIds": "Event partners"
       }
     }
   },

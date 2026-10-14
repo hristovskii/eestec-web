@@ -134,6 +134,49 @@ export async function getPartners(locale: Locale): Promise<PublicPartnersPage> {
   };
 }
 
+/**
+ * The partners of one event, in the order the board picked them (event page: "Event partners").
+ * Past partners count: an old event keeps the companies that supported it. Switched-off sponsors
+ * and ids of deleted ones are left out.
+ */
+export async function getEventPartners(ids: string[], locale: Locale): Promise<PublicSponsor[]> {
+  'use cache';
+  cacheTag(partnersTags.all);
+  cacheLife('hours');
+  if (ids.length === 0) return [];
+  const sponsors = await (await partnersRepository()).listSponsors();
+  const picked = ids.flatMap((id) => {
+    const sponsor = sponsors.find((candidate) => candidate.id === id);
+    return sponsor?.isActive ? [sponsor] : [];
+  });
+  const files = await getMediaMap(picked.flatMap((sponsor) => (sponsor.logo ? [sponsor.logo.mediaId] : [])));
+  return picked.map((sponsor) => {
+    const file = sponsor.logo ? files.get(sponsor.logo.mediaId) : undefined;
+    return {
+      id: sponsor.id,
+      name: sponsor.name,
+      url: sponsor.websiteUrl,
+      logo:
+        sponsor.logo && file?.kind === 'image' && file.src
+          ? {
+              src: file.src,
+              alt: resolveLocalized(sponsor.logo.alt, locale),
+              width: file.width ?? 0,
+              height: file.height ?? 0,
+            }
+          : null,
+    };
+  });
+}
+
+/** The sponsors an event editor can pick from, in the board's order (Admin › Events › Partners). Callers check the permission. */
+export async function listSponsorOptions(): Promise<{ id: string; label: string }[]> {
+  const sponsors = await (await partnersRepository('session')).listSponsors();
+  return sponsors
+    .filter((sponsor) => sponsor.isActive)
+    .map((sponsor) => ({ id: sponsor.id, label: sponsor.name }));
+}
+
 /** Admin › Pages › Sponsors: everything in both languages and the library files it uses; never cached. Callers check the permission. */
 export async function getPartnersForEdit() {
   const repo = await partnersRepository('session');

@@ -65,6 +65,23 @@ test.describe('event edit form (M5b)', () => {
     expect(await seriousViolations(page)).toEqual([]);
   });
 
+  test('picks the event partners from the sponsors (nothing is saved)', async ({ page }) => {
+    await signInAs(page, 'super-admin');
+    await page.goto('/admin/events/ev-power-up-2026');
+    const partners = page.getByRole('group', { name: 'Event partners' });
+    await expect(partners.getByRole('button', { name: 'Voltline', pressed: true })).toBeVisible();
+    await expect(partners.getByRole('button', { name: 'FEEIT', pressed: true })).toBeVisible();
+    await expect(partners.getByRole('button', { name: 'Kodra', pressed: false })).toBeVisible();
+    await partners.getByRole('button', { name: 'Kodra' }).click();
+    await expect(partners.getByRole('button', { name: 'Kodra', pressed: true })).toBeVisible();
+    await page.reload();
+    await expect(
+      page
+        .getByRole('group', { name: 'Event partners' })
+        .getByRole('button', { name: 'Kodra', pressed: false }),
+    ).toBeVisible();
+  });
+
   test('a live event with a photo missing alt text cannot update its page', async ({ page }) => {
     await signInAs(page, 'super-admin');
     await page.goto('/admin/events/ev-ai-at-the-edge');
