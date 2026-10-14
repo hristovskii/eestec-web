@@ -88,6 +88,14 @@ export function ApplicationForm({
     startedAt.current = Date.now();
   }, []);
 
+  // Focus moves after the state change has been rendered (never in a timer or animation frame).
+  React.useEffect(() => {
+    if (Object.keys(errors).length > 0) summaryRef.current?.focus();
+  }, [errors]);
+  React.useEffect(() => {
+    if (failure) failureRef.current?.focus();
+  }, [failure]);
+
   // Ids carry the event: Next keeps a previous page mounted (hidden) for back / forward.
   const idOf = (path: string) =>
     `${eventSlug}-${path.startsWith('answers.') ? FORM_FIELDS.answer(path.slice(8)) : `apply-${path}`}`;
@@ -131,7 +139,6 @@ export function ApplicationForm({
     const checked = buildApplicationSchema(form.fields).safeParse(readApplicationForm(data, form.fields));
     if (!checked.success) {
       setErrors(fieldErrorsFrom(checked.error.issues));
-      requestAnimationFrame(() => summaryRef.current?.focus());
       return;
     }
     setErrors({});
@@ -145,7 +152,6 @@ export function ApplicationForm({
       }
       if (result && !result.ok && result.error === 'validation') {
         setErrors(result.fieldErrors);
-        requestAnimationFrame(() => summaryRef.current?.focus());
         return;
       }
       const reason: Failure =
@@ -156,7 +162,6 @@ export function ApplicationForm({
             : 'unexpected';
       setFailure(reason);
       if (reason === 'closed' || reason === 'full' || reason === 'notFound') router.refresh();
-      requestAnimationFrame(() => failureRef.current?.focus());
     });
   }
 
