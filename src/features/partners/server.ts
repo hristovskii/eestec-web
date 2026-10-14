@@ -1,5 +1,6 @@
 import 'server-only';
 
+export { listInquiries, matchesInquiryFilter } from './admin-queries';
 export {
   countNewInquiries,
   getEventPartners,
@@ -7,3 +8,4 @@ export {
   getPartnersForEdit,
   listSponsorOptions,
 } from './queries';
+export { inquiriesCsvResponse } from './export';

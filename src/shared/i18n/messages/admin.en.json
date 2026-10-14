@@ -2185,5 +2185,149 @@
       "forbidden": "Only editors and super admins can change the Contact page.",
       "unexpected": "Couldn't save. Try again."
     }
+  },
+  "inbox": {
+    "title": "Inbox",
+    "description": "Form submissions from the website. Replies are sent from your own e-mail.",
+    "tabsLabel": "Form",
+    "tabs": {
+      "contact": "Contact messages",
+      "partners": "Partner inquiries",
+      "membership": "Membership applications"
+    },
+    "newCount": "{count} new",
+    "status": {
+      "new": "New",
+      "answered": "Answered",
+      "archived": "Archived",
+      "in_progress": "In progress",
+      "done": "Done",
+      "contacted": "Contacted",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "filters": {
+      "search": "Search name, e-mail or text",
+      "searchLabel": {
+        "contact": "Search messages",
+        "partners": "Search inquiries",
+        "membership": "Search applications"
+      },
+      "status": "Status",
+      "subject": "Subject",
+      "allSubjects": "All subjects",
+      "all": "All",
+      "clear": "Clear filters"
+    },
+    "markAllRead": "Mark all as read",
+    "list": {
+      "unread": "Unread",
+      "back": "Back to the list",
+      "detail": "Selected item",
+      "noneSelected": "Choose an item on the left to read it."
+    },
+    "detail": {
+      "status": "Status",
+      "markUnread": "Mark as unread",
+      "markRead": "Mark as read",
+      "reply": "Reply by e-mail",
+      "language": "Language"
+    },
+    "toasts": {
+      "statusChanged": "Status changed to “{status}”.",
+      "allRead": "{count, plural, =0 {Everything was already read.} one {# item marked as read.} other {# items marked as read.}}",
+      "error": "Couldn't save that. Try again.",
+      "forbidden": "Only editors and super admins can change the Inbox."
+    },
+    "contact": {
+      "list": "Messages",
+      "subject": "Subject",
+      "sentTo": "sent to",
+      "markAnswered": "Mark as answered",
+      "archive": "Archive",
+      "empty": "No messages yet",
+      "emptyHelp": "Messages sent from the Contact page appear here.",
+      "emptyFiltered": "No messages match these filters"
+    },
+    "partners": {
+      "list": "Inquiries",
+      "company": "Company",
+      "person": "Contact person",
+      "phone": "Phone",
+      "interests": "Interested in",
+      "reference": "Reference",
+      "interestNames": {
+        "sponsorship": "Sponsorship",
+        "workshop": "Workshop",
+        "job_fair": "Job fair",
+        "other": "Other"
+      },
+      "replySubject": "Partnership inquiry {reference}",
+      "markInProgress": "Mark in progress",
+      "markDone": "Mark as done",
+      "empty": "No inquiries yet",
+      "emptyHelp": "Inquiries from the For Companies page appear here.",
+      "emptyFiltered": "No inquiries match these filters"
+    },
+    "membership": {
+      "list": "Applications",
+      "faculty": "Faculty",
+      "program": "Study program",
+      "year": "Year of study",
+      "phone": "Phone",
+      "interests": "Interests",
+      "heardFrom": "Heard about us from",
+      "submitted": "Sent",
+      "none": "None chosen",
+      "replySubject": "Your membership application",
+      "markContacted": "Mark as contacted",
+      "empty": "No applications yet",
+      "emptyHelp": "Applications from the Join Us page appear here.",
+      "emptyFiltered": "No applications match these filters"
+    },
+    "notes": {
+      "title": "Internal notes · only admins see these",
+      "label": "Add a note",
+      "placeholder": "Add a note…",
+      "add": "Add",
+      "empty": "No notes yet.",
+      "errors": {
+        "required": "Write a note first.",
+        "forbidden": "Only editors and super admins can add notes.",
+        "unexpected": "Couldn't save the note. Try again."
+      }
+    },
+    "export": {
+      "button": "Export CSV",
+      "dialog": "Export to CSV",
+      "title": {
+        "contact": "Export contact messages",
+        "partners": "Export partner inquiries",
+        "membership": "Export membership applications"
+      },
+      "range": "Date range",
+      "ranges": {
+        "30d": "Last 30 days",
+        "year": "This academic year",
+        "all": "All time",
+        "custom": "Custom…"
+      },
+      "from": "From",
+      "to": "To",
+      "closed": {
+        "contact": "Include archived messages",
+        "partners": "Include finished inquiries",
+        "membership": "Include rejected applications"
+      },
+      "current": "Only the current filter ({filter})",
+      "currentNone": "Only the current filter (no filter set)",
+      "count": {
+        "contact": "{count, plural, one {# message} other {# messages}}",
+        "partners": "{count, plural, one {# inquiry} other {# inquiries}}",
+        "membership": "{count, plural, one {# application} other {# applications}}"
+      },
+      "opensIn": "opens in Excel or Google Sheets",
+      "download": "Download CSV"
+    }
   }
 }
