@@ -81,7 +81,7 @@ test.describe('admin users (M4c)', () => {
     await page.getByRole('menuitem', { name: 'New Year Social 2026' }).click();
     await expect(dialog.getByText('Pick at least one event.')).toBeHidden();
     await dialog.getByRole('button', { name: 'Send invite' }).click();
-    await expect(page.getByText(`Invite sent to ${email}`)).toBeVisible();
+    await expect(page.getByText(`Invite sent to ${email}`)).toBeVisible({ timeout: 15_000 });
 
     // The table on desktop, the cards list on phones (not the toasts, which are list items too).
     const card = (

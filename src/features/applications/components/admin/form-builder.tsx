@@ -148,6 +148,11 @@ export function FormBuilder({
     setErrors({});
   };
 
+  // The error summary takes focus when a save finds problems (it is rendered by then).
+  React.useEffect(() => {
+    if (Object.keys(errors).length > 0) summaryRef.current?.focus();
+  }, [errors]);
+
   const save = () =>
     new Promise<boolean>((resolve) =>
       startTransition(async () => {
@@ -165,7 +170,6 @@ export function FormBuilder({
               }
               return next;
             });
-            requestAnimationFrame(() => summaryRef.current?.focus());
           } else {
             toast.error(t(result.error === 'forbidden' ? 'toasts.forbidden' : 'toasts.unexpected'));
           }
