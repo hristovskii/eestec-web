@@ -92,6 +92,8 @@ type PageEditorFrameProps<T extends object> = {
   /** Summary lines, one per field with a problem (the page words them). */
   errors: FieldErrorItem[];
   errorSummaryTitle: string;
+  /** Between the header and the sections (tabs of a page that has more than one). */
+  aboveContent?: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -106,6 +108,7 @@ export function PageEditorFrame<T extends object>({
   sectionsNavLabel,
   errors,
   errorSummaryTitle,
+  aboveContent,
   children,
 }: PageEditorFrameProps<T>) {
   const t = useTranslations('admin.ui.pageEditor');
@@ -155,6 +158,8 @@ export function PageEditorFrame<T extends object>({
           }
         />
       </div>
+
+      {aboveContent}
 
       {!canEdit && <Notice tone="info">{readOnlyNote}</Notice>}
 
