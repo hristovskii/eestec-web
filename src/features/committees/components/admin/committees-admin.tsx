@@ -1,7 +1,6 @@
 'use client';
 
 import { Download, MapPin, Plus, Trash2, Upload } from 'lucide-react';
-import type { Route } from 'next';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
@@ -156,7 +155,7 @@ export function CommitteesAdmin({ page, params, totals, canEdit }: CommitteesAdm
           committees: totals.committees,
           countries: totals.countries,
           link: (chunks) => (
-            <Link href={'/admin/pages/home' as Route} className="font-medium text-brand-dark">
+            <Link href="/admin/pages/home" className="font-medium text-brand-dark">
               {chunks}
             </Link>
           ),
