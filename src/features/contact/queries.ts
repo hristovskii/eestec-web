@@ -6,7 +6,7 @@ import { resolveLocalized } from '@/shared/i18n/localized';
 import type { Locale } from '@/shared/i18n/routing';
 
 import { contactTags } from './cache-tags';
-import { contactRepository } from './data';
+import { contactRepository, messagesRepository } from './data';
 import { CONTACT_HEADINGS, type PublicContact } from './types';
 
 /** The Contact page in the language of the page. Cached; every admin change refreshes it. */
@@ -52,4 +52,9 @@ export async function getContact(locale: Locale): Promise<PublicContact> {
 /** Admin › Pages › Contact: everything in both languages; never cached. Callers check the permission. */
 export async function getContactForEdit() {
   return { contact: await (await contactRepository('session')).get() };
+}
+
+/** Messages nobody has answered yet (status "new"): the count on the Inbox tab, the sidebar and the dashboard. */
+export async function countNewMessages(): Promise<number> {
+  return (await (await messagesRepository('session')).list({ status: 'new' })).length;
 }

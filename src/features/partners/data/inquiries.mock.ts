@@ -31,6 +31,7 @@ export function createMockInquiriesRepository(): InquiriesRepository {
         id: `pi-${crypto.randomUUID().slice(0, 8)}`,
         reference: nextReference(db.inquiries, isoToZoned(created).date.slice(0, 4)),
         status: 'new',
+        readAt: null,
         consentAt: created,
         createdAt: created,
       };
@@ -45,11 +46,29 @@ export function createMockInquiriesRepository(): InquiriesRepository {
       );
     },
 
+    get(id) {
+      const inquiry = db.inquiries.find((candidate) => candidate.id === id);
+      return Promise.resolve(inquiry ? structuredClone(inquiry) : null);
+    },
+
     updateStatus(id, status) {
       const inquiry = db.inquiries.find((candidate) => candidate.id === id);
       if (!inquiry) return Promise.resolve(null);
       inquiry.status = status;
       return Promise.resolve(structuredClone(inquiry));
+    },
+
+    setRead(id, readAt) {
+      const inquiry = db.inquiries.find((candidate) => candidate.id === id);
+      if (!inquiry) return Promise.resolve(null);
+      inquiry.readAt = readAt ? readAt.toISOString() : null;
+      return Promise.resolve(structuredClone(inquiry));
+    },
+
+    markAllRead(now) {
+      const unread = db.inquiries.filter((inquiry) => inquiry.readAt === null);
+      for (const inquiry of unread) inquiry.readAt = now.toISOString();
+      return Promise.resolve(unread.length);
     },
   };
 }

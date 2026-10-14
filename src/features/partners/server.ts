@@ -1,3 +1,9 @@
 import 'server-only';
 
-export { getEventPartners, getPartners, getPartnersForEdit, listSponsorOptions } from './queries';
+export {
+  countNewInquiries,
+  getEventPartners,
+  getPartners,
+  getPartnersForEdit,
+  listSponsorOptions,
+} from './queries';

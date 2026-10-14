@@ -1,7 +1,7 @@
 import type { PartnerInquiry } from '../../types';
 
 // SAMPLE DATA: three made-up inquiries (fictional companies, example.org addresses) so the board's
-// list in Inbox › Partners (M12) has something to show. Replaced by the real ones from /partners.
+// list in Inbox › Partner inquiries has something to show. Replaced by the real ones from /partners.
 
 export const inquiriesFixture: PartnerInquiry[] = [
   {
@@ -17,6 +17,7 @@ export const inquiriesFixture: PartnerInquiry[] = [
     locale: 'en',
     consentAt: '2026-09-28T10:12:00+02:00',
     status: 'in_progress',
+    readAt: '2026-09-28T11:00:00+02:00',
     createdAt: '2026-09-28T10:12:00+02:00',
   },
   {
@@ -32,6 +33,7 @@ export const inquiriesFixture: PartnerInquiry[] = [
     locale: 'en',
     consentAt: '2026-10-01T14:40:00+02:00',
     status: 'new',
+    readAt: null,
     createdAt: '2026-10-01T14:40:00+02:00',
   },
   {
@@ -46,6 +48,7 @@ export const inquiriesFixture: PartnerInquiry[] = [
     locale: 'mk',
     consentAt: '2026-10-03T09:05:00+02:00',
     status: 'new',
+    readAt: null,
     createdAt: '2026-10-03T09:05:00+02:00',
   },
 ];

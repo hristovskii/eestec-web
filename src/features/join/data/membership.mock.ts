@@ -26,6 +26,7 @@ export function createMockMembershipRepository(): MembershipRepository {
         ...structuredClone(input),
         id: newId(),
         status: 'new',
+        readAt: null,
         consentAt: now.toISOString(),
         createdAt: now.toISOString(),
       };
@@ -42,11 +43,29 @@ export function createMockMembershipRepository(): MembershipRepository {
       );
     },
 
+    get(id) {
+      const application = db.applications.find((candidate) => candidate.id === id);
+      return Promise.resolve(application ? structuredClone(application) : null);
+    },
+
     updateStatus(id, status) {
       const application = db.applications.find((candidate) => candidate.id === id);
       if (!application) return Promise.resolve(null);
       application.status = status;
       return Promise.resolve(structuredClone(application));
+    },
+
+    setRead(id, readAt) {
+      const application = db.applications.find((candidate) => candidate.id === id);
+      if (!application) return Promise.resolve(null);
+      application.readAt = readAt ? readAt.toISOString() : null;
+      return Promise.resolve(structuredClone(application));
+    },
+
+    markAllRead(now) {
+      const unread = db.applications.filter((application) => application.readAt === null);
+      for (const application of unread) application.readAt = now.toISOString();
+      return Promise.resolve(unread.length);
     },
   };
 }
