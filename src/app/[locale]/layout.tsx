@@ -58,6 +58,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
               filters: messages.events.filters,
               detail: { playVideo: messages.events.detail.playVideo },
             },
+            committees: messages.committees,
             applications: {
               form: messages.applications.form,
               calendar: messages.applications.calendar,

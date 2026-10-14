@@ -3,6 +3,7 @@ import { Container } from '@/shared/ui/container';
 
 import { BadgesAndTitleSection, ButtonsSection } from './actions';
 import { ApplicationsSection } from './applications';
+import { CommitteesSection } from './committees';
 import { CardsSection } from './cards';
 import { FormsSection } from './forms';
 import { ColorsSection, LayoutAndIconsSection, LogosSection, TypographySection } from './foundations';
@@ -17,6 +18,7 @@ const toc = [
   ['badges', 'Badges & chips'],
   ['cards', 'Cards'],
   ['applications', 'Application box'],
+  ['committee-map', 'Committee map'],
   ['forms', 'Forms'],
   ['navigation', 'Lists'],
   ['overlays', 'Overlays'],
@@ -67,6 +69,7 @@ export function DesignSystemPage() {
         <BadgesAndTitleSection />
         <CardsSection />
         <ApplicationsSection />
+        <CommitteesSection />
         <FormsSection />
         <NavigationSection />
         <OverlaysSection />

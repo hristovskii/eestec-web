@@ -402,5 +402,55 @@
         "acceptedText": "Thanks, {name}. Your place is confirmed. We sent the details to <strong>{email}</strong>."
       }
     }
+  },
+  "committees": {
+    "filters": {
+      "label": "Filter committees",
+      "all": "All · {count}",
+      "lc": "Local Committees · {count}",
+      "lcShort": "LCs · {count}",
+      "observer": "Observers · {count}",
+      "jlc": "JLCs · {count}"
+    },
+    "view": {
+      "label": "View",
+      "map": "Map",
+      "list": "List view"
+    },
+    "status": {
+      "lc": "Local Committee",
+      "observer": "Observer",
+      "jlc": "Junior Local Committee"
+    },
+    "legend": {
+      "title": "Legend",
+      "lc": "Local Committee",
+      "observer": "Observer",
+      "jlc": "JLC (Junior Local Committee)"
+    },
+    "map": {
+      "label": "Map of EESTEC committees. Every committee is a button: Tab moves between them, Enter opens its details, Escape closes them.",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "loading": "Loading the map…",
+      "close": "Close",
+      "pin": "{name} — {country}, {status}",
+      "place": "{city}, {country}",
+      "visit": "{host} ↗",
+      "newTab": "(opens in a new tab)",
+      "skip": "Skip the map",
+      "summary": "Selected committee"
+    },
+    "list": {
+      "label": "All committees",
+      "committee": "Committee",
+      "city": "City",
+      "country": "Country",
+      "type": "Type",
+      "website": "Website",
+      "none": "—",
+      "ours": "our committee",
+      "count": "{count, plural, one {# committee} other {# committees}} shown"
+    }
   }
 }

@@ -1336,5 +1336,133 @@
         "unexpected": "Something went wrong. Please try again."
       }
     }
+  },
+  "committees": {
+    "title": "Map / Committees",
+    "description": "The committees shown on the Home map. Kept by hand (no sync with eestec.net).",
+    "hint": "The big numbers on Home (“35 Local Committees”, “21 Countries”…) are edited separately in <link>Home page › Statistics</link>. The map and its filters count the committees in this list: {committees, plural, one {# committee} other {# committees}} in {countries, plural, one {# country} other {# countries}}.",
+    "add": "Add committee",
+    "importCsv": "Import CSV",
+    "import": {
+      "title": "Import committees from CSV",
+      "text": "Columns: name, type (LC, Observer or JLC), city, country, lat, lng and, optionally, link. A committee with the same name and country is updated; the others are added. Export CSV gives you the current list in this format.",
+      "template": "Download an empty template",
+      "file": "CSV file",
+      "choose": "Choose a CSV file…",
+      "missing": "The file has no {columns} column.",
+      "tooMany": "Only the first 500 rows are checked.",
+      "summary": "{valid, plural, one {# row is ready} other {# rows are ready}} to import{failed, plural, =0 {.} one {; # row has problems.} other {; # rows have problems.}}",
+      "failedTitle": "Rows with problems (not imported)",
+      "line": "Line",
+      "field": "Field",
+      "problem": "Problem",
+      "go": "Import {count, plural, one {# committee} other {# committees}}",
+      "working": "Importing…",
+      "close": "Close",
+      "done": "{created, plural, =0 {} one {# committee added} other {# committees added}}{both, select, yes {, } other {}}{updated, plural, =0 {} one {# updated} other {# updated}}",
+      "fields": {
+        "name": "Name",
+        "type": "Type",
+        "city": "City",
+        "country": "Country",
+        "lat": "Latitude",
+        "lng": "Longitude",
+        "url": "Link"
+      }
+    },
+    "export": "Export CSV",
+    "columns": {
+      "committee": "Committee",
+      "country": "Country",
+      "type": "Type",
+      "website": "Website"
+    },
+    "ours": "Our committee",
+    "types": {
+      "lc": "Local Committee",
+      "observer": "Observer",
+      "jlc": "Junior Local Committee"
+    },
+    "typesShort": {
+      "lc": "LC",
+      "observer": "Observer",
+      "jlc": "JLC"
+    },
+    "tabs": {
+      "label": "Types",
+      "all": "All"
+    },
+    "filters": {
+      "search": "Search committees",
+      "searchPlaceholder": "Name, city or country",
+      "type": "Type",
+      "typeAny": "Any type",
+      "country": "Country",
+      "countryAny": "Any country"
+    },
+    "row": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "none": "—"
+    },
+    "bulk": {
+      "delete": "Delete"
+    },
+    "empty": {
+      "noneTitle": "No committees yet",
+      "noneText": "Add committees one by one, or import a CSV file.",
+      "filteredTitle": "No committees match",
+      "filteredText": "Try another type, country or search.",
+      "clear": "Clear filters"
+    },
+    "dialog": {
+      "addTitle": "Add a committee",
+      "editTitle": "Edit {name}",
+      "text": "It appears on the Home map as soon as you save.",
+      "name": "Name",
+      "namePlaceholder": "LC Belgrade",
+      "type": "Type",
+      "city": "City",
+      "country": "Country",
+      "countryChoose": "Choose a country…",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "coordinatesHelp": "Decimal degrees, e.g. 41.9981 and 21.4254. In OpenStreetMap, right-click the place and choose “Show address”.",
+      "link": "Website or social page",
+      "linkHelp": "Optional. Shown in the popup of the pin.",
+      "ours": "This is our committee (the red pin)",
+      "oursHelp": "Only one committee is ours. Marking this one moves the red pin here.",
+      "oursLocked": "This is our committee. To change it, mark another committee as ours.",
+      "save": "Save committee",
+      "saving": "Saving…",
+      "cancel": "Cancel"
+    },
+    "delete": {
+      "titleOne": "Delete {name}?",
+      "titleMany": "Delete {count} committees?",
+      "text": "It disappears from the Home map and list. This can't be undone.",
+      "textHome": "Our own committee (the red pin) can't be deleted. Mark another committee as ours first.",
+      "confirmOne": "Delete committee",
+      "confirmMany": "Delete committees"
+    },
+    "errors": {
+      "required": "Fill in this field.",
+      "tooLong": "This is too long.",
+      "country": "Choose one of the listed countries (name or two-letter code).",
+      "number": "Enter a number, like 41.9981.",
+      "range": "This is outside the possible range.",
+      "url": "Enter a web address starting with http:// or https://.",
+      "type": "Use LC, Observer or JLC.",
+      "duplicate": "There is already a committee with this name in this country.",
+      "unexpected": "Something is wrong with this field."
+    },
+    "toasts": {
+      "created": "Committee added",
+      "updated": "Committee saved",
+      "deleted": "{count, plural, one {Committee deleted} other {# committees deleted}}",
+      "keptHome": "Our own committee can't be deleted. Mark another one as ours first.",
+      "forbidden": "You don't have permission to change committees.",
+      "unexpected": "Something went wrong. Please try again."
+    }
   }
 }

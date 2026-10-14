@@ -1,17 +1,19 @@
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+import { MAP_TILES_ORIGIN } from './src/shared/config/map';
+
 const withNextIntl = createNextIntlPlugin('./src/shared/i18n/request.ts');
 
 const isDev = process.env.NODE_ENV === 'development';
 
 // Static CSP: a nonce-based CSP would make every page dynamic (no prerendered shells).
-// Allowed third parties: OSM tiles (Leaflet), YouTube/Vimeo embeds, Cloudflare Turnstile.
+// Allowed third parties: map tiles (src/shared/config/map.ts), YouTube/Vimeo embeds, Cloudflare Turnstile.
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://challenges.cloudflare.com`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://*.tile.openstreetmap.org",
+  `img-src 'self' data: blob: ${MAP_TILES_ORIGIN}`,
   "font-src 'self'",
   "connect-src 'self'",
   'frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://challenges.cloudflare.com',
