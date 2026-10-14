@@ -11,6 +11,13 @@ const step = (page: Page, n: number) => page.locator(`#step-${n}`);
 const more = (page: Page, n: number) => step(page, n).getByRole('button', { name: /Show (more|less)/ });
 
 /** Scrolls down the whole path and waits until every card has finished sliding in (axe misreads half-faded colours). */
+async function finishAnimations(page: Page) {
+  await page.mouse.move(0, 0);
+  await page.evaluate(() =>
+    Promise.all(document.getAnimations().map((animation) => animation.finished.catch(() => undefined))),
+  );
+}
+
 async function seeEverything(page: Page) {
   for (const n of [1, 2, 3, 4, 5, 6]) await step(page, n).scrollIntoViewIfNeeded();
   await expect
@@ -153,12 +160,14 @@ test.describe('journey page (M9b)', () => {
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
     expect(overflow).toBeLessThanOrEqual(0);
+    await finishAnimations(page);
     expect(await seriousViolations(page)).toEqual([]);
 
     await page.goto('/en/journey');
     await seeEverything(page);
     await step(page, 3).scrollIntoViewIfNeeded();
     await more(page, 3).click();
+    await finishAnimations(page);
     expect(await seriousViolations(page)).toEqual([]);
   });
 

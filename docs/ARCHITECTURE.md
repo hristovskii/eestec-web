@@ -940,6 +940,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Phase 1: buttons to `/members…` are absent from `getJourney` until `phase2` is on, so the card simply has no button (and no empty space: the toggle stays at the right).
 - Home teaser: first six steps, vertical list with a dashed line on phones, six columns from 1024 px; heading and "Explore the journey" are UI strings; the intro spells the number of steps ("Six steps…").
 
+**Notes from building (M10a)**
+
+- M10 is split in three: **M10a** the `join` feature and `/admin/pages/join` (this), **M10b** the public `/join` page, **M10c** the membership form and stored applications. The **Inbox › Membership** tab that lists the applications is part of **M12** (Contact + Inbox); until then the board sees no list, and no e-mail is sent (same as event applications: real mail comes with Supabase).
+- `JoinRecord` is one record like Home and Journey: hero, a heading per section, "at a glance" items (max 3; the "Next info session" line is computed from Settings' weekly meeting, never typed), benefit cards, requirements, steps, fee, rights, obligations, code-of-conduct cards, three lists for international events (before / during / after), documents, FAQ, and the application settings (open / closed, next round, the form's option lists).
+- Rules are **lists**, not rich text: the spec says "rich text", the canvas draws plain lists, and lists stay accessible and consistent. The year-of-study options are fixed UI strings; faculties, interests and "how did you hear" are board lists (at least one each, so the form is never empty). Option ids are stable; M10c stores the label of the option the person chose.
+- Documents are PDFs from the Media library (kind `document`); size and date on the page come from the library item, so replacing the file updates them. The sample PDFs have no file (`src: null`): the public page will list them as "sample file" without a download link instead of inventing a PDF.
+- New shared piece: `shared/admin-ui/localized-list-field.tsx` (a list of one-line bilingual items with add / remove / keyboard reorder), used six times on this page.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

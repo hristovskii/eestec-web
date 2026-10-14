@@ -1676,5 +1676,188 @@
       "forbidden": "Only editors and super admins can change the Journey page.",
       "unexpected": "Couldn't save. Try again."
     }
+  },
+  "join": {
+    "title": "Join Us",
+    "description": "Everything on the Join Us page: texts, benefits, requirements, steps, fee, rules, documents, FAQ, and whether applications are open.",
+    "savedToast": "Join Us page saved. The site shows it within a minute.",
+    "errorSummary": "{count, plural, one {Can't save yet: fix # field} other {Can't save yet: fix # fields}}",
+    "sectionsNav": "Join Us page sections",
+    "readOnly": "You can look at this page, but only editors and super admins can change it.",
+    "sections": {
+      "page": "Page texts",
+      "glance": "At a glance",
+      "why": "Why join",
+      "who": "Who can join",
+      "how": "How to join",
+      "rules": "Rules",
+      "conduct": "Code of conduct",
+      "documents": "Documents",
+      "faq": "FAQ",
+      "apply": "Applications"
+    },
+    "nav": {
+      "why": "Why join",
+      "who": "Who can join",
+      "how": "How to join",
+      "rules": "Rules",
+      "faq": "FAQ",
+      "apply": "Apply"
+    },
+    "page": {
+      "aside": "The red top of the page",
+      "eyebrow": "Line above the title",
+      "eyebrowHelp": "Optional. Leave empty to hide it.",
+      "title": "Title",
+      "lead": "Lead",
+      "headings": "Section headings",
+      "headingsHelp": "The big heading of each section. The small label above it (“1 · Why join?”) and the names in the menu are fixed.",
+      "headingOf": "Heading of “{section}”"
+    },
+    "glance": {
+      "aside": "The card next to the title",
+      "auto": "The “Next info session” line is added by itself from Settings › Contact & legal › Weekly meeting (and hidden when that is not shown on Home).",
+      "list": "At a glance items, in the order shown",
+      "new": "New item",
+      "label": "Label",
+      "value": "Text",
+      "add": "Add item",
+      "remove": "Remove {name}",
+      "full": "At most {max} items."
+    },
+    "cards": {
+      "icon": "Icon",
+      "title": "Title",
+      "text": "Text"
+    },
+    "icons": {
+      "users": "People",
+      "clock": "Clock",
+      "wallet": "Wallet",
+      "calendar": "Calendar",
+      "globe": "Globe",
+      "chip": "Chip",
+      "chat": "Speech bubble",
+      "clip": "Checklist",
+      "briefcase": "Briefcase",
+      "heart": "Heart",
+      "flag": "Flag",
+      "shield": "Shield",
+      "graduation": "Graduation cap",
+      "lightbulb": "Light bulb"
+    },
+    "benefits": {
+      "aside": "Cards under “Why join”",
+      "list": "Benefits, in the order shown",
+      "new": "New benefit",
+      "add": "Add benefit",
+      "remove": "Remove {name}",
+      "full": "At most {max} cards."
+    },
+    "who": {
+      "aside": "Requirements, and the box under them",
+      "items": "Requirements",
+      "item": "Requirement {number}",
+      "add": "Add requirement",
+      "remove": "Remove requirement {number}",
+      "empty": "No requirements yet.",
+      "full": "At most {max} lines.",
+      "noteTitle": "Title of the box",
+      "noteHelp": "Leave empty to hide the box.",
+      "noteText": "Text of the box",
+      "noteMail": "The page adds the club's e-mail address from Settings under this text.",
+      "note": "Box"
+    },
+    "how": {
+      "aside": "Numbered steps and the fee card",
+      "list": "Steps, in the order shown",
+      "new": "New step",
+      "title": "Step {number}: title",
+      "text": "Text",
+      "add": "Add step",
+      "remove": "Remove {name}",
+      "full": "At most {max} steps.",
+      "fee": "Membership fee",
+      "feeHelp": "Leave the amount empty if there is no fee: the card is hidden.",
+      "feeAmount": "Amount",
+      "feePer": "Per",
+      "feeNote": "How to pay"
+    },
+    "rules": {
+      "aside": "Rights, obligations and what to do for international events",
+      "intro": "Short text under the heading",
+      "rights": "Your rights",
+      "duties": "Your obligations",
+      "international": "Going to an international event",
+      "internationalHelp": "Three short lists: what members do before, during and after.",
+      "before": "Before",
+      "during": "During",
+      "after": "After",
+      "item": "{list}: line {number}",
+      "add": "Add line to {list}",
+      "remove": "Remove line {number} of {list}",
+      "empty": "Nothing yet.",
+      "full": "At most {max} lines."
+    },
+    "conduct": {
+      "title": "Code of conduct",
+      "aside": "Cards in the rules section",
+      "list": "Code of conduct cards, in the order shown",
+      "new": "New card",
+      "add": "Add card",
+      "remove": "Remove {name}",
+      "full": "At most {max} cards."
+    },
+    "documents": {
+      "aside": "Official PDFs from the Media library",
+      "list": "Documents, in the order shown",
+      "new": "New document",
+      "title": "Title shown on the page",
+      "file": "File",
+      "noFile": "No file chosen",
+      "sampleFile": "sample file (no download yet)",
+      "replace": "Choose another file",
+      "add": "Add document",
+      "remove": "Remove {name}",
+      "full": "At most {max} documents."
+    },
+    "faq": {
+      "aside": "Questions and answers (one opens at a time)",
+      "list": "FAQ, in the order shown",
+      "new": "New question",
+      "question": "Question",
+      "answer": "Answer",
+      "add": "Add question",
+      "remove": "Remove {name}",
+      "full": "At most {max} questions."
+    },
+    "apply": {
+      "aside": "The membership form",
+      "open": "Applications are open",
+      "openHelp": "The form shows on the page and takes applications.",
+      "closedHelp": "The page shows “Applications are closed right now” instead of the form, and no application is accepted.",
+      "nextRound": "Next round",
+      "nextRoundHelp": "Shown when applications are closed, like “February 2027”.",
+      "intro": "Text above the form",
+      "optionsHelp": "What people can choose in the form. The year of study is fixed (1st to 4th, Master's, PhD).",
+      "item": "Option {number}",
+      "add": "Add option",
+      "remove": "Remove option {number} of {list}",
+      "empty": "No options yet.",
+      "full": "At most {max} options.",
+      "lists": {
+        "faculties": "Faculties",
+        "interests": "“What would you like to do?”",
+        "heardFrom": "“How did you hear about us?”"
+      }
+    },
+    "errors": {
+      "required": "Fill this in.",
+      "tooLong": "This is too long.",
+      "tooMany": "That's too many.",
+      "tooFew": "Add at least one.",
+      "forbidden": "Only editors and super admins can change the Join Us page.",
+      "unexpected": "Couldn't save. Try again."
+    }
   }
 }
