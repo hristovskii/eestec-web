@@ -531,5 +531,53 @@
       "step": "STEP {number}",
       "button": "Explore the journey"
     }
+  },
+  "join": {
+    "hero": {
+      "apply": "Apply now",
+      "journey": "See the journey",
+      "glance": "At a glance",
+      "nextSession": "Next info session"
+    },
+    "nav": {
+      "label": "On this page",
+      "why": "Why join",
+      "who": "Who can join",
+      "how": "How to join",
+      "rules": "Rules",
+      "faq": "FAQ",
+      "apply": "Apply",
+      "applyNow": "Apply now"
+    },
+    "eyebrow": {
+      "why": "1 · Why join?",
+      "who": "2 · Who can join?",
+      "how": "3 · How to join",
+      "rules": "4 · Rules & code of conduct",
+      "faq": "5 · FAQ",
+      "apply": "6 · Apply"
+    },
+    "how": {
+      "fee": "Membership fee",
+      "start": "Start with step 1"
+    },
+    "rules": {
+      "rights": "Your rights",
+      "duties": "Your obligations",
+      "conduct": "Code of conduct",
+      "international": "Going to an international event",
+      "phases": {
+        "before": "Before",
+        "during": "During",
+        "after": "After"
+      },
+      "documents": "Official documents",
+      "updated": "updated {date}",
+      "sample": "sample file, no download yet",
+      "download": "download PDF"
+    },
+    "faq": {
+      "write": "Didn't find yours? Write to <link>us</link>."
+    }
   }
 }

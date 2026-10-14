@@ -100,7 +100,14 @@ export type SiteSettings = {
     address: string;
     officeRoom: string;
   };
-  weeklyMeeting: { day: Weekday; time: string; room: string; showOnHome: boolean };
+  weeklyMeeting: {
+    day: Weekday;
+    time: string;
+    room: string;
+    showOnHome: boolean;
+    /** The next time it happens (ISO), from the server clock. */
+    nextAt: string;
+  };
   boardRoles: BoardRole[];
   socialLinks: SocialLink[];
   legal: LegalInfo;

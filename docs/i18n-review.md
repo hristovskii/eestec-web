@@ -23,4 +23,5 @@ written by the board in the admin.
 | M8a       | `committees.*` (map, filters, legend, popup, list view)                        | ☐ needs review      |
 | M8c       | `home.*` (hero card, About, timeline, meeting, latest), `committees.section.*` | ☐ needs review      |
 | M9b       | `journey.*` (hero, step card, path, call to action, Home teaser)               | ☐ needs review      |
+| M10b      | `join.*` (hero, menu, section labels, rules, FAQ)                              | ☐ needs review      |
 | —         | Fixed label decided in D7: `deadline_soon` → "Се затвора наскоро"              | ✓ given by the user |
