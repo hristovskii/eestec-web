@@ -1464,5 +1464,133 @@
       "forbidden": "You don't have permission to change committees.",
       "unexpected": "Something went wrong. Please try again."
     }
+  },
+  "home": {
+    "title": "Home page",
+    "description": "The text, photos and numbers of the Home page, and the order of its sections.",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saved": "All changes saved",
+    "unsaved": "Unsaved changes",
+    "savedToast": "Home page saved. The site shows it within a minute.",
+    "errorSummary": "{count, plural, one {Can't save yet: fix # field} other {Can't save yet: fix # fields}}",
+    "sectionsNav": "Home page sections",
+    "readOnly": "You can look at this page, but only editors and super admins can change it.",
+    "mapHint": "The big numbers below (“Local Committees”, “Countries”…) are typed here. The map and its filters count the committees in <link>Map / Committees</link> instead.",
+    "sections": {
+      "hero": "Hero",
+      "about": "What is EESTEC",
+      "activities": "Activities",
+      "timeline": "Tradition of LC Skopje",
+      "stats": "Statistics",
+      "layout": "Section order"
+    },
+    "hero": {
+      "aside": "The first screen of the site",
+      "eyebrow": "Line above the headline",
+      "eyebrowHelp": "Optional. Leave empty to hide it.",
+      "headline": "Headline",
+      "subtitle": "Subtitle",
+      "primary": "Main button",
+      "secondary": "Second button",
+      "buttonLabel": "Button text",
+      "buttonLink": "Link",
+      "buttonLinkHelp": "A page of this site (like /join) or a full https:// link.",
+      "image": "Background photo",
+      "imageEmpty": "No photo: the hero is red, as in the design.",
+      "countdownNote": "The countdown to the next upcoming event appears in the hero by itself, and is hidden when no event is coming up."
+    },
+    "image": {
+      "choose": "Choose from Media library",
+      "replace": "Replace photo",
+      "remove": "Remove {label}",
+      "alt": "Alt text",
+      "altHelp": "Describe the photo for people who can't see it. Required."
+    },
+    "about": {
+      "aside": "Paragraphs, and the cards below",
+      "body": "Text",
+      "bodyHelp": "Separate paragraphs with a blank line. The link to eestec.net is added under the text."
+    },
+    "activities": {
+      "aside": "Cards under the text",
+      "list": "Activities, in the order shown",
+      "empty": "No cards yet. The cards are hidden until you add one.",
+      "new": "New activity",
+      "icon": "Icon",
+      "title": "Title",
+      "text": "Text",
+      "add": "Add activity",
+      "remove": "Remove {name}",
+      "full": "At most {max} cards.",
+      "icons": {
+        "wrench": "Wrench",
+        "plane": "Plane",
+        "mountain": "Mountain",
+        "messages": "Speech bubbles",
+        "trophy": "Trophy",
+        "landmark": "Building",
+        "graduation": "Graduation cap",
+        "globe": "Globe",
+        "users": "People",
+        "lightbulb": "Light bulb",
+        "book": "Book",
+        "calendar": "Calendar"
+      }
+    },
+    "timeline": {
+      "aside": "Shown from left to right on a computer, top to bottom on a phone",
+      "list": "Milestones, in the order shown",
+      "empty": "No milestones yet. The section is hidden until you add one.",
+      "new": "New milestone",
+      "year": "Year",
+      "title": "Title",
+      "text": "Text",
+      "photo": "Photo",
+      "photoEmpty": "No photo. It is optional.",
+      "add": "Add milestone",
+      "remove": "Remove {name}",
+      "full": "At most {max} milestones."
+    },
+    "stats": {
+      "aside": "Typed by hand. Not counted from <link>Map / Committees</link>.",
+      "list": "Statistics, in the order shown",
+      "empty": "No numbers yet. The section is hidden until you add one.",
+      "new": "New number",
+      "label": "Label",
+      "value": "Number",
+      "suffix": "Ending",
+      "suffixHelp": "Like +",
+      "add": "Add number",
+      "remove": "Remove {name}",
+      "full": "At most {max} numbers."
+    },
+    "layout": {
+      "aside": "Drag, or use the handle with the keyboard",
+      "list": "Home page sections, in the order shown",
+      "fixed": "The hero is always first and the partner logos always sit directly above the footer. Sections with nothing to show are hidden by themselves.",
+      "show": "Show {section} on Home",
+      "meetingNote": "Also needs “Show on Home” switched on in <link>Settings › Contact & legal</link>.",
+      "keys": {
+        "about": "What is EESTEC",
+        "tradition": "Tradition of LC Skopje",
+        "numbers": "EESTEC in numbers",
+        "map": "EESTEC across Europe (map)",
+        "meeting": "Weekly meeting",
+        "latest": "Latest activity",
+        "journey": "EESTEC Journey"
+      }
+    },
+    "errors": {
+      "required": "Fill this in.",
+      "tooLong": "This is too long.",
+      "url": "Enter a page of this site like /join, or a full link starting with https://.",
+      "number": "Enter a whole number.",
+      "range": "Enter a number between {min} and {max}.",
+      "tooMany": "That's too many.",
+      "layout": "The list of sections is not complete. Reload the page.",
+      "forbidden": "Only editors and super admins can change the Home page.",
+      "unexpected": "Couldn't save. Try again."
+    }
   }
 }

@@ -19,17 +19,18 @@ server is fine for a small site; a hosted provider is one edit there).
 
 ## Other sample data
 
-| Feature               | File                                                          | Replace through                                                      |
-| --------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Events                | `src/features/events/data/fixtures/events.ts`                 | Admin › Events (the 23 sample events are deleted or overwritten)     |
-| Applications          | `src/features/applications/data/fixtures/applications.ts`     | Deleted with the sample events; real applications come from the site |
-| Media library         | `src/features/media/data/fixtures/media.ts`, `public/sample/` | Admin › Media library (upload the real photos and logos)             |
-| Settings              | `src/features/settings/data/fixtures/settings.ts`             | Admin › Settings (bracketed legal numbers are canvas placeholders)   |
-| Dashboard numbers     | `src/features/dashboard/data/fixtures/dashboard.ts`           | Replaced by real counts as each feature's data is real               |
-| Admin accounts        | `src/features/auth/data/fixtures/accounts.ts`, `personas.ts`  | Real accounts through the invite flow (Supabase Auth, M21)           |
-| Activity log          | `src/features/activity/data/fixtures/activity.ts`             | Written by the database from M19 on; sample entries are purged       |
-| Privacy policy text   | in Settings (D17: clearly marked placeholder)                 | Admin › Settings, once the board supplies the text                   |
-| Macedonian UI strings | `src/shared/i18n/messages/mk.json`                            | Reviewed by a native speaker: see `docs/i18n-review.md`              |
+| Feature               | File                                                                               | Replace through                                                                                                                                                                          |
+| --------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Events                | `src/features/events/data/fixtures/events.ts`                                      | Admin › Events (the 23 sample events are deleted or overwritten)                                                                                                                         |
+| Applications          | `src/features/applications/data/fixtures/applications.ts`                          | Deleted with the sample events; real applications come from the site                                                                                                                     |
+| Home page content     | `src/features/home/data/fixtures/home.ts` (+ `media-home-*` in the Media fixtures) | Admin › Pages › Home (hero, About text, 6 activity cards, 5 timeline milestones, 5 numbers); the timeline years, texts and numbers come from the canvas and must be checked by the board |
+| Media library         | `src/features/media/data/fixtures/media.ts`, `public/sample/`                      | Admin › Media library (upload the real photos and logos)                                                                                                                                 |
+| Settings              | `src/features/settings/data/fixtures/settings.ts`                                  | Admin › Settings (bracketed legal numbers are canvas placeholders)                                                                                                                       |
+| Dashboard numbers     | `src/features/dashboard/data/fixtures/dashboard.ts`                                | Replaced by real counts as each feature's data is real                                                                                                                                   |
+| Admin accounts        | `src/features/auth/data/fixtures/accounts.ts`, `personas.ts`                       | Real accounts through the invite flow (Supabase Auth, M21)                                                                                                                               |
+| Activity log          | `src/features/activity/data/fixtures/activity.ts`                                  | Written by the database from M19 on; sample entries are purged                                                                                                                           |
+| Privacy policy text   | in Settings (D17: clearly marked placeholder)                                      | Admin › Settings, once the board supplies the text                                                                                                                                       |
+| Macedonian UI strings | `src/shared/i18n/messages/mk.json`                                                 | Reviewed by a native speaker: see `docs/i18n-review.md`                                                                                                                                  |
 
 Sample content is English; Macedonian fields reuse the English text until the board supplies
 Macedonian (D14).

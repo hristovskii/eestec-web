@@ -142,6 +142,31 @@ export const mediaFixture: MediaItem[] = [
     stefan,
     '2026-04-15T17:40:00+02:00',
   ),
+  // Home › Tradition of LC Skopje (Home-Desktop timeline photos).
+  photo(
+    'media-home-workshop-2005',
+    'workshop-ohrid-2005.jpg',
+    'workshop participants in Ohrid, 2005',
+    'Workshop participants on the shore of Lake Ohrid',
+    ana,
+    '2026-09-01T10:00:00+02:00',
+  ),
+  photo(
+    'media-home-robomac',
+    'robomac-arena.jpg',
+    'robots on the RoboMac arena',
+    'Small robots on the RoboMac arena',
+    ana,
+    '2026-09-01T10:02:00+02:00',
+  ),
+  photo(
+    'media-home-anniversary',
+    'anniversary-group-feeit.jpg',
+    'anniversary group photo at FEEIT',
+    'Anniversary group photo in front of FEEIT',
+    ana,
+    '2026-09-01T10:04:00+02:00',
+  ),
   // Event covers and galleries (AdminEventEdit, EventDetail, EventsList, UpcomingList captions).
   {
     ...photo(

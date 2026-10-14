@@ -902,6 +902,16 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Sample data: the 34 canvas pins + LC Skopje (the filter counts "All · 35 / 23 / 8 / 4" match the canvas). The canvas draws pins on a picture and has no coordinates; real city coordinates are used. See `docs/sample-data.md` for what the board must replace before launch.
 - The big Home numbers ("35 Local Committees", "21 Countries"…) are separate statistics edited in `/admin/pages/home` (M8b); the map and its filters count this list. The admin page says so.
 
+**Notes from building (M8b)**
+
+- The `home` feature owns everything on Admin › Pages › Home, saved as one record (`HomeRepository.get/save`, like Settings): hero, "What is EESTEC" text, activity cards, timeline milestones, statistics and the section layout. Public reads (`getHome(locale)`, `getHomeLayout()`) are cached under the tag `home`; saving refreshes it. M8c composes the page from them.
+- Fixed vs movable: the hero is always first and the partner strip always sits above the footer (spec 01), so the layout lists only seven sections: about, tradition, numbers, map, meeting, latest, journey. Every section appears exactly once (schema + `normalizeLayout`). "Weekly meeting" also needs Settings › Contact & legal › "Show on Home"; the admin says so next to its switch, so the setting lives in one place.
+- Statistics are typed by hand as a whole number plus an optional ending ("5000" + "+"), not free text: M8c animates the number and formats it per language ("5,000+" / "5.000+"). They are not counted from the committee list (the Map admin says so in the other direction).
+- Texts are `Localized {mk, en?}` (D8). Photos (hero background, timeline) are Media library files with their own alt text, required in Macedonian; the picker allows SAMPLE placeholders. Buttons link to a page of this site (`/join`) or an https URL.
+- Section headings ("What we've been up to", "EESTEC across Europe"…) and the eestec.net link are UI strings, not board content; the spec's admin-managed list does not include them. The hero countdown comes from the next upcoming event by itself.
+- Milestones keep the order the board gives (drag or keyboard); the public timeline does not re-sort by year.
+- The three timeline photos are SAMPLE placeholder files in the Media fixtures (`media-home-*`).
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".
