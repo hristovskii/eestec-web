@@ -1,34 +1,34 @@
 import {
+  ArrowRightLeft,
   BookOpen,
   CalendarDays,
+  Cpu,
   GraduationCap,
   Globe,
-  Landmark,
   Lightbulb,
   type LucideIcon,
-  MessagesSquare,
-  Mountain,
+  MessageCircle,
   Plane,
   Trophy,
   Users,
-  Wrench,
+  Zap,
 } from 'lucide-react';
 
 import type { ActivityIcon } from '../types';
 
 const ICONS: Record<ActivityIcon, LucideIcon> = {
-  wrench: Wrench,
-  plane: Plane,
-  mountain: Mountain,
-  messages: MessagesSquare,
+  cpu: Cpu,
+  exchange: ArrowRightLeft,
+  zap: Zap,
+  message: MessageCircle,
   trophy: Trophy,
-  landmark: Landmark,
+  users: Users,
   graduation: GraduationCap,
   globe: Globe,
-  users: Users,
   lightbulb: Lightbulb,
   book: BookOpen,
   calendar: CalendarDays,
+  plane: Plane,
 };
 
 /** The icon of an activity card (decorative: the card's title names it). */

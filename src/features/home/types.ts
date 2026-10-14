@@ -19,20 +19,20 @@ export type HomeSectionKey = (typeof HOME_SECTION_KEYS)[number];
 
 export type HomeSectionSetting = { key: HomeSectionKey; visible: boolean };
 
-/** Icons an activity card can use (shown with lucide, see components/activity-icon.tsx). */
+/** Icons an activity card can use (the first six are the canvas's; drawn with lucide, see components/activity-icon.tsx). */
 export const ACTIVITY_ICONS = [
-  'wrench',
-  'plane',
-  'mountain',
-  'messages',
+  'cpu',
+  'exchange',
+  'zap',
+  'message',
   'trophy',
-  'landmark',
+  'users',
   'graduation',
   'globe',
-  'users',
   'lightbulb',
   'book',
   'calendar',
+  'plane',
 ] as const;
 export type ActivityIcon = (typeof ACTIVITY_ICONS)[number];
 

@@ -1524,18 +1524,18 @@
       "remove": "Remove {name}",
       "full": "At most {max} cards.",
       "icons": {
-        "wrench": "Wrench",
-        "plane": "Plane",
-        "mountain": "Mountain",
-        "messages": "Speech bubbles",
+        "cpu": "Chip",
+        "exchange": "Arrows left and right",
+        "zap": "Lightning bolt",
+        "message": "Speech bubble",
         "trophy": "Trophy",
-        "landmark": "Building",
+        "users": "People",
         "graduation": "Graduation cap",
         "globe": "Globe",
-        "users": "People",
         "lightbulb": "Light bulb",
         "book": "Book",
-        "calendar": "Calendar"
+        "calendar": "Calendar",
+        "plane": "Plane"
       }
     },
     "timeline": {

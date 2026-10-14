@@ -29,7 +29,7 @@ export const homeFixture: HomeRecord = {
   activities: [
     {
       id: 'act-workshops',
-      icon: 'wrench',
+      icon: 'cpu',
       title: both('Workshops'),
       text: both(
         'A week of lectures, labs and city life on a technical topic, hosted by one committee for students from all over Europe.',
@@ -37,7 +37,7 @@ export const homeFixture: HomeRecord = {
     },
     {
       id: 'act-exchanges',
-      icon: 'plane',
+      icon: 'exchange',
       title: both('Exchanges'),
       text: both(
         "Short, culture-first trips to another committee's city. The easiest way to go international for the first time.",
@@ -45,13 +45,13 @@ export const homeFixture: HomeRecord = {
     },
     {
       id: 'act-weekends',
-      icon: 'mountain',
+      icon: 'zap',
       title: both('Motivational Weekends'),
       text: both('Weekend trainings that turn new members into confident organizers and team players.'),
     },
     {
       id: 'act-soft-skills',
-      icon: 'messages',
+      icon: 'message',
       title: both('Soft Skills trainings'),
       text: both("Communication, leadership and teamwork sessions led by EESTEC's own certified trainers."),
     },
@@ -65,7 +65,7 @@ export const homeFixture: HomeRecord = {
     },
     {
       id: 'act-congress',
-      icon: 'landmark',
+      icon: 'users',
       title: both('Congress'),
       text: both(
         'The yearly gathering where delegates from every committee shape the future of the association.',
