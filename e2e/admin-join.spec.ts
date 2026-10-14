@@ -142,6 +142,8 @@ test.describe('join admin (M10a)', () => {
       await handle.focus();
       await page.keyboard.press('Space');
       await announced(`${before[1]} is now at position 2 of 6.`);
+      // dnd-kit starts listening for the arrow keys one task after the pick-up.
+      await page.waitForTimeout(150);
       await page.keyboard.press('ArrowDown');
       await announced(`${before[1]} is now at position 3 of 6.`);
       await page.keyboard.press('Space');

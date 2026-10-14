@@ -173,6 +173,8 @@ test.describe('sponsors admin (M11a)', () => {
           expect(page.getByRole('status').filter({ hasText: text })).toBeAttached();
         await page.keyboard.press('Space');
         await announced(`${second} is now at position 2 of 2.`);
+        // dnd-kit starts listening for the arrow keys one task after the pick-up.
+        await page.waitForTimeout(150);
         await page.keyboard.press('ArrowUp');
         await announced(`${second} is now at position 1 of 2.`);
         await page.keyboard.press('Space');
