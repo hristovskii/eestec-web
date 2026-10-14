@@ -948,6 +948,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Documents are PDFs from the Media library (kind `document`); size and date on the page come from the library item, so replacing the file updates them. The sample PDFs have no file (`src: null`): the public page will list them as "sample file" without a download link instead of inventing a PDF.
 - New shared piece: `shared/admin-ui/localized-list-field.tsx` (a list of one-line bilingual items with add / remove / keyboard reorder), used six times on this page.
 
+**Notes from building (M10b)**
+
+- `/join` is a server page composed in the route: `getJoin(locale)` (cached, tag `join`) + Settings (contact e-mail; the next info session). Sections: hero with the "At a glance" card, a sticky sub-nav, Why join, Who can join, How to join (+ fee card), Rules (rights, obligations, code of conduct, international events, documents), FAQ. A section with nothing to show leaves out.
+- **Next info session** = `nextMeetingAt` (`shared/lib/next-meeting.ts`, unit-tested around the clock change and midnight) from the weekly meeting in Settings; `SiteSettings.weeklyMeeting.nextAt` carries it, so Join (and later the success message and calendar link) read it from one place. It is hidden when the meeting's "Show on Home" is off.
+- **Sub-nav scroll-spy**: the last section whose top has passed 170 px is current (`aria-current`); at the very bottom the last one. It is sticky under the red header (64 px, 72 px from 1280), the sections have `scroll-margin` so a jump never lands under the bars, and on phones the links scroll sideways and keep the current one in view. **"Apply now"** (hero, sub-nav, fee card) and the Apply link appear only when the route passes the form (M10c).
+- FAQ: Radix accordion, one answer open at a time (`type="single" collapsible`), the heading stays in view while reading on desktop.
+- Documents: a row with a download link when the library item has a file; a sample item (no file) shows "sample file, no download yet" and no link. Size and month come from the library item.
+- "At a glance" is a list, not a `<dl>`: the icon next to each label breaks the `dl` structure axe requires.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

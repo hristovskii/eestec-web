@@ -2,6 +2,7 @@ import 'server-only';
 
 import { mockTable } from '@/shared/data/mock/store';
 import { resolveLocalized, resolveText } from '@/shared/i18n/localized';
+import { nextMeetingAt } from '@/shared/lib/next-meeting';
 
 import type { SettingsRepository } from './settings.repository';
 import { settingsFixture } from './fixtures/settings';
@@ -20,7 +21,11 @@ export function createMockSettingsRepository(): SettingsRepository {
           address: resolveLocalized(record.contact.address, locale),
           officeRoom: resolveLocalized(record.contact.officeRoom, locale),
         },
-        weeklyMeeting: { ...record.weeklyMeeting, room: resolveLocalized(record.weeklyMeeting.room, locale) },
+        weeklyMeeting: {
+          ...record.weeklyMeeting,
+          room: resolveLocalized(record.weeklyMeeting.room, locale),
+          nextAt: nextMeetingAt(record.weeklyMeeting, now).toISOString(),
+        },
         currentYear: now.getFullYear(),
       });
     },
