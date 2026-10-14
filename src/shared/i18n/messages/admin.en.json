@@ -2094,5 +2094,95 @@
       "discard": "Discard changes",
       "saved": "Tiers saved."
     }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "The Contact page: texts, the subjects of the form and who each one goes to, and the map. The address, e-mails, social links and legal info come from Settings.",
+    "savedToast": "Contact page saved. The site shows it within a minute.",
+    "errorSummary": "{count, plural, one {Can't save yet: fix # field} other {Can't save yet: fix # fields}}",
+    "sectionsNav": "Contact page sections",
+    "readOnly": "You can look at this page, but only editors and super admins can change it.",
+    "sections": {
+      "page": "Page texts",
+      "shortcuts": "Shortcut cards",
+      "subjects": "Form subjects",
+      "map": "Map"
+    },
+    "headings": {
+      "info": "Contact info",
+      "board": "Board members",
+      "map": "Map",
+      "social": "Social media",
+      "legal": "Legal info"
+    },
+    "page": {
+      "aside": "Heading, introduction and section titles",
+      "title": "Page title",
+      "lead": "Introduction",
+      "formTitle": "Form title",
+      "formIntro": "Form introduction",
+      "formIntroHelp": "Shown under the form title, e.g. how fast you usually reply.",
+      "headings": "Section titles",
+      "headingsHelp": "The headings above each block of the page. The details inside them come from Settings.",
+      "headingOf": "Title of “{section}”"
+    },
+    "shortcuts": {
+      "aside": "Cards next to the page title, up to 3",
+      "list": "Shortcut cards, in the order shown",
+      "new": "New card",
+      "item": "Card",
+      "eyebrow": "Small text",
+      "label": "Link text",
+      "href": "Link",
+      "hrefHelp": "A page of this site, like /join, or an https:// address.",
+      "add": "Add card",
+      "remove": "Remove {name}",
+      "full": "At most {max} cards."
+    },
+    "subjects": {
+      "aside": "What people can choose in the form",
+      "help": "The subject decides who receives the message. Messages are stored in the Inbox either way.",
+      "list": "Subjects, in the order shown",
+      "new": "New subject",
+      "item": "Subject",
+      "name": "Subject",
+      "routeEmail": "Goes to",
+      "routeEmailHelp": "The e-mail address that receives messages with this subject.",
+      "teamLabel": "Who answers",
+      "teamLabelHelp": "Used in the confirmation: “It went straight to our membership team.”",
+      "suggestion": "Suggest a faster page",
+      "suggestionHelp": "Optional. Shows a note and a link under the form when this subject is chosen.",
+      "routeNote": "Note",
+      "shortcutLabel": "Link text",
+      "shortcutUrl": "Link",
+      "shortcutUrlHelp": "A page of this site, like /join#apply, or an https:// address. Leave empty for no link.",
+      "add": "Add subject",
+      "remove": "Remove {name}",
+      "full": "At most {max} subjects."
+    },
+    "map": {
+      "aside": "Where the pin is and what the card says",
+      "pinLabel": "Pin label",
+      "pinLabelHelp": "The small text next to the pin, e.g. the building and room.",
+      "placeName": "Place",
+      "placeAddress": "Address line",
+      "positionHelp": "Find the exact spot on openstreetmap.org (right-click the map, “Show address”), then copy the latitude and longitude here.",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "zoom": "Zoom",
+      "zoomHelp": "3 shows a country, 16 a building."
+    },
+    "errors": {
+      "required": "Fill this in.",
+      "tooLong": "This is too long.",
+      "tooMany": "That's too many.",
+      "tooFew": "Add at least one.",
+      "url": "Use a page of this site like /join, or an https:// address.",
+      "email": "Enter an e-mail like name@example.com.",
+      "number": "Enter a number.",
+      "range": "That number is out of range.",
+      "forbidden": "Only editors and super admins can change the Contact page.",
+      "unexpected": "Couldn't save. Try again."
+    }
   }
 }
