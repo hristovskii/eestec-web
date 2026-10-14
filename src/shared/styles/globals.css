@@ -70,6 +70,16 @@
   --container-content: 1200px;
 
   --animate-caret-blink: caret-blink 1.2s ease-out infinite;
+  --animate-partner-marquee: partner-marquee 45s linear infinite;
+  /* Home partner row: two copies of the logos, so moving half the width loops without a jump. */
+  @keyframes partner-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
   @keyframes caret-blink {
     0%,
     70%,

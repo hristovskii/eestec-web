@@ -19,6 +19,8 @@ import {
 import { getHome, getHomeLayout } from '@/features/home/server';
 import { JourneyTeaser } from '@/features/journey';
 import { getJourney } from '@/features/journey/server';
+import { PartnerStrip } from '@/features/partners';
+import { getPartners } from '@/features/partners/server';
 import { getSiteSettings, pageMetadata } from '@/features/settings/server';
 import { currentLocale } from '@/shared/i18n/current-locale';
 
@@ -30,7 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // feature supplies its own section; a section with nothing to show is left out.
 export default async function HomePage() {
   const locale = await currentLocale();
-  const [layout, home, committees, settings, upcoming, latest, journey] = await Promise.all([
+  const [layout, home, committees, settings, upcoming, latest, journey, partners] = await Promise.all([
     getHomeLayout(),
     getHome(locale),
     getCommittees(locale),
@@ -38,6 +40,7 @@ export default async function HomePage() {
     getUpcomingList(locale),
     getLatestEvents(locale, 3),
     getJourney(locale),
+    getPartners(locale),
   ]);
 
   const next = upcoming.items.find((item) => item.nextUp) ?? upcoming.items[0];
@@ -63,7 +66,6 @@ export default async function HomePage() {
       />
     ),
     journey: <JourneyTeaser steps={journey.steps} />,
-    // The partner strip (always above the footer) arrives with M11.
   };
 
   return (
@@ -74,6 +76,8 @@ export default async function HomePage() {
       {layout.map((key) => (
         <React.Fragment key={key}>{sections[key]}</React.Fragment>
       ))}
+      {/* Always the last section, directly above the footer (spec 01). */}
+      <PartnerStrip tiers={partners.tiers} />
     </>
   );
 }

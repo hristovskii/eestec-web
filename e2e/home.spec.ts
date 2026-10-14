@@ -126,8 +126,11 @@ test.describe('home (M8c)', () => {
     ].map((text) => headings.indexOf(text));
     expect(order.every((index) => index >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
-    // The partner strip (M11) is not built yet.
-    await expect(page.getByRole('heading', { name: 'Our Partners' })).toHaveCount(0);
+    // The partner strip (M11) is always the last section, directly above the footer.
+    const partners = page.getByRole('heading', { level: 2, name: 'Our Partners' });
+    await expect(partners).toBeVisible();
+    const last = await page.locator('main h2').allInnerTexts();
+    expect(last.at(-1)).toBe('Our Partners');
   });
 
   test('the Journey teaser: six steps and a button to the Journey page', async ({ page }) => {

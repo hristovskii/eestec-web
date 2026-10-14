@@ -61,6 +61,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
             committees: messages.committees,
             home: { tradition: messages.home.tradition, numbers: messages.home.numbers },
             journey: { step: messages.journey.step, path: messages.journey.path },
+            partners: { logo: messages.partners.logo, marquee: messages.partners.marquee },
             join: {
               nav: messages.join.nav,
               eyebrow: messages.join.eyebrow,
