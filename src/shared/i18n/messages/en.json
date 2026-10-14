@@ -504,6 +504,10 @@
       "pastEvents": "Past events",
       "viewAll": "View all events",
       "viewAllShort": "View all"
+    },
+    "partners": {
+      "title": "Our Partners",
+      "cta": "Become a partner"
     }
   },
   "journey": {
@@ -652,5 +656,21 @@
       "journeyTitle": "New to EESTEC?",
       "journeyText": "See the whole journey, from joining to alumni."
     }
+  },
+  "partners": {
+    "logo": {
+      "newTab": "{name} (opens in a new tab)"
+    },
+    "marquee": {
+      "pause": "Pause scrolling logos",
+      "play": "Resume scrolling logos"
+    },
+    "offer": {
+      "withSize": "{label} (PDF, {size})",
+      "meta": "PDF · {size} · {pages}",
+      "metaNoPages": "PDF · {size}",
+      "sample": "sample file, no download yet"
+    },
+    "years": "Partner in"
   }
 }

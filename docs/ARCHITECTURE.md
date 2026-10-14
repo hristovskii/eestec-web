@@ -976,6 +976,13 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - The row list used by the Join editor (`RowList`, `AddRow`) moved to `shared/admin-ui/row-list.tsx`, because this page needs it too. The sample media got the real proportions of the 18 sample logos (viewBox sizes) and the 12 missing logo items.
 - The sample new-sponsor e2e tests create sponsors **switched off**, so no public page ever shows them while tests run in parallel.
 
+**Notes from building (M11b)**
+
+- `/partners` is a server page composed in the route: `getPartners(locale)` (cached, tag `partners`) → `PartnersHero` (red top with "Who you reach"), `WhyPartner`, `PackagesSection` (packages, single collaborations, the offer card), `PartnersWall` (tiers + past partners), `PartnersContact` (text and contact person; the inquiry form joins it in M11c). A section with nothing to show leaves out. The offer button in the red top and the card read the offer's size from the Media library; the sample PDF has no file, so the hero button is disabled and the card says "sample file, no download yet" (no invented PDF).
+- `PartnerLogo`: grey (60 % opacity) until hover or keyboard focus, sized with `logoSize` for both the phone and the desktop cell (two sets of CSS variables, the cell switches at 640 px), `aria-label` "<name> (opens in a new tab)", a `<div>` (no link) when the sponsor has no website, the name as text when it has no logo. The logos are `next/image` with `unoptimized` (SVG).
+- **Home strip** (`PartnerStrip`, always the last section above the footer, hidden with no active partners): a tier longer than 6 logos on desktop or 2 on a phone becomes a slow marquee (`PartnerMarquee`, a client component deciding with `matchMedia`, the server renders the plain row). Two copies of the logos in one track moved by `animate-partner-marquee` (45 s, half the width); the second copy is `aria-hidden` and out of the tab order. It pauses on hover and keyboard focus (CSS), has a visible pause / resume button, and under "reduce motion" the animation is off, the button hidden and the row can be scrolled by hand. Only `partners.logo` and `partners.marquee` strings go to the client provider.
+- Phone cells follow the PartnerLogos frame (main full width, gold and standard three per row); from 640 px the canvas's desktop cells, and from 1024 px a standard tier goes six to a row on `/partners`.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

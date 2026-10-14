@@ -504,6 +504,10 @@
       "pastEvents": "Изминати настани",
       "viewAll": "Сите настани",
       "viewAllShort": "Сите"
+    },
+    "partners": {
+      "title": "Нашите партнери",
+      "cta": "Стани партнер"
     }
   },
   "journey": {
@@ -652,5 +656,21 @@
       "journeyTitle": "Нов си во EESTEC?",
       "journeyText": "Погледни го целото патување, од зачленување до алумни."
     }
+  },
+  "partners": {
+    "logo": {
+      "newTab": "{name} (се отвора во нов таб)"
+    },
+    "marquee": {
+      "pause": "Паузирај ги логата што се движат",
+      "play": "Продолжи го движењето на логата"
+    },
+    "offer": {
+      "withSize": "{label} (PDF, {size})",
+      "meta": "PDF · {size} · {pages}",
+      "metaNoPages": "PDF · {size}",
+      "sample": "примерок, сѐ уште без преземање"
+    },
+    "years": "Партнер во"
   }
 }
