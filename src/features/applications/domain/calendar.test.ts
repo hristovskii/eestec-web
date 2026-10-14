@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { googleCalendarUrl, toIcs } from './calendar';
+import { googleCalendarUrl, toIcs } from '@/shared/lib/calendar';
 import { formatReference, referencePrefix } from './reference';
 
 const workshop = {

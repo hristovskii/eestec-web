@@ -578,6 +578,79 @@
     },
     "faq": {
       "write": "Didn't find yours? Write to <link>us</link>."
+    },
+    "form": {
+      "title": "Membership application",
+      "required": "About 5 minutes. Fields marked <req>*</req> are required.",
+      "name": "Full name",
+      "namePlaceholder": "e.g. Marija Stojanovska",
+      "email": "E-mail",
+      "phone": "Phone",
+      "faculty": "Faculty",
+      "program": "Study program",
+      "programPlaceholder": "e.g. Computer Hardware Engineering",
+      "year": "Year of study",
+      "interests": "What would you like to do?",
+      "pickAny": "Pick any",
+      "interestsHelp": "You can change this later.",
+      "heardFrom": "How did you hear about us?",
+      "choose": "Choose…",
+      "consentShort": "Consent to data processing",
+      "consent": "I agree that {site} stores and processes my personal data to handle my membership application, as described in the <link>privacy policy</link>. I can ask for my data to be deleted at any time.",
+      "submit": "Send application",
+      "afterSubmit": "You'll get a confirmation e-mail right away.",
+      "years": {
+        "1": "1st",
+        "2": "2nd",
+        "3": "3rd",
+        "4": "4th",
+        "master": "Master's",
+        "phd": "PhD"
+      },
+      "errors": {
+        "required": "Fill this in.",
+        "tooLong": "This is too long.",
+        "email": "Enter an e-mail like name@example.com",
+        "phone": "Enter a phone number like 070 123 456.",
+        "year": "Choose your year of study",
+        "consent": "Please agree so we can process your application",
+        "invalid": "Choose one of the options."
+      },
+      "failed": {
+        "closed": "Applications just closed. Reload the page to see when the next round opens.",
+        "duplicate": "We already have an application from this e-mail address. We'll be in touch; if you think this is a mistake, write to us.",
+        "spam": "We couldn't send this. Reload the page and try again.",
+        "tooFast": "That was very quick. Please check your answers and send again.",
+        "unexpected": "Something went wrong and the application was not sent. Try again in a moment."
+      },
+      "success": {
+        "title": "Welcome aboard, {name}!",
+        "text": "Your application is in. We sent a confirmation to <strong>{email}</strong>.",
+        "next": "What happens next",
+        "step1": "We'll reply within 3 days.",
+        "step2": "Come to the next weekly meeting: <strong>{when}</strong>.",
+        "step2NoMeeting": "Come to one of our weekly meetings.",
+        "step3": "Pick a team and meet your mentor.",
+        "journey": "See the EESTEC Journey →"
+      }
+    },
+    "success": {
+      "addMeeting": "Add meeting to calendar",
+      "meetingTitle": "{site} weekly meeting",
+      "meetingDescription": "Open to every student. Come once and see if it's for you."
+    },
+    "closed": {
+      "title": "Applications are closed right now",
+      "text": "We take new members at the start of each semester. The next round opens in <strong>{round}</strong>.",
+      "textNoRound": "We take new members at the start of each semester.",
+      "meeting": "You can still come to a weekly meeting to meet us: {meeting}.",
+      "notify": "Get notified on Instagram",
+      "newTab": "(opens in a new tab)",
+      "journey": "See the EESTEC Journey →"
+    },
+    "apply": {
+      "journeyTitle": "New to EESTEC?",
+      "journeyText": "See the whole journey, from joining to alumni."
     }
   }
 }

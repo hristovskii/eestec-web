@@ -99,3 +99,29 @@ export type PublicJoin = {
     heardFrom: { value: string; label: string }[];
   };
 };
+
+// ─── Membership applications (JoinForm) ───
+
+/** The board's handling of an application (Inbox › Membership, M12). */
+export const MEMBERSHIP_STATUSES = ['new', 'contacted', 'accepted', 'rejected'] as const;
+export type MembershipStatus = (typeof MEMBERSHIP_STATUSES)[number];
+
+/** One application from /join (data-model.md: membership_applications). */
+export type MembershipApplication = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  /** The wording of the option the person chose, in the language of the page they used. */
+  faculty: string;
+  studyProgram: string;
+  yearOfStudy: string;
+  interests: string[];
+  heardFrom: string;
+  locale: 'mk' | 'en';
+  consentAt: string;
+  status: MembershipStatus;
+  createdAt: string;
+};
+
+export type MembershipInput = Omit<MembershipApplication, 'id' | 'status' | 'createdAt' | 'consentAt'>;
