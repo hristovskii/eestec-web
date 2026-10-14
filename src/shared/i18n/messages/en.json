@@ -505,5 +505,31 @@
       "viewAll": "View all events",
       "viewAllShort": "View all"
     }
+  },
+  "journey": {
+    "hero": {
+      "steps": "Journey steps",
+      "scroll": "Scroll to start"
+    },
+    "path": {
+      "label": "The journey",
+      "yourTurn": "Your turn"
+    },
+    "step": {
+      "label": "STEP {number}",
+      "more": "Show more",
+      "less": "Show less"
+    },
+    "cta": {
+      "meetingLabel": "Weekly meetings",
+      "meeting": "{day}, {time} · {room}"
+    },
+    "teaser": {
+      "eyebrow": "EESTEC Journey",
+      "title": "From first meeting to alumni",
+      "intro": "{count, plural, =1 {One step} =2 {Two steps} =3 {Three steps} =4 {Four steps} =5 {Five steps} =6 {Six steps} =7 {Seven steps} =8 {Eight steps} other {# steps}} to get the most out of EESTEC. Start wherever you are.",
+      "step": "STEP {number}",
+      "button": "Explore the journey"
+    }
   }
 }

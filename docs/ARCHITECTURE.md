@@ -931,6 +931,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Shared pieces added because the third page editor (Join, Sponsors, Contact follow in M10–12) needed them: `shared/admin-ui/page-editor.tsx` (`usePageEditor` + `PageEditorFrame`: save state, error summary with focus, unsaved-changes guard, section sub-nav), `shared/admin-ui/use-focus-added.ts`, `shared/forms/page-schema.ts` (`localized`, `siteHref`, `mediaRef`…), `shared/ui/action-link.tsx`, `shared/types/media.ts › MediaRef`, and in the media feature `MediaRefField` (picker + alt text for one use) and `resolveMediaRef` / `getMediaMap`. Home was moved onto them with no change in behaviour.
 - Sample data: the six canvas steps with their benefits, quotes and "Photo: …" placeholders (`media-journey-*`). The quotes are the canvas's examples, not real people's words.
 
+**Notes from building (M9b)**
+
+- `/journey` is a server page: `getJourney(locale)` (cached, tag `journey`), the weekly-meeting line from Settings (only while "Show on Home" is on there), `pageMetadata('journey')`. Components in `features/journey`: `JourneyHero` (pills = in-page anchors `#step-N`), `JourneyPath` (client), `JourneyStepCard` (client), `JourneyCta`, `JourneyTeaser` (Home).
+- Path layout: from 1024 px cards alternate left and right with the node at 10% / 90% of the width, a dashed grey line below it and an S-curve to the next node; below 1024 px one column with the line on the left. The red "reached" line is drawn over the grey one (scale for straight lines, `stroke-dashoffset` for the curve), so it animates without changing the layout. The big faded numbers are CSS generated content (`data-number`): purely decorative, so they are not text for contrast checks or screen readers.
+- Scroll states (JourneyStates): the step whose top has passed 55 % of the window height is _current_ (soft halo); steps up to it are _reached_ (red node); lines before the current step are solid red. Steps below 90 % of the window wait (opacity 0, 32 px down) and slide in over 400 ms, once. Reduced motion: no waiting, no transitions. Server HTML has every step visible and everything grey; the states switch on after hydration.
+- Expand rules (decided): hover only highlights (border, shadow, 4 px lift, node 110 %); the button toggles (`aria-expanded`, `aria-controls`, the panel is `hidden` when closed). Desktop keeps any number open; under 1024 px opening one closes the others. A step with no benefits, photo or quote has no "Show more".
+- Phase 1: buttons to `/members…` are absent from `getJourney` until `phase2` is on, so the card simply has no button (and no empty space: the toggle stays at the right).
+- Home teaser: first six steps, vertical list with a dashed line on phones, six columns from 1024 px; heading and "Explore the journey" are UI strings; the intro spells the number of steps ("Six steps…").
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".
