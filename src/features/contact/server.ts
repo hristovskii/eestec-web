@@ -1,3 +1,5 @@
 import 'server-only';
 
-export { getContact, getContactForEdit } from './queries';
+export { listContactMessages, matchesContactFilter } from './admin-queries';
+export { countNewMessages, getContact, getContactForEdit } from './queries';
+export { contactCsvResponse } from './export';

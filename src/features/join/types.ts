@@ -121,7 +121,12 @@ export type MembershipApplication = {
   locale: 'mk' | 'en';
   consentAt: string;
   status: MembershipStatus;
+  /** When someone on the board opened it; null: unread. */
+  readAt: string | null;
   createdAt: string;
 };
 
-export type MembershipInput = Omit<MembershipApplication, 'id' | 'status' | 'createdAt' | 'consentAt'>;
+export type MembershipInput = Omit<
+  MembershipApplication,
+  'id' | 'status' | 'readAt' | 'createdAt' | 'consentAt'
+>;

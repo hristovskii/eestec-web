@@ -7,7 +7,7 @@ import { resolveLocalized } from '@/shared/i18n/localized';
 import type { Locale } from '@/shared/i18n/routing';
 
 import { joinTags } from './cache-tags';
-import { joinRepository } from './data';
+import { joinRepository, membershipRepository } from './data';
 import type { JoinRecord, PublicJoin } from './types';
 
 /** The Media library files the Join page uses (the PDFs). */
@@ -101,4 +101,9 @@ export async function getJoinForEdit() {
   const join = await (await joinRepository('session')).get();
   const media = await getMediaMap(joinMediaIds(join));
   return { join, media: Object.fromEntries(media) };
+}
+
+/** Applications nobody has handled yet (status "new"): the count on the Inbox tab, the sidebar and the dashboard. */
+export async function countNewApplications(): Promise<number> {
+  return (await (await membershipRepository('session')).list({ status: 'new' })).length;
 }

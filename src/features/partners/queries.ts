@@ -9,7 +9,7 @@ import { now } from '@/shared/lib/now';
 import { isoToZoned } from '@/shared/lib/zoned-time';
 
 import { partnersTags } from './cache-tags';
-import { partnersRepository } from './data';
+import { inquiriesRepository, partnersRepository } from './data';
 import { pastYears, sponsorStatus } from './domain/sponsor-status';
 import { groupByTier } from './domain/tiers';
 import type { PartnersPageRecord, PublicPartnersPage, PublicSponsor, Sponsor } from './types';
@@ -189,4 +189,9 @@ export async function getPartnersForEdit() {
     media: Object.fromEntries(media),
     today: isoToZoned(now().toISOString()).date,
   };
+}
+
+/** Inquiries nobody has handled yet (status "new"): the count on the Inbox tab, the sidebar and the dashboard. */
+export async function countNewInquiries(): Promise<number> {
+  return (await (await inquiriesRepository('session')).list({ status: 'new' })).length;
 }

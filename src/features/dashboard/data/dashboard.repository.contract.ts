@@ -10,7 +10,7 @@ export function describeDashboardRepository(
     it('returns the counters and pending approvals for editors and super admins', async () => {
       const data = await (await create()).getDashboard({ own: false });
       expect(data.pending.length).toBeGreaterThan(0);
-      expect(data.counters.membershipApplications.count).toBeGreaterThanOrEqual(0);
+      expect(data.counters.ideas.newIdeas).toBeGreaterThanOrEqual(0);
     });
 
     it('hides approvals from event managers', async () => {

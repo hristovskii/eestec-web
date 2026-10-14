@@ -72,5 +72,26 @@ export function describeMembershipRepository(
       expect((await repo.updateStatus(created.application.id, 'accepted'))?.status).toBe('accepted');
       expect(await repo.updateStatus('ma-does-not-exist', 'accepted')).toBeNull();
     });
+
+    it('stores an application unread, finds it by id, and marks it read or unread', async () => {
+      const repo = await createRepo();
+      const created = await repo.submit(input(), NOW);
+      if (created.status !== 'created') throw new Error('not created');
+      expect(created.application.readAt).toBeNull();
+      expect(await repo.get(created.application.id)).toEqual(created.application);
+      expect((await repo.setRead(created.application.id, NOW))?.readAt).toBe(NOW.toISOString());
+      expect((await repo.setRead(created.application.id, null))?.readAt).toBeNull();
+      expect(await repo.get('ma-does-not-exist')).toBeNull();
+      expect(await repo.setRead('ma-does-not-exist', NOW)).toBeNull();
+    });
+
+    it('marks every unread application read and says how many', async () => {
+      const repo = await createRepo();
+      await repo.submit(input(), NOW);
+      const unread = (await repo.list()).filter((application) => application.readAt === null).length;
+      expect(unread).toBeGreaterThan(0);
+      expect(await repo.markAllRead(NOW)).toBe(unread);
+      expect(await repo.markAllRead(NOW)).toBe(0);
+    });
   });
 }

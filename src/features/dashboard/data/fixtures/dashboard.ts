@@ -1,7 +1,7 @@
 // SAMPLE DATA — handoff/design-source/AdminDashboard.dc.html (counters, pending approvals, activity,
 // applications for open events), relative to the canvas moment 2026-10-04 18:18 Europe/Skopje.
-// Each part is replaced by real aggregation when its feature lands (inbox M10–M12, approvals M14/M17,
-// ideas M18, activity: features/activity; applications for open events come from applications since M7b). Counts are consistent with each other, so they differ
+// Each part is replaced by real aggregation when its feature lands (inbox: counted from contact, partners
+// and join since M12d; approvals M14/M17, ideas M18, activity: features/activity; applications for open events come from applications since M7b). Counts are consistent with each other, so they differ
 // from the illustrative canvas numbers (e.g. Approvals 7 = 3 registrations + 4 Memories, D2).
 import type { DashboardSummary } from '../../types';
 
@@ -10,8 +10,6 @@ export const dashboardFixture: DashboardSummary = {
     memberRegistrations: { count: 3, oldestAt: '2026-10-02T17:00:00+02:00' },
     memoriesToApprove: { count: 4, oldestAt: '2026-10-04T13:10:00+02:00' },
     ideas: { newIdeas: 5, newFeedback: 4 },
-    membershipApplications: { count: 12 },
-    messages: { contact: 5, partners: 2 },
   },
   pending: [
     {

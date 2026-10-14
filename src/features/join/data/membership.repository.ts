@@ -3,7 +3,7 @@ import type { MembershipApplication, MembershipInput, MembershipStatus } from '.
 export type SubmitMembershipResult =
   { status: 'created'; application: MembershipApplication } | { status: 'duplicate' };
 
-/** Membership applications from /join. The board's list (Inbox › Membership) reads it in M12. */
+/** Membership applications from /join, read by the board in Inbox › Membership. */
 export interface MembershipRepository {
   /**
    * Stores a new application (status "new", consent recorded at `now`). The same e-mail twice is
@@ -12,5 +12,10 @@ export interface MembershipRepository {
   submit(input: MembershipInput, now: Date): Promise<SubmitMembershipResult>;
   /** Newest first, optionally one status. */
   list(query?: { status?: MembershipStatus }): Promise<MembershipApplication[]>;
+  get(id: string): Promise<MembershipApplication | null>;
   updateStatus(id: string, status: MembershipStatus): Promise<MembershipApplication | null>;
+  /** Marks one application read (at `readAt`) or unread (null). */
+  setRead(id: string, readAt: Date | null): Promise<MembershipApplication | null>;
+  /** "Mark all as read": every unread application gets `now`; returns how many changed. */
+  markAllRead(now: Date): Promise<number>;
 }

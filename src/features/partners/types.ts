@@ -189,10 +189,12 @@ export type PartnerInquiry = {
   locale: 'mk' | 'en';
   consentAt: string;
   status: InquiryStatus;
+  /** When someone on the board opened it; null: unread. */
+  readAt: string | null;
   createdAt: string;
 };
 
 export type PartnerInquiryInput = Omit<
   PartnerInquiry,
-  'id' | 'reference' | 'status' | 'createdAt' | 'consentAt'
+  'id' | 'reference' | 'status' | 'readAt' | 'createdAt' | 'consentAt'
 >;

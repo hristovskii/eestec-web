@@ -2,6 +2,9 @@ import 'server-only';
 
 import { listApplicationOverview } from '@/features/applications/server';
 import { accessTo, type Actor } from '@/features/auth';
+import { countNewMessages } from '@/features/contact/server';
+import { countNewApplications } from '@/features/join/server';
+import { countNewInquiries } from '@/features/partners/server';
 import { isEnabled } from '@/shared/config/flags';
 
 import { dashboardRepository } from './data';
@@ -10,9 +13,12 @@ import type { AdminBadgeCounts, DashboardData, OpenEventApplications } from './t
 /** Dashboard for this admin: event managers see their own events only (D18). Dynamic (session). */
 export async function getDashboard(actor: Actor): Promise<DashboardData> {
   const own = accessTo(actor, 'dashboard') === 'own';
-  const [summary, applications] = await Promise.all([
+  const [summary, applications, contact, partners, membership] = await Promise.all([
     (await dashboardRepository()).getDashboard({ own }),
     listApplicationOverview(actor),
+    countNewMessages(),
+    countNewInquiries(),
+    countNewApplications(),
   ]);
   // "Applications for open events": events whose form takes applications on the site right now
   // (drafts are not on the site).
@@ -36,6 +42,8 @@ export async function getDashboard(actor: Actor): Promise<DashboardData> {
     ...summary,
     counters: {
       ...summary.counters,
+      membershipApplications: { count: membership },
+      messages: { contact, partners },
       openEventApplications: {
         total: openEvents.reduce((sum, row) => sum + row.total, 0),
         newCount: openEvents.reduce((sum, row) => sum + row.newCount, 0),
