@@ -1,5 +1,6 @@
 // Committees: client-safe exports (the public map and list, types, schemas).
 export { CommitteeNetwork } from './components/committee-network';
+export { CommitteesSection } from './components/committees-section';
 export {
   type AdminCommitteesParams,
   adminCommitteesParamsSchema,

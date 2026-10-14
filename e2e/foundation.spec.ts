@@ -6,13 +6,14 @@ test.describe('foundation (M0)', () => {
   test('Macedonian is the default locale at /', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveAttribute('lang', 'mk');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('EESTEC LC Скопје');
+    // The sample hero headline (Admin › Pages › Home) is English until the board writes Macedonian.
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/\S/);
   });
 
   test('English lives under /en', async ({ page }) => {
     await page.goto('/en');
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('EESTEC LC Skopje');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/\S/);
   });
 
   test('/mk redirects to the unprefixed URL', async ({ page }) => {

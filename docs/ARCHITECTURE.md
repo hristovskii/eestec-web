@@ -912,6 +912,17 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Milestones keep the order the board gives (drag or keyboard); the public timeline does not re-sort by year.
 - The three timeline photos are SAMPLE placeholder files in the Media fixtures (`media-home-*`).
 
+**Notes from building (M8c)**
+
+- The Home route (`app/[locale]/(site)/page.tsx`) only composes: `getHomeLayout()` gives the visible sections in the board's order and the route maps each key to a section from its feature (`home`: About, Tradition, Numbers, Meeting, Latest wrapper; `committees`: `CommitteesSection`; `events`: `EventCard`; `applications`: `HomeNextEvent`). The hero is always first; a section with nothing to show renders nothing.
+- Hero "Next event" card: `applications.HomeNextEvent` takes the same event as the Next-up card on `/upcoming` (`nextUp` flag, else the soonest) and the same state words (`useApplyCopy`), with a countdown to the **start** of the event (design: "until the event starts"). No upcoming event: the hero has no card. Event already started: "Happening now" instead of a countdown.
+- Latest activity: `events.getLatestEvents(locale, 3)` = newest listed past events of both categories (`ArchiveQuery.scope` is optional now). The Memories row (Phase 2) arrives with M17; until then the row does not exist. The journey teaser (M9) and the partner strip (M11) are `null` slots in the route.
+- Statistics count up when scrolled into view (`IntersectionObserver`, 1.4 s, ease-out). Reduced motion and no-JS show the final number at once; screen readers always read the final number (the animated text is `aria-hidden`).
+- Timeline: horizontal scroll area with ← → buttons (shown only when it overflows, at 1024 px and up), a vertical list on phones. The eyebrow is "Since {first year}" computed from the milestones, not the canvas's "Since the early 2000s", which would be wrong as soon as the board changes a milestone. Years are red 28 px (allowed: 24 px and up).
+- Weekly meeting box: day, time and room come from Settings; "Get directions" searches Google Maps for Settings › address. Hidden when "Show on Home" is off.
+- Phones: the committee filters scroll sideways, the past events are a swipe row (300 px cards), the activity cards are two per row, the numbers two per row with an odd last one full width (Home-Mobile). The canvas's shorter mobile descriptions are not used: one text per item, same on both (decided in M6).
+- The "Show cities our members have visited" checkbox of the map stays out until Phase 2 (M17), as agreed.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

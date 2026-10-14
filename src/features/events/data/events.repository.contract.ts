@@ -224,6 +224,15 @@ export function describeEventsRepository(
       expect(oldest.items[0]?.startsAt).toBe('2026-06-01T10:00:00+02:00');
     });
 
+    it('lists past events of both categories when no scope is given (Home › Latest activity)', async () => {
+      const repo = await createRepo();
+      const marker = `Both ${unique()}`;
+      await repo.save(past('2018-05-01', { title: { mk: marker }, scope: 'local' }), editor, NOW);
+      await repo.save(past('2018-05-02', { title: { mk: marker }, scope: 'international' }), editor, NOW);
+      const { items } = await repo.listArchive(archiveQuery({ scope: undefined, q: marker.toLowerCase() }));
+      expect(items.map((event) => event.scope).sort()).toEqual(['international', 'local']);
+    });
+
     it('filters the archive by type and year and counts both categories', async () => {
       const repo = await createRepo();
       const marker = `Facet ${unique()}`;

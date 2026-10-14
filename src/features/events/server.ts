@@ -17,6 +17,7 @@ export {
   getArchiveTypes,
   getEventPage,
   getEventsArchive,
+  getLatestEvents,
   getUpcomingEvents,
   getUpcomingSlugs,
   resolveEventAddress,

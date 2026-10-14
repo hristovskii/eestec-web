@@ -33,6 +33,7 @@ const ICONS: Record<ActivityIcon, LucideIcon> = {
 
 /** The icon of an activity card (decorative: the card's title names it). */
 export function ActivityIconView({ icon, className }: { icon: ActivityIcon; className?: string }) {
-  const Icon = ICONS[icon];
+  // An unknown name (an icon removed from the set) falls back to a neutral one instead of breaking Home.
+  const Icon = (ICONS as Partial<Record<string, LucideIcon>>)[icon] ?? Users;
   return <Icon className={className} aria-hidden />;
 }

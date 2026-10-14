@@ -141,6 +141,16 @@ test.describe('home admin (M8b)', () => {
       await page.reload();
       expect((await names())[2]).toBe('EESTEC across Europe (map)');
       await expect(page.getByRole('switch', { name: 'Show Latest activity on Home' })).not.toBeChecked();
+      // The public page follows: no "Latest activity", and the map now comes before the numbers.
+      const site = await page.context().newPage();
+      const headings = async () => {
+        await site.goto('/en');
+        await expect(site.getByRole('heading', { level: 1 })).toHaveText(/\S/);
+        return site.locator('main h2').allInnerTexts();
+      };
+      let seen = await headings();
+      expect(seen).not.toContain("What we've been up to");
+      expect(seen.indexOf('EESTEC across Europe')).toBeLessThan(seen.indexOf('EESTEC in numbers'));
       // Back to how it was.
       await page.getByRole('switch', { name: 'Show Latest activity on Home' }).click();
       // Moving "EESTEC in numbers" up puts the map back below it.
@@ -156,6 +166,10 @@ test.describe('home admin (M8b)', () => {
       await expect(page.getByText('All changes saved')).toBeVisible();
       await page.reload();
       expect(await names()).toEqual(before);
+      seen = await headings();
+      expect(seen).toContain("What we've been up to");
+      expect(seen.indexOf('EESTEC in numbers')).toBeLessThan(seen.indexOf('EESTEC across Europe'));
+      await site.close();
     });
   });
 

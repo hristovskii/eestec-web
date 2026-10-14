@@ -110,6 +110,11 @@ export function HomeAdmin({ record, media: initialMedia, canEdit }: HomeAdminPro
     }))
     .filter((item, index, all) => all.findIndex((other) => other.fieldId === item.fieldId) === index);
 
+  // The error summary takes focus when a save finds problems (it is rendered by then).
+  React.useEffect(() => {
+    if (Object.keys(fieldErrors).length > 0) summaryRef.current?.focus();
+  }, [fieldErrors]);
+
   const save = () =>
     new Promise<boolean>((resolve) =>
       startTransition(async () => {
@@ -122,7 +127,6 @@ export function HomeAdmin({ record, media: initialMedia, canEdit }: HomeAdminPro
           resolve(true);
         } else if (result.error === 'validation') {
           setFieldErrors(result.fieldErrors);
-          requestAnimationFrame(() => summaryRef.current?.focus());
           resolve(false);
         } else {
           toast.error(t(result.error === 'forbidden' ? 'errors.forbidden' : 'errors.unexpected'));

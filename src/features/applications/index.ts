@@ -2,6 +2,7 @@
 export { submitApplication, type ApplicationReceipt } from './actions/submit-application';
 export { AddToCalendar, type CalendarLinks } from './components/add-to-calendar';
 export { ApplyBox } from './components/apply-box';
+export { HomeNextEvent } from './components/home-next-event';
 export { UpcomingCard } from './components/upcoming-card';
 export { calendarLinks, UpcomingEventPage } from './components/upcoming-event-page';
 export { UpcomingList, UpcomingListSkeleton, type UpcomingScope } from './components/upcoming-list';
