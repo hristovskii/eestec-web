@@ -24,7 +24,15 @@ test.describe('contact admin (M12a)', () => {
     await expect(page.locator('#ct-hero-title')).toHaveValue('Contact');
     await expect(page.locator('#ct-form-title')).toHaveValue('Send us a message');
     await expect(page.locator('#ct-shortcuts-1-label')).toHaveValue('For Companies');
-    await expect(page.locator('[id^="ct-subjects-"][id$="-name"]')).toHaveCount(5);
+    // The five sample subjects, in order (other tests add a sixth for a moment, so no count).
+    for (const [index, name] of [
+      'General question',
+      'Membership',
+      'Partnership',
+      'Media',
+      'Other committee',
+    ].entries())
+      await expect(page.locator(`#ct-subjects-${index}-name`)).toHaveValue(name);
     await expect(page.locator('#ct-subjects-2-routeEmail')).toHaveValue('partners@eestec.mk');
     await expect(page.locator('#ct-map-lat')).toHaveValue('42.0045');
     await expect(save(page)).toBeDisabled();
@@ -161,6 +169,97 @@ test.describe('contact admin (M12a)', () => {
     await expect(page.locator('#ct-hero-title')).toBeEnabled();
     await signInAs(page, 'event-manager');
     await page.goto('/admin/pages/contact');
+    await expect(page).toHaveURL(/\/admin\?forbidden=1/);
+  });
+});
+
+// The Privacy policy tab (M12e). The tests that change the text add one paragraph and take it away
+// again; they never switch the placeholder notice off (other specs look for it).
+test.describe('privacy policy editor (M12e)', () => {
+  const PRIVACY = '/admin/pages/contact?tab=privacy';
+  const editor = (page: Page) => page.locator('#pv-body');
+
+  test('shows the placeholder policy in both languages, and passes axe', async ({ page }) => {
+    await signInAs(page, 'super-admin');
+    await page.goto('/admin/pages/contact');
+    const tabs = page.getByRole('navigation', { name: 'Contact page' });
+    await expect(tabs.getByRole('link', { name: 'Page', exact: true })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+    await tabs.getByRole('link', { name: 'Privacy policy' }).click();
+    await expect(page).toHaveURL(/tab=privacy/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Privacy policy' })).toBeVisible();
+    await expect(page.locator('#pv-title')).toHaveValue('Политика за приватност');
+    await expect(editor(page)).toContainText('ПРИВРЕМЕН ТЕКСТ');
+    await expect(page.getByRole('switch', { name: 'This is still placeholder text' })).toBeChecked();
+    await expect(save(page)).toBeDisabled();
+    expect(await seriousViolations(page)).toEqual([]);
+  });
+
+  test('the public page shows the policy as rich text, with its placeholder notice', async ({ page }) => {
+    await page.goto('/en/privacy');
+    await expect(
+      page.getByText('PLACEHOLDER TEXT. The board will supply the real privacy policy'),
+    ).toBeVisible();
+    await expect(page.locator('main p')).not.toHaveCount(0);
+  });
+
+  test.describe('changes', () => {
+    test.describe.configure({ mode: 'serial' });
+    test.beforeEach(({}, testInfo) => {
+      test.skip(testInfo.project.name !== 'desktop', 'editing is a desktop flow');
+    });
+
+    test('adds a paragraph, saves, sees it on /privacy, and takes it away again', async ({ page }) => {
+      await signInAs(page, 'super-admin');
+      await page.goto(PRIVACY);
+      const text = `Retention ${unique()}`;
+      try {
+        await editor(page).click();
+        await page.keyboard.press('ControlOrMeta+End');
+        await page.keyboard.press('Enter');
+        await page.keyboard.type(text);
+        await expect(page.getByText('Unsaved changes')).toBeVisible();
+        await save(page).click();
+        await expect(toast(page, 'Privacy policy saved')).toBeVisible();
+        await page.reload();
+        await expect(editor(page)).toContainText(text);
+        await page.goto('/privacy');
+        await expect(page.getByText(text)).toBeVisible();
+      } finally {
+        await page.goto(PRIVACY);
+        await editor(page).click();
+        await page.keyboard.press('ControlOrMeta+End');
+        if ((await editor(page).innerText()).includes(text)) {
+          // The typed text, then the empty paragraph that is left (no Home key: it differs on macOS).
+          for (let index = 0; index <= text.length; index += 1) await page.keyboard.press('Backspace');
+          await save(page).click();
+          await expect(page.getByText('All changes saved')).toBeVisible();
+        }
+        await expect(editor(page)).not.toContainText(text);
+      }
+    });
+
+    test('will not save an empty Macedonian text, and says where', async ({ page }) => {
+      await signInAs(page, 'super-admin');
+      await page.goto(PRIVACY);
+      await editor(page).click();
+      await page.keyboard.press('ControlOrMeta+A');
+      await page.keyboard.press('Backspace');
+      await save(page).click();
+      const summary = page.getByRole('alert').filter({ hasText: "Can't save yet: fix 1 field" });
+      await expect(summary).toBeFocused();
+      await expect(summary.getByRole('link', { name: /Policy text/ })).toBeVisible();
+      // Nothing was stored.
+      await page.reload();
+      await expect(editor(page)).toContainText('ПРИВРЕМЕН ТЕКСТ');
+    });
+  });
+
+  test('event managers cannot open the Privacy policy tab either', async ({ page }) => {
+    await signInAs(page, 'event-manager');
+    await page.goto(PRIVACY);
     await expect(page).toHaveURL(/\/admin\?forbidden=1/);
   });
 });

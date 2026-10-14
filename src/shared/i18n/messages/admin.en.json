@@ -2184,6 +2184,11 @@
       "range": "That number is out of range.",
       "forbidden": "Only editors and super admins can change the Contact page.",
       "unexpected": "Couldn't save. Try again."
+    },
+    "tabs": {
+      "label": "Contact page",
+      "page": "Page",
+      "privacy": "Privacy policy"
     }
   },
   "inbox": {
@@ -2328,6 +2333,30 @@
       },
       "opensIn": "opens in Excel or Google Sheets",
       "download": "Download CSV"
+    }
+  },
+  "privacy": {
+    "pageTitle": "Privacy policy",
+    "description": "The text of the Privacy policy page, in Macedonian and English. Every form on the site links to it.",
+    "savedToast": "Privacy policy saved. The site shows it within a minute.",
+    "errorSummary": "{count, plural, one {Can't save yet: fix # field} other {Can't save yet: fix # fields}}",
+    "sectionsNav": "Privacy policy sections",
+    "readOnly": "You can look at this page, but only editors and super admins can change it.",
+    "sections": {
+      "policy": "Policy"
+    },
+    "aside": "Title, text and whether it is final",
+    "title": "Title",
+    "body": "Policy text",
+    "bodyAside": "Rich text",
+    "bodyHelp": "Say which personal data the forms collect, why, how long it is kept and how to ask for it to be deleted.",
+    "placeholder": "This is still placeholder text",
+    "placeholderHelp": "While this is on, /privacy shows a notice that the policy is not final. Turn it off once the board has approved the text.",
+    "errors": {
+      "required": "Fill this in.",
+      "tooLong": "This is too long.",
+      "forbidden": "Only editors and super admins can change the privacy policy.",
+      "unexpected": "Couldn't save. Try again."
     }
   }
 }

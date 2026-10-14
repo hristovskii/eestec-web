@@ -39,7 +39,34 @@ export function describeSettingsRepository(
       const en = await repo.getPrivacyPolicy({ locale: 'en' });
       expect(mk.lang).toBe('mk');
       expect(['mk', 'en']).toContain(en.lang);
-      expect(mk.body.length).toBeGreaterThan(0);
+      expect(mk.body).toContain('<p>');
+    });
+
+    it('saves the privacy policy as rich text and falls back to Macedonian while English is empty', async () => {
+      const repo = await create();
+      const before = (await repo.getRecord()).privacy;
+      try {
+        const saved = await repo.savePrivacy({
+          title: { mk: 'Политика', en: 'Policy' },
+          body: { mk: '<p>Македонски текст</p>', en: '<p> </p>' },
+          isPlaceholder: false,
+        });
+        expect(saved.isPlaceholder).toBe(false);
+        expect(await repo.getPrivacyPolicy({ locale: 'en' })).toMatchObject({
+          title: 'Policy',
+          body: '<p>Македонски текст</p>',
+          lang: 'mk',
+          isPlaceholder: false,
+        });
+        await repo.savePrivacy({ ...saved, body: { mk: '<p>Македонски</p>', en: '<p>English</p>' } });
+        expect(await repo.getPrivacyPolicy({ locale: 'en' })).toMatchObject({
+          body: '<p>English</p>',
+          lang: 'en',
+        });
+      } finally {
+        await repo.savePrivacy(before);
+      }
+      expect((await repo.getRecord()).privacy).toEqual(before);
     });
 
     it('saves what Admin › Settings edits and keeps the privacy text', async () => {

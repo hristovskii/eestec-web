@@ -6,6 +6,7 @@ import { currentLocale } from '@/shared/i18n/current-locale';
 import { PageHeader } from '@/shared/layout/site/page-header';
 import { Container } from '@/shared/ui/container';
 import { Notice } from '@/shared/ui/notice';
+import { RichText } from '@/shared/ui/rich-text';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await currentLocale();
@@ -34,11 +35,7 @@ export default async function PrivacyPage() {
               {t('placeholderText')}
             </Notice>
           )}
-          <div className="flex flex-col gap-4 text-body text-ink-2" lang={policy.lang}>
-            {policy.body.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </div>
+          <RichText html={policy.body} lang={policy.lang} />
         </div>
       </Container>
     </>
