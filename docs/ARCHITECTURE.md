@@ -965,6 +965,17 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Closed: when Admin switches applications off the form is replaced by `JoinClosed` (next round, the weekly meeting line, Instagram from Settings, link to the Journey) and the server refuses submissions. The e2e suite checks the closed card in the component lab (`/design-system#join-states`) instead of switching it off in Admin, which would hide the form from every test running at the same time; the refusal itself is a unit test.
 - The component lab gained "Membership form": the real form with sample options (the server refuses what is sent from there) and the closed card.
 
+**Notes from building (M11a)**
+
+- M11 is split in three: **M11a** the `partners` feature and `/admin/pages/sponsors` (this), **M11b** the public `/partners` page and the Home partner strip, **M11c** the company inquiry form (and event partners). **Inbox › Partners is M12**, as with Membership: inquiries are stored, the board sees no list until then, and no e-mail is sent.
+- `/admin/pages/sponsors` has three tabs (`?tab=page|sponsors|tiers`). **Page** is a page editor like Home / Join (`PageEditorFrame`, which gained an `aboveContent` slot for the tabs): hero, "Who you reach", "What your company gets", packages (one is "Most chosen"; turning it on for one clears the others), single collaborations, the offer PDF (a Media-library document), the headings above the logos, and the contact person. **Sponsors** lists every tier with its logos in the order the site shows them (drag or keyboard reorder, saved at once; add, edit and delete in a dialog). **Tiers** are the headings above the logos: name, size (large / medium / standard, the data model's `size_weight`) and order; a tier that still has sponsors cannot be removed.
+- One `PartnersRepository` (page, tiers, sponsors; mock + contract test). A sponsor's logo is a `MediaRef` (alt text required); the site reads its proportions from the library item's width and height, so a sponsor needs no "ratio" field. A sponsor with no logo is shown by name (FEEIT, UKIM on the canvas). The website is optional (without it the logo is not a link) and must be https.
+- **Where a sponsor shows** (`domain/sponsor-status.ts`, Skopje date): _active_ (switched on and inside "active from / until") on Home and `/partners`; _past_ ("active until" has passed) under "Past partners" on `/partners` with its years, never on Home; _scheduled_ (starts later) and _inactive_ (switched off) nowhere. A tier with no active sponsor is hidden (`domain/tiers.ts › groupByTier`).
+- Logo size is the pure, unit-tested `domain/logo-size.ts`: `w = √(area × ratio)`, capped at 64 % of the cell height and at the logo's widest; the cells and areas per tier size are the canvas's, desktop and phone (`LOGO_CELLS`).
+- `getPartners(locale)` (cached, tag `partners`) returns the page, the active tiers and the past partners in the language of the page, so Home and `/partners` read the same thing.
+- The row list used by the Join editor (`RowList`, `AddRow`) moved to `shared/admin-ui/row-list.tsx`, because this page needs it too. The sample media got the real proportions of the 18 sample logos (viewBox sizes) and the 12 missing logo items.
+- The sample new-sponsor e2e tests create sponsors **switched off**, so no public page ever shows them while tests run in parallel.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

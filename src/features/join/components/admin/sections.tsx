@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, Library, Plus, Trash2 } from 'lucide-react';
+import { FileText, Library } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
@@ -9,7 +9,7 @@ import { MediaPicker } from '@/features/media/admin';
 import { FormSection, SwitchRow } from '@/shared/admin-ui/form-section';
 import { LocalizedField } from '@/shared/admin-ui/localized-field';
 import { LocalizedListField, type LocalizedListItem } from '@/shared/admin-ui/localized-list-field';
-import { SortableList } from '@/shared/admin-ui/sortable-list';
+import { AddRow, RowList } from '@/shared/admin-ui/row-list';
 import { useFocusAdded } from '@/shared/admin-ui/use-focus-added';
 import { resolveLocalized } from '@/shared/i18n/localized';
 import { FieldError, FormField } from '@/shared/ui/form/form-field';
@@ -119,80 +119,6 @@ function IconSelect({
         </div>
       )}
     </FormField>
-  );
-}
-
-/** A reorderable list of rows; `fields` draws the inside of one row. */
-function RowList<T extends { id: string }>({
-  label,
-  items,
-  onReorder,
-  itemName,
-  fields,
-  onRemove,
-  removeLabel,
-}: {
-  label: string;
-  items: T[];
-  onReorder: (items: T[]) => void;
-  itemName: (item: T) => string;
-  fields: (item: T, index: number) => React.ReactNode;
-  onRemove: (index: number) => void;
-  removeLabel: (name: string) => string;
-}) {
-  return (
-    <SortableList
-      label={label}
-      items={items}
-      itemName={itemName}
-      onReorder={onReorder}
-      className="flex flex-col gap-3"
-      renderItem={(item, handle) => {
-        const index = items.findIndex((candidate) => candidate.id === item.id);
-        return (
-          <div className="grid grid-cols-[32px_minmax(0,1fr)_36px] items-start gap-2 rounded-md border border-line p-3">
-            <span className="flex h-(--control-h) items-center">{handle}</span>
-            <div className="flex min-w-0 flex-col gap-3">{fields(item, index)}</div>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-9 text-muted-ink"
-              aria-label={removeLabel(itemName(item))}
-              onClick={() => onRemove(index)}
-            >
-              <Trash2 aria-hidden />
-            </Button>
-          </div>
-        );
-      }}
-    />
-  );
-}
-
-function AddRow({
-  label,
-  onAdd,
-  full,
-  fullText,
-  error,
-}: {
-  label: string;
-  onAdd: () => void;
-  full: boolean;
-  fullText: string;
-  error?: string;
-}) {
-  return (
-    <>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="quiet" size="sm" disabled={full} onClick={onAdd}>
-          <Plus aria-hidden />
-          {label}
-        </Button>
-        {full && <span className="text-[13px] text-muted-ink">{fullText}</span>}
-      </div>
-      {error && <FieldError>{error}</FieldError>}
-    </>
   );
 }
 
