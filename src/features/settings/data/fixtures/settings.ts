@@ -108,14 +108,8 @@ export const settingsFixture: SettingsRecord = {
     title: { mk: 'Политика за приватност', en: 'Privacy policy' },
     // D17: placeholder until the board supplies the real text. Clearly marked on the page.
     body: {
-      mk: [
-        'ПРИВРЕМЕН ТЕКСТ. Одборот ќе ја достави вистинската политика за приватност пред објавувањето на страницата.',
-        'Тука ќе пишува кои лични податоци ги собираме преку формуларите, зошто, колку долго ги чуваме (според поставката за чување податоци) и како да побарате нивно бришење.',
-      ],
-      en: [
-        'PLACEHOLDER TEXT. The board will supply the real privacy policy before the site goes live.',
-        'It will explain which personal data the forms collect, why, how long it is kept (see the retention setting) and how to ask for it to be deleted.',
-      ],
+      mk: '<p>ПРИВРЕМЕН ТЕКСТ. Одборот ќе ја достави вистинската политика за приватност пред објавувањето на страницата.</p><p>Тука ќе пишува кои лични податоци ги собираме преку формуларите, зошто, колку долго ги чуваме (според поставката за чување податоци) и како да побарате нивно бришење.</p>',
+      en: '<p>PLACEHOLDER TEXT. The board will supply the real privacy policy before the site goes live.</p><p>It will explain which personal data the forms collect, why, how long it is kept (see the retention setting) and how to ask for it to be deleted.</p>',
     },
     isPlaceholder: true,
   },

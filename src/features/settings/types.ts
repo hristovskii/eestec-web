@@ -123,8 +123,8 @@ export type ResolvedPageSeo = { title: string; description: string; shareImage: 
 
 export type PrivacyPolicy = {
   title: string;
-  /** Paragraphs. Rich text arrives with the Contact page editor (M12). */
-  body: string[];
+  /** Rich text from the Contact page editor (Privacy tab), cleaned before it is shown. */
+  body: string;
   /** D17: the text is a placeholder until the board supplies it. */
   isPlaceholder: boolean;
   /** Language the body is actually in (EN falls back to MK). */
@@ -141,8 +141,14 @@ export type SettingsRecord = Omit<
   weeklyMeeting: { day: Weekday; time: string; room: Localized; showOnHome: boolean };
   seo: Record<SeoPageKey, PageSeo>;
   notifications: Record<NotificationKind, NotificationSetting>;
-  privacy: { title: Localized; body: Localized<string[]>; isPlaceholder: boolean };
+  privacy: PrivacyRecord;
 };
 
-/** What Admin › Settings edits (everything except the privacy text, edited with Contact in M12). */
+/** The privacy policy as stored: the body is rich text (HTML) in both languages. */
+export type PrivacyRecord = { title: Localized; body: Localized; isPlaceholder: boolean };
+
+/** What Admin › Pages › Contact › Privacy policy edits. */
+export type PrivacyInput = PrivacyRecord;
+
+/** What Admin › Settings edits (everything except the privacy text, edited on the Contact page editor). */
 export type SettingsInput = Omit<SettingsRecord, 'privacy'>;

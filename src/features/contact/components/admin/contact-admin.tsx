@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import type * as React from 'react';
 
 import { PageEditorFrame, usePageEditor } from '@/shared/admin-ui/page-editor';
 
@@ -12,7 +13,16 @@ import { MapSection, PageSection, ShortcutsSection, SubjectsSection } from './se
 const SECTION_IDS = ['page', 'shortcuts', 'subjects', 'map'] as const;
 
 /** /admin/pages/contact (spec 10 › Admin-managed data): one form, one "Save changes", sections with a sub-nav. */
-export function ContactAdmin({ record, canEdit }: { record: ContactPageRecord; canEdit: boolean }) {
+export function ContactAdmin({
+  record,
+  canEdit,
+  tabs,
+}: {
+  record: ContactPageRecord;
+  canEdit: boolean;
+  /** The tabs of the page (Page · Privacy policy), shown above the form. */
+  tabs?: React.ReactNode;
+}) {
   const t = useTranslations('admin.contact');
   const editor = usePageEditor<ContactPageInput>({
     record,
@@ -82,6 +92,7 @@ export function ContactAdmin({ record, canEdit }: { record: ContactPageRecord; c
       sectionsNavLabel={t('sectionsNav')}
       errors={summary}
       errorSummaryTitle={t('errorSummary', { count: summary.length })}
+      aboveContent={tabs}
     >
       <PageSection {...sectionProps} />
       <ShortcutsSection {...sectionProps} />

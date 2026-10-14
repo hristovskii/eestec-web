@@ -3,6 +3,7 @@ import 'server-only';
 import { mockTable } from '@/shared/data/mock/store';
 import { resolveLocalized, resolveText } from '@/shared/i18n/localized';
 import { nextMeetingAt } from '@/shared/lib/next-meeting';
+import { isEmptyRichText } from '@/shared/lib/rich-text';
 
 import type { SettingsRepository } from './settings.repository';
 import { settingsFixture } from './fixtures/settings';
@@ -48,13 +49,17 @@ export function createMockSettingsRepository(): SettingsRepository {
       return Promise.resolve(structuredClone(table.record));
     },
 
+    savePrivacy(input) {
+      table.record = { ...table.record, privacy: structuredClone(input) };
+      return Promise.resolve(structuredClone(table.record.privacy));
+    },
+
     getPrivacyPolicy({ locale }) {
       const { privacy } = table.record;
-      const englishBody = privacy.body.en;
-      const useEnglish = locale === 'en' && englishBody !== undefined && englishBody.length > 0;
+      const useEnglish = locale === 'en' && !isEmptyRichText(privacy.body.en ?? '');
       return Promise.resolve({
         title: resolveText(privacy.title, locale).text,
-        body: useEnglish ? englishBody : privacy.body.mk,
+        body: useEnglish ? (privacy.body.en ?? '') : privacy.body.mk,
         isPlaceholder: privacy.isPlaceholder,
         lang: useEnglish ? 'en' : 'mk',
       });

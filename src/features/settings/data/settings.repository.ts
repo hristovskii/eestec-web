@@ -1,7 +1,9 @@
 import type { Locale } from '@/shared/i18n/routing';
 
 import type {
+  PrivacyInput,
   PrivacyPolicy,
+  PrivacyRecord,
   ResolvedPageSeo,
   SeoPageKey,
   SettingsInput,
@@ -19,4 +21,6 @@ export interface SettingsRepository {
   getRecord(): Promise<SettingsRecord>;
   /** Replaces everything Admin › Settings edits; returns the stored result. */
   save(input: SettingsInput): Promise<SettingsRecord>;
+  /** Replaces the privacy policy (Admin › Pages › Contact › Privacy policy); returns the stored result. */
+  savePrivacy(input: PrivacyInput): Promise<PrivacyRecord>;
 }

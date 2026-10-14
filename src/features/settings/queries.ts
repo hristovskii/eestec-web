@@ -7,6 +7,7 @@ import type { Locale } from '@/shared/i18n/routing';
 
 import type { SeoPageKey } from './types';
 import { now } from '@/shared/lib/now';
+import { sanitizeRichText } from '@/shared/lib/sanitize-html';
 
 import { settingsTags } from './cache-tags';
 import { settingsRepository } from './data';
@@ -24,7 +25,15 @@ export async function getPrivacyPolicy(locale: Locale) {
   cacheTag(settingsTags.all);
   cacheLife('hours');
   const repo = await settingsRepository();
-  return repo.getPrivacyPolicy({ locale });
+  const policy = await repo.getPrivacyPolicy({ locale });
+  // Cleaned again before it is shown (never raw board input).
+  return { ...policy, body: sanitizeRichText(policy.body) };
+}
+
+/** Admin › Pages › Contact › Privacy policy: both languages, never cached. Callers check the permission. */
+export async function getPrivacyForEdit() {
+  const repo = await settingsRepository();
+  return (await repo.getRecord()).privacy;
 }
 
 /** Title, description and share image of one page (generateMetadata). */
