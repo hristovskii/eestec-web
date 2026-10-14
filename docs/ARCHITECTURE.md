@@ -957,6 +957,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Documents: a row with a download link when the library item has a file; a sample item (no file) shows "sample file, no download yet" and no link. Size and month come from the library item.
 - "At a glance" is a list, not a `<dl>`: the icon next to each label breaks the `dl` structure axe requires.
 
+**Notes from building (M10c)**
+
+- The membership form is `join/components/public/join-form.tsx` on the shared form kit (FormField, SegmentedChoice, ConsentField, Honeypot, SubmitButton, ErrorSummary, FormSuccess), like the event application form. Required: name, e-mail, faculty, study program, year of study, consent; optional: phone, interests, "how did you hear". The browser and the server check the same schema (`domain/membership.ts`); the server (`actions/submit-membership.ts`) also runs the spam guard (honeypot + 3 s), refuses when applications are closed, accepts only the ids of the board's own option lists, and refuses the same e-mail twice (any letter case) until the earlier application is rejected.
+- Stored through `MembershipRepository` (`submit`, `list`, `updateStatus`; mock + contract test + three sample applications). The option the person chose is stored as the **wording in the language they used** (a later change to the option list cannot rewrite old applications). **There is no list for the board yet: Inbox › Membership is M12**, and no e-mail is sent (as with event applications: the page says a confirmation was sent; real mail comes with Supabase).
+- Confirmation ("Welcome aboard, Marija!"): the next weekly meeting from Settings (`getMeetingInfo`) and _Add meeting to calendar_ (Google link, `/join/calendar` `.ics` for the next occurrence, one hour long because Settings has no end time). `shared/lib/calendar.ts` (moved from applications) builds both; `AddToCalendar` is the applications component, imported through its public index.
+- Closed: when Admin switches applications off the form is replaced by `JoinClosed` (next round, the weekly meeting line, Instagram from Settings, link to the Journey) and the server refuses submissions. The e2e suite checks the closed card in the component lab (`/design-system#join-states`) instead of switching it off in Admin, which would hide the form from every test running at the same time; the refusal itself is a unit test.
+- The component lab gained "Membership form": the real form with sample options (the server refuses what is sent from there) and the closed card.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

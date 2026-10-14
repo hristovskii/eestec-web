@@ -8,7 +8,7 @@ import type { Locale } from '@/shared/i18n/routing';
 import { StatusBadge } from '@/shared/ui/chip';
 
 import { countdownTarget } from '../domain/application-state';
-import { googleCalendarUrl } from '../domain/calendar';
+import { googleCalendarUrl } from '@/shared/lib/calendar';
 import type { UpcomingPage } from '../public-queries';
 import type { CalendarLinks } from './add-to-calendar';
 import { ApplicationForm } from './application-form';

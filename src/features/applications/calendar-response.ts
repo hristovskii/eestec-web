@@ -6,7 +6,7 @@ import { getPathname } from '@/shared/i18n/navigation';
 import type { Locale } from '@/shared/i18n/routing';
 import { now } from '@/shared/lib/now';
 
-import { toIcs } from './domain/calendar';
+import { toIcs } from '@/shared/lib/calendar';
 
 /** /upcoming/[slug]/calendar: the event as an .ics download (Apple Calendar, Outlook). */
 export async function icsResponse(slug: string, locale: Locale): Promise<Response> {

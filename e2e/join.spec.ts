@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import { seriousViolations } from './support/axe';
 
 // The public Join Us page (M10b). The admin tests change the content for a moment and put it
-// back; these tests check what stays the same. The application form (section 6) is M10c.
+// back; these tests check what stays the same. The application form has its own spec.
 
 test.describe('join page (M10b)', () => {
   test('hero, "at a glance" and the next info session', async ({ page }) => {
@@ -62,6 +62,8 @@ test.describe('join page (M10b)', () => {
       'How to join',
       'Rules',
       'FAQ',
+      'Apply',
+      'Apply now',
     ]);
     await nav.getByRole('link', { name: 'How to join' }).click();
     await expect(page).toHaveURL(/#how$/);
@@ -94,9 +96,21 @@ test.describe('join page (M10b)', () => {
     await expect(second).toHaveAttribute('aria-expanded', 'false');
   });
 
-  test('there is no "Apply now" until the form exists', async ({ page }) => {
+  test('"Apply now" jumps to the form, and the menu has the Apply section', async ({ page }) => {
     await page.goto('/en/join');
-    await expect(page.getByRole('link', { name: 'Apply now' })).toHaveCount(0);
+    await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link')).toHaveText([
+      'Why join',
+      'Who can join',
+      'How to join',
+      'Rules',
+      'FAQ',
+      'Apply',
+      'Apply now',
+    ]);
+    await page.getByRole('main').getByRole('link', { name: 'Apply now' }).first().click();
+    await expect(page).toHaveURL(/#apply$/);
+    await expect(page.locator('#apply')).toBeInViewport();
+    await expect(page.getByRole('heading', { name: 'Membership application' })).toBeVisible();
   });
 
   test('Macedonian is the default language, nothing scrolls sideways, and axe is clean', async ({ page }) => {
