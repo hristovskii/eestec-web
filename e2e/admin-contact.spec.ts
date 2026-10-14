@@ -215,11 +215,19 @@ test.describe('privacy policy editor (M12e)', () => {
       await signInAs(page, 'super-admin');
       await page.goto(PRIVACY);
       const text = `Retention ${unique()}`;
+      const added = editor(page).locator('p', { hasText: text });
       try {
-        await editor(page).click();
-        await page.keyboard.press('ControlOrMeta+End');
+        // The editor is ready when its toolbar is there; then the caret goes to the last paragraph.
+        await expect(page.getByRole('toolbar')).toBeVisible();
+        // Click in the empty space at the end of the last line (no End key: it differs on macOS).
+        const last = editor(page).locator('p').last();
+        const box = await last.boundingBox();
+        if (!box) throw new Error('the last paragraph has no box');
+        await page.mouse.click(box.x + box.width - 4, box.y + box.height - 6);
+        await expect(editor(page)).toBeFocused();
         await page.keyboard.press('Enter');
         await page.keyboard.type(text);
+        await expect(editor(page).locator('p').last()).toHaveText(text);
         await expect(page.getByText('Unsaved changes')).toBeVisible();
         await save(page).click();
         await expect(toast(page, 'Privacy policy saved')).toBeVisible();
@@ -229,11 +237,12 @@ test.describe('privacy policy editor (M12e)', () => {
         await expect(page.getByText(text)).toBeVisible();
       } finally {
         await page.goto(PRIVACY);
-        await editor(page).click();
-        await page.keyboard.press('ControlOrMeta+End');
-        if ((await editor(page).innerText()).includes(text)) {
-          // The typed text, then the empty paragraph that is left (no Home key: it differs on macOS).
-          for (let index = 0; index <= text.length; index += 1) await page.keyboard.press('Backspace');
+        await expect(page.getByRole('toolbar')).toBeVisible();
+        if ((await added.count()) > 0) {
+          // Select that paragraph (no Home key: it differs on macOS), delete its text, then the empty paragraph.
+          await added.last().click({ clickCount: 3 });
+          await page.keyboard.press('Backspace');
+          await page.keyboard.press('Backspace');
           await save(page).click();
           await expect(page.getByText('All changes saved')).toBeVisible();
         }
