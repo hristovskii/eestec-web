@@ -983,6 +983,13 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - **Home strip** (`PartnerStrip`, always the last section above the footer, hidden with no active partners): a tier longer than 6 logos on desktop or 2 on a phone becomes a slow marquee (`PartnerMarquee`, a client component deciding with `matchMedia`, the server renders the plain row). Two copies of the logos in one track moved by `animate-partner-marquee` (45 s, half the width); the second copy is `aria-hidden` and out of the tab order. It pauses on hover and keyboard focus (CSS), has a visible pause / resume button, and under "reduce motion" the animation is off, the button hidden and the row can be scrolled by hand. Only `partners.logo` and `partners.marquee` strings go to the client provider.
 - Phone cells follow the PartnerLogos frame (main full width, gold and standard three per row); from 640 px the canvas's desktop cells, and from 1024 px a standard tier goes six to a row on `/partners`.
 
+**Notes from building (M11c)**
+
+- The inquiry form is `partners/components/public/company-form.tsx` on the shared form kit (FormField, SegmentedChoice, ConsentField, Honeypot, SubmitButton, ErrorSummary, FormSuccess), like the membership form. Required: company, contact person, e-mail, at least one interest (Sponsorship / Workshop / Job fair / Other), a message of 20 to 2,000 characters (with a counter) and consent; optional: phone. The browser and the server check the same schema (`domain/inquiry.ts`); the server also runs the spam guard (honeypot + 3 s).
+- Stored through `InquiriesRepository` (`submit`, `list`, `updateStatus`; mock + contract test + three sample inquiries). Every inquiry gets a reference `PRT-<year>-<nnnn>` (the next number of the year), which the confirmation shows. A company may write again: there is **no** "already applied" rule here. **There is no list for the board yet: Inbox › Partners is M12**, and no e-mail is sent (the confirmation says a copy was sent, as with the other forms: real mail comes with Supabase).
+- Confirmation ("Thanks, Petra! Your inquiry is in."): Company / Interested in / Reference, "Partnership offer (PDF)" when the library file exists (not for the sample PDF), and "See our recent events". The contact person's e-mail, from Admin › Pages › Sponsors, is the one in "Prefer e-mail?" and in the failure messages.
+- The component lab has the live form (`/design-system#company-form-states`); the error, sending and confirmation states are reached by using it, and the e2e suite does that.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

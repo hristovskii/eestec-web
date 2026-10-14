@@ -165,3 +165,34 @@ export type PublicPartnersPage = {
   /** Partners whose "active to" date has passed. */
   past: PublicSponsor[];
 };
+
+// ─── Partnership inquiries (CompanyForm; data-model.md: partner_inquiries) ───
+
+/** What the company is interested in (pick any). */
+export const INQUIRY_INTERESTS = ['sponsorship', 'workshop', 'job_fair', 'other'] as const;
+export type InquiryInterest = (typeof INQUIRY_INTERESTS)[number];
+
+/** The board's handling of an inquiry (Inbox › Partners, M12). */
+export const INQUIRY_STATUSES = ['new', 'in_progress', 'done'] as const;
+export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
+
+export type PartnerInquiry = {
+  id: string;
+  /** "PRT-2026-0017": what the company can quote and the board can search for (D6). */
+  reference: string;
+  company: string;
+  contactPerson: string;
+  email: string;
+  phone: string;
+  interests: InquiryInterest[];
+  message: string;
+  locale: 'mk' | 'en';
+  consentAt: string;
+  status: InquiryStatus;
+  createdAt: string;
+};
+
+export type PartnerInquiryInput = Omit<
+  PartnerInquiry,
+  'id' | 'reference' | 'status' | 'createdAt' | 'consentAt'
+>;

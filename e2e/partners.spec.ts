@@ -125,7 +125,8 @@ test.describe('for companies (M11b)', () => {
     const contact = page.locator('#contact');
     await expect(contact.getByRole('heading', { level: 2, name: 'Let’s talk' })).toBeVisible();
     await expect(contact).toContainText('Ivana Kostova');
-    await expect(contact.getByRole('link', { name: 'partners@eestec.mk' })).toHaveAttribute(
+    // The person's card and "Prefer e-mail?" next to the form both carry the address.
+    await expect(contact.getByRole('link', { name: 'partners@eestec.mk' }).first()).toHaveAttribute(
       'href',
       'mailto:partners@eestec.mk',
     );
