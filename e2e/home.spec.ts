@@ -122,12 +122,23 @@ test.describe('home (M8c)', () => {
       'What is EESTEC?',
       'Tradition of LC Skopje',
       'EESTEC in numbers',
+      'From first meeting to alumni',
     ].map((text) => headings.indexOf(text));
     expect(order.every((index) => index >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
-    // The journey teaser (M9) and the partner strip (M11) are not built yet.
-    await expect(page.getByRole('heading', { name: /From first meeting to alumni/ })).toHaveCount(0);
+    // The partner strip (M11) is not built yet.
     await expect(page.getByRole('heading', { name: 'Our Partners' })).toHaveCount(0);
+  });
+
+  test('the Journey teaser: six steps and a button to the Journey page', async ({ page }) => {
+    await openHome(page);
+    const teaser = page.getByRole('region', { name: 'From first meeting to alumni' });
+    await expect(teaser).toContainText('Six steps to get the most out of EESTEC');
+    await expect(teaser.getByRole('listitem')).toHaveCount(6);
+    await expect(teaser.getByText('STEP 01')).toBeVisible();
+    await expect(teaser.getByRole('heading', { level: 3, name: 'Go International' })).toBeVisible();
+    await teaser.getByRole('link', { name: 'Explore the journey' }).click();
+    await expect(page).toHaveURL(/\/en\/journey$/);
   });
 
   test('Macedonian is the default language and nothing scrolls sideways', async ({ page }) => {
