@@ -1,4 +1,4 @@
-import type { AnyMedia } from '@/shared/types/media';
+import type { AnyMedia, MediaRef } from '@/shared/types/media';
 import type { Localized } from '@/shared/types/localized';
 
 /**
@@ -36,8 +36,8 @@ export const ACTIVITY_ICONS = [
 ] as const;
 export type ActivityIcon = (typeof ACTIVITY_ICONS)[number];
 
-/** A Media library file with the alt text of this use (alt is required, in both languages' fallback rules). */
-export type HomeImage = { mediaId: string; alt: Localized };
+/** A Media library file with the alt text of this use. */
+export type HomeImage = MediaRef;
 
 /** Internal path ("/join") or https link. */
 export type HomeButton = { label: Localized; href: string };

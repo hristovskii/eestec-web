@@ -1,11 +1,11 @@
 import type * as React from 'react';
 
+import { ActionLink } from '@/shared/ui/action-link';
 import { Button } from '@/shared/ui/primitives/button';
 import { Container } from '@/shared/ui/container';
 import { MediaImage } from '@/shared/ui/media-image';
 
 import type { PublicHome } from '../types';
-import { ActionLink } from './action-link';
 
 /**
  * The red first screen (Home-Desktop › Welcome): line above, headline, subtitle, two buttons, and

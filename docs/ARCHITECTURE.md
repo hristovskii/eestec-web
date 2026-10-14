@@ -923,6 +923,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Phones: the committee filters scroll sideways, the past events are a swipe row (300 px cards), the activity cards are two per row, the numbers two per row with an odd last one full width (Home-Mobile). The canvas's shorter mobile descriptions are not used: one text per item, same on both (decided in M6).
 - The "Show cities our members have visited" checkbox of the map stays out until Phase 2 (M17), as agreed.
 
+**Notes from building (M9a)**
+
+- M9 is split in two: **M9a** the `journey` feature and `/admin/pages/journey` (this), **M9b** the public `/journey` page and the Home teaser.
+- The `journey` feature owns one record (hero texts, 1–8 steps, final call to action) like `home`. A step has an icon, title, one-line text, a button (label + link), up to four benefits, an optional photo (library file + its own alt text) and an optional quote. The quote's author is free text; the link to a member profile (`profile_id` in data-model) waits for Phase 2.
+- **Phase 1 and member pages:** a step or call-to-action button whose link goes to `/members`, `/memories` or `/submit` is left out of the public data until `phase2` is on (`journey/domain/phase.ts`, applied in `getJourney`). The admin keeps the field and says so under it. The canvas's steps 3 and 6 link to `/members`, so on the Phase 1 site they show without a button. (The e2e build runs with `phase2` on, so e2e sees the buttons; the rule itself is a unit test.)
+- Shared pieces added because the third page editor (Join, Sponsors, Contact follow in M10–12) needed them: `shared/admin-ui/page-editor.tsx` (`usePageEditor` + `PageEditorFrame`: save state, error summary with focus, unsaved-changes guard, section sub-nav), `shared/admin-ui/use-focus-added.ts`, `shared/forms/page-schema.ts` (`localized`, `siteHref`, `mediaRef`…), `shared/ui/action-link.tsx`, `shared/types/media.ts › MediaRef`, and in the media feature `MediaRefField` (picker + alt text for one use) and `resolveMediaRef` / `getMediaMap`. Home was moved onto them with no change in behaviour.
+- Sample data: the six canvas steps with their benefits, quotes and "Photo: …" placeholders (`media-journey-*`). The quotes are the canvas's examples, not real people's words.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

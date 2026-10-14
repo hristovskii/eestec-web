@@ -5,9 +5,11 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
+import { MediaRefField } from '@/features/media/admin';
 import { FormSection, SwitchRow } from '@/shared/admin-ui/form-section';
 import { LocalizedField } from '@/shared/admin-ui/localized-field';
 import { SortableList } from '@/shared/admin-ui/sortable-list';
+import { useFocusAdded } from '@/shared/admin-ui/use-focus-added';
 import { resolveLocalized } from '@/shared/i18n/localized';
 import { FieldError, FormField } from '@/shared/ui/form/form-field';
 import { Button } from '@/shared/ui/primitives/button';
@@ -18,18 +20,6 @@ import { HOME_LIMITS } from '../../schemas/home.schema';
 import { ACTIVITY_ICONS, type HomeButton } from '../../types';
 import { ActivityIconView } from '../activity-icon';
 import { fieldId, newId, type SectionProps } from './form-kit';
-import { HomeImageField } from './image-field';
-
-/** Focus the first field of a row that was just added (once it is rendered). */
-function useFocusAdded(dependency: unknown) {
-  const target = React.useRef<string | null>(null);
-  React.useEffect(() => {
-    if (!target.current) return;
-    document.getElementById(target.current)?.focus();
-    target.current = null;
-  }, [dependency]);
-  return (id: string) => void (target.current = id);
-}
 
 /** Text that is shown, or a "new" placeholder, as the name of a row for screen readers. */
 const nameOf = (value: { mk: string; en?: string }, fallback: string) =>
@@ -136,14 +126,15 @@ export function HeroSection({ values, update, error, media, addMedia }: SectionP
         />
       </div>
       <p className="text-[13px] text-muted-ink">{t('hero.countdownNote')}</p>
-      <HomeImageField
-        path="hero.image"
+      <MediaRefField
+        altId={fieldId('hero.image.alt')}
+        altError={error('hero.image.alt.mk')}
+        maxAlt={HOME_LIMITS.alt}
         label={t('hero.image')}
         value={hero.image}
         onChange={(image) => update((draft) => void (draft.hero.image = image))}
         media={media}
         addMedia={addMedia}
-        error={error}
         empty={t('hero.imageEmpty')}
       />
     </FormSection>
@@ -359,14 +350,15 @@ export function TimelineSection({ values, update, error, media, addMedia }: Sect
                   error={error(`milestones.${index}.text.mk`)}
                   maxLength={HOME_LIMITS.milestoneText}
                 />
-                <HomeImageField
-                  path={`milestones.${index}.photo`}
+                <MediaRefField
+                  altId={fieldId(`milestones.${index}.photo.alt`)}
+                  altError={error(`milestones.${index}.photo.alt.mk`)}
+                  maxAlt={HOME_LIMITS.alt}
                   label={t('photo')}
                   value={milestone.photo}
                   onChange={(photo) => update((draft) => void (draft.milestones[index]!.photo = photo))}
                   media={media}
                   addMedia={addMedia}
-                  error={error}
                   empty={t('photoEmpty')}
                 />
               </div>
