@@ -71,3 +71,35 @@ export type PublicContact = {
     zoom: number;
   };
 };
+
+// ─── Messages (ContactForm) ───
+
+/** The board's handling of a message (Inbox › Contact messages, M12d). */
+export const CONTACT_STATUSES = ['new', 'answered', 'archived'] as const;
+export type ContactStatus = (typeof CONTACT_STATUSES)[number];
+
+/** One message from /contact (data-model.md: contact_messages). */
+export type ContactMessage = {
+  id: string;
+  /** "MSG-2026-0231", shown to the sender and in the Inbox. */
+  reference: string;
+  name: string;
+  email: string;
+  /** The subject the person chose, and its wording in the language of the page they used. */
+  subjectId: string;
+  subject: string;
+  /** The address the subject routed it to when it was sent. */
+  routedTo: string;
+  message: string;
+  locale: 'mk' | 'en';
+  status: ContactStatus;
+  /** When someone on the board opened it; null: unread. */
+  readAt: string | null;
+  consentAt: string;
+  createdAt: string;
+};
+
+export type ContactMessageInput = Pick<
+  ContactMessage,
+  'name' | 'email' | 'subjectId' | 'subject' | 'routedTo' | 'message' | 'locale'
+>;

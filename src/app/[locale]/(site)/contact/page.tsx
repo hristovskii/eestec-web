@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-import { ContactDetails, ContactHero, ContactLower, ContactMap } from '@/features/contact';
+import { ContactDetails, ContactForm, ContactHero, ContactLower, ContactMap } from '@/features/contact';
 import { getContact } from '@/features/contact/server';
 import { getSiteSettings, pageMetadata } from '@/features/settings/server';
 import { currentLocale } from '@/shared/i18n/current-locale';
@@ -27,6 +27,14 @@ export default async function ContactPage() {
       <ContactHero page={page} />
       <ContactDetails
         page={page}
+        form={
+          <ContactForm
+            form={page.form}
+            subjects={page.subjects}
+            siteName={settings.siteName}
+            email={settings.contact.mainEmail}
+          />
+        }
         data={{
           email: settings.contact.mainEmail,
           address: settings.contact.address,

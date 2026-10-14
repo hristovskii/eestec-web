@@ -65,7 +65,12 @@
       "honeypot": "Leave this empty",
       "upload": "<strong>Upload a file</strong> or drag it here",
       "removeFile": "Remove file",
-      "errorSummary": "{count, plural, one {Please fix # field} other {Please fix # fields}}"
+      "errorSummary": "{count, plural, one {Please fix # field} other {Please fix # fields}}",
+      "spam": {
+        "checking": "Checking automatically…",
+        "passed": "Spam check passed",
+        "note": "Spam protection · no puzzles, no tracking cookies"
+      }
     },
     "rating": {
       "1": "Poor",
@@ -757,6 +762,43 @@
       "bankAccount": "Bank account",
       "registeredSeat": "Registered seat",
       "statute": "Statute and internal rules (PDF)"
+    },
+    "form": {
+      "required": "Fields marked <req>*</req> are required.",
+      "name": "Your name",
+      "namePlaceholder": "e.g. Marija Stojanovska",
+      "email": "E-mail",
+      "subject": "Subject",
+      "choose": "Choose a subject…",
+      "message": "Message",
+      "messagePlaceholder": "How can we help?",
+      "maxChars": "Max {max} characters.",
+      "counter": "{count} / {max}",
+      "consent": "I agree that {site} stores my name and e-mail to reply to this message, as described in the <link>privacy policy</link>.",
+      "consentShort": "Agreement to store your name and e-mail",
+      "submit": "Send message",
+      "errors": {
+        "name": "Enter your name",
+        "email": "Enter an e-mail like name@example.com",
+        "subject": "Choose a subject so the right person gets your message",
+        "message": "Write a message before sending",
+        "tooLong": "This is too long.",
+        "consent": "Please agree so we can reply to you.",
+        "invalid": "This is not valid."
+      },
+      "failed": {
+        "spam": "We couldn’t send this. Please try again, or write to us at {email}.",
+        "tooFast": "That was very quick. Please check your answers and send again.",
+        "unexpected": "Something went wrong and the message was not sent. Please try again, or write to us at {email}."
+      },
+      "success": {
+        "title": "Message sent. Thanks, {name}!",
+        "text": "It went straight to our <strong>{team}</strong>. You’ll get an answer at <strong>{email}</strong>, usually within 2 working days.",
+        "subject": "Subject",
+        "sent": "Sent",
+        "reference": "Reference",
+        "another": "Send another message"
+      }
     }
   }
 }

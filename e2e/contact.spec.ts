@@ -4,7 +4,7 @@ import { seriousViolations } from './support/axe';
 
 // The Contact page (M12b): details, board e-mails, map, social links and legal info. The admin
 // tests change the page's title and subjects for a moment, so these tests check what stays the
-// same. The form arrives with M12c.
+// same.  The form has its own spec.
 
 // A transparent 1×1 PNG: tiles come from OpenStreetMap, and a test must not need the internet.
 const PIXEL = Buffer.from(
