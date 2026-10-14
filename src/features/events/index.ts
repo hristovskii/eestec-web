@@ -3,6 +3,7 @@ export { EventCard, EventCardSkeleton, OrganizedBadge } from './components/event
 export { EventDetail } from './components/event-detail';
 export { EventsArchive, EventsArchiveSkeleton } from './components/events-archive';
 export { UpcomingEventDetail } from './components/upcoming-event-detail';
+export { eventJsonLd } from './domain/event-json-ld';
 export { eventPath, eventTiming, justEnded } from './domain/event-timing';
 export {
   type AdminEventsParams,

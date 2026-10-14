@@ -21,8 +21,10 @@ import { JourneyTeaser } from '@/features/journey';
 import { getJourney } from '@/features/journey/server';
 import { PartnerStrip } from '@/features/partners';
 import { getPartners } from '@/features/partners/server';
-import { getSiteSettings, pageMetadata } from '@/features/settings/server';
+import { getSiteSettings, organizationJsonLd, pageMetadata } from '@/features/settings/server';
+import { SITE_URL } from '@/shared/config/site';
 import { currentLocale } from '@/shared/i18n/current-locale';
+import { JsonLdScript } from '@/shared/seo/json-ld-script';
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata('home', await currentLocale());
@@ -70,6 +72,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLdScript data={organizationJsonLd(settings, SITE_URL.origin)} />
       <HomeHero hero={home.hero}>
         {next && <HomeNextEvent item={next} now={upcoming.now} locale={locale} />}
       </HomeHero>
