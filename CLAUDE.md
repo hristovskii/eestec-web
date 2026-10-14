@@ -72,3 +72,6 @@ Also read before building: `docs/sample-data.md` (every kind of sample content a
 - Boundaries: a feature's tests cannot import another feature's fixtures; features talk through `index.ts` / `server.ts` only.
 - Cache Components: call `now()` only inside cached or dynamic code. Next keeps the previous page mounted, so ids can duplicate: e2e tests target visible elements and regions.
 - e2e: the mock store is shared by tests running in parallel, so tests that change content restore it, and new content is created switched off or hidden. dnd-kit starts listening for arrow keys one task after pick-up: wait about 150 ms after Space. Wait out animations before axe.
+- Commits: the scope is an enum (`commitlint.config.ts`, feature names + areas; there is no `inbox` scope) and the subject starts in lower case.
+- e2e keyboard: no Home/End line shortcuts (they differ on macOS); delete typed text with Backspace. A read-only test that counts rows can see another test's temporary rows (shared mock store): compare names, not counts.
+- Server Actions can be passed from a server component to a small client control as props (the Inbox does this), so a list/detail screen stays a server component.
