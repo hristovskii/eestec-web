@@ -50,6 +50,10 @@ type LeafletMapProps = {
   bounds?: [[number, number], [number, number]];
   /** Instead of bounds: one place (Contact). */
   center?: { lat: number; lng: number; zoom: number };
+  /** How far people can zoom in (the committee map stops at city level). */
+  maxZoom?: number;
+  /** Show each pin's label next to it all the time (Contact: "FEEIT · Room 117"). */
+  pinLabels?: boolean;
   /** The map is small (a phone): smaller pins, no popup (the page shows the selection itself). */
   onCompactChange?: (compact: boolean) => void;
   labels: MapLabels;
@@ -75,6 +79,8 @@ export function LeafletMap({
   popup,
   bounds,
   center,
+  maxZoom = 12,
+  pinLabels = false,
   onCompactChange,
   labels,
   children,
@@ -119,7 +125,7 @@ export function LeafletMap({
           attributionControl: false,
           zoomSnap: 0.25,
           minZoom: 2,
-          maxZoom: 12,
+          maxZoom,
           worldCopyJump: false,
           zoomAnimation: !reduced,
           fadeAnimation: !reduced,
@@ -220,6 +226,17 @@ export function LeafletMap({
           focusPopup.current = true;
           latest.current.onSelect(pin.id);
         });
+        if (pinLabels) {
+          // A text node, not HTML: the label is board content.
+          const text = document.createElement('span');
+          text.textContent = pin.label;
+          marker.bindTooltip(text, {
+            permanent: true,
+            direction: 'top',
+            offset: [0, -Math.round(size / 2 + 6)],
+            className: 'map-label',
+          });
+        }
         marker.addTo(instance);
         markers.current.set(pin.id, marker);
       } else {
@@ -233,7 +250,7 @@ export function LeafletMap({
       element?.setAttribute('data-pin-id', pin.id);
       element?.setAttribute('aria-haspopup', 'dialog');
     }
-  }, [ready, pins, compact, selectedId]);
+  }, [ready, pins, compact, selectedId, pinLabels]);
 
   // The popup sits above the selected pin: keep it in view, and follow it.
   React.useEffect(() => {

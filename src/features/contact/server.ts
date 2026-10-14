@@ -1,3 +1,3 @@
 import 'server-only';
 
-export { getContactForEdit } from './queries';
+export { getContact, getContactForEdit } from './queries';

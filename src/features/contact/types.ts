@@ -47,3 +47,27 @@ export type ContactPageRecord = {
 export type ContactPageInput = ContactPageRecord;
 
 export const MAP_ZOOM = [3, 18] as const;
+
+/** What the public page shows: texts in the language of the page. The address each subject goes to stays on the server. */
+export type PublicContact = {
+  hero: { title: string; lead: string };
+  shortcuts: { id: string; eyebrow: string; label: string; href: string }[];
+  headings: Record<ContactHeading, string>;
+  form: { title: string; intro: string };
+  subjects: {
+    id: string;
+    name: string;
+    /** "membership team". */
+    teamLabel: string;
+    /** The note under the select, with its link; null: nothing to suggest. */
+    suggestion: { note: string; label: string; href: string } | null;
+  }[];
+  map: {
+    pinLabel: string;
+    placeName: string;
+    placeAddress: string;
+    lat: number;
+    lng: number;
+    zoom: number;
+  };
+};

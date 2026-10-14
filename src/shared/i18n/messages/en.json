@@ -724,5 +724,39 @@
       },
       "interestsLegend": "What are you interested in?"
     }
+  },
+  "contact": {
+    "info": {
+      "label": "Contact information",
+      "email": "Main e-mail",
+      "address": "Address",
+      "office": "Office and meeting room",
+      "meeting": "Weekly meeting: {day}, {time}"
+    },
+    "copy": {
+      "email": "Copy e-mail address",
+      "field": "Copy {name}",
+      "copied": "Copied",
+      "newTab": "(opens in a new tab)"
+    },
+    "map": {
+      "label": "Map of {place}",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "loading": "Loading the map…",
+      "close": "Close",
+      "directions": "Get directions",
+      "open": "Open in Maps ↗",
+      "newTab": "(opens in a new tab)"
+    },
+    "legal": {
+      "fullName": "Full registered name",
+      "shortName": "Short name",
+      "registrationNumber": "Registration no. (EMBS)",
+      "taxNumber": "Tax no. (EDB)",
+      "bankAccount": "Bank account",
+      "registeredSeat": "Registered seat",
+      "statute": "Statute and internal rules (PDF)"
+    }
   }
 }
