@@ -112,6 +112,10 @@ export function JoinForm({ apply, siteName, meeting }: JoinFormProps) {
   React.useEffect(() => {
     if (receipt) successRef.current?.focus();
   }, [receipt]);
+  // The failure notice takes focus once it is in the page (not on a timer: that raced with rendering).
+  React.useEffect(() => {
+    if (failure) failureRef.current?.focus();
+  }, [failure]);
   React.useEffect(() => {
     if (summary.length > 0) summaryRef.current?.focus();
     // Only when a new set of errors arrives, not on every keystroke.
@@ -144,7 +148,6 @@ export function JoinForm({ apply, siteName, meeting }: JoinFormProps) {
           ? (result.message as MembershipFailure)
           : 'unexpected';
       setFailure(reason);
-      requestAnimationFrame(() => failureRef.current?.focus());
     });
   }
 
