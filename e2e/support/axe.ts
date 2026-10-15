@@ -14,6 +14,16 @@ function isAcceptedBrandRedPair(node: Violation['nodes'][number]): boolean {
 
 /** Serious and critical axe violations, minus the accepted brand-red pair. */
 export async function seriousViolations(page: Page) {
+  // Colours that are still fading (a button's hover, an opening panel) would be read half-way:
+  // wait for every finite transition and animation to end first (endless ones, like a marquee, stay).
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+        .map((animation) => animation.finished.catch(() => undefined)),
+    ),
+  );
   const { violations } = await new AxeBuilder({ page }).analyze();
   return violations
     .filter((v) => v.impact === 'serious' || v.impact === 'critical')

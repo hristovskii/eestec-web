@@ -1,6 +1,6 @@
 # eestec.mk — Architecture & Implementation Plan
 
-> Approved 2026-10-05. Decisions taken after approval are in §9. Built so far: M0–M12 (§8); each milestone's notes are under "Notes from building".
+> Approved 2026-10-05. Decisions taken after approval are in §9. Built so far: M0–M13 (§8); each milestone's notes are under "Notes from building".
 
 ## Context
 
@@ -1029,6 +1029,32 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 
 - The privacy policy is rich text (HTML) in both languages, edited on the second tab of `/admin/pages/contact` (`?tab=privacy`, `settings/components/admin/privacy-admin.tsx`, `savePrivacy`). It is cleaned on save and again before `/privacy` shows it (`sanitizeRichText`); English falls back to Macedonian while it is empty. "This is still placeholder text" keeps the D17 notice on the page: switch it off when the board approves the text.
 - The route composes the two editors (`ContactAdmin` from contact, `PrivacyAdmin` from settings) and passes the tabs to each as `aboveContent`, so neither feature imports the other.
+
+**Notes from building (M13a, search and sharing)**
+
+- Every public page gets a canonical address, hreflang links (`mk`, `en`, and `x-default` = Macedonian) and Open Graph / Twitter tags from one place: `socialMetadata` in `settings/queries.ts` (used by `pageMetadata` and both event detail pages) on the pure helpers in `shared/seo/alternates.ts`. The brand image stands in when the board set no share image. Event pages are canonical at their current address (`/upcoming/<slug>` until the end, then `/events/<slug>`).
+- `src/app/sitemap.ts` lists the Phase 1 pages (`publicPagePaths`: member pages only while Phase 2 is on) and every listed event at its current address, each in both languages with hreflang, built by `shared/seo/sitemap.ts`. No `lastmod`: nothing is dated that the repositories don't date. `src/app/robots.ts` closes `/admin`, `/api/`, `/design-system`. The origin is `NEXT_PUBLIC_SITE_URL`: **set it at deploy**, otherwise canonical, hreflang and the sitemap say `localhost`.
+
+**Notes from building (M13b, structured data)**
+
+- Home carries a schema.org `Organization` (`settings/organization-json-ld.ts`), event pages an `Event` (`events/domain/event-json-ld.ts`), rendered by `shared/seo/json-ld-script.tsx`. Both builders are pure and drop empty fields; there is no price and no online mode because the site doesn't know them. `serializeJsonLd` escapes `<`, so board text can't close the script tag.
+
+**Notes from building (M13c, accessibility and keyboard)**
+
+- `e2e/a11y-sweep.spec.ts` runs axe plus structure checks (one `h1`, one `main`/banner/contentinfo, `lang`, headings that go down one level at a time, `alt` on every image) over every public page in both languages on both viewports. `e2e/keyboard.spec.ts` checks the skip link, a visible focus ring on every tab stop of six pages, that Tab reaches the footer, the mobile menu and a form sent without a mouse.
+- Found and fixed: the Journey steps were `h3` under an `h1`; Escape closed the mobile menu but left focus on a link that had just disappeared (it now returns to the menu button). The axe helper waits for finite transitions to end, so a button still fading from its hover colour isn't read half-way.
+
+**Notes from building (M13d, performance)**
+
+- `pnpm build && pnpm lighthouse` (`scripts/lighthouse.ts`, local only; `LH_DETAILS=1` lists failing audits and the LCP element; `=/` filters to one page) measures the production build with the mobile preset and writes `docs/reports/lighthouse.md`. Build with `NEXT_PUBLIC_SITE_URL=http://localhost:3200` first, otherwise the canonical audit fails. **Every public page, in both languages, scores 90 or more in all four categories**; the report has the numbers. CLS is 0.09–0.11 on the event detail pages (text re-wraps when Roboto replaces the fallback font), the one number not at its best.
+- What moved the scores, in order of size: **zod stays out of the page load** (about 90 KB: the four public forms keep their constants in `*-fields.ts` and load the schema on first focus or submit; the archive filter chips use `archive-href.ts`, not the params schema; "Add to calendar" loads with the confirmation); **Leaflet loads when the map is 400 px from the screen**; the page CSS is inlined (`experimental.inlineCss`); Roboto is the variable font, not preloaded. A client component must not import a module that imports `zod`, and a client component that imports another feature's `index.ts` takes the whole barrel with it.
+- **Image budgets** (served size, after the Next optimiser): hero cover ≤ 250 KB, card ≤ 80 KB, thumbnail ≤ 30 KB, logo ≤ 20 KB. Uploads are capped at 5 MB (`media/domain/upload-rules.ts`) and alt text is required. `e2e/images.spec.ts` checks, on eight pages, that nothing served is over the hero budget, that every `img` has an `alt` and a size (or fills a sized box), and that at most three images load eagerly. The sample content is placeholders, so real photo weight can only be measured once real photos are in.
+- The home count-up marks its numbers `suppressHydrationWarning`: a browser's number data can group "5,000" differently from the server's, which is not worth a re-render. Map pins are at least 24 px (WCAG 2.2 target size; the dot is unchanged). Event pages with neither an SEO nor a short description fall back to the site description (the key is left out of the metadata, an empty value hides the layout's).
+- The CI build and the e2e server start retry the build once: `next/font` downloads Roboto from Google at build time and that request failed twice in CI.
+
+**Notes from building (M13e, Macedonian copy)**
+
+- `src/shared/i18n/messages.test.ts` (same placeholders and tags in both languages, typographic rules, one word for the weekly meeting) and `e2e/mk-layout.spec.ts` (nothing scrolls sideways or is cut off at 360 px in Macedonian) guard what a machine can check. Tone and naturalness need a native reviewer: `docs/i18n-review.md` lists what was found, with the open decision about "ти" versus "Вие".
 
 **Working rules while building**
 

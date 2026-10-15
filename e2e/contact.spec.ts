@@ -18,6 +18,8 @@ async function open(page: Page, path = '/en/contact') {
   );
   await page.goto(path);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/\S/);
+  // The map loads when it is about to be seen (Leaflet is not part of the page load).
+  await page.locator('[aria-labelledby="contact-map-title"]').scrollIntoViewIfNeeded();
   await expect(page.locator('.map-pin').first()).toBeAttached();
 }
 

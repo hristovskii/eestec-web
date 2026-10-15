@@ -10,3 +10,4 @@ export {
   socialMetadata,
 } from './queries';
 export { publicPagePaths } from './types';
+export { organizationJsonLd } from './organization-json-ld';

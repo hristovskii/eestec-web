@@ -42,7 +42,7 @@ test.describe('journey page (M9b)', () => {
     ).toBeVisible();
     const titles = page
       .locator('#step-1, #step-2, #step-3, #step-4, #step-5, #step-6')
-      .getByRole('heading', { level: 3 });
+      .getByRole('heading', { level: 2 });
     await expect(titles).toHaveText([
       'Join',
       'Participate',

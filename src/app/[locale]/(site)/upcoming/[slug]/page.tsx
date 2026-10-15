@@ -3,10 +3,14 @@ import { notFound } from 'next/navigation';
 
 import { UpcomingEventPage } from '@/features/applications';
 import { getUpcomingPage } from '@/features/applications/server';
+import { eventJsonLd } from '@/features/events';
 import { getUpcomingSlugs } from '@/features/events/server';
 import { getSiteSettings, socialMetadata } from '@/features/settings/server';
+import { SITE_URL } from '@/shared/config/site';
 import { currentLocale } from '@/shared/i18n/current-locale';
 import { redirect } from '@/shared/i18n/navigation';
+import { localizedPath } from '@/shared/seo/alternates';
+import { JsonLdScript } from '@/shared/seo/json-ld-script';
 
 // Every listed upcoming event is prerendered; new ones render on first visit. At least one param
 // is required under Cache Components, hence the placeholder (it 404s).
@@ -22,9 +26,12 @@ export async function generateMetadata({
   const page = await getUpcomingPage(slug, locale);
   if (!page) return {};
   const { seo, shareImage, timing } = page.event;
+  const description = seo.description || page.event.shortDescription.text;
   return {
     title: seo.title,
-    description: seo.description,
+    // The board's SEO description, else the short description of the event card. Neither written:
+    // the key is left out, so the site's default description (from the layout) applies.
+    ...(description ? { description } : {}),
     ...(await socialMetadata(`/${timing === 'past' ? 'events' : 'upcoming'}/${slug}`, locale, {
       image: shareImage,
     })),
@@ -40,12 +47,22 @@ export default async function UpcomingEventRoute({ params }: PageProps<'/[locale
   if (page.event.timing === 'past') redirect({ href: `/events/${slug}`, locale });
   const instagram = settings.socialLinks.find((link) => link.platform === 'instagram');
   return (
-    <UpcomingEventPage
-      page={page}
-      locale={locale}
-      siteName={settings.siteName}
-      mainEmail={settings.contact.mainEmail}
-      instagram={instagram ? instagram.handle.replace(/^@/, '') : null}
-    />
+    <>
+      <JsonLdScript
+        data={eventJsonLd(page.event, {
+          origin: SITE_URL.origin,
+          path: localizedPath(`/upcoming/${slug}`, locale),
+          siteName: settings.siteName,
+          description: page.event.shortDescription.text,
+        })}
+      />
+      <UpcomingEventPage
+        page={page}
+        locale={locale}
+        siteName={settings.siteName}
+        mainEmail={settings.contact.mainEmail}
+        instagram={instagram ? instagram.handle.replace(/^@/, '') : null}
+      />
+    </>
   );
 }

@@ -46,9 +46,9 @@ export function JourneyStepCard({
       <span className="text-[13px] font-bold tracking-[0.08em] text-brand-dark">
         {t('label', { number })}
       </span>
-      <h3 id={`step-${step.n}-title`} className="text-[20px] leading-[1.25] font-bold lg:text-[24px]">
+      <h2 id={`step-${step.n}-title`} className="text-[20px] leading-[1.25] font-bold lg:text-[24px]">
         {step.title}
-      </h3>
+      </h2>
       <p className="text-body text-muted-ink lg:text-[17px] lg:leading-[1.55]">{step.text}</p>
 
       {expandable && (

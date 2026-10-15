@@ -37,6 +37,8 @@ const nextConfig: NextConfig = {
   // Don't let `next dev` write agent instructions into CLAUDE.md (we keep our own).
   agentRules: false,
   experimental: {
+    // The page's CSS (about 28 KB) goes into the HTML instead of three blocking requests (Lighthouse).
+    inlineCss: true,
     // Application forms upload a CV of up to 5 MB with the answers (spec 03).
     serverActions: { bodySizeLimit: '6mb' },
   },

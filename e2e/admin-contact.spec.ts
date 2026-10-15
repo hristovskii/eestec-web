@@ -236,17 +236,25 @@ test.describe('privacy policy editor (M12e)', () => {
         await page.goto('/privacy');
         await expect(page.getByText(text)).toBeVisible();
       } finally {
-        await page.goto(PRIVACY);
-        await expect(page.getByRole('toolbar')).toBeVisible();
-        if ((await added.count()) > 0) {
-          // Select that paragraph (no Home key: it differs on macOS), delete its text, then the empty paragraph.
-          await added.last().click({ clickCount: 3 });
-          await page.keyboard.press('Backspace');
-          await page.keyboard.press('Backspace');
-          await save(page).click();
-          await expect(page.getByText('All changes saved')).toBeVisible();
-        }
-        await expect(editor(page)).not.toContainText(text);
+        // Put the policy back. On a slow machine a step can miss, so the whole clean-up may repeat.
+        await expect(async () => {
+          await page.goto(PRIVACY);
+          await expect(page.getByRole('toolbar')).toBeVisible();
+          if ((await added.count()) > 0) {
+            // Select that paragraph (no Home key: it differs on macOS), delete its text, then the empty paragraph.
+            await added.last().click({ clickCount: 3 });
+            await page.keyboard.press('Backspace');
+            await page.keyboard.press('Backspace');
+            // Save only once the editor has taken the deletion (else a stale "saved" is read).
+            await expect(added).toHaveCount(0);
+            await expect(page.getByText('Unsaved changes')).toBeVisible();
+            await save(page).click();
+            await expect(toast(page, 'Privacy policy saved')).toBeVisible();
+          }
+          await page.reload();
+          await expect(page.getByRole('toolbar')).toBeVisible();
+          await expect(editor(page)).not.toContainText(text);
+        }).toPass({ timeout: 30_000 });
       }
     });
 

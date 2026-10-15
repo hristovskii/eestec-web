@@ -26,6 +26,34 @@ written by the board in the admin.
 | M10b      | `join.*` (hero, menu, section labels, rules, FAQ)                                  | ☐ needs review      |
 | M10c      | `join.form.*`, `join.success.*`, `join.closed.*`, `join.apply.*` (membership form) | ☐ needs review      |
 | M11b      | `partners.*` (logo, marquee, offer), `home.partners.*` (Home partner strip)        | ☐ needs review      |
+| M11c      | `partners.form.*` (partnership inquiry form, errors, confirmation)                 | ☐ needs review      |
 | M12b      | `contact.*` (contact info, copy buttons, map, legal info labels)                   | ☐ needs review      |
 | M12c      | `contact.form.*`, `ui.form.spam.*` (contact form, spam check row)                  | ☐ needs review      |
 | —         | Fixed label decided in D7: `deadline_soon` → "Се затвора наскоро"                  | ✓ given by the user |
+
+## What the M13 pass found (for the native reviewer)
+
+Claude can check that the two languages say the same thing and that the typography is consistent;
+it cannot judge tone or naturalness. `src/shared/i18n/messages.test.ts` now checks every build:
+both languages have the same placeholders and rich-text tags, no `...`, doubled or trailing
+spaces, straight double quotes, or words written half in Latin and half in Cyrillic. At 360 px every
+public page in Macedonian has no sideways scroll and no cut-off text (`e2e/mk-layout.spec.ts`).
+
+**Changed (one concept, one word):** the weekly meeting was "состанок" in three places and "средба"
+in nine. It is now "средба" everywhere ("Неделна средба"), and the test keeps it that way.
+
+**Needs a decision (not changed):**
+
+1. **Form of address.** The Macedonian copy uses the formal "Вие / -ете" (about 70 strings: events,
+   upcoming, applications, the partner and contact forms, the error pages) and the informal "ти"
+   (about 20 strings: committees section, Home meeting, Journey, Join Us, the file upload text) side by
+   side. A student association usually writes to students with "ти" and to companies with "Вие".
+   Proposal: "ти" on every page for students (events, upcoming, applications, Join, Journey, Home,
+   Contact) and "Вие" only on For Companies and its form. The strings affected are listed by
+   `grep -nE "ете\b|Ваш" src/shared/i18n/messages/mk.json`. Not rewritten here because it changes
+   about 70 strings that only a native speaker can judge.
+2. **"борд" or "одбор".** "бордот" (the board) is used in three strings, "одбор" in the footer.
+3. **"е-пошта" or "е-порака".** "е-пошта" is used 17 times, "е-порака" twice (confirmation e-mails).
+   Both are correct; decide whether the confirmation should say "е-пошта за потврда" like Join Us.
+4. **English sample text on Macedonian pages.** Board content (hero, events, partners…) is English
+   sample text until the board writes Macedonian; it is not in this list (see `docs/sample-data.md`).

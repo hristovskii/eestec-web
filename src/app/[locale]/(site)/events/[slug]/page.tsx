@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { EventDetail } from '@/features/events';
+import { EventDetail, eventJsonLd } from '@/features/events';
 import { getArchiveSlugs, getEventPage } from '@/features/events/server';
-import { socialMetadata } from '@/features/settings/server';
+import { getSiteSettings, socialMetadata } from '@/features/settings/server';
 import { isEnabled } from '@/shared/config/flags';
+import { SITE_URL } from '@/shared/config/site';
 import { currentLocale } from '@/shared/i18n/current-locale';
 import { redirect } from '@/shared/i18n/navigation';
+import { localizedPath } from '@/shared/seo/alternates';
+import { JsonLdScript } from '@/shared/seo/json-ld-script';
 
 // Every past event is prerendered; new and renamed ones render on first visit. At least one
 // param is required under Cache Components, hence the placeholder (it 404s).
@@ -20,9 +23,12 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/events/[
   const page = await getEventPage(slug, locale);
   if (!page) return {};
   const { seo, shareImage, timing } = page.event;
+  const description = seo.description || page.event.shortDescription.text;
   return {
     title: seo.title,
-    description: seo.description,
+    // The board's SEO description, else the short description of the event card. Neither written:
+    // the key is left out, so the site's default description (from the layout) applies.
+    ...(description ? { description } : {}),
     ...(await socialMetadata(`/${timing === 'upcoming' ? 'upcoming' : 'events'}/${slug}`, locale, {
       image: shareImage,
     })),
@@ -33,16 +39,26 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/events/[
 // events that haven't ended live at /upcoming/[slug] (M7).
 export default async function EventPage({ params }: PageProps<'/[locale]/events/[slug]'>) {
   const [{ slug }, locale] = await Promise.all([params, currentLocale()]);
-  const page = await getEventPage(slug, locale);
+  const [page, settings] = await Promise.all([getEventPage(slug, locale), getSiteSettings(locale)]);
   if (!page) notFound();
   if (page.event.timing === 'upcoming') redirect({ href: `/upcoming/${slug}`, locale });
   return (
-    <EventDetail
-      event={page.event}
-      prev={page.prev}
-      next={page.next}
-      locale={locale}
-      phase2={isEnabled('phase2')}
-    />
+    <>
+      <JsonLdScript
+        data={eventJsonLd(page.event, {
+          origin: SITE_URL.origin,
+          path: localizedPath(`/events/${slug}`, locale),
+          siteName: settings.siteName,
+          description: page.event.shortDescription.text,
+        })}
+      />
+      <EventDetail
+        event={page.event}
+        prev={page.prev}
+        next={page.next}
+        locale={locale}
+        phase2={isEnabled('phase2')}
+      />
+    </>
   );
 }

@@ -57,10 +57,16 @@ export function SiteHeader({ items, account, signOutAction, logo }: SiteHeaderPr
   const setOpen = (next: boolean | ((current: boolean) => boolean)) =>
     setOpenOn((typeof next === 'function' ? next(open) : next) ? pathname : null);
   const menuId = React.useId();
+  const toggleRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
     if (!open) return;
-    const onKey = (event: KeyboardEvent) => event.key === 'Escape' && setOpenOn(null);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpenOn(null);
+      // The menu (and the link that had focus) disappears: focus goes back to its button.
+      toggleRef.current?.focus();
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
@@ -123,6 +129,7 @@ export function SiteHeader({ items, account, signOutAction, logo }: SiteHeaderPr
         )}
 
         <button
+          ref={toggleRef}
           type="button"
           aria-expanded={open}
           aria-controls={menuId}

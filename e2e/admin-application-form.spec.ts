@@ -73,6 +73,15 @@ test.describe('application form builder (M7c)', () => {
     const track = `Track ${unique()}`;
     await signInAs(page, 'super-admin');
     await page.goto(FORM);
+    // A run that failed half-way leaves its custom form behind: start from the default questions.
+    if ((await saveBar(page).innerText()).includes('Custom form')) {
+      await page.getByRole('button', { name: 'Back to the default questions' }).click();
+      await page
+        .getByRole('dialog', { name: 'Go back to the default questions?' })
+        .getByRole('button', { name: 'Reset form' })
+        .click();
+      await expect(toast(page, 'Back to the default questions')).toBeVisible();
+    }
     await expect(saveBar(page)).toContainText('Default questions');
 
     // Nothing to save yet; a question without a label is refused with the error summary.
@@ -138,9 +147,12 @@ test.describe('application form builder (M7c)', () => {
     await page.goto(`/admin/applications?event=ev-leading-teams&q=${encodeURIComponent(email)}`);
     await page.getByRole('link', { name: 'Dimitar Kostov' }).first().click();
     const sheet = page.getByRole('dialog', { name: 'Dimitar Kostov' });
-    await expect(sheet.getByRole('heading', { name: 'Removed questions' })).toBeVisible();
-    await expect(sheet).toContainText('Peanuts');
-    await expect(sheet).toContainText('Hardware');
+    // The sheet fills in after it opens (and may redraw once): look until both answers are there.
+    await expect(async () => {
+      await expect(sheet.getByRole('heading', { name: 'Removed questions' })).toBeVisible();
+      await expect(sheet).toContainText('Peanuts');
+      await expect(sheet).toContainText('Hardware');
+    }).toPass({ timeout: 15_000 });
     await page.keyboard.press('Escape');
 
     // Back to the default questions: the extra ones are gone from the event page.

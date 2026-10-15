@@ -90,6 +90,8 @@ export function LeafletMap({
   const target = React.useRef<HTMLDivElement>(null);
   const popupRef = React.useRef<HTMLDivElement>(null);
   const [ready, setReady] = React.useState(false);
+  // Leaflet (about 85 KB) is fetched only when the map is about to be seen, not on page load.
+  const [near, setNear] = React.useState(() => typeof IntersectionObserver === 'undefined');
   const [failed, setFailed] = React.useState(false);
   const [compact, setCompact] = React.useState(false);
   const [point, setPoint] = React.useState<{ x: number; y: number } | null>(null);
@@ -108,8 +110,22 @@ export function LeafletMap({
 
   const selected = pins.find((pin) => pin.id === selectedId) ?? null;
 
-  // Create the map once, in the browser.
   React.useEffect(() => {
+    const element = frame.current;
+    if (near || !element) return;
+    const watcher = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) setNear(true);
+      },
+      { rootMargin: '400px' },
+    );
+    watcher.observe(element);
+    return () => watcher.disconnect();
+  }, [near]);
+
+  // Create the map once, in the browser, when it is near the screen.
+  React.useEffect(() => {
+    if (!near) return;
     let cancelled = false;
     let observer: ResizeObserver | undefined;
     const markersAtStart = markers.current;
@@ -186,7 +202,7 @@ export function LeafletMap({
     };
     // The map is created once; pins, selection and labels reach it through the effects below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [near]);
 
   React.useEffect(() => onCompactChange?.(compact), [compact, onCompactChange]);
 
@@ -205,7 +221,8 @@ export function LeafletMap({
       const { size, border } = pinShape(pin, compact);
       const isSelected = pin.id === selectedId;
       const halo = pin.tone === 'brand' ? Math.round(size * 2.2) : 0;
-      const box = Math.max(size, halo);
+      // At least 24 px, so the pin is a big enough target (WCAG 2.2, 2.5.8); the dot stays centred.
+      const box = Math.max(size, halo, 24);
       const icon = L.divIcon({
         className: 'map-pin',
         iconSize: [box, box],
