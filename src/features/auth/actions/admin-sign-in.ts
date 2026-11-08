@@ -26,6 +26,6 @@ export async function requestPasswordReset(input: unknown): Promise<ActionResult
   const parsed = passwordResetSchema.safeParse(input);
   if (!parsed.success)
     return { ok: false, error: 'validation', fieldErrors: fieldErrorsFrom(parsed.error.issues) };
-  await (await authRepository()).requestPasswordReset(parsed.data);
+  await (await authRepository()).requestPasswordReset({ ...parsed.data, now: now() });
   return ok(undefined);
 }

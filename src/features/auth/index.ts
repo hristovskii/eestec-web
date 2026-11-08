@@ -1,4 +1,11 @@
 export { requestPasswordReset, signInAdmin, verifyTwoFactor } from './actions/admin-sign-in';
+export { registerMember, type RegisterReceipt } from './actions/register-member';
+export {
+  requestMemberPasswordReset,
+  resendConfirmationEmail,
+  resetMemberPassword,
+  signInMember,
+} from './actions/member-sign-in';
 export { signOut } from './actions/sign-out';
 export { switchMockPersona } from './actions/switch-persona';
 export {
@@ -16,6 +23,13 @@ export { LOCKOUT } from './domain/lockout';
 export { hasSessionCookie } from './session-cookie';
 export type {
   AdminAccount,
+  MemberRegistration,
+  MemberVisibility,
+  MemberYear,
+  RegistrationStatus,
+  ResetPasswordResult,
+  SignInMemberResult,
+  TokenPeek,
   AdminRole,
   MemberStatus,
   Session,

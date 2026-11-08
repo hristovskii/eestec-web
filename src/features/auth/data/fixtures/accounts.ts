@@ -3,6 +3,7 @@
 // The canvas also lists "Marija Stojanovska · Editor"; Marija is the member-only sample persona
 // everywhere else, so that row is left out (one consistent dataset).
 import type { AdminAccount, Session, TwoFactorStatus } from '../../types';
+import { memberAccountsFixture } from './members';
 import { type Persona, personas } from './personas';
 
 /** A stored account: who the person is, their admin role (if any) and sign-in facts. */
@@ -31,6 +32,7 @@ const fromPersona = ({ label: _label, ...persona }: Persona): AccountRecord => (
 
 export const accountsFixture: AccountRecord[] = [
   ...personas.map(fromPersona),
+  ...memberAccountsFixture,
   {
     personaId: 'editor-ivana',
     userId: 'u-ivana',
