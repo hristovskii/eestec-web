@@ -1,4 +1,4 @@
-import { Award, CalendarCheck, Globe, Heart, Landmark, Lock, Presentation, Star, Users } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import * as React from 'react';
 
@@ -13,11 +13,11 @@ import { LinkTabs } from '@/shared/ui/link-tabs';
 import { Button } from '@/shared/ui/primitives/button';
 import { SocialIcon } from '@/shared/ui/social-icon';
 
-import { GithubIcon } from './github-icon';
-
 import { profileHref, type ProfileParams } from '../schemas/profile-href';
-import type { BadgeIcon, ProfileEventView, ProfilePageView } from '../types';
+import type { ProfileEventView, ProfilePageView } from '../types';
+import { badgeIcons } from './badge-icons';
 import { CopyLinkButton } from './copy-link-button';
+import { GithubIcon } from './github-icon';
 import { MemberPhoto } from './member-photo';
 import { socialButtonClasses } from './social-button';
 
@@ -25,17 +25,6 @@ type Full = Extract<ProfilePageView, { kind: 'full' }>;
 type Restricted = Extract<ProfilePageView, { kind: 'restricted' }>;
 
 const EVENTS_SHOWN = 5;
-
-const badgeIcons: Record<BadgeIcon, React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>> = {
-  'calendar-check': CalendarCheck,
-  globe: Globe,
-  users: Users,
-  landmark: Landmark,
-  presentation: Presentation,
-  award: Award,
-  star: Star,
-  heart: Heart,
-};
 
 /** /members/<username> (07-MemberProfile, -Mobile): hero, About, Events, Memories, Badges. */
 export function MemberProfile({

@@ -155,6 +155,7 @@ export function MembersAdmin({ page, counts, params, teams, badges, events, canE
           ),
         })}
       </p>
+      <MembersSections current="members" />
 
       <TablePanel>
         <AdminTabs
@@ -265,5 +266,24 @@ export function MembersAdmin({ page, counts, params, teams, badges, events, canE
         />
       )}
     </AdminPage>
+  );
+}
+
+/** The sections of Admin › Members (Members, Teams, Badges, Board), shared by every section. */
+export function MembersSections({ current }: { current: 'members' | 'teams' | 'badges' | 'board' }) {
+  const t = useTranslations('admin.members.sections');
+  const { hrefWith } = useUrlParams();
+  const clear = { q: null, status: null, team: null, sort: null, page: null, size: null, board: null };
+  return (
+    <div className="-mt-1 overflow-hidden rounded-md border border-line bg-white">
+      <AdminTabs
+        label={t('label')}
+        tabs={(['members', 'teams', 'badges', 'board'] as const).map((tab) => ({
+          href: hrefWith({ ...clear, tab: tab === 'members' ? null : tab }),
+          label: t(tab),
+          current: current === tab,
+        }))}
+      />
+    </div>
   );
 }
