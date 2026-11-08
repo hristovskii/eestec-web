@@ -70,6 +70,10 @@
         "checking": "Checking automatically…",
         "passed": "Spam check passed",
         "note": "Spam protection · no puzzles, no tracking cookies"
+      },
+      "password": {
+        "show": "Show password",
+        "hide": "Hide password"
       }
     },
     "rating": {
@@ -799,6 +803,117 @@
         "reference": "Reference",
         "another": "Send another message"
       }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "lead": "For EESTEC LC Skopje members.",
+      "email": "E-mail",
+      "emailPlaceholder": "name@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Your password",
+      "forgot": "Forgot password?",
+      "remember": "Keep me logged in",
+      "submit": "Log in",
+      "noAccount": "New here?",
+      "create": "Create a member account",
+      "pending": {
+        "title": "Your account is waiting for board approval",
+        "text": "You can log in and edit your profile, but it isn’t visible on the site yet. We’ll e-mail you when it’s approved."
+      },
+      "failed": {
+        "invalid": {
+          "title": "E-mail or password is wrong",
+          "text": "Check both and try again, or <link>reset your password</link>."
+        },
+        "locked": {
+          "title": "Too many attempts",
+          "text": "Logging in is paused for {minutes, plural, one {# minute} other {# minutes}}. You can <link>reset your password</link> meanwhile."
+        },
+        "unconfirmed": {
+          "title": "Confirm your e-mail first",
+          "text": "We sent you a link when you created the account.",
+          "resend": "Resend e-mail",
+          "resent": "We sent a new link to {email}."
+        },
+        "rejected": {
+          "title": "This account was not approved",
+          "text": "{reason}",
+          "textNoReason": "The board did not approve this account. <link>Write to us</link> if you think that is a mistake."
+        },
+        "adminLogin": {
+          "title": "This is a board account",
+          "text": "Board members log in at the <link>admin log-in</link>."
+        },
+        "unavailable": {
+          "title": "Logging in is not available yet",
+          "text": "This is a preview with sample data."
+        },
+        "unexpected": {
+          "title": "Something went wrong",
+          "text": "Please try again."
+        }
+      }
+    },
+    "forgot": {
+      "back": "Back to log in",
+      "title": "Forgot your password?",
+      "lead": "Enter the e-mail you registered with. We’ll send you a link to choose a new one.",
+      "email": "E-mail",
+      "submit": "Send reset link"
+    },
+    "sent": {
+      "title": "Check your inbox",
+      "text": "If <strong>{email}</strong> has an account, a reset link is on its way. It works for 30 minutes.",
+      "confirmText": "We sent a new link to <strong>{email}</strong>. Click it to activate your account. It works for 24 hours.",
+      "back": "Back to log in",
+      "resend": "Resend e-mail",
+      "resendIn": "Resend in {time}",
+      "resentNotice": "Sent again.",
+      "hint": "Nothing after 5 minutes? Check spam, or <link>contact us</link>."
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "lead": "For {email}",
+      "password": "New password",
+      "strength": "Strength: <strong>{level}</strong>",
+      "submit": "Save and log in",
+      "note": "This logs you out on your other devices.",
+      "savedBoard": "Password saved. Board members log in at the admin log-in.",
+      "savedBoardLink": "Go to the admin log-in"
+    },
+    "strength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "rules": {
+      "length": "At least 10 characters",
+      "personal": "Not your e-mail or name",
+      "common": "Not a common password"
+    },
+    "expired": {
+      "title": "This link has expired",
+      "text": "Confirmation links work for 24 hours and reset links for 30 minutes. Ask for a new one below.",
+      "email": "E-mail",
+      "submit": "Send a new link"
+    },
+    "errors": {
+      "required": "This is required",
+      "tooLong": "This is too long",
+      "email": "Enter a valid e-mail address",
+      "phone": "Enter a phone number, for example 070 123 456",
+      "year": "Pick your year of study",
+      "consent": "Please agree so we can create your account",
+      "passwordShort": "Use at least 10 characters",
+      "passwordPersonal": "Don’t use your e-mail or name",
+      "passwordCommon": "Pick a less common password",
+      "emailTaken": "Already registered. <link>Log in</link> instead?",
+      "photoType": "Use a JPG or PNG photo",
+      "photoSize": "The photo must be 5 MB or smaller",
+      "invalid": "This isn’t valid"
     }
   }
 }

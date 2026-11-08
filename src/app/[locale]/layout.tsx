@@ -58,6 +58,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
               filters: messages.events.filters,
               detail: { playVideo: messages.events.detail.playVideo },
             },
+            auth: messages.auth,
             committees: messages.committees,
             contact: { map: messages.contact.map, form: messages.contact.form },
             home: { tradition: messages.home.tradition, numbers: messages.home.numbers },

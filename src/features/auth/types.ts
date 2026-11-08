@@ -108,7 +108,8 @@ export type ConfirmResult = { status: 'confirmed' } | { status: 'expired' };
 export type SignInMemberResult =
   | { status: 'signed_in'; memberStatus: MemberStatus | null }
   | { status: 'invalid' }
-  | { status: 'locked'; until: string }
+  /** `minutes`: how long is left, counted on the server's clock (the browser's may differ). */
+  | { status: 'locked'; until: string; minutes: number }
   /** Correct password, but the e-mail link hasn't been used yet. */
   | { status: 'unconfirmed' }
   | { status: 'rejected'; reason: string | null }

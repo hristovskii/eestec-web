@@ -59,6 +59,13 @@ export type MemberContext = {
   setSession: (personaId: string, remember: boolean) => Promise<void>;
 };
 
+const lockedResult = (until: Date, now: Date) =>
+  ({
+    status: 'locked',
+    until: until.toISOString(),
+    minutes: Math.max(1, Math.ceil((until.getTime() - now.getTime()) / 60_000)),
+  }) as const;
+
 export function createMemberMethods({ accounts, attempts, setSession }: MemberContext) {
   const store = mockTable<MemberStore>('memberAuth', () => ({
     registrations: registrationsFixture.map((registration) => ({ ...registration })),
@@ -225,14 +232,14 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
       const key = email.trim().toLowerCase();
       const log = attempts.byEmail[key] ?? emptyLog();
       const state = lockState(log, now);
-      if (state.locked) return { status: 'locked', until: state.until!.toISOString() };
+      if (state.locked) return lockedResult(state.until!, now);
 
       const account = accountByEmail(key);
       if (!account?.personaId || account.status !== 'active' || !passwordMatches(account, password)) {
         const next = recordFailure(log, now);
         attempts.byEmail[key] = next;
         const after = lockState(next, now);
-        return after.locked ? { status: 'locked', until: after.until!.toISOString() } : { status: 'invalid' };
+        return after.locked ? lockedResult(after.until!, now) : { status: 'invalid' };
       }
       delete attempts.byEmail[key];
 

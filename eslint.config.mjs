@@ -7,7 +7,9 @@ import importX from 'eslint-plugin-import-x';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-const FEATURE_ENTRIES = '{index.ts,server.ts}';
+// A feature's entries. `public.ts` holds public screens that must stay out of `index.ts` because other
+// features (and the proxy) import that index: the auth screens would otherwise end up in the proxy.
+const FEATURE_ENTRIES = '{index.ts,server.ts,public.ts}';
 
 export default defineConfig([
   globalIgnores([
