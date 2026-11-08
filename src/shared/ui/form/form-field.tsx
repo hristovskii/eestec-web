@@ -19,7 +19,8 @@ type FormFieldProps = {
   /** Shows "· optional" after the label (forms where most fields are required). */
   optional?: boolean;
   help?: React.ReactNode;
-  error?: string;
+  /** The message (a string, or text with a link such as "Already registered. Log in instead?"). */
+  error?: React.ReactNode;
   /** e.g. "112 / 1,500", shown right-aligned in the help row. */
   counter?: React.ReactNode;
   className?: string;

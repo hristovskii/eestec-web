@@ -42,6 +42,8 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
   if (isUnder(pathname, '/api')) return NextResponse.next();
+  // The link in the confirmation e-mail has one address, with no language in it.
+  if (pathname === '/auth/confirm') return NextResponse.next();
   const event = EVENT_PATH.exec(pathname);
   if (event) {
     const redirect = await eventRedirect(request, event);

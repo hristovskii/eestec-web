@@ -5,6 +5,7 @@ import { cache } from 'react';
 import { authRepository } from './data';
 import { personas } from './data/fixtures/personas';
 import { now } from '@/shared/lib/now';
+import { localizedPath } from '@/shared/seo/alternates';
 import type { RegistrationStatus, TokenKind } from './types';
 
 /** The current session, once per request. Reads cookies: call it inside <Suspense> (dynamic). */
@@ -44,4 +45,23 @@ export async function listMemberRegistrations(status?: RegistrationStatus) {
 
 export async function getMemberRegistration(userId: string) {
   return (await authRepository()).getRegistration(userId);
+}
+
+/**
+ * Uses the link of a confirmation e-mail and says where the person goes next (the route handler
+ * redirects there): "waiting for approval" when it worked, "This link has expired" when it did not.
+ * The language is the one of the page they signed up on, kept with the link.
+ */
+export async function confirmEmailLink(token: string): Promise<{ path: string }> {
+  const repo = await authRepository();
+  const at = now();
+  const link = await repo.peekToken({ token, kind: 'confirm', now: at });
+  const locale = link.state === 'valid' ? link.locale : 'mk';
+  const result = await repo.confirmEmail({ token, now: at });
+  return {
+    path:
+      result.status === 'confirmed'
+        ? localizedPath('/register/pending', locale)
+        : `${localizedPath('/auth/expired', locale)}?type=confirm`,
+  };
 }

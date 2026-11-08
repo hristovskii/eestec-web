@@ -914,6 +914,91 @@
       "photoType": "Use a JPG or PNG photo",
       "photoSize": "The photo must be 5 MB or smaller",
       "invalid": "This isn’t valid"
+    },
+    "register": {
+      "title": "Create your member account",
+      "lead": "For people who are already members of EESTEC LC Skopje. The board checks every new account. Not a member yet? <link>Apply on Join Us</link> first.",
+      "required": "Fields marked <req>*</req> are required.",
+      "name": "Full name",
+      "email": "E-mail",
+      "password": "Password",
+      "faculty": "Faculty",
+      "choose": "Choose…",
+      "phone": "Phone",
+      "year": "Year of study",
+      "years": {
+        "1": "1st",
+        "2": "2nd",
+        "3": "3rd",
+        "4": "4th",
+        "master": "Master’s",
+        "phd": "PhD"
+      },
+      "photo": "Profile photo",
+      "photoOptional": "optional, you can add it later",
+      "photoUpload": "Upload photo",
+      "photoChange": "Change photo",
+      "photoRemove": "Remove photo",
+      "photoHelp": "JPG or PNG, a clear face photo. We crop it to a square.",
+      "photoPreview": "Your chosen photo",
+      "visibility": "Who can see your profile?",
+      "visPublic": {
+        "title": "Public",
+        "text": "Anyone visiting eestec.mk"
+      },
+      "visMembers": {
+        "title": "Members only",
+        "text": "Only logged-in members. Visitors see your name and team."
+      },
+      "visHelp": "You can change this any time in My profile.",
+      "consent": "I agree that {site} stores and processes my personal data to run my member account, as described in the <link>privacy policy</link>. I can delete my account and data at any time.",
+      "consentShort": "Consent",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "login": "Log in",
+      "summary": {
+        "required": "is needed",
+        "tooLong": "is too long",
+        "email": "is not a valid e-mail address",
+        "phone": "is not a valid phone number",
+        "year": "is needed",
+        "consent": "is needed",
+        "passwordShort": "is too short",
+        "passwordPersonal": "must not be your e-mail or name",
+        "passwordCommon": "is too common",
+        "emailTaken": "is already registered",
+        "photoType": "must be a JPG or PNG",
+        "photoSize": "must be 5 MB or smaller",
+        "invalid": "is not valid"
+      },
+      "failed": {
+        "spam": "We couldn’t create the account. Please wait a moment and try again.",
+        "tooFast": "That was quick! Check your answers and send again.",
+        "unavailable": "Creating accounts is not available yet. This is a preview with sample data.",
+        "unexpected": "Something went wrong and the account was not created. Please try again."
+      }
+    },
+    "check": {
+      "title": "Confirm your e-mail",
+      "text": "We sent a link to <strong>{email}</strong>. Click it to activate your account. The link works for 24 hours.",
+      "created": "Account created",
+      "confirm": "Confirm your e-mail",
+      "here": "You are here",
+      "approval": "Board approval",
+      "approvalHint": "Usually within 3 days",
+      "resend": "Resend e-mail",
+      "resent": "Sent again to {email}.",
+      "change": "Wrong e-mail? Change it"
+    },
+    "pending": {
+      "title": "E-mail confirmed. Waiting for board approval.",
+      "text": "Thanks, {name}! A board member checks that you are an LC Skopje member, usually within 3 days. We’ll e-mail you when your profile is live.",
+      "created": "Account created",
+      "confirmed": "E-mail confirmed",
+      "approval": "Board approval",
+      "since": "Pending since {when}",
+      "meanwhile": "<strong>Meanwhile</strong> you can finish your profile (photo, bio, links). Nobody else sees it until it’s approved.",
+      "finish": "Finish my profile"
     }
   }
 }
