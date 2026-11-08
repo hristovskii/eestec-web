@@ -4,7 +4,9 @@ import { env } from '@/shared/config/env';
 import { devSurfacesEnabled } from '@/shared/config/flags';
 
 import { memoriesRepository } from './data';
-import { readMockMemoryPhoto } from './data/memory-photos';
+import { readMockMemoryPhoto, saveMockMemoryPhoto } from './data/memory-photos';
+import { notifyBoardOfMemory } from './notify';
+import type { MemoryRecord } from './types';
 
 // What other features need from Memories today: the account (delete), the profile (how many are
 // published), the approvals count and the photo files. The public and author reads come with the
@@ -52,4 +54,56 @@ export function memoryPhotoResponse(id: string): Response {
       'X-Content-Type-Options': 'nosniff',
     },
   });
+}
+
+const escapeHtml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/**
+ * "Turn this into a Memories post" on /submit: the member's impression becomes a Memory that waits
+ * for the board, with the same text and photos (the photos get empty alt text, the editor's checklist
+ * flags them). One call, so the backend phase can make it one transaction (docs/ARCHITECTURE.md §4).
+ */
+export async function createMemoryFromImpression(input: {
+  userId: string;
+  title: string;
+  eventId: string | null;
+  otherEventName: string;
+  city: string;
+  country: string;
+  text: string;
+  photos: { bytes: Uint8Array; mimeType: string; width: number; height: number }[];
+  now: Date;
+}): Promise<MemoryRecord> {
+  const body = input.text
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br>')}</p>`)
+    .join('');
+  const record = await (
+    await memoriesRepository('session')
+  ).createFromImpression(
+    input.userId,
+    {
+      title: input.title,
+      eventId: input.eventId,
+      otherEventName: input.otherEventName,
+      city: input.city,
+      country: input.country,
+      happenedOn: null,
+      body,
+      cover: null,
+      photos: input.photos.map((photo) => ({
+        id: crypto.randomUUID(),
+        fileId: saveMockMemoryPhoto(photo),
+        sample: null,
+        alt: '',
+        caption: '',
+      })),
+    },
+    'impression',
+    input.now,
+  );
+  await notifyBoardOfMemory({ title: input.title, revision: false, now: input.now });
+  return record;
 }

@@ -72,6 +72,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
               editor: messages.memories.editor,
               mine: messages.memories.mine,
             },
+            ideas: { submit: messages.ideas.submit },
             committees: messages.committees,
             contact: { map: messages.contact.map, form: messages.contact.form },
             home: { tradition: messages.home.tradition, numbers: messages.home.numbers },

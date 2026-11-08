@@ -18,11 +18,7 @@ export const MEMORY_LIMITS = {
   bodyChars: 60_000,
 } as const;
 
-/** What a person can upload: compressed in the browser first (see photo-compress). */
-export const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
-export const PHOTO_MAX_BYTES = 15 * 1024 * 1024;
-/** Longest side after compression. */
-export const PHOTO_MAX_SIDE = 2000;
+export { PHOTO_MAX_BYTES, PHOTO_MAX_SIDE, PHOTO_TYPES } from '@/shared/forms/photo-compress';
 
 export const WORDS_PER_MINUTE = 200;
 

@@ -38,6 +38,7 @@ written by the board in the admin.
 | M16d      | `auth.account.*` (Account: e-mail, password, download, delete and the deleted screen), `members.me.nav.account`                                    | ☐ needs review      |
 | M17b      | `memories.*` (list, filters, post, notices, related, home/event/profile rows, the visitor dialog), `ui.share.*`                                    | ☐ needs review      |
 | M17c      | `memories.editor.*` (the editor, its checks, the rich text and sort labels), `memories.mine.*`, `members.me.memories.*`, `members.me.nav.memories` | ☐ needs review      |
+| M18b      | `ideas.page.*` (hero, tabs, the cards beside the form), `ideas.submit.*` (both forms, errors, the rate-limit notice, every confirmation)           | ☐ needs review      |
 | —         | Fixed label decided in D7: `deadline_soon` → "Се затвора наскоро"                                                                                  | ✓ given by the user |
 
 ## What the M13 pass found (for the native reviewer)
