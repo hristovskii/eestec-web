@@ -1,5 +1,6 @@
 import type {
   AdminAccount,
+  ApprovedMemberIdentity,
   AdminRole,
   ConfirmResult,
   DecideRegistrationResult,
@@ -70,6 +71,8 @@ export interface AuthRepository {
     notify?: boolean;
     now: Date;
   }): Promise<DecideRegistrationResult>;
+  /** Registrations the board approved, with the public facts only (feeds the Members profiles). */
+  approvedMemberIdentities(): Promise<ApprovedMemberIdentity[]>;
   /** Confirmed registrations waiting for a decision, and the oldest one's submit time. */
   pendingRegistrationSummary(): Promise<PendingRegistrationSummary>;
 

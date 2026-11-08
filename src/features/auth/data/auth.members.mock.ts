@@ -11,6 +11,7 @@ import { mockSignInBlocked } from '../availability';
 import { type AttemptLog, emptyLog, lockState, recordFailure } from '../domain/lockout';
 import { newToken, type TokenRecord, tokenState } from '../domain/tokens';
 import type {
+  ApprovedMemberIdentity,
   ConfirmResult,
   DecideRegistrationResult,
   MemberRegistration,
@@ -26,7 +27,7 @@ import type { AuthRepository } from './auth.repository';
 import type { AccountRecord } from './fixtures/accounts';
 import { registrationsFixture, tokensFixture } from './fixtures/members';
 import { SAMPLE_PASSWORD } from './fixtures/personas';
-import { saveMockMemberPhoto } from './member-photos';
+import { photoUrl, saveMockMemberPhoto } from './member-photos';
 import { sendMockMail } from './mailbox';
 
 // The member side of the mock: registrations, e-mail links and passwords. Registered people get an
@@ -374,6 +375,25 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
           });
       }
       return Promise.resolve({ status: 'decided', registration: { ...registration } });
+    },
+
+    approvedMemberIdentities(): Promise<ApprovedMemberIdentity[]> {
+      const identities: ApprovedMemberIdentity[] = [];
+      for (const item of store.registrations) {
+        const account = accounts.find((entry) => entry.userId === item.userId);
+        if (item.status !== 'active' || !account || !item.decidedAt) continue;
+        identities.push({
+          userId: item.userId,
+          name: item.name,
+          username: account.username,
+          faculty: item.faculty,
+          year: item.year,
+          visibility: item.visibility,
+          photoUrl: item.photoId ? photoUrl(item.photoId) : null,
+          approvedAt: item.decidedAt,
+        });
+      }
+      return Promise.resolve(identities);
     },
 
     pendingRegistrationSummary(): Promise<{ count: number; oldestAt: string | null }> {

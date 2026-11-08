@@ -23,6 +23,7 @@ export { LOCKOUT } from './domain/lockout';
 export { hasSessionCookie } from './session-cookie';
 export type {
   AdminAccount,
+  ApprovedMemberIdentity,
   MemberRegistration,
   MemberVisibility,
   MemberYear,

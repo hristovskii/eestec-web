@@ -327,6 +327,27 @@ describe('mock member accounts', () => {
       });
     });
 
+    it('lists approved members with public facts only', async () => {
+      const repo = createMockAuthRepository();
+      await expect(repo.approvedMemberIdentities()).resolves.toEqual([]);
+      await repo.decideRegistration({ userId: 'u-elena', decision: 'approve', reason: '', now });
+      await repo.decideRegistration({ userId: 'u-daniel-feeit', decision: 'reject', reason: '', now });
+      const identities = await repo.approvedMemberIdentities();
+      expect(identities).toEqual([
+        {
+          userId: 'u-elena',
+          name: 'Elena Petrovska',
+          username: 'elena-petrovska',
+          faculty: 'FINKI',
+          year: '1',
+          visibility: 'members',
+          photoUrl: null,
+          approvedAt: now.toISOString(),
+        },
+      ]);
+      expect(JSON.stringify(identities)).not.toMatch(/@|phone|password/i);
+    });
+
     it('approving makes the member active and e-mails them', async () => {
       const repo = createMockAuthRepository();
       const result = await repo.decideRegistration({
