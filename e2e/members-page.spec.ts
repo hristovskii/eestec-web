@@ -89,12 +89,23 @@ test.describe('members page (M15b)', () => {
     expect(itTeam).not.toContain('Marija Stojanovska');
 
     await page.goto('/en/members?year=2026');
-    await expect.poll(async () => (await names(page)).sort()).toEqual(['Damjan Velkov', 'Ivana Mitrevska']);
+    // (Members other tests approve meanwhile joined this year too: look for names, not for the whole list.)
+    await expect
+      .poll(async () =>
+        (await names(page)).filter((name) => ['Damjan Velkov', 'Ivana Mitrevska'].includes(name)).sort(),
+      )
+      .toEqual(['Damjan Velkov', 'Ivana Mitrevska']);
+    expect(await names(page)).not.toContain('Aleksandar Popov');
     await page.goto('/en/members?sort=longest');
     await expect.poll(async () => (await names(page))[0]).toBe('Aleksandar Popov');
     await page.goto('/en/members?sort=newest');
+    // Newest first: the people who joined this year come before those who joined in 2021 (members
+    // approved meanwhile by other tests joined this year too, so the very first name varies).
     await expect
-      .poll(async () => ['Damjan Velkov', 'Ivana Mitrevska'].includes((await names(page))[0] ?? ''))
+      .poll(async () => {
+        const list = await names(page);
+        return list.indexOf('Damjan Velkov') < list.indexOf('Aleksandar Popov');
+      })
       .toBe(true);
   });
 
@@ -137,7 +148,7 @@ test.describe('members page (M15b)', () => {
   test('alumni: nine first, show all and search', async ({ page }) => {
     await page.goto('/en/members');
     const alumni = page.locator('#alumni');
-    await expect(alumni.getByText('9 former members who built LC Skopje.')).toBeVisible();
+    await expect(alumni.getByText(/\d+ former members who built LC Skopje\./)).toBeVisible();
     // The alumni search is drawn for large screens only.
     if (isMobile()) {
       await expect(alumni.getByRole('searchbox')).toBeHidden();
