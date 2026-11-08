@@ -579,6 +579,7 @@ export function SubmitForm(props: SubmitFormProps) {
                     type="email"
                     autoComplete="email"
                     inputMode="email"
+                    placeholder={t('emailPlaceholder')}
                     maxLength={IDEA_LIMITS.email}
                     onChange={(event) => setTyped(event.target.value)}
                   />

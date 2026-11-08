@@ -1836,9 +1836,9 @@
       "idea": {
         "type": "What kind of idea?",
         "title": "Title",
-        "titlePlaceholder": "A short name for your idea",
+        "titlePlaceholder": "e.g. A beginner workshop on PCB design",
         "description": "Describe your idea",
-        "descriptionPlaceholder": "What would you like to see, and why?",
+        "descriptionPlaceholder": "What is it, who is it for, and why would it be great? A few sentences is enough.",
         "attachment": "Attachment",
         "attachmentHelp": "PDF, JPG or PNG · up to 10 MB"
       },
@@ -1944,7 +1944,8 @@
           "profile": "Go to My profile",
           "memories": "Read Memories from {event}"
         }
-      }
+      },
+      "emailPlaceholder": "Only if you'd like a reply"
     }
   }
 }
