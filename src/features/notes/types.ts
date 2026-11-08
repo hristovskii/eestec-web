@@ -1,5 +1,11 @@
 /** What an internal note can be attached to (data-model.md: internal_notes.entity_type). */
-export const NOTE_ENTITIES = ['contact_message', 'partner_inquiry', 'membership_application'] as const;
+export const NOTE_ENTITIES = [
+  'contact_message',
+  'partner_inquiry',
+  'membership_application',
+  'idea',
+  'feedback',
+] as const;
 export type NoteEntity = (typeof NOTE_ENTITIES)[number];
 
 /** A note only admins see ("Internal notes · only admins see these"). */
