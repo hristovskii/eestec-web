@@ -5,14 +5,34 @@ import { can } from '@/features/auth';
 import { requirePermission } from '@/features/auth/server';
 import { listEventOptions } from '@/features/events/server';
 import { adminMembersParamsSchema } from '@/features/members';
-import { MembersAdmin } from '@/features/members/admin';
-import { listAdminMembers } from '@/features/members/server';
+import { MembersAdmin, MembersStructure } from '@/features/members/admin';
+import { getAdminBoards, listAdminBadges, listAdminMembers, listAdminTeams } from '@/features/members/server';
 
 export const metadata: Metadata = { title: 'Members' };
 
 async function Members({ searchParams }: { searchParams: PageProps<'/admin/members'>['searchParams'] }) {
   const session = await requirePermission('view', 'members');
   const params = adminMembersParamsSchema.parse(await searchParams);
+  const canEdit = can(session, 'edit', 'members');
+
+  if (params.tab === 'teams')
+    return <MembersStructure section="teams" teams={await listAdminTeams()} canEdit={canEdit} />;
+  if (params.tab === 'badges')
+    return <MembersStructure section="badges" badges={await listAdminBadges()} canEdit={canEdit} />;
+  if (params.tab === 'board') {
+    const { mandates, people, roles } = await getAdminBoards();
+    return (
+      <MembersStructure
+        section="board"
+        mandates={mandates}
+        people={people}
+        roles={roles}
+        selected={params.board}
+        canEdit={canEdit}
+      />
+    );
+  }
+
   const [{ page, counts, teams, badges }, events] = await Promise.all([
     listAdminMembers(params),
     listEventOptions(),
@@ -25,7 +45,7 @@ async function Members({ searchParams }: { searchParams: PageProps<'/admin/membe
       teams={teams}
       badges={badges}
       events={events.map(({ id, title }) => ({ id, title }))}
-      canEdit={can(session, 'edit', 'members')}
+      canEdit={canEdit}
     />
   );
 }
