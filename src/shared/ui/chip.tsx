@@ -121,7 +121,9 @@ export function FilterChip({ href, pressed, children, count }: FilterChipProps) 
       className={filterChipClasses(pressed)}
     >
       {children}
-      {count !== undefined && <span className="text-[13px] font-normal opacity-80">{count}</span>}
+      {count !== undefined && (
+        <span className={cn('text-[13px]', pressed ? 'font-medium' : 'font-normal opacity-80')}>{count}</span>
+      )}
     </Link>
   );
 }

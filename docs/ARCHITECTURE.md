@@ -1100,6 +1100,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Sample data: only the people the canvas names (see `docs/sample-data.md`); counts are real because the canvas numbers (37 / 48 members, 64 alumni) do not match its own lists.
 - Admin writes (profiles, teams, badges, boards) come with the admin screens in M15d and M15e.
 
+**Notes from building (M15b, MemberCard and /members)**
+
+- `MemberCard` is one component with the four variants of the canvas (`member`, `board`, `board-row` for phones, `alumni`); the phone grid is plain CSS (two columns, the compact role lines), `compact` forces it for the lab. A photo is the member's own picture (alt "Photo of {name}", served unresized because sign-up photos come from the app itself), the striped placeholder (a sample person without a file) or pale-red initials (no photo).
+- `/members` reads `members` once per request (all four blocks in one Suspense, behind the designed skeleton) and everything that narrows a list is in the address: `q`, `team`, `year` (`2025` or `2022-or-earlier`), `sort` (`newest`, `longest`), `page` (15 a page), `board` (`2025/2026`), `alumni=all` and `aq` (the canvas links `?alumni=Bojan`; I split it into two values). The "Joined" and sort selects are for large screens only, as drawn; the alumni search too (phones show the first four of the nine alumni).
+- The team chips count the people who match the search and the joined year (so the numbers add up to what the list can show); the jump link counts everyone the viewer may see. Visitors see how many members-only profiles they cannot see, never whose. A member sees the "Members only" pill on those cards.
+- Phase 2: `members/layout.tsx` is a 404 while `phase2` is off; the sitemap already lists `/members` with the phase 2 pages. `/members/<username>` follows in M15c.
+- `FilterChip`'s count is 14 px-weight 500 when the chip is selected (white on red at 80 % opacity failed the contrast check).
+- Lab: `#member-cards` ("Members and board"). The words "Member cards" were taken by the existing test that looks for a section named "Cards".
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

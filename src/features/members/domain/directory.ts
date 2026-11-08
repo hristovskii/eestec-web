@@ -94,6 +94,7 @@ export function activeMembers(
       count: matching.filter((profile) => profile.teams.some((entry) => entry.teamId === team.id)).length,
     })),
     allCount: matching.length,
+    visibleTotal: visible.length,
     hiddenCount:
       audience === 'visitor' ? active.filter((profile) => profile.visibility === 'members_only').length : 0,
     teams,

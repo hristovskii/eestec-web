@@ -50,6 +50,7 @@ export const toActiveView = (result: ActiveMembers, pageSize: number, locale: Lo
   pageCount: result.pageCount,
   pageSize,
   allCount: result.allCount,
+  visibleTotal: result.visibleTotal,
   hiddenCount: result.hiddenCount,
   teams: result.teamCounts.map(({ team, count }) => ({
     slug: team.slug,
