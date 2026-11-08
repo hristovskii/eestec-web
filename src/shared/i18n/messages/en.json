@@ -102,6 +102,14 @@
       "openMore": "Open gallery, {count} more photos",
       "viewAll": "View all {count} photos",
       "labelPrefix": "Photo gallery:"
+    },
+    "share": {
+      "copy": "Copy link",
+      "copied": "Link copied",
+      "facebook": "Share on Facebook",
+      "linkedin": "Share on LinkedIn",
+      "whatsapp": "Share on WhatsApp",
+      "email": "Share by e-mail"
     }
   },
   "nav": {
@@ -1414,6 +1422,120 @@
         "passwordSame": "Choose a password you are not using now.",
         "failed": "Something went wrong. Try again."
       }
+    }
+  },
+  "memories": {
+    "title": "Memories",
+    "heading": "EESTEC Memories",
+    "lead": "Stories and photos from our members: workshops, exchanges, congresses and everything that happened on the bus in between.",
+    "stats": {
+      "stories": "{count, plural, one {story} other {stories}}",
+      "events": "{count, plural, one {event} other {events}}",
+      "cities": "{count, plural, one {city} other {cities}}"
+    },
+    "shareCard": {
+      "title": "Been to an EESTEC event?",
+      "member": "Write about it with photos. The board checks it before it goes live.",
+      "guest": "Members write Memories here. Not a member? Send a quick impression instead."
+    },
+    "share": {
+      "button": "Share your memory",
+      "guestTitle": "Memories are written by members",
+      "guestText": "Log in to write a full story with photos. Not a member? You can still send a short impression from an event.",
+      "guestLogin": "Log in to write a Memory",
+      "guestImpression": "Send a quick impression",
+      "cancel": "Cancel"
+    },
+    "filters": {
+      "search": "Search Memories",
+      "searchPlaceholder": "Search titles and stories",
+      "event": "Event",
+      "allEvents": "All events",
+      "year": "Year",
+      "allYears": "All years",
+      "place": "City or country",
+      "allPlaces": "All cities",
+      "author": "Author",
+      "allAuthors": "All authors",
+      "sort": "Sort",
+      "newest": "Newest first",
+      "oldest": "Oldest first",
+      "open": "Filters",
+      "openCount": "Filters, {count} active",
+      "clear": "Clear filters",
+      "show": "Show {count, plural, one {# Memory} other {# Memories}}"
+    },
+    "results": {
+      "showing": "Showing <strong>{from}–{to}</strong> of <strong>{total}</strong> Memories, newest first",
+      "showingOldest": "Showing <strong>{from}–{to}</strong> of <strong>{total}</strong> Memories, oldest first",
+      "found": "<strong>{count}</strong> Memories found",
+      "searchTag": "“{query}”",
+      "clearAll": "Clear all"
+    },
+    "empty": {
+      "title": "No Memories match these filters",
+      "titlePlace": "No Memories from {place} yet",
+      "titleNone": "No Memories yet",
+      "text": "Nothing matches these filters. Were you there? Your story could be the first.",
+      "textNone": "The first stories are on their way. Been to an event? Your story could be the first.",
+      "clear": "Clear filters"
+    },
+    "card": {
+      "read": "Read the story",
+      "formerMember": "A former member",
+      "unknownAuthor": "A member"
+    },
+    "post": {
+      "formerMember": "A former member",
+      "formerSub": "Former member of LC Skopje",
+      "formerCard": "LC Skopje alumni",
+      "formerText": "This member has left and deleted their account. Their story stays without their name or photo.",
+      "happened": "Happened {date}",
+      "readTime": "{minutes} min read",
+      "photoCredit": "Photo: {credit}",
+      "photos": "Photos",
+      "photosCount": "{count, plural, one {# photo} other {# photos}} · tap to enlarge",
+      "share": "Share this Memory",
+      "about": "About the event",
+      "writtenBy": "Written by",
+      "since": "member since {year}",
+      "viewProfile": "View profile →",
+      "authorMemories": "{count} Memories"
+    },
+    "related": {
+      "title": "More Memories from this event",
+      "all": "All {count} from {event} →",
+      "askTitle": "Were you at {event} too?",
+      "askText": "Add your own story and photos. It shows up here once the board approves it."
+    },
+    "notice": {
+      "previewTitle": "Preview",
+      "previewText": "Only you can see this. It goes live after the board approves it.",
+      "waitingTitle": "Waiting for the board",
+      "waitingText": "Only you can see this. We will e-mail you when it is live, or if the board asks for changes.",
+      "liveText": "This is the live version.",
+      "backToEditing": "Back to editing",
+      "changesTitle": "Changes waiting for review",
+      "changesText": "Only you see this. Readers see the version below until the board approves your edits from {date}.",
+      "seeChanges": "See my changes",
+      "edit": "Edit",
+      "changesRejectedTitle": "Your changes were not approved",
+      "changesRejectedText": "The board said: {reason} Readers still see the version below."
+    },
+    "home": {
+      "title": "Memories",
+      "link": "Read all Memories",
+      "linkShort": "Read all",
+      "share": "Share your story"
+    },
+    "eventRow": {
+      "title": "Memories from this event",
+      "all": "All {count} stories"
+    },
+    "profileRow": {
+      "title": "Memories by {name}",
+      "written": "{count} written",
+      "all": "All {count}"
     }
   }
 }

@@ -15,6 +15,7 @@ export {
   getArchiveFacets,
   getArchiveSlugs,
   getArchiveTypes,
+  getEventCardsByIds,
   getEventPage,
   getEventsByIds,
   getEventsArchive,

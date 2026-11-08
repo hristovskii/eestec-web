@@ -36,6 +36,7 @@ written by the board in the admin.
 | M16b      | `members.me.*` (My profile: header, section menu, Profile card, save bar, photo crop, Visibility, errors) and `members.profile.preview.*`        | ☐ needs review      |
 | M16c      | `members.me.applications.*`, `members.me.privacy.*` and the CV error lines in `members.me.errors.*` (My applications, Privacy & consent, the CV) | ☐ needs review      |
 | M16d      | `auth.account.*` (Account: e-mail, password, download, delete and the deleted screen), `members.me.nav.account`                                  | ☐ needs review      |
+| M17b      | `memories.*` (list, filters, post, notices, related, home/event/profile rows, the visitor dialog), `ui.share.*`                                  | ☐ needs review      |
 | —         | Fixed label decided in D7: `deadline_soon` → "Се затвора наскоро"                                                                                | ✓ given by the user |
 
 ## What the M13 pass found (for the native reviewer)

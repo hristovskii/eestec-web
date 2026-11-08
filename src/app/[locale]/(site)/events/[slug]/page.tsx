@@ -1,13 +1,20 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import { EventDetail, eventJsonLd } from '@/features/events';
 import { getArchiveSlugs, getEventPage } from '@/features/events/server';
+import { MemoriesRow } from '@/features/memories/public';
+import { getMemoriesOfEvent } from '@/features/memories/server';
+import { getAuthorCards } from '@/features/members/server';
 import { getSiteSettings, socialMetadata } from '@/features/settings/server';
 import { isEnabled } from '@/shared/config/flags';
 import { SITE_URL } from '@/shared/config/site';
 import { currentLocale } from '@/shared/i18n/current-locale';
 import { redirect } from '@/shared/i18n/navigation';
+import type { Locale } from '@/shared/i18n/routing';
+import { Container } from '@/shared/ui/container';
 import { localizedPath } from '@/shared/seo/alternates';
 import { JsonLdScript } from '@/shared/seo/json-ld-script';
 
@@ -35,6 +42,40 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/events/[
   };
 }
 
+// "Memories from this event" (Phase 2): the cards are cached; their authors depend on who is looking,
+// so this streams in behind the page. Nothing is drawn when nobody wrote about the event.
+async function EventMemories({ eventId, slug, locale }: { eventId: string; slug: string; locale: Locale }) {
+  const [t, { items, total }] = await Promise.all([
+    getTranslations('memories.eventRow'),
+    getMemoriesOfEvent(eventId, locale, { limit: 3 }),
+  ]);
+  if (items.length === 0) return null;
+  const authors = await getAuthorCards(
+    'visitor',
+    locale,
+    items.flatMap((memory) => (memory.authorId ? [memory.authorId] : [])),
+  );
+  return (
+    <div className="bg-surface">
+      <Container className="py-10 lg:py-14">
+        <MemoriesRow
+          id="event-memories"
+          headingLevel="h2"
+          title={t('title')}
+          cards={items}
+          authors={authors}
+          locale={locale}
+          link={
+            total > items.length
+              ? { href: `/memories?event=${slug}`, label: t('all', { count: total }) }
+              : undefined
+          }
+        />
+      </Container>
+    </div>
+  );
+}
+
 // /events/[slug] (EventDetail): past events. Old addresses are 301-redirected by the proxy;
 // events that haven't ended live at /upcoming/[slug] (M7).
 export default async function EventPage({ params }: PageProps<'/[locale]/events/[slug]'>) {
@@ -58,6 +99,13 @@ export default async function EventPage({ params }: PageProps<'/[locale]/events/
         next={page.next}
         locale={locale}
         phase2={isEnabled('phase2')}
+        memories={
+          isEnabled('phase2') ? (
+            <Suspense fallback={null}>
+              <EventMemories eventId={page.event.id} slug={slug} locale={locale} />
+            </Suspense>
+          ) : undefined
+        }
       />
     </>
   );

@@ -256,8 +256,8 @@ export function createMockMemoriesRepository(): MemoriesRepository {
       const record = own(userId, ref);
       return record ? ownView(record) : null;
     },
-    async findMinePost(userId, slug) {
-      const record = own(userId, { slug });
+    async findMinePost(userId, slugOrId) {
+      const record = own(userId, { slug: slugOrId }) ?? own(userId, { id: slugOrId });
       return record ? { post: post(record), own: ownView(record) } : null;
     },
 

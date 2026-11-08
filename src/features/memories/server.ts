@@ -13,3 +13,15 @@ export {
   memoryQueueCount,
   retireMemoriesOf,
 } from './queries';
+export {
+  countMemoryRead,
+  getLatestMemories,
+  getMemoriesFacets,
+  getMemoriesList,
+  getMemoriesOfAuthor,
+  getMemoriesOfEvent,
+  getMemoryPost,
+  getMemorySlugs,
+  getMyMemoryPost,
+} from './public-queries';
+export { memoryTags } from './cache-tags';

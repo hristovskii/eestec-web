@@ -66,6 +66,7 @@ export default async function LocaleLayout({ children }: LayoutProps<'/[locale]'
               profile: { copy: messages.members.profile.copy, copied: messages.members.profile.copied },
               me: messages.members.me,
             },
+            memories: { filters: messages.memories.filters, share: messages.memories.share },
             committees: messages.committees,
             contact: { map: messages.contact.map, form: messages.contact.form },
             home: { tradition: messages.home.tradition, numbers: messages.home.numbers },

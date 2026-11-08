@@ -23,6 +23,7 @@ import type {
   EventMediaRef,
   EventPageModel,
   EventSummary,
+  EventTiming,
   UpcomingEventCard,
 } from './types';
 
@@ -219,6 +220,27 @@ export async function getStartedEvents(locale: Locale) {
   cacheLife('events');
   const [repo, settings] = await Promise.all([eventsRepository(), getSiteSettings(locale)]);
   return repo.listStarted({ locale, now: now(), justEndedDays: settings.events.justEndedDays });
+}
+
+/**
+ * Listed events by id as cards (covers resolved), newest first, with whether they are still ahead:
+ * what a Memory shows about its event. Cached.
+ */
+export async function getEventCardsByIds(
+  ids: readonly string[],
+  locale: Locale,
+): Promise<(EventCardModel & { timing: EventTiming })[]> {
+  'use cache';
+  cacheTag(eventTags.list);
+  cacheLife('events');
+  const [repo, settings] = await Promise.all([eventsRepository(), getSiteSettings(locale)]);
+  const found = await repo.listByIds(ids, {
+    locale,
+    now: now(),
+    justEndedDays: settings.events.justEndedDays,
+  });
+  const files = await filesFor(found.map((item) => item.cover?.mediaId));
+  return found.map((item) => ({ ...toCard(item, files), timing: item.timing }));
 }
 
 /** Upcoming addresses to prerender. */
