@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { getMyApplications } from '@/features/applications/server';
 import { requireMember } from '@/features/auth/server';
 import { getJoin } from '@/features/join/server';
 import { MyProfilePage, MyProfileSkeleton } from '@/features/members/public';
@@ -18,10 +19,20 @@ async function ProfileContent() {
   const locale = await currentLocale();
   // Not signed in → /login?next=/profile; a board account without a member profile → home.
   const session = await requireMember(locale, '/profile');
-  const [view, join] = await Promise.all([getMyProfileView(session, locale), getJoin(locale)]);
+  const [view, join, applications] = await Promise.all([
+    getMyProfileView(session, locale),
+    getJoin(locale),
+    getMyApplications(session.email, locale),
+  ]);
   if (!view) notFound();
   // The faculties are the board's list from Join Us, as at sign-up.
-  return <MyProfilePage view={view} faculties={join.apply.faculties.map((faculty) => faculty.label)} />;
+  return (
+    <MyProfilePage
+      view={view}
+      faculties={join.apply.faculties.map((faculty) => faculty.label)}
+      applications={applications}
+    />
+  );
 }
 
 // /profile (MyProfile): what a member edits about themselves. It depends on who is signed in.

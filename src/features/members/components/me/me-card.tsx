@@ -35,7 +35,11 @@ export function MeCard({
         </div>
         {aside}
       </div>
-      <div className={cn(bodyClassName ?? 'px-5 pt-5 pb-7 sm:px-7')}>{children}</div>
+      {children ? (
+        <div className={cn(bodyClassName ?? 'px-5 pt-5 pb-7 sm:px-7')}>{children}</div>
+      ) : (
+        <div className="pb-6" />
+      )}
     </section>
   );
 }

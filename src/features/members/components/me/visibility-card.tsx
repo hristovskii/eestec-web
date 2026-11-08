@@ -48,7 +48,7 @@ export function VisibilityCard({
 
   return (
     <div className="flex flex-col gap-4">
-      <fieldset className="min-w-0">
+      <fieldset className="min-w-0" disabled={pending}>
         <legend className="sr-only">{t('legend')}</legend>
         <div className="grid gap-3 sm:grid-cols-2">
           {OPTIONS.map((option) => {
@@ -79,9 +79,7 @@ export function VisibilityCard({
           })}
         </div>
       </fieldset>
-      {pending ? (
-        <p className="text-small text-muted-ink">{t('pendingNote')}</p>
-      ) : (
+      {pending ? null : (
         <Link
           href={`/members/${username}?preview=visitor`}
           className="text-small font-medium text-brand-dark no-underline hover:text-brand hover:underline"

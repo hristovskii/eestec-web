@@ -27,3 +27,4 @@ export type {
   Availability,
   PublicApplicationForm,
 } from './types';
+export type { MyApplicationView } from './domain/my-applications';

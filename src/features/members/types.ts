@@ -453,4 +453,13 @@ export type MyProfileView = {
     /** Where to write when something is wrong; null when the board has no such address. */
     email: string | null;
   };
+  /** Privacy & consent. */
+  privacy: {
+    /** When the account consent was given (sign-up). */
+    dataConsentAt: string | null;
+    consents: MemberConsents;
+    cv: CvInfo | null;
+    /** Times partners' exports included the CV this year; 0 hides the line. */
+    cvViewsThisYear: number;
+  };
 };
