@@ -1,9 +1,10 @@
 import type { TokenKind } from '../types';
 
-/** Decided: confirmation links work for 24 hours, reset links for 30 minutes. */
+/** Decided: confirmation links work for 24 hours, reset links for 30 minutes (a new e-mail address is confirmed like one at sign-up). */
 export const TOKEN_TTL_MS: Record<TokenKind, number> = {
   confirm: 24 * 60 * 60_000,
   reset: 30 * 60_000,
+  email_change: 24 * 60 * 60_000,
 };
 
 export type TokenRecord = {

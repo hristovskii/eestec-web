@@ -62,6 +62,19 @@ export interface ApplicationsRepository {
   setStatus(eventId: string, ids: readonly string[], status: ApplicationStatus): Promise<string[]>;
   /** The admin opened it: it is no longer "new". */
   markRead(id: string, now: Date): Promise<void>;
+  /**
+   * The applications one person sent (matched by e-mail, as the form does), newest first. For
+   * "My applications" on /profile.
+   */
+  listByEmail(email: string): Promise<Application[]>;
+  /**
+   * The applicant takes an application back (also: leaves the waitlist). It is deleted, not marked:
+   * the status list is decided, and nobody has to see a withdrawn application. The waitlist closes
+   * the gap. Only the person whose e-mail it carries can do it.
+   */
+  withdraw(id: string, email: string): Promise<'withdrawn' | 'not_found'>;
+  /** Account deletion: every application of this e-mail and its uploaded files. Returns how many. */
+  deleteByEmail(email: string): Promise<number>;
   /** An uploaded file with its content (admin download). */
   getFile(fileId: string): Promise<StoredUpload | null>;
   /** The application a file was sent with (whose event decides who may download it). */

@@ -117,7 +117,7 @@ export type SignInMemberResult =
   | { status: 'use_admin_login' }
   | { status: 'unavailable' };
 
-export type TokenKind = 'confirm' | 'reset';
+export type TokenKind = 'confirm' | 'reset' | 'email_change';
 
 /** What a link in an e-mail points at, before it is used. */
 export type TokenPeek =
@@ -150,4 +150,47 @@ export type ApprovedMemberIdentity = {
   /** Where the sign-up photo is served from; null: none. */
   photoUrl: string | null;
   approvedAt: string;
+};
+
+// ─── My profile (M16): contact details, password, e-mail change, deleting the account ───
+
+/** What the member keeps in their account and can change on /profile. Never shown publicly. */
+export type AccountDetails = {
+  userId: string;
+  email: string;
+  /** '' when not given. */
+  phone: string;
+  year: MemberYear | null;
+  /** When the account consent was given (at sign-up). */
+  dataConsentAt: string | null;
+  passwordChangedAt: string | null;
+};
+
+export type AccountDetailsPatch = { phone?: string; year?: MemberYear };
+
+/**
+ * Checking the current password (before changing it, changing the e-mail or deleting the account).
+ * Wrong tries count like at sign-in: 5 tries, then 15 minutes.
+ */
+export type PasswordCheck = { status: 'ok' } | { status: 'invalid' } | { status: 'locked'; minutes: number };
+
+export type RequestEmailChangeResult =
+  | { status: 'sent' }
+  | { status: 'email_taken' }
+  | { status: 'same' }
+  | Exclude<PasswordCheck, { status: 'ok' }>;
+
+export type ConfirmEmailChangeResult = { status: 'changed'; email: string } | { status: 'expired' };
+
+export type DeleteAccountResult =
+  | { status: 'deleted'; name: string; email: string; locale: 'mk' | 'en' }
+  | { status: 'not_found' }
+  /** Board accounts are removed in Admin › Users & roles. */
+  | { status: 'staff' };
+
+/** Everything the account itself stores about a person (for "Download my data"). */
+export type AccountExport = {
+  account: { userId: string; name: string; email: string; username: string };
+  registration: MemberRegistration | null;
+  details: AccountDetails;
 };

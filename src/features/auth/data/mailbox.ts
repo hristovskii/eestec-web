@@ -6,7 +6,7 @@ import { mockTable } from '@/shared/data/mock/store';
 // member flow would send is kept here with its link, so a person (devtools panel) or a test
 // (`/api/dev-mailbox`) can open the link. Dev and preview only.
 
-export type MockMailKind = 'confirm' | 'reset' | 'approved' | 'rejected';
+export type MockMailKind = 'confirm' | 'reset' | 'approved' | 'rejected' | 'email_change' | 'deleted';
 
 export type MockMail = {
   id: string;

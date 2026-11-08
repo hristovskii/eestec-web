@@ -4,7 +4,7 @@
 // calls him the event-manager persona, so here he is a second, separate account waiting for approval
 // (same name, other e-mail). The three tokens exist so the expired and valid link screens can be
 // opened without waiting 24 hours. The e-mail address of Daniel and all tokens are mine.
-import type { MemberRegistration } from '../../types';
+import type { MemberRegistration, MemberYear } from '../../types';
 import type { AccountRecord } from './accounts';
 
 export const registrationsFixture: MemberRegistration[] = [
@@ -89,3 +89,21 @@ export const tokensFixture = [
     usedAt: null,
   },
 ];
+
+/**
+ * SAMPLE DATA — the contact details and dates of the sample persona on /profile
+ * (handoff/design-source/MyProfile.dc.html): phone "070 123 456", 3rd year, account consent given on
+ * 12 Oct 2023, password last changed "4 months ago" (counted from the sample date, 8 Jul 2026).
+ * Marija has no registration record, so these live here.
+ */
+export const accountDetailsFixture: Record<
+  string,
+  { phone?: string; year?: MemberYear; dataConsentAt?: string; passwordChangedAt?: string }
+> = {
+  'u-marija': {
+    phone: '070 123 456',
+    year: '3',
+    dataConsentAt: '2023-10-12T18:00:00+02:00',
+    passwordChangedAt: '2026-07-08T10:00:00+02:00',
+  },
+};

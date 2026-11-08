@@ -9,6 +9,8 @@ describe('tokens', () => {
   it('confirmation links work for 24 hours, reset links for 30 minutes', () => {
     expect(TOKEN_TTL_MS.confirm).toBe(24 * 3_600_000);
     expect(TOKEN_TTL_MS.reset).toBe(30 * 60_000);
+    // A new e-mail address is confirmed like the one at sign-up.
+    expect(TOKEN_TTL_MS.email_change).toBe(24 * 3_600_000);
     const confirm = newToken('confirm', who, now);
     const reset = newToken('reset', who, now);
     const at = (minutes: number) => new Date(now.getTime() + minutes * 60_000);

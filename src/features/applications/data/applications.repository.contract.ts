@@ -210,5 +210,47 @@ export function describeApplicationsRepository(
       );
       expect(await repo.getForm('ev-unknown')).toBeNull();
     });
+
+    it("lists the applications of one e-mail, newest first, and nobody else's", async () => {
+      const repo = await createRepo();
+      const mine = input();
+      await repo.submit(mine, NOW);
+      await repo.submit({ ...mine, eventId: `ev-contract-${unique()}` }, new Date(NOW.getTime() + 60_000));
+      await repo.submit(input(), NOW);
+      const rows = await repo.listByEmail(mine.email.toUpperCase());
+      expect(rows).toHaveLength(2);
+      expect(rows[0]!.createdAt > rows[1]!.createdAt).toBe(true);
+      expect(await repo.listByEmail(`nobody-${unique()}@example.com`)).toEqual([]);
+    });
+
+    it('lets the applicant withdraw, closes the waitlist gap, and refuses anyone else', async () => {
+      const repo = await createRepo();
+      const event = input({ maxParticipants: 0 });
+      const a = await repo.submit(event, NOW);
+      const b = await repo.submit({ ...event, email: `b-${unique()}@example.com` }, NOW);
+      const c = await repo.submit({ ...event, email: `c-${unique()}@example.com` }, NOW);
+      if (a.status !== 'created' || b.status !== 'created' || c.status !== 'created')
+        throw new Error('setup');
+      expect(await repo.withdraw(a.application.id, 'stranger@example.com')).toBe('not_found');
+      expect(await repo.get(a.application.id)).not.toBeNull();
+      expect(await repo.withdraw(a.application.id, event.email)).toBe('withdrawn');
+      expect(await repo.get(a.application.id)).toBeNull();
+      expect((await repo.get(b.application.id))?.waitlistPosition).toBe(1);
+      expect((await repo.get(c.application.id))?.waitlistPosition).toBe(2);
+      expect(await repo.withdraw(a.application.id, event.email)).toBe('not_found');
+    });
+
+    it('deletes every application of an e-mail (account deletion)', async () => {
+      const repo = await createRepo();
+      const mine = input();
+      await repo.submit(mine, NOW);
+      await repo.submit({ ...mine, eventId: `ev-contract-${unique()}` }, NOW);
+      const other = input();
+      await repo.submit(other, NOW);
+      expect(await repo.deleteByEmail(mine.email)).toBe(2);
+      expect(await repo.listByEmail(mine.email)).toEqual([]);
+      expect(await repo.listByEmail(other.email)).toHaveLength(1);
+      expect(await repo.deleteByEmail(mine.email)).toBe(0);
+    });
   });
 }

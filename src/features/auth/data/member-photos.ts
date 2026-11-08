@@ -18,3 +18,11 @@ export function saveMockMemberPhoto(photo: MemberPhoto): string {
 export const readMockMemberPhoto = (id: string): MemberPhoto | null => table().files[id] ?? null;
 
 export const photoUrl = (id: string) => `/api/dev-member-photos/${id}`;
+
+export function deleteMockMemberPhoto(id: string): void {
+  delete table().files[id];
+}
+
+/** The id inside a photo address made by `photoUrl`; null for any other address. */
+export const photoIdFromUrl = (url: string | null): string | null =>
+  url?.startsWith('/api/dev-member-photos/') ? url.slice('/api/dev-member-photos/'.length) : null;
