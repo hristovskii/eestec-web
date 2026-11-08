@@ -18,11 +18,11 @@ export async function submitNewMemory(page: Page, title: string) {
   await expect(page.locator('#me-title')).toBeVisible();
   await expect(page.locator('#me-text')).toBeVisible();
   await page.locator('#me-title').fill(title);
-  const powerUp = await page
-    .locator('#me-event option', { hasText: 'Power Up' })
-    .first()
-    .getAttribute('value');
-  await page.locator('#me-event').selectOption(powerUp);
+  // "Other": a Memory of a test must not turn up in the lists of the sample events.
+  await page.locator('#me-event').selectOption('__other__');
+  await page.locator('#me-other').fill('A trip of the test');
+  await page.locator('#me-city').fill('Bitola');
+  await page.locator('#me-country').fill('North Macedonia');
   await page.locator('#me-text').click();
   await page.keyboard.type('We took the bus and nobody wanted to get off.');
   await page.locator('#me-photos-cover-file').setInputFiles(PNG('cover.png'));

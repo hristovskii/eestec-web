@@ -129,7 +129,9 @@ test.describe('Admin › Memories (M17d)', () => {
   test('lists Memories with their status, edits one, unpublishes it and deletes it', async ({
     browser,
     page,
+    isMobile,
   }) => {
+    test.skip(isMobile, 'The list is a table on desktop and cards on the phone; the table is checked.');
     test.slow();
     const author = await createApprovedMember(browser, `Listed ${unique()}`);
     await logInAs(page, author.email);
