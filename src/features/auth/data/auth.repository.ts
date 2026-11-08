@@ -1,5 +1,12 @@
 import type {
+  AccountDetails,
+  AccountDetailsPatch,
+  AccountExport,
   AdminAccount,
+  ConfirmEmailChangeResult,
+  DeleteAccountResult,
+  PasswordCheck,
+  RequestEmailChangeResult,
   ApprovedMemberIdentity,
   AdminRole,
   ConfirmResult,
@@ -57,6 +64,41 @@ export interface AuthRepository {
   peekToken(input: { token: string; kind: TokenKind; now: Date }): Promise<TokenPeek>;
   /** Chooses a new password with a reset link; a member is signed in afterwards. */
   resetPassword(input: { token: string; password: string; now: Date }): Promise<ResetPasswordResult>;
+
+  // My profile (M16): the member's own account. The caller has checked who is signed in.
+  getAccountDetails(userId: string): Promise<AccountDetails | null>;
+  updateAccountDetails(userId: string, patch: AccountDetailsPatch): Promise<AccountDetails | null>;
+  /** Is this profile address used by another account? (The Members feature checks its own profiles.) */
+  usernameTaken(userId: string, username: string): Promise<boolean>;
+  /** The name and profile address the person chose on /profile (they show in the header and in links). */
+  updateIdentity(
+    userId: string,
+    patch: { name?: string; username?: string },
+  ): Promise<'ok' | 'taken' | 'not_found'>;
+  /** Wrong tries count like at sign-in (5 tries, then 15 minutes). */
+  verifyPassword(input: { userId: string; password: string; now: Date }): Promise<PasswordCheck>;
+  /** `ok`: the password is changed. The new one's strength is checked by the caller. */
+  changePassword(input: { userId: string; current: string; next: string; now: Date }): Promise<PasswordCheck>;
+  /**
+   * Sends a link to the NEW address; the address changes when the link is used (24 h). Until then the
+   * old address keeps working. Needs the current password.
+   */
+  requestEmailChange(input: {
+    userId: string;
+    newEmail: string;
+    password: string;
+    locale: 'mk' | 'en';
+    now: Date;
+  }): Promise<RequestEmailChangeResult>;
+  confirmEmailChange(input: { token: string; now: Date }): Promise<ConfirmEmailChangeResult>;
+  /**
+   * Removes the account, the sign-up record, links, password and sign-up photo, and sends a
+   * confirmation to the old address. Board accounts are removed in Admin › Users & roles. The caller
+   * has checked the password and clears the session.
+   */
+  deleteAccount(input: { userId: string; now: Date }): Promise<DeleteAccountResult>;
+  /** What the account itself stores about a person ("Download my data"). */
+  exportAccount(userId: string): Promise<AccountExport | null>;
 
   // Approvals › Member registrations (callers check the permission).
   /** Oldest first. Without `status`, every registration. */

@@ -22,7 +22,13 @@ export {
 export { LOCKOUT } from './domain/lockout';
 export { hasSessionCookie } from './session-cookie';
 export type {
+  AccountDetails,
+  AccountExport,
   AdminAccount,
+  ConfirmEmailChangeResult,
+  DeleteAccountResult,
+  PasswordCheck,
+  RequestEmailChangeResult,
   ApprovedMemberIdentity,
   MemberRegistration,
   MemberVisibility,

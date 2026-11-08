@@ -7,13 +7,46 @@ import { slugify } from '@/shared/lib/slug';
 import { adminMembers } from '../domain/admin-directory';
 import { type Directory, activeMembers, alumniList, boardView, profileResult } from '../domain/directory';
 import { canSee } from '../domain/visibility';
-import type { Badge, BoardMandate, Profile, Team } from '../types';
+import { isReservedUsername } from '../domain/profile-self';
+import type {
+  Badge,
+  BoardMandate,
+  CvInfo,
+  MemberConsents,
+  MineContext,
+  Profile,
+  SelfEdit,
+  Team,
+} from '../types';
 import { mandatesFixture } from './fixtures/board';
+import { consentsFixture, cvsFixture } from './fixtures/me';
 import { profilesFixture } from './fixtures/profiles';
 import { badgesFixture, teamsFixture } from './fixtures/teams';
 import type { MembersRepository } from './members.repository';
 
-type Tables = { profiles: Profile[]; teams: Team[]; badges: Badge[]; mandates: BoardMandate[] };
+/** What a person waiting for the board has written so far (merged into the profile at approval). */
+type Draft = Partial<
+  Pick<Profile, 'name' | 'username' | 'bio' | 'linkedinUrl' | 'githubUrl' | 'faculty' | 'visibility'>
+> & { photo?: Profile['photo'] };
+
+type Tables = {
+  profiles: Profile[];
+  teams: Team[];
+  badges: Badge[];
+  mandates: BoardMandate[];
+  drafts: Record<string, Draft>;
+  consents: Record<string, MemberConsents>;
+  cvs: Record<string, { info: CvInfo; bytes: Uint8Array | null }>;
+  /** Partners' CV exports (the admin export that writes here comes later): [{ userId, at }]. */
+  cvExports: { userId: string; at: string }[];
+};
+
+const NO_CONSENTS: MemberConsents = {
+  newsletter: false,
+  galleryName: false,
+  cvOptIn: false,
+  cvConsentAt: null,
+};
 
 const tables = () =>
   mockTable<Tables>('members', () => ({
@@ -21,6 +54,10 @@ const tables = () =>
     teams: teamsFixture,
     badges: badgesFixture,
     mandates: mandatesFixture,
+    drafts: {},
+    consents: consentsFixture,
+    cvs: cvsFixture,
+    cvExports: [],
   }));
 
 /**
@@ -52,16 +89,64 @@ export function profileFromIdentity(identity: ApprovedMemberIdentity): Profile {
   };
 }
 
+/** The profile a person has before anything is stored: what they gave at sign-up, no team, member since then. */
+function profileFromContext(who: MineContext): Profile {
+  return {
+    userId: who.userId,
+    username: who.username,
+    name: who.name,
+    photo: who.photoUrl ? { src: who.photoUrl } : null,
+    hidePhoto: false,
+    bio: '',
+    hideBio: false,
+    linkedinUrl: '',
+    githubUrl: '',
+    visibility: who.visibility,
+    // Waiting for the board: nobody sees it.
+    status: who.pending ? 'inactive' : 'active',
+    memberSince: who.since.slice(0, 10),
+    activeTo: null,
+    alumniNow: null,
+    alumniHighlight: null,
+    faculty: who.faculty,
+    teams: [],
+    badges: [],
+    events: [],
+  };
+}
+
+function withDraft(profile: Profile, draft: Draft | undefined): Profile {
+  if (!draft) return profile;
+  const { photo, ...text } = draft;
+  return { ...profile, ...text, ...(photo !== undefined ? { photo } : {}) };
+}
+
 export function createMockMembersRepository(
   approvedIdentities: () => Promise<ApprovedMemberIdentity[]> = () => Promise.resolve([]),
 ): MembersRepository {
   const db = tables();
 
+  const usernameAvailable = async (userId: string, username: string) =>
+    !(await directory()).profiles.some(
+      (profile) => profile.userId !== userId && profile.username === username,
+    );
+
+  /** The person's stored profile; the first time, it is made from what they gave at sign-up plus their draft. */
+  const storedProfile = (who: MineContext): Profile => {
+    let profile = db.profiles.find((item) => item.userId === who.userId);
+    if (!profile) {
+      profile = withDraft(profileFromContext(who), db.drafts[who.userId]);
+      db.profiles.push(profile);
+      delete db.drafts[who.userId];
+    }
+    return profile;
+  };
+
   const directory = async (): Promise<Directory> => {
     const stored = new Set(db.profiles.map((profile) => profile.userId));
     const adopted = (await approvedIdentities())
       .filter((identity) => !stored.has(identity.userId))
-      .map(profileFromIdentity);
+      .map((identity) => withDraft(profileFromIdentity(identity), db.drafts[identity.userId]));
     return {
       profiles: [...db.profiles, ...adopted],
       teams: db.teams,
@@ -299,6 +384,120 @@ export function createMockMembersRepository(
         mandate.seats = [...listed, ...mandate.seats.filter((seat) => !seatIds.includes(seat.id))];
       }
       return Promise.resolve();
+    },
+
+    // ─── My profile ───
+    getMine(who, year) {
+      const stored = db.profiles.find((item) => item.userId === who.userId);
+      const profile = stored ?? withDraft(profileFromContext(who), db.drafts[who.userId]);
+      return Promise.resolve(
+        structuredClone({
+          profile,
+          pending: who.pending,
+          consents: db.consents[who.userId] ?? NO_CONSENTS,
+          cv: db.cvs[who.userId]?.info ?? null,
+          cvViewsThisYear: db.cvExports.filter(
+            (entry) => entry.userId === who.userId && new Date(entry.at).getFullYear() === year,
+          ).length,
+        }),
+      );
+    },
+
+    usernameAvailable,
+
+    async updateMine(who, edit: SelfEdit) {
+      if (isReservedUsername(edit.username)) return { status: 'username_reserved' as const };
+      if (!(await usernameAvailable(who.userId, edit.username))) return { status: 'username_taken' as const };
+      const fields = {
+        name: edit.name,
+        username: edit.username,
+        bio: edit.bio,
+        linkedinUrl: edit.linkedinUrl,
+        githubUrl: edit.githubUrl,
+        faculty: edit.faculty,
+      };
+      if (who.pending) {
+        const draft = (db.drafts[who.userId] ??= {});
+        Object.assign(draft, fields);
+        return {
+          status: 'saved' as const,
+          profile: structuredClone(withDraft(profileFromContext(who), draft)),
+        };
+      }
+      const profile = storedProfile(who);
+      Object.assign(profile, fields);
+      return { status: 'saved' as const, profile: structuredClone(profile) };
+    },
+
+    setVisibility(who, visibility) {
+      if (who.pending) (db.drafts[who.userId] ??= {}).visibility = visibility;
+      else storedProfile(who).visibility = visibility;
+      return Promise.resolve();
+    },
+
+    setPhoto(who, photoUrl) {
+      const next = photoUrl ? { src: photoUrl } : null;
+      if (who.pending) {
+        const draft = (db.drafts[who.userId] ??= {});
+        const before = draft.photo !== undefined ? draft.photo : who.photoUrl ? { src: who.photoUrl } : null;
+        draft.photo = next;
+        return Promise.resolve(before?.src ?? null);
+      }
+      const profile = storedProfile(who);
+      const before = profile.photo?.src ?? null;
+      profile.photo = next;
+      return Promise.resolve(before);
+    },
+
+    setConsents(userId, patch, now) {
+      const consents = (db.consents[userId] ??= { ...NO_CONSENTS });
+      if (patch.newsletter !== undefined) consents.newsletter = patch.newsletter;
+      if (patch.galleryName !== undefined) consents.galleryName = patch.galleryName;
+      if (patch.cvOptIn !== undefined && patch.cvOptIn !== consents.cvOptIn) {
+        consents.cvOptIn = patch.cvOptIn;
+        consents.cvConsentAt = patch.cvOptIn ? now.toISOString() : null;
+        // Off means the file goes now, not at the next clean-up.
+        if (!patch.cvOptIn) delete db.cvs[userId];
+      }
+      return Promise.resolve({ ...consents });
+    },
+
+    storeCv(userId, file, now) {
+      if (!db.consents[userId]?.cvOptIn) return Promise.resolve({ status: 'not_opted_in' as const });
+      const info: CvInfo = {
+        fileName: file.fileName,
+        size: file.bytes.byteLength,
+        uploadedAt: now.toISOString(),
+      };
+      db.cvs[userId] = { info, bytes: file.bytes };
+      return Promise.resolve({ status: 'stored' as const, cv: { ...info } });
+    },
+
+    removeCv(userId) {
+      const had = userId in db.cvs;
+      delete db.cvs[userId];
+      return Promise.resolve(had);
+    },
+
+    getCvFile(userId) {
+      const entry = db.cvs[userId];
+      return Promise.resolve(
+        entry ? { fileName: entry.info.fileName, size: entry.info.size, bytes: entry.bytes } : null,
+      );
+    },
+
+    deleteMine(userId) {
+      const stored = db.profiles.find((item) => item.userId === userId);
+      const draftPhoto = db.drafts[userId]?.photo;
+      const photoUrl = stored ? (stored.photo?.src ?? null) : (draftPhoto?.src ?? null);
+      if (stored) db.profiles.splice(db.profiles.indexOf(stored), 1);
+      delete db.drafts[userId];
+      delete db.consents[userId];
+      delete db.cvs[userId];
+      db.cvExports = db.cvExports.filter((entry) => entry.userId !== userId);
+      for (const mandate of db.mandates)
+        mandate.seats = mandate.seats.filter((seat) => seat.userId !== userId);
+      return Promise.resolve({ photoUrl });
     },
 
     async listPublicUsernames() {

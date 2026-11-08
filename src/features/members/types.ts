@@ -359,3 +359,64 @@ export type SaveSeatResult =
 
 /** Everyone a seat can go to (active members and alumni), by name. */
 export type BoardPerson = { userId: string; name: string };
+
+// ─── My profile (M16): what a member edits about themselves ───
+
+/** Marketing and sharing choices. Everything is off until the member turns it on (data-model.md). */
+export type MemberConsents = {
+  /** E-mails about new events and calls (the jobs that send them come in M22). */
+  newsletter: boolean;
+  /** "Name me in event photo galleries". */
+  galleryName: boolean;
+  /** Share the CV with Main-package partners (D9: the board exports it; every export is logged). */
+  cvOptIn: boolean;
+  /** When CV sharing was turned on; null while it is off. */
+  cvConsentAt: string | null;
+};
+
+/** The CV file as the member sees it (the file itself is private). */
+export type CvInfo = { fileName: string; size: number; uploadedAt: string };
+
+/**
+ * Who the person is in `auth` (name, address, faculty, what they chose at sign-up, the sign-up
+ * photo). A person the board has not approved yet has no profile, only a draft on top of this.
+ */
+export type MineContext = {
+  userId: string;
+  name: string;
+  username: string;
+  faculty: string;
+  visibility: ProfileVisibility;
+  /** Address of the sign-up photo; null: none. */
+  photoUrl: string | null;
+  /** ISO date: when the account was approved (or created, while it is pending). */
+  since: string;
+  /** Waiting for the board: edits go to the draft and nobody else can see the profile. */
+  pending: boolean;
+};
+
+/** What a member edits on their own profile (phone and year stay in `auth`). */
+export type SelfEdit = {
+  name: string;
+  username: string;
+  bio: string;
+  linkedinUrl: string;
+  githubUrl: string;
+  faculty: string;
+};
+
+export type MineView = {
+  profile: Profile;
+  pending: boolean;
+  consents: MemberConsents;
+  cv: CvInfo | null;
+  /** Times partners' exports included the CV this year (the export log; empty until the admin export exists). */
+  cvViewsThisYear: number;
+};
+
+export type UpdateMineResult =
+  { status: 'saved'; profile: Profile } | { status: 'username_taken' } | { status: 'username_reserved' };
+
+export type ConsentPatch = Partial<Pick<MemberConsents, 'newsletter' | 'galleryName' | 'cvOptIn'>>;
+
+export type StoreCvResult = { status: 'stored'; cv: CvInfo } | { status: 'not_opted_in' };

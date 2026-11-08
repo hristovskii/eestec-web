@@ -1,6 +1,7 @@
 import 'server-only';
 
 export { membersCsvResponse } from './export';
+export { getMineContext, getMyProfile, type MyProfileData } from './my-profile';
 export {
   getAdminBoards,
   getAudience,

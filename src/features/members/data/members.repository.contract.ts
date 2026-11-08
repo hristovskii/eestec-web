@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import type { ActiveMembersQuery, AdminMembersQuery, Profile, ProfileEdit } from '../types';
+import type {
+  ActiveMembersQuery,
+  AdminMembersQuery,
+  MineContext,
+  Profile,
+  ProfileEdit,
+  SelfEdit,
+} from '../types';
 import type { MembersRepository } from './members.repository';
 
 // Runs against every implementation (mock now, Supabase later). Read-only: the sample data decides
@@ -584,6 +591,171 @@ export function describeMembersRepository(
           }
           expect((await repo.getBoard()).selected?.label).toBe('2026/2027');
         });
+      });
+    });
+
+    describe('my profile (M16)', () => {
+      const person = (patch: Partial<MineContext> = {}): MineContext => {
+        const id = unique();
+        return {
+          userId: `u-me-${id}`,
+          name: `Test Person ${id}`,
+          username: `test-person-${id}`,
+          faculty: 'FEEIT',
+          visibility: 'members_only',
+          photoUrl: null,
+          since: '2026-10-05',
+          pending: false,
+          ...patch,
+        };
+      };
+      const edit = (who: MineContext, patch: Partial<SelfEdit> = {}): SelfEdit => ({
+        name: who.name,
+        username: who.username,
+        bio: '',
+        linkedinUrl: '',
+        githubUrl: '',
+        faculty: who.faculty,
+        ...patch,
+      });
+
+      it('starts from what the person gave at sign-up, with every choice off', async () => {
+        const repo = await createRepo();
+        const who = person({ photoUrl: '/api/dev-member-photos/abc' });
+        const mine = await repo.getMine(who, 2026);
+        expect(mine.profile).toMatchObject({
+          name: who.name,
+          username: who.username,
+          bio: '',
+          visibility: 'members_only',
+          photo: { src: '/api/dev-member-photos/abc' },
+          memberSince: '2026-10-05',
+        });
+        expect(mine.pending).toBe(false);
+        expect(mine.consents).toEqual({
+          newsletter: false,
+          galleryName: false,
+          cvOptIn: false,
+          cvConsentAt: null,
+        });
+        expect(mine.cv).toBeNull();
+        expect(mine.cvViewsThisYear).toBe(0);
+      });
+
+      it('saves the edits, and the profile then shows them to members', async () => {
+        const repo = await createRepo();
+        const who = person();
+        const result = await repo.updateMine(
+          who,
+          edit(who, { bio: 'Hello', githubUrl: 'https://github.com/test', username: `new-${unique()}` }),
+        );
+        expect(result.status).toBe('saved');
+        if (result.status !== 'saved') return;
+        const mine = await repo.getMine(who, 2026);
+        expect(mine.profile).toMatchObject({ bio: 'Hello', githubUrl: 'https://github.com/test' });
+        const seen = await repo.getProfile('member', result.profile.username, 2026);
+        expect(seen).toMatchObject({ kind: 'full', profile: { bio: 'Hello' } });
+        // The old address is gone.
+        expect(await repo.getProfile('member', who.username, 2026)).toBeNull();
+      });
+
+      it("refuses an address that another profile has, or that is reserved, and keeps one's own", async () => {
+        const repo = await createRepo();
+        const who = person();
+        expect(await repo.updateMine(who, edit(who, { username: 'marija-stojanovska' }))).toEqual({
+          status: 'username_taken',
+        });
+        expect(await repo.updateMine(who, edit(who, { username: 'admin' }))).toEqual({
+          status: 'username_reserved',
+        });
+        expect(await repo.usernameAvailable(who.userId, 'marija-stojanovska')).toBe(false);
+        expect(await repo.usernameAvailable('u-marija', 'marija-stojanovska')).toBe(true);
+        expect((await repo.updateMine(who, edit(who))).status).toBe('saved');
+      });
+
+      it('keeps what a person waiting for the board writes as a draft nobody sees, and uses it at approval', async () => {
+        const repo = await createRepo();
+        const waiting = person({ pending: true });
+        await repo.updateMine(waiting, edit(waiting, { bio: 'Waiting bio' }));
+        await repo.setVisibility(waiting, 'public');
+        expect((await repo.getMine(waiting, 2026)).profile).toMatchObject({
+          bio: 'Waiting bio',
+          visibility: 'public',
+          status: 'inactive',
+        });
+        // Nobody else sees a draft.
+        expect(await repo.getProfile('member', waiting.username, 2026)).toBeNull();
+        // Approved: the same person, no longer pending, keeps the draft.
+        const approved = { ...waiting, pending: false };
+        const mine = await repo.getMine(approved, 2026);
+        expect(mine.profile).toMatchObject({ bio: 'Waiting bio', visibility: 'public', status: 'active' });
+        await repo.updateMine(approved, edit(approved, { bio: 'Now active' }));
+        expect(await repo.getProfile('visitor', waiting.username, 2026)).toMatchObject({
+          kind: 'full',
+          profile: { bio: 'Now active', visibility: 'public' },
+        });
+      });
+
+      it('changes visibility and the photo, and says which photo the old one was', async () => {
+        const repo = await createRepo();
+        const who = person({ photoUrl: '/api/dev-member-photos/one' });
+        await repo.setVisibility(who, 'public');
+        expect((await repo.getMine(who, 2026)).profile.visibility).toBe('public');
+        expect(await repo.setPhoto(who, '/api/dev-member-photos/two')).toBe('/api/dev-member-photos/one');
+        expect((await repo.getMine(who, 2026)).profile.photo).toEqual({ src: '/api/dev-member-photos/two' });
+        expect(await repo.setPhoto(who, null)).toBe('/api/dev-member-photos/two');
+        expect((await repo.getMine(who, 2026)).profile.photo).toBeNull();
+        expect(await repo.setPhoto(who, null)).toBeNull();
+      });
+
+      it('records when CV sharing was turned on, takes a PDF only while it is on, and deletes it when turned off', async () => {
+        const repo = await createRepo();
+        const who = person();
+        const file = { fileName: 'cv.pdf', bytes: new Uint8Array([37, 80, 68, 70, 45]) };
+        expect(await repo.storeCv(who.userId, file, NOW)).toEqual({ status: 'not_opted_in' });
+        const on = await repo.setConsents(who.userId, { cvOptIn: true, newsletter: true }, NOW);
+        expect(on).toEqual({
+          newsletter: true,
+          galleryName: false,
+          cvOptIn: true,
+          cvConsentAt: NOW.toISOString(),
+        });
+        expect(await repo.storeCv(who.userId, file, NOW)).toMatchObject({
+          status: 'stored',
+          cv: { fileName: 'cv.pdf', size: 5 },
+        });
+        expect((await repo.getMine(who, 2026)).cv).toMatchObject({ fileName: 'cv.pdf' });
+        expect((await repo.getCvFile(who.userId))?.bytes).toEqual(file.bytes);
+        // Turning on again does not change the date.
+        const later = new Date(NOW.getTime() + 60_000);
+        expect((await repo.setConsents(who.userId, { cvOptIn: true }, later)).cvConsentAt).toBe(
+          NOW.toISOString(),
+        );
+        const off = await repo.setConsents(who.userId, { cvOptIn: false }, later);
+        expect(off).toMatchObject({ cvOptIn: false, cvConsentAt: null, newsletter: true });
+        expect(await repo.getCvFile(who.userId)).toBeNull();
+      });
+
+      it('removes the CV file and leaves sharing on', async () => {
+        const repo = await createRepo();
+        const who = person();
+        await repo.setConsents(who.userId, { cvOptIn: true }, NOW);
+        await repo.storeCv(who.userId, { fileName: 'a.pdf', bytes: new Uint8Array(3) }, NOW);
+        expect(await repo.removeCv(who.userId)).toBe(true);
+        expect(await repo.removeCv(who.userId)).toBe(false);
+        expect((await repo.getMine(who, 2026)).consents.cvOptIn).toBe(true);
+      });
+
+      it('deletes the profile, choices and CV, and gives up a seat on a board', async () => {
+        const repo = await createRepo();
+        const who = person({ photoUrl: '/api/dev-member-photos/gone' });
+        await repo.updateMine(who, edit(who, { bio: 'bye' }));
+        await repo.setConsents(who.userId, { cvOptIn: true }, NOW);
+        await repo.storeCv(who.userId, { fileName: 'a.pdf', bytes: new Uint8Array(3) }, NOW);
+        expect(await repo.deleteMine(who.userId)).toEqual({ photoUrl: '/api/dev-member-photos/gone' });
+        expect(await repo.getProfile('member', who.username, 2026)).toBeNull();
+        expect(await repo.getCvFile(who.userId)).toBeNull();
+        expect((await repo.getMine(who, 2026)).consents.cvOptIn).toBe(false);
       });
     });
   });

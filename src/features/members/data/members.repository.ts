@@ -14,6 +14,14 @@ import type {
   BoardMandate,
   BoardPerson,
   BoardView,
+  ConsentPatch,
+  MemberConsents,
+  MineContext,
+  MineView,
+  ProfileVisibility,
+  SelfEdit,
+  StoreCvResult,
+  UpdateMineResult,
   MandateInput,
   Profile,
   ProfileEdit,
@@ -87,4 +95,28 @@ export interface MembersRepository {
   saveSeat(mandateId: string, input: SeatInput, seatId?: string): Promise<SaveSeatResult>;
   removeSeat(mandateId: string, seatId: string): Promise<boolean>;
   reorderSeats(mandateId: string, seatIds: readonly string[]): Promise<void>;
+
+  // My profile (M16): the signed-in member's own data. Callers have checked who is signed in, and
+  // pass who that person is in `auth`. A person waiting for the board has no profile yet: what they
+  // write is kept as a draft that becomes the profile when the board approves them.
+  getMine(who: MineContext, year: number): Promise<MineView>;
+  /** Is this address free for this person? (Other profiles, stored or approved but not stored yet.) */
+  usernameAvailable(userId: string, username: string): Promise<boolean>;
+  updateMine(who: MineContext, edit: SelfEdit): Promise<UpdateMineResult>;
+  setVisibility(who: MineContext, visibility: ProfileVisibility): Promise<void>;
+  /** A new photo address (null removes the photo). Returns the address the old photo had, to delete its file. */
+  setPhoto(who: MineContext, photoUrl: string | null): Promise<string | null>;
+  /**
+   * Turning CV sharing on records when; turning it off deletes the CV file (decided: partners lose
+   * access at once). E-mails and gallery names are plain choices.
+   */
+  setConsents(userId: string, patch: ConsentPatch, now: Date): Promise<MemberConsents>;
+  /** Replaces the CV file; only while CV sharing is on. */
+  storeCv(userId: string, file: { fileName: string; bytes: Uint8Array }, now: Date): Promise<StoreCvResult>;
+  /** Deletes the CV file and leaves sharing on (the upload box comes back). */
+  removeCv(userId: string): Promise<boolean>;
+  /** The CV with its content (null content: the sample file has none), for "Download my data". */
+  getCvFile(userId: string): Promise<{ fileName: string; size: number; bytes: Uint8Array | null } | null>;
+  /** Deleting the account: the profile or draft, choices and CV go; seats on a board are given up. */
+  deleteMine(userId: string): Promise<{ photoUrl: string | null }>;
 }

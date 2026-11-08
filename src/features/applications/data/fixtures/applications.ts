@@ -46,7 +46,12 @@ const batches: Batch[] = [
     startsAt: '2026-11-14T00:00:00+01:00',
     from: '2026-09-25T10:00:00+02:00',
     to: '2026-10-04T15:10:00+02:00',
-    statuses: [['pending', 23]],
+    // One of them is already accepted (Marija's, see MARIJA below); the total stays 23.
+    statuses: [
+      ['pending', 14],
+      ['accepted', 1],
+      ['pending', 8],
+    ],
     unread: 4,
   },
   {
@@ -81,6 +86,16 @@ const batches: Batch[] = [
   },
 ];
 
+/**
+ * SAMPLE DATA — the three applications "My applications" shows on /profile
+ * (handoff/design-source/MyProfile.dc.html): AI at the Edge pending, FPGA Basics waitlist #3, Leading
+ * Teams accepted. They are rows of the batches above that carry the sample member's name and
+ * e-mail (applications belong to an e-mail), so every event keeps its total. The dates are the
+ * generated ones (the canvas says 3 Oct, 28 Sep and 20 Sep).
+ */
+const MARIJA = { name: 'Marija Stojanovska', email: 'marija.s@students.feit.ukim.edu.mk' };
+const MARIJA_ROWS = new Set(['app-aie-24', 'app-fpg-23', 'app-lea-15']);
+
 function rows(batch: Batch): Application[] {
   const total = batch.statuses.reduce((sum, [, count]) => sum + count, 0);
   const from = Date.parse(batch.from);
@@ -94,8 +109,12 @@ function rows(batch: Batch): Application[] {
       id: `app-${batch.prefix.toLowerCase()}-${number}`,
       eventId: batch.eventId,
       reference: formatReference(batch.prefix, batch.startsAt, index + 1),
-      name: `Sample applicant ${number}`,
-      email: `applicant${number}.${batch.prefix.toLowerCase()}@example.com`,
+      ...(MARIJA_ROWS.has(`app-${batch.prefix.toLowerCase()}-${number}`)
+        ? MARIJA
+        : {
+            name: `Sample applicant ${number}`,
+            email: `applicant${number}.${batch.prefix.toLowerCase()}@example.com`,
+          }),
       answers: {},
       status,
       waitlistPosition: status === 'waitlist' ? ++waitlisted : null,

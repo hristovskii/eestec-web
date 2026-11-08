@@ -8,7 +8,22 @@ export {
   updateAdminAccount,
 } from './admin-accounts';
 export { adminSignInAvailable } from './availability';
-export { authorize, requirePermission, requireStaff } from './guards';
+export { authorize, currentMember, requireMember, requirePermission, requireStaff } from './guards';
+export {
+  changeMemberPassword,
+  confirmEmailChange,
+  deleteMemberAccount,
+  deleteMemberPhoto,
+  exportMemberAccount,
+  getAccountDetails,
+  isUsernameTaken,
+  readMemberPhoto,
+  requestEmailChange,
+  storeMemberPhoto,
+  updateAccountDetails,
+  updateMemberIdentity,
+  verifyMemberPassword,
+} from './account';
 export {
   confirmEmailLink,
   getMemberRegistration,

@@ -16,6 +16,20 @@ describe('applications fixture', () => {
     expect(count('ev-ai-at-the-edge') + count('ev-leading-teams') + count('ev-fpga-basics')).toBe(88);
   });
 
+  it('has the three applications of the sample member, with the statuses of the canvas', () => {
+    const mine = applicationsFixture.filter((row) => row.email === 'marija.s@students.feit.ukim.edu.mk');
+    expect(
+      mine
+        .map((row) => [row.eventId, row.status, row.waitlistPosition])
+        .sort((a, b) => `${a[0]}`.localeCompare(`${b[0]}`)),
+    ).toEqual([
+      ['ev-ai-at-the-edge', 'pending', null],
+      ['ev-fpga-basics', 'waitlist', 3],
+      ['ev-leading-teams', 'accepted', null],
+    ]);
+    expect(count('ev-leading-teams', 'accepted')).toBe(1);
+  });
+
   it('has 10 new applications, as on the dashboard', () => {
     expect(applicationsFixture.filter((row) => !row.readAt).length).toBe(10);
   });

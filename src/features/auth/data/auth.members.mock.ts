@@ -11,8 +11,15 @@ import { mockSignInBlocked } from '../availability';
 import { type AttemptLog, emptyLog, lockState, recordFailure } from '../domain/lockout';
 import { newToken, type TokenRecord, tokenState } from '../domain/tokens';
 import type {
+  AccountDetails,
+  AccountDetailsPatch,
+  AccountExport,
   ApprovedMemberIdentity,
+  ConfirmEmailChangeResult,
   ConfirmResult,
+  DeleteAccountResult,
+  PasswordCheck,
+  RequestEmailChangeResult,
   DecideRegistrationResult,
   MemberRegistration,
   MemberYear,
@@ -25,9 +32,9 @@ import type {
 } from '../types';
 import type { AuthRepository } from './auth.repository';
 import type { AccountRecord } from './fixtures/accounts';
-import { registrationsFixture, tokensFixture } from './fixtures/members';
+import { accountDetailsFixture, registrationsFixture, tokensFixture } from './fixtures/members';
 import { SAMPLE_PASSWORD } from './fixtures/personas';
-import { photoUrl, saveMockMemberPhoto } from './member-photos';
+import { deleteMockMemberPhoto, photoUrl, saveMockMemberPhoto } from './member-photos';
 import { sendMockMail } from './mailbox';
 
 // The member side of the mock: registrations, e-mail links and passwords. Registered people get an
@@ -40,6 +47,11 @@ type MemberStore = {
   tokens: TokenRecord[];
   /** userId → hash, for accounts that chose their own password. */
   passwords: Record<string, string>;
+  /** userId → what the member changed (or the sample's) on top of the sign-up record. */
+  details: Record<
+    string,
+    { phone?: string; year?: MemberYear; dataConsentAt?: string; passwordChangedAt?: string }
+  >;
 };
 
 const YEAR_LABEL: Record<MemberYear, string> = {
@@ -72,6 +84,7 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
     registrations: registrationsFixture.map((registration) => ({ ...registration })),
     tokens: tokensFixture.map((token) => ({ ...token })),
     passwords: {},
+    details: structuredClone(accountDetailsFixture),
   }));
 
   const accountByEmail = (email: string) =>
@@ -92,10 +105,12 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
     return record;
   };
 
-  const linkFor = (kind: TokenKind, token: string, locale: 'mk' | 'en') =>
-    kind === 'confirm'
-      ? `/auth/confirm?token=${token}`
-      : `${localizedPath('/reset-password', locale)}?token=${token}`;
+  const linkFor = (kind: TokenKind, token: string, locale: 'mk' | 'en') => {
+    if (kind === 'confirm') return `/auth/confirm?token=${token}`;
+    // A new address is confirmed with the same route as the sign-up e-mail; `type` tells them apart.
+    if (kind === 'email_change') return `/auth/confirm?token=${token}&type=email`;
+    return `${localizedPath('/reset-password', locale)}?token=${token}`;
+  };
 
   const sendConfirmation = (registration: MemberRegistration, now: Date) => {
     const token = issue('confirm', registration, now);
@@ -131,7 +146,195 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
     };
   };
 
+  /** The current password check, with the same lockout as sign-in (keyed by the account's e-mail). */
+  const passwordAttempt = (account: AccountRecord, password: string, now: Date): PasswordCheck => {
+    const key = account.email.toLowerCase();
+    const log = attempts.byEmail[key] ?? emptyLog();
+    const state = lockState(log, now);
+    if (state.locked) return { status: 'locked', minutes: lockedResult(state.until!, now).minutes };
+    if (!passwordMatches(account, password)) {
+      const next = recordFailure(log, now);
+      attempts.byEmail[key] = next;
+      const after = lockState(next, now);
+      return after.locked
+        ? { status: 'locked', minutes: lockedResult(after.until!, now).minutes }
+        : { status: 'invalid' };
+    }
+    delete attempts.byEmail[key];
+    return { status: 'ok' };
+  };
+
+  const detailsOf = (userId: string): AccountDetails | null => {
+    const account = accounts.find((item) => item.userId === userId);
+    if (!account) return null;
+    const registration = registrationOf(userId);
+    const own = store.details[userId] ?? {};
+    return {
+      userId,
+      email: account.email,
+      phone: own.phone ?? registration?.phone ?? '',
+      year: own.year ?? registration?.year ?? null,
+      dataConsentAt: own.dataConsentAt ?? registration?.submittedAt ?? null,
+      passwordChangedAt: own.passwordChangedAt ?? registration?.submittedAt ?? null,
+    };
+  };
+
   return {
+    getAccountDetails(userId: string): Promise<AccountDetails | null> {
+      return Promise.resolve(detailsOf(userId));
+    },
+
+    updateAccountDetails(userId: string, patch: AccountDetailsPatch): Promise<AccountDetails | null> {
+      if (!detailsOf(userId)) return Promise.resolve(null);
+      const own = (store.details[userId] ??= {});
+      if (patch.phone !== undefined) own.phone = patch.phone.trim();
+      if (patch.year !== undefined) own.year = patch.year;
+      return Promise.resolve(detailsOf(userId));
+    },
+
+    usernameTaken(userId: string, username: string): Promise<boolean> {
+      return Promise.resolve(
+        accounts.some((item) => item.userId !== userId && item.username !== '' && item.username === username),
+      );
+    },
+
+    updateIdentity(
+      userId: string,
+      patch: { name?: string; username?: string },
+    ): Promise<'ok' | 'taken' | 'not_found'> {
+      const account = accounts.find((item) => item.userId === userId);
+      if (!account) return Promise.resolve('not_found');
+      if (
+        patch.username !== undefined &&
+        accounts.some((item) => item.userId !== userId && item.username === patch.username)
+      )
+        return Promise.resolve('taken');
+      if (patch.username !== undefined) account.username = patch.username;
+      if (patch.name !== undefined) {
+        account.name = patch.name.trim();
+        account.initials = initials(account.name);
+      }
+      return Promise.resolve('ok');
+    },
+
+    verifyPassword({
+      userId,
+      password,
+      now,
+    }: {
+      userId: string;
+      password: string;
+      now: Date;
+    }): Promise<PasswordCheck> {
+      const account = accounts.find((item) => item.userId === userId);
+      return Promise.resolve(account ? passwordAttempt(account, password, now) : { status: 'invalid' });
+    },
+
+    changePassword({
+      userId,
+      current,
+      next,
+      now,
+    }: {
+      userId: string;
+      current: string;
+      next: string;
+      now: Date;
+    }): Promise<PasswordCheck> {
+      const account = accounts.find((item) => item.userId === userId);
+      if (!account) return Promise.resolve({ status: 'invalid' });
+      const check = passwordAttempt(account, current, now);
+      if (check.status !== 'ok') return Promise.resolve(check);
+      store.passwords[userId] = hash(next, userId);
+      (store.details[userId] ??= {}).passwordChangedAt = now.toISOString();
+      return Promise.resolve(check);
+    },
+
+    requestEmailChange({
+      userId,
+      newEmail,
+      password,
+      locale,
+      now,
+    }: {
+      userId: string;
+      newEmail: string;
+      password: string;
+      locale: 'mk' | 'en';
+      now: Date;
+    }): Promise<RequestEmailChangeResult> {
+      const account = accounts.find((item) => item.userId === userId);
+      if (!account) return Promise.resolve({ status: 'invalid' });
+      const check = passwordAttempt(account, password, now);
+      if (check.status !== 'ok') return Promise.resolve(check);
+      const target = newEmail.trim();
+      if (target.toLowerCase() === account.email.toLowerCase()) return Promise.resolve({ status: 'same' });
+      if (accountByEmail(target)) return Promise.resolve({ status: 'email_taken' });
+      const token = issue('email_change', { userId, email: target }, now);
+      sendMockMail({
+        to: target,
+        kind: 'email_change',
+        subject: 'Confirm your new e-mail address',
+        link: linkFor('email_change', token.token, locale),
+        reason: null,
+        sentAt: now.toISOString(),
+      });
+      return Promise.resolve({ status: 'sent' });
+    },
+
+    confirmEmailChange({ token, now }: { token: string; now: Date }): Promise<ConfirmEmailChangeResult> {
+      if (peek(token, 'email_change', now).state !== 'valid') return Promise.resolve({ status: 'expired' });
+      const record = store.tokens.find((item) => item.token === token)!;
+      const account = accounts.find((item) => item.userId === record.userId);
+      const taken = accountByEmail(record.email);
+      if (!account || (taken && taken.userId !== account.userId))
+        return Promise.resolve({ status: 'expired' });
+      record.usedAt = now.toISOString();
+      // Failed tries belong to the old address.
+      delete attempts.byEmail[account.email.toLowerCase()];
+      account.email = record.email;
+      const registration = registrationOf(account.userId);
+      if (registration) registration.email = record.email;
+      return Promise.resolve({ status: 'changed', email: record.email });
+    },
+
+    deleteAccount({ userId, now }: { userId: string; now: Date }): Promise<DeleteAccountResult> {
+      const index = accounts.findIndex((item) => item.userId === userId);
+      const account = accounts[index];
+      if (!account) return Promise.resolve({ status: 'not_found' });
+      if (account.adminRole) return Promise.resolve({ status: 'staff' });
+      const registration = registrationOf(userId);
+      const locale = registration?.locale ?? 'mk';
+      if (registration?.photoId) deleteMockMemberPhoto(registration.photoId);
+      accounts.splice(index, 1);
+      store.registrations = store.registrations.filter((item) => item.userId !== userId);
+      store.tokens = store.tokens.filter((item) => item.userId !== userId);
+      delete store.passwords[userId];
+      delete store.details[userId];
+      delete attempts.byEmail[account.email.toLowerCase()];
+      sendMockMail({
+        to: account.email,
+        kind: 'deleted',
+        subject: 'Your account is deleted',
+        link: null,
+        reason: null,
+        sentAt: now.toISOString(),
+      });
+      return Promise.resolve({ status: 'deleted', name: account.name, email: account.email, locale });
+    },
+
+    exportAccount(userId: string): Promise<AccountExport | null> {
+      const account = accounts.find((item) => item.userId === userId);
+      const details = detailsOf(userId);
+      if (!account || !details) return Promise.resolve(null);
+      const registration = registrationOf(userId);
+      return Promise.resolve({
+        account: { userId, name: account.name, email: account.email, username: account.username },
+        registration: registration ? { ...registration } : null,
+        details,
+      });
+    },
+
     registerMember(input: RegisterMemberInput): Promise<RegisterResult> {
       if (mockSignInBlocked()) return Promise.resolve({ status: 'unavailable' });
       const existing = accountByEmail(input.email);

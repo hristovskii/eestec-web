@@ -51,6 +51,16 @@ export function createMockApplicationsRepository(): ApplicationsRepository {
   const ofEvent = (eventId: string) => db.applications.filter((row) => row.eventId === eventId);
 
   /** Waitlist positions 1…n in their current order (new arrivals have none yet: they go last). */
+  /** Deletes rows with the files they were sent with; the waitlist of each event closes the gap. */
+  const removeRows = (rows: Application[]) => {
+    for (const row of rows) {
+      for (const answer of Object.values(row.answers))
+        if (typeof answer === 'object' && 'fileId' in answer) delete db.files[answer.fileId];
+      db.applications.splice(db.applications.indexOf(row), 1);
+    }
+    for (const eventId of new Set(rows.map((row) => row.eventId))) renumberWaitlist(eventId);
+  };
+
   const renumberWaitlist = (eventId: string) => {
     const waiting = ofEvent(eventId)
       .filter((row) => row.status === 'waitlist')
@@ -216,6 +226,30 @@ export function createMockApplicationsRepository(): ApplicationsRepository {
       }
       renumberWaitlist(eventId);
       return Promise.resolve(changed);
+    },
+
+    listByEmail(email) {
+      const key = email.trim().toLowerCase();
+      return Promise.resolve(
+        structuredClone(
+          db.applications.filter((row) => row.email.toLowerCase() === key).sort((a, b) => byCreated(b, a)),
+        ),
+      );
+    },
+
+    withdraw(id, email) {
+      const row = db.applications.find((candidate) => candidate.id === id);
+      if (!row || row.email.toLowerCase() !== email.trim().toLowerCase())
+        return Promise.resolve('not_found' as const);
+      removeRows([row]);
+      return Promise.resolve('withdrawn' as const);
+    },
+
+    deleteByEmail(email) {
+      const key = email.trim().toLowerCase();
+      const rows = db.applications.filter((row) => row.email.toLowerCase() === key);
+      removeRows(rows);
+      return Promise.resolve(rows.length);
     },
 
     markRead(id, now) {

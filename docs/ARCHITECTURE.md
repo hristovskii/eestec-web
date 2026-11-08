@@ -1134,6 +1134,17 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Writes: validate (zod; messages are `admin.members.errors` keys) → `authorize('edit', 'members')` → repository → activity log (area `members`) → `refresh()`. Deleting answers with data (`in_use`, `current`, how many were affected) instead of failing, so the dialog can explain.
 - e2e: every test creates teams, badges and boards with names of its own (boards in a year after 2200) and deletes them again; read-only tests compare names, not counts, because tests that run at the same time approve new members and move people between lists.
 
+**Notes from building (M16a, My profile data layer)**
+
+- **Who owns what.** `auth`: the account itself (password, e-mail, phone and year of study, account-consent date, deleting the account, the profile address and name the session shows). `members`: the profile (bio, links, photo, visibility), the choices (e-mails, gallery name, CV sharing) and the CV file. `applications`: the applicant side (list by e-mail, withdraw, delete by e-mail). The pages compose them (`members/my-profile.ts`); `auth` still never imports `members`. Phone and year stay out of `Profile` on purpose (it never holds contact details).
+- **Password checks** (before changing the password or e-mail, and for deleting the account) use the **sign-in lockout** (5 wrong tries, 15 minutes) on the account's e-mail, so the three screens can't be used to guess a password.
+- **A new e-mail address** is a token of kind `email_change` (24 h) sent to the **new** address (`/auth/confirm?token=…&type=email`); the old address keeps working until the link is used, and a used or expired link says "expired".
+- **A person waiting for the board has no profile, only a draft** (`members.drafts`): the Profile and Privacy parts of `/profile` are editable, and the draft becomes the profile when the board approves (the public directory adopts the approved sign-up and lays the draft over it). `PROFILE_STATUSES` is unchanged. Everyone else gets a stored profile on their first save, like the board's first save.
+- **Withdrawing an application deletes it** (no new status: the status list is decided) and the waitlist closes the gap. Applications belong to an e-mail (the form has no log-in), so "my applications" are matched by the signed-in member's e-mail; if they change it, earlier applications stay with the old address.
+- **CV (D9):** turning sharing **off deletes the file at once**; the file can only be stored while sharing is on; "Remove" deletes the file and leaves sharing on. The "partners saw your CV N times" number reads the `cvExports` log, which is empty until the admin CV export exists.
+- Photo: the browser crops a square and sends a ~600 px JPEG (the Server Action body limit is 6 MB; the 8 MB limit is for the file the person picks). The crop maths is a pure, tested function (`domain/crop.ts`).
+- Sample data: Marija has account details (phone, 3rd year, consent 12 Oct 2023, password changed "4 months ago"), her choices and a CV entry without content, and **three of the generated applications carry her e-mail** (one of Leading Teams' pending rows is now accepted; every event keeps its total). See `docs/sample-data.md`.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

@@ -430,4 +430,189 @@ describe('mock member accounts', () => {
       );
     });
   });
+
+  describe('my account (M16)', () => {
+    const MARIJA = 'u-marija';
+    const OTHER_PASSWORD = 'river-vardar-2027';
+
+    async function member() {
+      const repo = createMockAuthRepository();
+      await repo.registerMember(input);
+      const mail = listMockMail(input.email)[0];
+      await repo.confirmEmail({ token: tokenOf(mail?.link), now });
+      const registration = (await repo.listRegistrations()).find((item) => item.email === input.email)!;
+      return { repo, userId: registration.userId };
+    }
+
+    it('keeps the sample details of the sample member and the sign-up details of everyone else', async () => {
+      const repo = createMockAuthRepository();
+      await expect(repo.getAccountDetails(MARIJA)).resolves.toMatchObject({
+        phone: '070 123 456',
+        year: '3',
+        dataConsentAt: '2023-10-12T18:00:00+02:00',
+      });
+      const { repo: other, userId } = await member();
+      await expect(other.getAccountDetails(userId)).resolves.toMatchObject({
+        email: input.email,
+        year: '3',
+        phone: '',
+        dataConsentAt: now.toISOString(),
+      });
+      await expect(repo.getAccountDetails('u-nobody')).resolves.toBeNull();
+    });
+
+    it('changes phone and year only, and trims the phone', async () => {
+      const { repo, userId } = await member();
+      await repo.updateAccountDetails(userId, { phone: ' 070 555 111 ', year: '4' });
+      await expect(repo.getAccountDetails(userId)).resolves.toMatchObject({
+        phone: '070 555 111',
+        year: '4',
+      });
+      await repo.updateAccountDetails(userId, { year: 'master' });
+      await expect(repo.getAccountDetails(userId)).resolves.toMatchObject({
+        phone: '070 555 111',
+        year: 'master',
+      });
+    });
+
+    it('changes the name and address shown in the session, and refuses an address another account has', async () => {
+      const { repo, userId } = await member();
+      await expect(repo.usernameTaken(userId, 'marija-stojanovska')).resolves.toBe(true);
+      await expect(repo.usernameTaken(userId, 'ivo-nobody')).resolves.toBe(false);
+      await expect(repo.updateIdentity(userId, { username: 'marija-stojanovska' })).resolves.toBe('taken');
+      await expect(repo.updateIdentity(userId, { name: 'Ivo D.', username: 'ivo-d' })).resolves.toBe('ok');
+      await expect(repo.updateIdentity('u-nobody', { name: 'X' })).resolves.toBe('not_found');
+      // The same person may keep their own address.
+      await expect(repo.updateIdentity(userId, { username: 'ivo-d' })).resolves.toBe('ok');
+    });
+
+    it('checks the current password and locks after five wrong tries', async () => {
+      const repo = createMockAuthRepository();
+      await expect(repo.verifyPassword({ userId: MARIJA, password: SAMPLE_PASSWORD, now })).resolves.toEqual({
+        status: 'ok',
+      });
+      for (let n = 1; n <= 4; n += 1)
+        await expect(repo.verifyPassword({ userId: MARIJA, password: 'nope', now })).resolves.toEqual({
+          status: 'invalid',
+        });
+      await expect(repo.verifyPassword({ userId: MARIJA, password: 'nope', now })).resolves.toMatchObject({
+        status: 'locked',
+        minutes: 15,
+      });
+      // Locked: even the right password waits; later it works again.
+      await expect(
+        repo.verifyPassword({ userId: MARIJA, password: SAMPLE_PASSWORD, now }),
+      ).resolves.toMatchObject({
+        status: 'locked',
+      });
+      await expect(
+        repo.verifyPassword({ userId: MARIJA, password: SAMPLE_PASSWORD, now: later(16) }),
+      ).resolves.toEqual({ status: 'ok' });
+    });
+
+    it('changes the password: the old one stops working, the date is kept', async () => {
+      const { repo, userId } = await member();
+      await expect(
+        repo.changePassword({ userId, current: 'wrong', next: OTHER_PASSWORD, now }),
+      ).resolves.toEqual({ status: 'invalid' });
+      await expect(
+        repo.changePassword({ userId, current: input.password, next: OTHER_PASSWORD, now: later(5) }),
+      ).resolves.toEqual({ status: 'ok' });
+      await expect(repo.verifyPassword({ userId, password: input.password, now: later(6) })).resolves.toEqual(
+        {
+          status: 'invalid',
+        },
+      );
+      await expect(repo.verifyPassword({ userId, password: OTHER_PASSWORD, now: later(7) })).resolves.toEqual(
+        {
+          status: 'ok',
+        },
+      );
+      await expect(repo.getAccountDetails(userId)).resolves.toMatchObject({
+        passwordChangedAt: later(5).toISOString(),
+      });
+    });
+
+    it('sends the e-mail change link to the new address and changes it only when the link is used', async () => {
+      const { repo, userId } = await member();
+      const fresh = 'ivo.new@students.feit.ukim.edu.mk';
+      await expect(
+        repo.requestEmailChange({ userId, newEmail: fresh, password: 'wrong', locale: 'en', now }),
+      ).resolves.toEqual({ status: 'invalid' });
+      await expect(
+        repo.requestEmailChange({
+          userId,
+          newEmail: input.email,
+          password: input.password,
+          locale: 'en',
+          now,
+        }),
+      ).resolves.toEqual({ status: 'same' });
+      await expect(
+        repo.requestEmailChange({
+          userId,
+          newEmail: 'marija.s@students.feit.ukim.edu.mk',
+          password: input.password,
+          locale: 'en',
+          now,
+        }),
+      ).resolves.toEqual({ status: 'email_taken' });
+      await expect(
+        repo.requestEmailChange({ userId, newEmail: fresh, password: input.password, locale: 'en', now }),
+      ).resolves.toEqual({ status: 'sent' });
+
+      const [mail] = listMockMail(fresh);
+      expect(mail?.kind).toBe('email_change');
+      expect(mail?.link).toMatch(/^\/auth\/confirm\?token=.+&type=email$/);
+      // Until the link is used, the old address stays.
+      expect((await repo.getAccountDetails(userId))?.email).toBe(input.email);
+
+      const token = tokenOf(mail?.link);
+      await expect(repo.confirmEmailChange({ token, now: later(60) })).resolves.toEqual({
+        status: 'changed',
+        email: fresh,
+      });
+      expect((await repo.getAccountDetails(userId))?.email).toBe(fresh);
+      // Used up.
+      await expect(repo.confirmEmailChange({ token, now: later(61) })).resolves.toEqual({
+        status: 'expired',
+      });
+    });
+
+    it('an e-mail change link works for 24 hours', async () => {
+      const { repo, userId } = await member();
+      const fresh = 'ivo.late@students.feit.ukim.edu.mk';
+      await repo.requestEmailChange({ userId, newEmail: fresh, password: input.password, locale: 'en', now });
+      const token = tokenOf(listMockMail(fresh)[0]?.link);
+      await expect(repo.confirmEmailChange({ token, now: later(24 * 60 + 1) })).resolves.toEqual({
+        status: 'expired',
+      });
+    });
+
+    it('deletes the account and everything the sign-up stored, and says goodbye by e-mail', async () => {
+      const { repo, userId } = await member();
+      const result = await repo.deleteAccount({ userId, now: later(1) });
+      expect(result).toEqual({ status: 'deleted', name: 'Ivo Dimitrov', email: input.email, locale: 'en' });
+      expect(await repo.getRegistration(userId)).toBeNull();
+      expect(await repo.getAccountDetails(userId)).toBeNull();
+      expect(listMockMail(input.email)[0]?.kind).toBe('deleted');
+      await expect(repo.deleteAccount({ userId, now })).resolves.toEqual({ status: 'not_found' });
+      // The address can be used again.
+      await expect(repo.registerMember(input)).resolves.toMatchObject({ status: 'registered' });
+    });
+
+    it('does not delete a board account here', async () => {
+      const repo = createMockAuthRepository();
+      await expect(repo.deleteAccount({ userId: 'u-ana', now })).resolves.toEqual({ status: 'staff' });
+    });
+
+    it('exports what the account stores', async () => {
+      const repo = createMockAuthRepository();
+      const data = await repo.exportAccount(MARIJA);
+      expect(data?.account).toMatchObject({ userId: MARIJA, email: 'marija.s@students.feit.ukim.edu.mk' });
+      expect(data?.details.phone).toBe('070 123 456');
+      expect(data?.registration).toBeNull();
+      await expect(repo.exportAccount('u-nobody')).resolves.toBeNull();
+    });
+  });
 });
