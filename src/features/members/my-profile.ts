@@ -7,6 +7,7 @@ import { resolveLocalized } from '@/shared/i18n/localized';
 import type { Locale } from '@/shared/i18n/routing';
 import { initials } from '@/shared/lib/initials';
 import { now } from '@/shared/lib/now';
+import { relativeAge } from '@/shared/lib/relative-age';
 
 import { membersRepository } from './data';
 import { type SignUpFacts, toMineContext } from './domain/mine-context';
@@ -80,6 +81,13 @@ export async function getMyProfileView(session: Session, locale: Locale): Promis
       since: profile.memberSince,
       badges: profile.badges.length,
       email: settings.boardRoles.find((role) => role.id === 'role-members')?.email ?? null,
+    },
+    account: {
+      passwordChangedAt: details.passwordChangedAt,
+      passwordAge: details.passwordChangedAt
+        ? relativeAge(details.passwordChangedAt, now().toISOString())
+        : null,
+      memoriesPublished: 0,
     },
     privacy: {
       dataConsentAt: details.dataConsentAt,

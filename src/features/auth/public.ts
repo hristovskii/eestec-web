@@ -9,3 +9,4 @@ export { LoginForm } from './components/public/login-form';
 export { RegisterFlow } from './components/public/register-flow';
 export { ResetForm } from './components/public/reset-form';
 export { safeNextPath } from './domain/next-path';
+export { AccountCard, type DeleteAccountAction } from './components/public/account-card';

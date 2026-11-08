@@ -1,4 +1,5 @@
 import { Clock, Globe, Lock } from 'lucide-react';
+import * as React from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/shared/i18n/navigation';
@@ -29,10 +30,13 @@ export function MyProfilePage({
   view,
   faculties,
   applications,
+  account,
 }: {
   view: MyProfileView;
   faculties: string[];
   applications: MyApplicationView[];
+  /** The Account card's content: the account is `auth`'s, so the route brings it. */
+  account: React.ReactNode;
 }) {
   const t = useTranslations('members.me');
   const items: MyProfileNavItem[] = [
@@ -44,6 +48,7 @@ export function MyProfilePage({
       ...(view.pending ? {} : { count: applications.length }),
     },
     { id: 'privacy', label: t('nav.privacy') },
+    { id: 'account', label: t('nav.account') },
   ];
   const chip = view.pending ? 'pending' : view.visibility === 'public' ? 'public' : 'members';
   const ChipIcon = chip === 'public' ? Globe : Lock;
@@ -150,6 +155,9 @@ export function MyProfilePage({
             }
           >
             <PrivacyCard privacy={view.privacy} />
+          </MeCard>
+          <MeCard id="account" title={t('nav.account')}>
+            {account}
           </MeCard>
         </div>
       </Container>

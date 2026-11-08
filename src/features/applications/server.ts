@@ -14,6 +14,7 @@ export { applicationFileResponse, applicationsCsvResponse } from './export';
 export { getUpcomingList, getUpcomingPage, type UpcomingItem, type UpcomingPage } from './public-queries';
 export {
   deleteApplicationsOf,
+  exportApplicationsOf,
   getMyApplications,
   type MyApplicationView,
   withdrawMyApplication,

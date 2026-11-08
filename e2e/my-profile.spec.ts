@@ -41,7 +41,7 @@ test.describe('my profile (M16b)', () => {
     await asSample(page);
     await page.goto('/en/profile');
     await expect(page.getByRole('heading', { level: 1, name: 'My profile' })).toBeVisible();
-    await expect(page.getByText('marija.s@students.feit.ukim.edu.mk')).toBeVisible();
+    await expect(page.locator('strong', { hasText: 'marija.s@students.feit.ukim.edu.mk' })).toBeVisible();
     await expect(page.getByTestId('visibility-chip')).toHaveText('Visible to members only');
     await expect(page.getByRole('link', { name: 'View my public profile' })).toHaveAttribute(
       'href',
