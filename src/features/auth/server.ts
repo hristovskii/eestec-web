@@ -10,6 +10,7 @@ export {
 export { adminSignInAvailable } from './availability';
 export { authorize, requirePermission, requireStaff } from './guards';
 export {
+  confirmEmailLink,
   getMemberRegistration,
   getMockPersonaId,
   getPendingRegistrationSummary,
