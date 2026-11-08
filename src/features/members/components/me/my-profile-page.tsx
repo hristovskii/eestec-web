@@ -9,7 +9,11 @@ import { Button } from '@/shared/ui/primitives/button';
 import { Skeleton } from '@/shared/ui/primitives/skeleton';
 import { TitleBar } from '@/shared/ui/section-title';
 
+import type { MyApplicationView } from '@/features/applications';
+
 import type { MyProfileView } from '../../types';
+import { ApplicationsCard } from './applications-card';
+import { PrivacyCard } from './privacy-card';
 import { BoardFacts } from './board-facts';
 import { MeCard } from './me-card';
 import { MyProfileNav, type MyProfileNavItem } from './my-profile-nav';
@@ -21,11 +25,25 @@ import { VisibilityCard } from './visibility-card';
  * layout of the phone is the same page in one column (the drawn phone frame is a reduced mock; the
  * phone still has every section, because e-mail, password and deleting live here too).
  */
-export function MyProfilePage({ view, faculties }: { view: MyProfileView; faculties: string[] }) {
+export function MyProfilePage({
+  view,
+  faculties,
+  applications,
+}: {
+  view: MyProfileView;
+  faculties: string[];
+  applications: MyApplicationView[];
+}) {
   const t = useTranslations('members.me');
   const items: MyProfileNavItem[] = [
     { id: 'profile', label: t('nav.profile') },
     { id: 'visibility', label: t('nav.visibility') },
+    {
+      id: 'applications',
+      label: t('nav.applications'),
+      ...(view.pending ? {} : { count: applications.length }),
+    },
+    { id: 'privacy', label: t('nav.privacy') },
   ];
   const chip = view.pending ? 'pending' : view.visibility === 'public' ? 'public' : 'members';
   const ChipIcon = chip === 'public' ? Globe : Lock;
@@ -92,8 +110,46 @@ export function MyProfilePage({ view, faculties }: { view: MyProfileView; facult
               board={<BoardFacts board={view.board} />}
             />
           </MeCard>
-          <MeCard id="visibility" title={t('visibility.title')} help={t('visibility.help')}>
+          <MeCard
+            id="visibility"
+            title={t('visibility.title')}
+            help={view.pending ? t('afterApproval') : t('visibility.help')}
+            className={view.pending ? 'opacity-70' : undefined}
+          >
             <VisibilityCard value={view.visibility} username={view.username} pending={view.pending} />
+          </MeCard>
+          <MeCard
+            id="applications"
+            title={t('applications.title')}
+            help={view.pending ? t('afterApproval') : t('applications.help')}
+            className={view.pending ? 'opacity-70' : undefined}
+            aside={
+              view.pending ? undefined : (
+                <Link
+                  href="/upcoming"
+                  className="pt-1.5 text-small font-medium whitespace-nowrap text-brand-dark no-underline hover:text-brand hover:underline"
+                >
+                  {t('applications.upcoming')}
+                </Link>
+              )
+            }
+          >
+            {view.pending ? null : <ApplicationsCard rows={applications} />}
+          </MeCard>
+          <MeCard
+            id="privacy"
+            title={t('privacy.title')}
+            help={t('privacy.help')}
+            aside={
+              <Link
+                href="/privacy"
+                className="pt-1.5 text-small font-medium whitespace-nowrap text-brand-dark no-underline hover:text-brand hover:underline"
+              >
+                {t('privacy.policy')}
+              </Link>
+            }
+          >
+            <PrivacyCard privacy={view.privacy} />
           </MeCard>
         </div>
       </Container>

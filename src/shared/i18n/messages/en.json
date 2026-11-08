@@ -970,7 +970,9 @@
       "nav": {
         "label": "My profile sections",
         "profile": "Profile",
-        "visibility": "Visibility"
+        "visibility": "Visibility",
+        "applications": "My applications",
+        "privacy": "Privacy & consent"
       },
       "pending": {
         "title": "Your account is waiting for board approval",
@@ -1047,7 +1049,6 @@
         "members": "Members only",
         "membersHelp": "Logged-in members see everything. Visitors see only your name and team.",
         "preview": "See what visitors see →",
-        "pendingNote": "Nobody sees your profile until the board approves you. Your choice is kept for then.",
         "saved": "Visibility saved",
         "failed": "Couldn’t save. Try again."
       },
@@ -1075,9 +1076,84 @@
         "phoneInvalid": "Enter a phone number with digits, spaces, + or -.",
         "photoType": "Use a JPG or PNG picture.",
         "photoSize": "That picture is too big. Use one up to 8 MB.",
-        "unexpected": "Something went wrong. Try again."
+        "unexpected": "Something went wrong. Try again.",
+        "cvType": "Only PDF files work. Save it as PDF and try again.",
+        "cvSize": "That file is too big. PDF files up to 5 MB work.",
+        "cvFailed": "Couldn’t upload. Try again."
       },
-      "summary": "{count, plural, one {Please fix # field} other {Please fix # fields}}"
+      "summary": "{count, plural, one {Please fix # field} other {Please fix # fields}}",
+      "applications": {
+        "title": "My applications",
+        "help": "Events you applied to through eestec.mk.",
+        "upcoming": "Upcoming events →",
+        "empty": {
+          "title": "You haven’t applied to any event yet.",
+          "text": "When you apply on an event page, it shows up here.",
+          "link": "See upcoming events"
+        },
+        "applied": "Applied {date}",
+        "status": {
+          "pending": "Pending review",
+          "waitlist": "Waitlist · #{position}",
+          "accepted": "Accepted",
+          "rejected": "Not selected"
+        },
+        "withdraw": "Withdraw",
+        "leave": "Leave waitlist",
+        "details": "Event details",
+        "dialog": {
+          "withdrawTitle": "Withdraw your application?",
+          "withdrawText": "We remove your application to {title}. You can apply again while applications are open.",
+          "leaveTitle": "Leave the waitlist?",
+          "leaveText": "You lose your place on the waitlist for {title}. Everyone behind you moves up one place.",
+          "keep": "Keep it",
+          "withdrawConfirm": "Withdraw",
+          "leaveConfirm": "Leave waitlist"
+        },
+        "done": "Application withdrawn",
+        "failed": "Couldn’t withdraw. Try again."
+      },
+      "privacy": {
+        "title": "Privacy & consent",
+        "help": "You can change any of these at any time. Changes apply immediately.",
+        "policy": "Privacy policy →",
+        "required": "Required",
+        "account": {
+          "title": "Personal data for my member account",
+          "text": "Needed to have an account. Given on {date}. To withdraw it, delete your account below."
+        },
+        "newsletter": {
+          "title": "E-mails about new events and calls",
+          "text": "About 2 e-mails a month. Event confirmations are always sent."
+        },
+        "gallery": {
+          "title": "Name me in event photo galleries",
+          "text": "Off: you appear in photos, but your name is not linked to them."
+        },
+        "cv": {
+          "title": "Share my CV with partner companies",
+          "text": "Only companies in our Main partner package can see it, for internships and jobs. Off by default and separate from your account consent. Turn it off any time: partners lose access immediately and we delete the file.",
+          "off": "No CV is stored while this is off.",
+          "consent": "Consent saved {date}.",
+          "drop": "<strong>Drop your CV here</strong> or <browse>browse</browse>",
+          "dropHelp": "PDF only, up to 5 MB",
+          "noCv": "Partners can’t see anything until you upload a CV.",
+          "label": "My CV",
+          "file": "{size} · uploaded {uploaded} · consent given {consent}",
+          "replace": "Replace",
+          "remove": "Remove",
+          "note": "PDF only, up to 5 MB.",
+          "views": "{count, plural, one {Partners saw your CV # time this year.} other {Partners saw your CV # times this year.}}",
+          "uploading": "Uploading…",
+          "choose": "Choose file",
+          "stopTitle": "Stop sharing your CV?",
+          "stopText": "Partners lose access right away and we delete {file}. You can turn sharing on again later and upload a new CV.",
+          "keep": "Keep sharing",
+          "stop": "Stop sharing and delete CV"
+        },
+        "failed": "Couldn’t save. Try again.",
+        "cvRemoved": "CV removed"
+      }
     }
   },
   "auth": {

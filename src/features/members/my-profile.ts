@@ -81,5 +81,11 @@ export async function getMyProfileView(session: Session, locale: Locale): Promis
       badges: profile.badges.length,
       email: settings.boardRoles.find((role) => role.id === 'role-members')?.email ?? null,
     },
+    privacy: {
+      dataConsentAt: details.dataConsentAt,
+      consents: mine.consents,
+      cv: mine.cv,
+      cvViewsThisYear: mine.cvViewsThisYear,
+    },
   };
 }

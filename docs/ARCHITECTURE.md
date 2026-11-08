@@ -1155,6 +1155,13 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - The faculty list is the board's Join Us list, as at sign-up; a faculty that is no longer in it stays selectable for who has it. The years use their own labels (`members.me.years`).
 - No design-system lab entry for this page: the save bar, crop dialog and banner are only used here (the e2e spec covers their states).
 
+**Notes from building (M16c, My applications, Privacy & consent, the CV)**
+
+- **My applications** are matched by the signed-in member's e-mail (`applications.getMyApplications`), joined to the listed events: an application to an event that is no longer listed is not shown. States: _Pending review_ → "Withdraw"; _Waitlist · #n_ → "Leave waitlist"; _Accepted_ and _Not selected_ (rejected, neutral wording) → "Event details". Withdrawing and leaving ask first (not drawn: it is a delete), only while the event has not ended, and delete the application (decision D24: no new status). A member waiting for the board sees the card greyed ("Available after approval"), like Visibility, as drawn.
+- **Privacy & consent:** the account consent is a row without a switch (date from sign-up); e-mails about events and gallery names are plain switches; they have **no effect yet** (the e-mail jobs are M22). Switches save at once, are shown at once, and are **sent one after the other** in a queue so two quick clicks can't overtake each other; a failed one is put back with an error toast.
+- **CV (D9):** switch on → "Consent saved {date, time}" and an upload box (PDF, 5 MB; the browser checks the type and size at once, the server also checks the `%PDF-` bytes); a problem shows the file name with the frame's wording and "Choose file"; the file row has Replace and Remove; **turning sharing off with a file asks first and deletes it**. The upload shows an indeterminate bar (Server Actions have no progress events; the frame's "62 %" is not possible without an extra upload route). "Partners saw your CV N times" stays out while the export log is empty.
+- The sample member's CV entry has no file content (nothing to download), and the board's CV export for Main-package partners is **not part of M16**.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".
