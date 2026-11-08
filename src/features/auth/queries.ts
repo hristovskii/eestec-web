@@ -43,6 +43,11 @@ export async function listMemberRegistrations(status?: RegistrationStatus) {
   return (await authRepository()).listRegistrations(status ? { status } : {});
 }
 
+/** The people the board approved, public facts only (e-mail and phone stay in auth). For the Members feature. */
+export async function listApprovedMemberIdentities() {
+  return (await authRepository()).approvedMemberIdentities();
+}
+
 export async function getMemberRegistration(userId: string) {
   return (await authRepository()).getRegistration(userId);
 }

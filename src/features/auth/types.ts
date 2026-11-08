@@ -135,3 +135,19 @@ export type DecideRegistrationResult =
   | { status: 'already_decided' };
 
 export type PendingRegistrationSummary = { count: number; oldestAt: string | null };
+
+/**
+ * What the Members feature may know about an approved member (never e-mail or phone). The profile
+ * page is created from this when the board approves a registration.
+ */
+export type ApprovedMemberIdentity = {
+  userId: string;
+  name: string;
+  username: string;
+  faculty: string;
+  year: MemberYear;
+  visibility: MemberVisibility;
+  /** Where the sign-up photo is served from; null: none. */
+  photoUrl: string | null;
+  approvedAt: string;
+};

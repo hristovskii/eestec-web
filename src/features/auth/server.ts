@@ -15,6 +15,7 @@ export {
   getMockPersonaId,
   getPendingRegistrationSummary,
   getSession,
+  listApprovedMemberIdentities,
   listMemberRegistrations,
   listMockPersonas,
   peekToken,
