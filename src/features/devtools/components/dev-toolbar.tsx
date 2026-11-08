@@ -17,19 +17,24 @@ export type DevPersona = {
   memberStatus: MemberStatus | null;
 };
 
+/** An e-mail the member flow would have sent (nothing is sent on mock data). */
+export type DevMail = { id: string; to: string; kind: string; link: string | null; reason: string | null };
+
 type DevToolbarProps = {
   personas: DevPersona[];
   currentPersonaId: string | null;
   /** The pinned mock clock, if any (ISO). */
   pinnedNow: string | null;
   phase2: boolean;
+  /** Newest first. */
+  mail: DevMail[];
 };
 
 /**
  * Dev / preview only (English, not translated): sign in as a sample persona, reset sample data,
  * see the mock clock and the phase flag. Never rendered in production.
  */
-export function DevToolbar({ personas, currentPersonaId, pinnedNow, phase2 }: DevToolbarProps) {
+export function DevToolbar({ personas, currentPersonaId, pinnedNow, phase2, mail }: DevToolbarProps) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [pending, startTransition] = React.useTransition();
@@ -86,6 +91,32 @@ export function DevToolbar({ personas, currentPersonaId, pinnedNow, phase2 }: De
               </label>
             ))}
           </fieldset>
+          <div className="mt-3 flex flex-col gap-1 border-t border-divider pt-3">
+            <strong className="font-medium">Mock e-mails</strong>
+            {mail.length === 0 ? (
+              <span className="text-muted-ink">
+                None yet. Nothing is sent on mock data: links show up here.
+              </span>
+            ) : (
+              <ul className="m-0 flex max-h-40 list-none flex-col gap-1 overflow-y-auto p-0">
+                {mail.map((item) => (
+                  <li key={item.id} className="break-words">
+                    <span className="text-muted-ink">
+                      {item.kind} · {item.to} ·{' '}
+                    </span>
+                    {item.link ? (
+                      // A plain link: the confirmation address is a route handler, not a page.
+                      <a href={item.link} className="font-medium text-brand-dark underline">
+                        open link
+                      </a>
+                    ) : (
+                      <span>{item.reason ?? 'no link'}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <div className="mt-3 flex flex-col gap-1 border-t border-divider pt-3 text-muted-ink">
             <span>
               Clock: {pinnedNow ? `pinned to ${pinnedNow.replace('T', ' ').slice(0, 16)} UTC` : 'real'}

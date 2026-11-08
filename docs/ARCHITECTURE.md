@@ -1056,6 +1056,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 
 - `src/shared/i18n/messages.test.ts` (same placeholders and tags in both languages, typographic rules, one word for the weekly meeting) and `e2e/mk-layout.spec.ts` (nothing scrolls sideways or is cut off at 360 px in Macedonian) guard what a machine can check. Tone and naturalness need a native reviewer: `docs/i18n-review.md` lists what was found, with the open decision about "ти" versus "Вие".
 
+**Notes from building (M14a, member auth data layer)**
+
+- Member accounts live in the `auth` feature on the same mock as the sample personas (a cookie names the account): `registerMember`, `confirmEmail` (link 24 h, signs the person in), `resendConfirmation`, `signInMember`, `requestPasswordReset` (link 30 min), `peekToken`, `resetPassword`, and for the board `listRegistrations`, `decideRegistration`, `pendingRegistrationSummary` (contract in `auth.repository.ts`, mock in `auth.members.mock.ts`, tests in `auth.members.mock.test.ts`). Lifecycle: `awaiting_confirmation` → `pending` (can sign in, profile hidden) → `active` or `rejected` (reason e-mailed and shown at sign-in).
+- Members share the admin lockout (5 tries, 15 minutes, per e-mail). **A board account that signs in at `/login` is sent to `/admin/login`** (`use_admin_login`): the 2-step check of a super admin can't be skipped by the member form. A reset link does not sign a board account in either. Sign-in and sign-up are switched off wherever the mock sign-in is (production, D19).
+- Passwords: `domain/password.ts` (at least 10 characters, not the e-mail or name, not in a short list of common ones; 0–4 strength bars) and the mock keeps a salted SHA-256, never the text. Errors never say which of e-mail or password was wrong; forgot-password always answers the same; only the sign-up form says "already registered", as drawn.
+- **Mock mailbox** (`data/mailbox.ts`, dev and preview only): nothing is sent; every e-mail the flow would send is kept with its link. The dev toolbar lists the last six, `GET /api/dev-mailbox?to=` returns them as JSON (404 on production), and `/api/dev-member-photos/[id]` serves sign-up photos for the approvals preview. Real e-mail: M22.
+- Client forms keep their constants in `domain/register-form.ts` and load the zod schemas on first use (M13d rule).
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

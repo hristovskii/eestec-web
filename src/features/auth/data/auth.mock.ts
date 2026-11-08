@@ -14,6 +14,7 @@ import type { AdminAccount, AdminRole, Session } from '../types';
 import type { AuthRepository } from './auth.repository';
 import { type AccountRecord, accountsFixture } from './fixtures/accounts';
 import { SAMPLE_BACKUP_CODE, SAMPLE_PASSWORD, SAMPLE_TOTP_CODE } from './fixtures/personas';
+import { createMemberMethods } from './auth.members.mock';
 
 const MOCK_TWO_FACTOR_COOKIE = 'eestec_mock_2fa';
 
@@ -66,6 +67,8 @@ export function createMockAuthRepository(): AuthRepository {
   };
 
   return {
+    ...createMemberMethods({ accounts: table.accounts, attempts, setSession }),
+
     async getSession() {
       if (mockSignInBlocked()) return null;
       const personaId = (await cookies()).get(MOCK_PERSONA_COOKIE)?.value;
@@ -130,10 +133,6 @@ export function createMockAuthRepository(): AuthRepository {
       if (account) account.lastActiveAt = now.toISOString();
       await setSession(personaId, remember === '1');
       return { status: 'signed_in' };
-    },
-
-    requestPasswordReset() {
-      return Promise.resolve();
     },
 
     listAdmins() {

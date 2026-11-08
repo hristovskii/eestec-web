@@ -49,3 +49,88 @@ export type AdminAccount = {
 };
 
 export type InviteResult = { status: 'invited'; account: AdminAccount } | { status: 'already_admin' };
+
+// ─── Member accounts (M14): sign-up → confirm e-mail → board approval ───
+
+export const MEMBER_YEARS = ['1', '2', '3', '4', 'master', 'phd'] as const;
+export type MemberYear = (typeof MEMBER_YEARS)[number];
+
+/** Who can see a member's profile ("Public" or "Members only"; default Members only). */
+export const MEMBER_VISIBILITIES = ['public', 'members'] as const;
+export type MemberVisibility = (typeof MEMBER_VISIBILITIES)[number];
+
+/**
+ * awaiting_confirmation: the e-mail link hasn't been used (24 h). pending: confirmed, waiting for the
+ * board (the account can sign in, the profile is hidden). active: approved. rejected: not approved.
+ */
+export type RegistrationStatus = 'awaiting_confirmation' | 'pending' | 'active' | 'rejected';
+
+/** What a person entered when they created their member account. */
+export type MemberRegistration = {
+  userId: string;
+  name: string;
+  email: string;
+  /** The faculty as the person chose it (the board's Join Us list), in the words of their page. */
+  faculty: string;
+  year: MemberYear;
+  /** '' when not given. */
+  phone: string;
+  visibility: MemberVisibility;
+  /** A file in the (mock) photo store; null: no photo. */
+  photoId: string | null;
+  status: RegistrationStatus;
+  /** Language of the page they used: links in e-mails keep it. */
+  locale: 'mk' | 'en';
+  submittedAt: string;
+  confirmedAt: string | null;
+  decidedAt: string | null;
+  rejectionReason: string | null;
+};
+
+export type RegisterMemberInput = {
+  name: string;
+  email: string;
+  password: string;
+  faculty: string;
+  year: MemberYear;
+  phone: string;
+  visibility: MemberVisibility;
+  photo: { mimeType: string; bytes: Uint8Array } | null;
+  locale: 'mk' | 'en';
+  now: Date;
+};
+
+export type RegisterResult =
+  { status: 'registered'; userId: string } | { status: 'email_taken' } | { status: 'unavailable' };
+
+export type ConfirmResult = { status: 'confirmed' } | { status: 'expired' };
+
+export type SignInMemberResult =
+  | { status: 'signed_in'; memberStatus: MemberStatus | null }
+  | { status: 'invalid' }
+  | { status: 'locked'; until: string }
+  /** Correct password, but the e-mail link hasn't been used yet. */
+  | { status: 'unconfirmed' }
+  | { status: 'rejected'; reason: string | null }
+  /** Board accounts sign in at /admin/login (2-step for super admins can't be skipped). */
+  | { status: 'use_admin_login' }
+  | { status: 'unavailable' };
+
+export type TokenKind = 'confirm' | 'reset';
+
+/** What a link in an e-mail points at, before it is used. */
+export type TokenPeek =
+  | { state: 'valid'; email: string; name: string; locale: 'mk' | 'en' }
+  | { state: 'expired' }
+  | { state: 'invalid' };
+
+export type ResetPasswordResult =
+  /** signedIn: members are signed in after choosing a password; board accounts still use /admin/login. */
+  { status: 'ok'; signedIn: boolean } | { status: 'expired' };
+
+export type DecideRegistrationResult =
+  | { status: 'decided'; registration: MemberRegistration }
+  | { status: 'not_found' }
+  | { status: 'already_decided' };
+
+export type PendingRegistrationSummary = { count: number; oldestAt: string | null };
