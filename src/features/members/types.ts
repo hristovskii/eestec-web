@@ -420,3 +420,37 @@ export type UpdateMineResult =
 export type ConsentPatch = Partial<Pick<MemberConsents, 'newsletter' | 'galleryName' | 'cvOptIn'>>;
 
 export type StoreCvResult = { status: 'stored'; cv: CvInfo } | { status: 'not_opted_in' };
+
+/** What /profile draws, in the language of the page (the Profile and Visibility parts; later parts add their own). */
+export type MyProfileView = {
+  /** Waiting for the board: the profile is a draft nobody else sees. */
+  pending: boolean;
+  email: string;
+  name: string;
+  initials: string;
+  /** The address of the profile page now. */
+  username: string;
+  photo: ProfilePhoto | null;
+  visibility: ProfileVisibility;
+  values: {
+    name: string;
+    username: string;
+    bio: string;
+    linkedinUrl: string;
+    githubUrl: string;
+    faculty: string;
+    phone: string;
+    /** '' when unknown. */
+    year: string;
+  };
+  /** "Set by the board": read-only for the member. */
+  board: {
+    teams: string[];
+    role: MemberRoleKey;
+    /** ISO date. */
+    since: string;
+    badges: number;
+    /** Where to write when something is wrong; null when the board has no such address. */
+    email: string | null;
+  };
+};

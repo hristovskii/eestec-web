@@ -8,3 +8,5 @@ export { joinedFilter, joinedOptions, type MembersParams } from './schemas/membe
 export { MemberProfile, RestrictedProfile } from './components/member-profile';
 export { profileParamsSchema } from './schemas/profile-params.schema';
 export type { ProfileParams } from './schemas/profile-href';
+export { MyProfilePage, MyProfileSkeleton } from './components/me/my-profile-page';
+export { PreviewBar } from './components/me/preview-bar';
