@@ -31,7 +31,7 @@ export function MyProfilePage({ view, faculties }: { view: MyProfileView; facult
   const ChipIcon = chip === 'public' ? Globe : Lock;
 
   return (
-    <div className="bg-surface">
+    <div className="overflow-x-clip bg-surface">
       <Container className="flex flex-col gap-5 pt-8 pb-6 md:flex-row md:items-end md:justify-between md:pt-10 md:pb-8">
         <div className="flex flex-col gap-3">
           <h1 className="type-h1">{t('title')}</h1>
@@ -80,7 +80,7 @@ export function MyProfilePage({ view, faculties }: { view: MyProfileView; facult
         </Container>
       )}
 
-      <Container className="grid gap-5 pb-24 lg:grid-cols-[232px_minmax(0,1fr)] lg:items-start lg:gap-10">
+      <Container className="grid grid-cols-[minmax(0,1fr)] gap-5 pb-24 lg:grid-cols-[232px_minmax(0,1fr)] lg:items-start lg:gap-10">
         <MyProfileNav items={items} />
         <div className="flex min-w-0 flex-col gap-6">
           <MeCard id="profile" title={t('profile.title')} help={t('profile.help')} bodyClassName="p-0">
