@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 // /admin/approvals?type=members&open=<id>&sort=oldest|newest
-// Invalid values fall back to the defaults. Memories join the types in M17.
+// Invalid values fall back to the defaults.
 
-export const APPROVAL_TYPES = ['members'] as const;
+export const APPROVAL_TYPES = ['members', 'memories'] as const;
 export type ApprovalType = (typeof APPROVAL_TYPES)[number];
 
 const first = (value: unknown) => (Array.isArray(value) ? (value[0] as unknown) : value);

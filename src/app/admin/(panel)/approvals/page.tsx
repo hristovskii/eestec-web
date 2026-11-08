@@ -5,11 +5,14 @@ import { Suspense } from 'react';
 import { can } from '@/features/auth';
 import { MemberApprovals } from '@/features/auth/admin';
 import { getPendingRegistrationSummary, requirePermission } from '@/features/auth/server';
+import { memoryQueueCount } from '@/features/memories/server';
 import { ApprovalSort } from '@/shared/admin-ui/approval-split-view';
 import { AdminPage, AdminPageHeader, AdminTabs, TablePanel } from '@/shared/admin-ui/admin-page';
 import { AdminPageCrumb } from '@/shared/layout/admin/admin-shell';
 import { APPROVAL_TYPES, approvalsParamsSchema } from '@/shared/lib/approvals-params';
 import { hrefWithParams } from '@/shared/lib/search-params';
+
+import { MemoryApprovals } from './memory-approvals';
 
 export const metadata: Metadata = { title: 'Approvals' };
 
@@ -26,11 +29,12 @@ function WaitingPill({ count }: { count: number }) {
 async function Approvals({ searchParams }: { searchParams: PageProps<'/admin/approvals'>['searchParams'] }) {
   const session = await requirePermission('view', 'approvals');
   const params = approvalsParamsSchema.parse(await searchParams);
-  const [t, members] = await Promise.all([
+  const [t, members, memories] = await Promise.all([
     getTranslations('admin.approvals'),
     getPendingRegistrationSummary(),
+    memoryQueueCount(),
   ]);
-  const counts: Record<(typeof APPROVAL_TYPES)[number], number> = { members: members.count };
+  const counts: Record<(typeof APPROVAL_TYPES)[number], number> = { members: members.count, memories };
 
   return (
     <AdminPage>
@@ -65,6 +69,9 @@ async function Approvals({ searchParams }: { searchParams: PageProps<'/admin/app
         />
         {params.type === 'members' && (
           <MemberApprovals params={params} canEdit={can(session, 'edit', 'approvals')} />
+        )}
+        {params.type === 'memories' && (
+          <MemoryApprovals params={params} canEdit={can(session, 'edit', 'approvals')} />
         )}
       </TablePanel>
     </AdminPage>

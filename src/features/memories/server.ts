@@ -28,3 +28,5 @@ export {
   getMyMemoryPost,
 } from './public-queries';
 export { memoryTags } from './cache-tags';
+export { getAdminMemories, getMemoryForAdmin, getMemoryQueue, getMemoryReview } from './admin-queries';
+export type { MemoryReviewView } from './admin-queries';
