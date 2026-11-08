@@ -81,6 +81,25 @@ export function describeEventsRepository(
       expect(new Set(options.map((option) => option.id)).size).toBe(options.length);
     });
 
+    it('lists listed events by id, newest first, with their timing, and leaves out the rest', async () => {
+      const repo = await createRepo();
+      const context = { locale: 'en' as const, now: NOW, justEndedDays: 14 };
+      const found = await repo.listByIds(
+        ['ev-ai-at-the-edge', 'ev-power-up-2026', 'ev-eestech-challenge-2025', 'ev-nope'],
+        context,
+      );
+      expect(found.map((event) => event.id)).toEqual([
+        'ev-ai-at-the-edge',
+        'ev-power-up-2026',
+        'ev-eestech-challenge-2025',
+      ]);
+      expect(found.map((event) => event.timing)).toEqual(['upcoming', 'past', 'past']);
+      expect(await repo.listByIds([], context)).toEqual([]);
+      const draft = await create(repo, { status: 'draft' });
+      const hidden = await create(repo, { status: 'hidden' });
+      expect(await repo.listByIds([draft.id, hidden.id], context)).toEqual([]);
+    });
+
     it('splits upcoming and past by the end date', async () => {
       const repo = await createRepo();
       const all = await repo.adminList(query());

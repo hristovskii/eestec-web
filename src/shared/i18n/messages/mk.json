@@ -902,6 +902,56 @@
       "active": "Активен {years}",
       "now": "Сега: {text}",
       "email": "Е-пошта {email}"
+    },
+    "profile": {
+      "back": "Членови",
+      "teamChip": "Тим {team}",
+      "restrictedChip": "Профил само за членови",
+      "alumniChip": "Алумни",
+      "memberSince": "Член од {date}",
+      "activeYears": "Активен {years}",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "newTab": "(се отвора во нов таб)",
+      "copy": "Копирај врска до профилот",
+      "copied": "Врската е копирана",
+      "facts": {
+        "label": "Факти",
+        "team": "{count, plural, one {Тим} other {Тимови}}",
+        "role": "Улога",
+        "joined": "Зачленет",
+        "events": "Настани",
+        "eventsValue": "{attended} учествувал · {organized} организирал",
+        "active": "Активен",
+        "highlight": "Запаметен по",
+        "now": "Сега"
+      },
+      "about": "За мене",
+      "events": {
+        "title": "Настани",
+        "tabs": "Настани",
+        "all": "Сите",
+        "organized": "Организирани",
+        "attended": "Присуствувани",
+        "organizer": "Организатор",
+        "participant": "Учесник",
+        "upcoming": "Претстојно",
+        "showAll": "Прикажи ги сите {count} настани →",
+        "showFewer": "Прикажи помалку настани"
+      },
+      "badges": "Значки",
+      "work": {
+        "title": "Сакаш да соработуваш со {name}?",
+        "text": "Пиши му на тимот {team} и ќе го проследиме.",
+        "link": "Контактирај го тимот {team} →"
+      },
+      "restricted": {
+        "title": "{name} го споделува профилот само со членови",
+        "text": "Најави се со твојот профил на EESTEC LC Скопје за да ги видиш биографијата, настаните, значките и сеќавањата.",
+        "login": "Најава",
+        "create": "Создај профил",
+        "notMember": "Сè уште не си член? <link>Стани EESTEC-ер</link>"
+      }
     }
   },
   "auth": {

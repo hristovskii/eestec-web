@@ -12,6 +12,9 @@
 //   his persona headline says 2022; the list wins here.
 // - The canvas draws a photo placeholder for everyone except those marked "no photo"; there are no
 //   sample photos (`src: null`).
+// - Marija's profile lists four of the canvas's five events: "Exchange: Kraków Winter Edition" (2 Dec
+//   2024) is not in the sample events (the sample Kraków exchange is the upcoming one of December
+//   2026), so it is not linked. Her badge note still mentions it.
 // - Phone and e-mail are never part of a profile.
 import type { Profile, ProfileEvent, ProfileTeam } from '../../types';
 
@@ -107,7 +110,6 @@ export const profilesFixture: Profile[] = [
       { eventId: 'ev-soft-skills-academy-2026', role: 'organizer' },
       { eventId: 'ev-power-up-2026', role: 'organizer' },
       { eventId: 'ev-eestech-challenge-2025', role: 'participant' },
-      { eventId: 'ev-krakow-winter-exchange', role: 'participant' },
     ],
     badges: [
       { badgeId: 'b-organizer', note: 'Helped organize 3 events', awardedAt: '2026-09-12' },

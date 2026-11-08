@@ -4,6 +4,7 @@ export {
   getAudience,
   getBoard,
   getProfile,
+  getProfilePage,
   listActiveMembers,
   listAlumni,
   listPublicUsernames,

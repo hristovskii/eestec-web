@@ -1109,6 +1109,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - `FilterChip`'s count is 14 px-weight 500 when the chip is selected (white on red at 80 % opacity failed the contrast check).
 - Lab: `#member-cards` ("Members and board"). The words "Member cards" were taken by the existing test that looks for a section named "Cards".
 
+**Notes from building (M15c, /members/[username])**
+
+- One route, three answers from the data layer: the full profile, the _restricted_ one (a visitor opening a members-only profile: name, teams, member since and a log-in card, `noindex`) and a 404 (unknown, pending, hidden, inactive). The log-in card says "{first name} shares their profile with members only" and "their bio": the design writes "her", and the site never guesses a person's pronouns.
+- The page is all in one Suspense (it reads the session), so a 404 is the not-found page with a `noindex` rather than a 404 status (the response is already streaming). Public profiles get a prerendered shell through `generateStaticParams` (a route with a dynamic segment needs one under Cache Components, with a placeholder when there are none); everybody else renders on first visit. The title and `noindex` come from what a _visitor_ may see, so a members-only profile is never indexed.
+- **Events on a profile** come from `member_events` (D23) and the events feature: new `listByIds` on the public events repository (listed events only, newest first, with `timing`), so a draft or hidden event never shows. The counts ("3 organized", "1 attended") are what is listed. Rows link to `/upcoming/<slug>` until the event ends and `/events/<slug>` after. Tabs All / Organized / Attended are links (`?events=`), the first five rows show and `?show=all` the rest.
+- Sections hide when empty (About, Events, Badges). **Memories** ("Memories by …", "N written") are not drawn until M17: `MemberProfile` takes the section as a `memories` prop. The "Want to work with …?" box links to `/contact` (the design links `?subject=events`; contact subjects are the board's list, not team slugs).
+- Alumni use the same page: "Alumni" chip, "Active 2018–2023" instead of "Member since", and the board's "Remembered for" and "Now" lines in the hero (visible on phones too); no facts card.
+- Public profiles are in the sitemap (`phase2`); members-only ones are not. The sample profile of Marija lists four of the canvas's five events: "Exchange: Kraków Winter Edition, 2 Dec 2024" is not an event in the sample data (the sample Kraków exchange is the one of December 2026).
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".
