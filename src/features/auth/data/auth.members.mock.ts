@@ -108,7 +108,7 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
   const linkFor = (kind: TokenKind, token: string, locale: 'mk' | 'en') => {
     if (kind === 'confirm') return `/auth/confirm?token=${token}`;
     // A new address is confirmed with the same route as the sign-up e-mail; `type` tells them apart.
-    if (kind === 'email_change') return `/auth/confirm?token=${token}&type=email`;
+    if (kind === 'email_change') return `/auth/confirm?token=${token}&type=email&lang=${locale}`;
     return `${localizedPath('/reset-password', locale)}?token=${token}`;
   };
 

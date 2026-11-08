@@ -453,6 +453,15 @@ export type MyProfileView = {
     /** Where to write when something is wrong; null when the board has no such address. */
     email: string | null;
   };
+  /** What the Account card needs. */
+  account: {
+    /** When the password was last changed (ISO); null when unknown. */
+    passwordChangedAt: string | null;
+    /** The same, as "n days / months / years ago" worked out on the server. */
+    passwordAge: { count: number; unit: 'day' | 'month' | 'year' } | null;
+    /** Published Memories ("Also delete my Memories (n published)"); always 0 until M17. */
+    memoriesPublished: number;
+  };
   /** Privacy & consent. */
   privacy: {
     /** When the account consent was given (sign-up). */

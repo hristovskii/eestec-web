@@ -972,7 +972,8 @@
         "profile": "Profile",
         "visibility": "Visibility",
         "applications": "My applications",
-        "privacy": "Privacy & consent"
+        "privacy": "Privacy & consent",
+        "account": "Account"
       },
       "pending": {
         "title": "Your account is waiting for board approval",
@@ -1350,6 +1351,69 @@
       "since": "Pending since {when}",
       "meanwhile": "<strong>Meanwhile</strong> you can finish your profile (photo, bio, links). Nobody else sees it until it’s approved.",
       "finish": "Finish my profile"
+    },
+    "account": {
+      "email": {
+        "label": "E-mail",
+        "change": "Change",
+        "title": "Change your e-mail",
+        "text": "We send a confirmation link to the new address. Your e-mail changes when you open it; until then the old one keeps working.",
+        "newLabel": "New e-mail address",
+        "password": "Your password",
+        "send": "Send link",
+        "sentTitle": "Check your new e-mail",
+        "sentText": "We sent a link to {email}. Your address changes when you open it (it works for 24 hours).",
+        "changedNotice": "Your e-mail address is changed.",
+        "expiredNotice": "That link has expired or was already used. Ask for a new one with “Change” below.",
+        "cancel": "Cancel",
+        "done": "Done"
+      },
+      "password": {
+        "label": "Password",
+        "changedAgo": "Last changed {ago}",
+        "change": "Change",
+        "title": "Change your password",
+        "current": "Current password",
+        "next": "New password",
+        "save": "Change password",
+        "saved": "Password changed"
+      },
+      "download": {
+        "title": "Download my data",
+        "text": "Everything we store about you, as a ZIP file.",
+        "button": "Download"
+      },
+      "delete": {
+        "title": "Delete my account",
+        "text": "Removes your profile, photo, CV, applications and personal data. You choose whether your published Memories stay (without your name or photo) or are deleted too. This can’t be undone.",
+        "button": "Delete account…",
+        "dialogTitle": "Delete your account?",
+        "lead": "This permanently removes:",
+        "items": {
+          "profile": "Your profile, photo and bio",
+          "cv": "Your CV and all consents",
+          "applications": "Your applications to upcoming events",
+          "drafts": "Drafts and Memories waiting for approval",
+          "name": "Your name and photo on everything you wrote"
+        },
+        "memories": "Also delete my Memories ({count} published)",
+        "memoriesHelp": "Unchecked: they stay on the site as “by a former member”, with no name or photo.",
+        "password": "Enter your password to confirm",
+        "cancel": "Cancel",
+        "confirm": "Delete my account",
+        "deleting": "Deleting…",
+        "doneTitle": "Your account is deleted",
+        "doneText": "We removed your personal data. A confirmation is on its way to your e-mail. Thanks for everything, {name}.",
+        "home": "Go to the home page"
+      },
+      "errors": {
+        "currentWrong": "That password is not right.",
+        "locked": "Too many tries. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+        "emailTaken": "This e-mail already has an account.",
+        "emailSame": "That is already your e-mail address.",
+        "passwordSame": "Choose a password you are not using now.",
+        "failed": "Something went wrong. Try again."
+      }
     }
   }
 }

@@ -563,7 +563,7 @@ describe('mock member accounts', () => {
 
       const [mail] = listMockMail(fresh);
       expect(mail?.kind).toBe('email_change');
-      expect(mail?.link).toMatch(/^\/auth\/confirm\?token=.+&type=email$/);
+      expect(mail?.link).toMatch(/^\/auth\/confirm\?token=.+&type=email&lang=en$/);
       // Until the link is used, the old address stays.
       expect((await repo.getAccountDetails(userId))?.email).toBe(input.email);
 

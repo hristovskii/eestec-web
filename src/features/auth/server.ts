@@ -25,6 +25,7 @@ export {
   verifyMemberPassword,
 } from './account';
 export {
+  confirmEmailChangeLink,
   confirmEmailLink,
   getMemberRegistration,
   getMockPersonaId,
@@ -39,3 +40,5 @@ export { decideRegistrations } from './actions/admin-approvals';
 export { listMockMail, type MockMail } from './data/mailbox';
 export { photoUrl } from './data/member-photos';
 export { mockMailboxResponse, mockMemberPhotoResponse } from './dev-routes';
+export { passwordFailure } from './actions/password-failure';
+export { signOut } from './actions/sign-out';

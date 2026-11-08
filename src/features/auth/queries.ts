@@ -70,3 +70,16 @@ export async function confirmEmailLink(token: string): Promise<{ path: string }>
         : `${localizedPath('/auth/expired', locale)}?type=confirm`,
   };
 }
+
+/**
+ * Uses the link of a "new e-mail address" message and says where the person goes next: back to My
+ * profile, with `?email=changed` or `?email=expired` (a used, old or made-up link). The language
+ * travels with the link.
+ */
+export async function confirmEmailChangeLink(token: string, lang: string): Promise<{ path: string }> {
+  const locale = lang === 'en' ? 'en' : 'mk';
+  const result = await (await authRepository()).confirmEmailChange({ token, now: now() });
+  return {
+    path: `${localizedPath('/profile', locale)}?email=${result.status === 'changed' ? 'changed' : 'expired'}`,
+  };
+}

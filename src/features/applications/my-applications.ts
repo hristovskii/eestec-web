@@ -43,3 +43,24 @@ export async function deleteApplicationsOf(email: string): Promise<number> {
   if (count > 0) updateTag(applicationTags.all);
   return count;
 }
+
+/** "Download my data": every application of this e-mail as stored (answers included; uploaded files by name only). */
+export async function exportApplicationsOf(email: string) {
+  const rows = await (await applicationsRepository()).listByEmail(email);
+  return rows.map((row) => ({
+    reference: row.reference,
+    eventId: row.eventId,
+    status: row.status,
+    waitlistPosition: row.waitlistPosition,
+    appliedAt: row.createdAt,
+    consentAt: row.consentAt,
+    name: row.name,
+    email: row.email,
+    answers: Object.fromEntries(
+      Object.entries(row.answers).map(([key, value]) => [
+        key,
+        typeof value === 'object' && 'fileName' in value ? { file: value.fileName } : value,
+      ]),
+    ),
+  }));
+}
