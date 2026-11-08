@@ -20,7 +20,11 @@ export type MockMailKind =
   | 'memory_changes_rejected'
   // The board is told about something new to look at (Memories, M17; ideas and feedback, M18).
   | 'board_memory'
-  | 'board_idea';
+  | 'board_idea'
+  | 'board_feedback'
+  // The copy of an idea or of feedback sent to the person who gave an e-mail (not anonymous).
+  | 'idea_copy'
+  | 'feedback_copy';
 
 export type MockMail = {
   id: string;

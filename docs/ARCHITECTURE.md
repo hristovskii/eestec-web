@@ -1254,6 +1254,16 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Files that come with a submission live in a private mock store, opened only through `/api/dev-submissions/[id]` by someone with the Ideas area (an event manager only for feedback of their own events); `serverActions.bodySizeLimit` is now 12 MB (D29).
 - The dashboard's Ideas counters and the sidebar badge are counted from the repository (new ideas + new feedback), no longer from the dashboard fixture.
 
+**Notes from building (M18b, /submit)**
+
+- `/submit?tab=idea|impression&event=<slug>` (Phase 2) has the two tabs as links, one form per tab (`key` = tab, so switching starts clean), and two cards beside the form on desktop: how ideas are read and which accepted ideas became events (hidden when none), or who sees feedback and "Write a Memory". Phones get the short tab names and the tab's note instead of the cards.
+- The form checks with the same zod schema as the server (`domain/submission.ts`, loaded when a field is first focused). The error summary takes focus; links go to the fields. Idea: type chips, title (100), description (20–2000), attachment (PDF/JPG/PNG up to 10 MB, the type is read from the first bytes on the server). Impression: event (listed events that have started, or "Other" with a name; `?event=` chooses it), stars, text, up to 10 photos (compressed in the browser to a 2000 px JPEG by `shared/forms/photo-compress`, moved out of Memories), then "About you" for visitors and "Sending as" for members.
+- **Anonymous** removes "About you" and "Sending as", and nothing is stored (D28). The consent box shows only for a visitor who typed an address and is not anonymous. A signed-in member is stored with their account (name, address, `userId`) unless they choose anonymous.
+- **Rate limit:** the sixth attempt within an hour gets the notice "Too many submissions in a short time … try again after HH:MM. Your text is still here." and the button waits until that time. It counts real time (like the spam guard), because the mock clock of the sample site stands still. The limiter's key is a hash of the forwarded address and the browser, so e2e tests give each test a device of its own with an `x-forwarded-for` header.
+- A **bot** (filled honeypot) or a form sent in under three seconds gets the normal thank-you and nothing is stored.
+- **Turn this into a Memories post** (active members and alumni only, not with anonymous) is one call: `submitImpression` stores the feedback and asks `memories` for a waiting Memory (`createMemoryFromImpression`: same text and photos, empty alt text for the editor's checklist, the event's city and country, the board is told). The confirmation links to My profile. The design copy said the member can open the Memory in the editor while it waits; waiting Memories are read-only (D27), so the confirmation says they can edit it once it is approved.
+- Confirmations (idea named / anonymous / no e-mail, feedback, feedback + Memory) use the member's first name, the weekly meeting day and time from Settings, and the e-mail the copy went to (mock mail kinds `idea_copy`, `feedback_copy`; the board hears through `board_idea`, `board_feedback`, which name the title or event and never the sender, when Settings › E-mail notifications › Ideas & feedback is on).
+
 ## Verification
 
 **Per milestone:**

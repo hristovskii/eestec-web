@@ -1783,5 +1783,168 @@
         "edit": "Edit"
       }
     }
+  },
+  "ideas": {
+    "page": {
+      "crumb": "Ideas & impressions",
+      "title": "Have an idea? Been to an event?",
+      "lead": "Tell us. The board reads every idea and every piece of feedback, from members and non-members alike.",
+      "leadShort": "The board reads every idea and every piece of feedback.",
+      "tabsLabel": "What do you want to send?",
+      "tabs": {
+        "idea": {
+          "title": "Submit an idea",
+          "sub": "Events, topics, companies, this website",
+          "short": "Submit an idea"
+        },
+        "impression": {
+          "title": "Share an impression / feedback",
+          "sub": "After an event you attended",
+          "short": "Impression / feedback"
+        }
+      },
+      "note": {
+        "idea": "The board discusses new ideas at the weekly meeting. Leave an e-mail if you want to hear back.",
+        "impression": "Feedback goes only to the board and the organizers. It is never public unless a member turns it into a Memory."
+      },
+      "aside": {
+        "readsTitle": "The board reads every idea",
+        "readsText": "New ideas are discussed at the weekly meeting. If you leave an e-mail, we'll tell you what happened to yours.",
+        "becameTitle": "Ideas that became events",
+        "becameText": "Suggested through this form",
+        "organizeTitle": "Want to organize it yourself?",
+        "organizeText": "Members can lead their own events with help from the board.",
+        "organizeLink": "Become an EESTECer",
+        "whoTitle": "Who sees your feedback",
+        "who1": "The board and the event's organizers",
+        "who2": "Never public, unless you're a member and choose to turn it into a Memory",
+        "who3": "Ratings are shown to the board as an average per event",
+        "storyTitle": "Want to write a full story?",
+        "storyText": "Members can write a Memory with headings, a cover photo and a gallery.",
+        "storyLink": "Write a Memory"
+      }
+    },
+    "submit": {
+      "ideaTitle": "Submit an idea",
+      "impressionTitle": "Share an impression or feedback",
+      "required": "Fields marked <req>*</req> are required.",
+      "rateLimited": {
+        "title": "Too many submissions in a short time",
+        "text": "To keep this form free of spam, you can send up to {max} per hour. Please try again after {time}. Your text is still here."
+      },
+      "failed": "We couldn't send this. Your text is still here: please try again, or write to {email}.",
+      "idea": {
+        "type": "What kind of idea?",
+        "title": "Title",
+        "titlePlaceholder": "A short name for your idea",
+        "description": "Describe your idea",
+        "descriptionPlaceholder": "What would you like to see, and why?",
+        "attachment": "Attachment",
+        "attachmentHelp": "PDF, JPG or PNG · up to 10 MB"
+      },
+      "impression": {
+        "event": "Which event?",
+        "eventChoose": "Choose an event…",
+        "eventOther": "Other: not in the list",
+        "eventFromLink": "Chosen for you from the event page. Change it if needed.",
+        "otherName": "Name of the event or visit",
+        "rating": "How was it?",
+        "text": "Your impression or feedback",
+        "textPlaceholder": "What worked, what didn't, what should we do next time?",
+        "photos": "Photos",
+        "photosHint": "optional, up to 10",
+        "photosAdd": "Add",
+        "photoRemove": "Remove photo {name}",
+        "photosHelp": "Only photos where everyone shown agreed to be shared."
+      },
+      "counter": "{count} / {max}",
+      "about": "About you",
+      "aboutHint": "optional",
+      "name": "Name",
+      "email": "E-mail",
+      "consent": "I agree that {site} stores my name and e-mail to reply to this, as described in the <link>privacy policy</link>. They are deleted after {months, plural, one {# month} other {# months}}.",
+      "consentHint": "If you add an e-mail, we'll ask for your consent to store it.",
+      "guestNote": "Your feedback goes only to the board and the organizers. It's not published. Members can <link>log in</link> to turn it into a Memory.",
+      "anonymous": "Submit anonymously",
+      "anonymousOff": "Hides your name and e-mail from the board.",
+      "anonymousOn": "We won't see who you are, so we can't reply to you.",
+      "sendingAs": "Sending as",
+      "memory": {
+        "label": "Turn this into a Memories post",
+        "help": "The board checks it first. Once approved it appears on /memories and the event page with your name and photos.",
+        "title": "Title for your Memory",
+        "titleHelp": "Want headings, a cover photo or more text? You can open it in the Memory editor once it is approved."
+      },
+      "send": {
+        "idea": "Send idea",
+        "impression": "Send feedback",
+        "memory": "Send feedback and Memory"
+      },
+      "protected": "Protected by a spam check and a limit of {max} per hour.",
+      "errors": {
+        "type": "Choose what your idea is about",
+        "title": "Give your idea a title",
+        "tooLong": "That is too long",
+        "description": "Tell us a bit more: at least {min} characters",
+        "attachmentType": "Use a PDF, JPG or PNG file",
+        "attachmentSize": "The file is larger than 10 MB",
+        "event": "Pick the event, or “Other”",
+        "otherEvent": "Tell us which event or visit it was",
+        "impression": "Write at least a sentence",
+        "photoCount": "You can add up to 10 photos",
+        "photoType": "Photos must be JPG, PNG or WebP",
+        "photoSize": "A photo is larger than 10 MB",
+        "photoUnreadable": "A photo could not be read: try another one",
+        "email": "Check the e-mail address",
+        "consent": "Please agree, or remove the e-mail",
+        "memoryTitle": "Give your Memory a title",
+        "invalid": "Check this answer",
+        "field": {
+          "type": "Idea type",
+          "title": "Title",
+          "description": "Description",
+          "attachment": "Attachment",
+          "event": "Event",
+          "otherEvent": "Event name",
+          "impression": "Impression",
+          "photos": "Photos",
+          "email": "E-mail",
+          "consent": "Consent",
+          "memoryTitle": "Memory title"
+        }
+      },
+      "success": {
+        "next": "What happens next",
+        "idea": {
+          "title": "Thanks! Your idea is with the board",
+          "titleNamed": "Thanks, {name}! Your idea is with the board",
+          "copy": "We sent a copy to <strong>{email}</strong>.",
+          "anonymous": "You sent it anonymously, so we can't reply. Keep an eye on Upcoming Events.",
+          "noEmail": "You didn't leave an e-mail, so we can't reply. Keep an eye on Upcoming Events.",
+          "step1": "The board reads every idea at the next weekly meeting ({day}, {time}).",
+          "step1Plain": "The board reads every idea at the next weekly meeting.",
+          "step2": "We reply within 2 weeks, even if the answer is “not this year”.",
+          "step2NoReply": "Good ideas get a volunteer and become events or projects.",
+          "step3": "Accepted ideas show up on Upcoming Events.",
+          "another": "Send another idea",
+          "upcoming": "See upcoming events"
+        },
+        "impression": {
+          "title": "Thanks for your feedback on {event}",
+          "text": "It goes to the organizers and the board. It isn't published.",
+          "memoryTitle": "Thanks, {name}! Your Memory is waiting for approval",
+          "memoryText": "Your feedback went to the organizers, and the Memory to the board. You can find both in My profile.",
+          "step1": "The organizers read all feedback after each event.",
+          "step2": "Ratings help us decide what to repeat next year.",
+          "step3": "Were you a participant? Your photos may end up in the event gallery, only with your OK.",
+          "memoryStep1": "The board checks your Memory, usually within 3 days.",
+          "memoryStep2": "Want to add a cover photo or headings? Once it's approved, you can edit it in the Memory editor.",
+          "memoryStep3": "We e-mail you when it's live on /memories.",
+          "another": "Share another impression",
+          "profile": "Go to My profile",
+          "memories": "Read Memories from {event}"
+        }
+      }
+    }
   }
 }

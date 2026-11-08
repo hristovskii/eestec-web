@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
 import { SortableList } from '@/shared/admin-ui/sortable-list';
+import { photoProblem, preparePhoto } from '@/shared/forms/photo-compress';
 import { cn } from '@/shared/lib/cn';
 import { Button } from '@/shared/ui/primitives/button';
 import { Input } from '@/shared/ui/primitives/input';
@@ -12,7 +13,6 @@ import { Input } from '@/shared/ui/primitives/input';
 import { uploadMemoryPhoto } from '../../actions/memory-editor';
 import { MEMORY_LIMITS, memoryPhotoSrc, PHOTO_MAX_BYTES } from '../../domain/memory-fields';
 import type { MemoryCover, MemoryPhoto } from '../../types';
-import { photoProblem, preparePhoto } from './photo-compress';
 
 /** A picture in the editor: a stored file, or the striped placeholder of a sample photo. */
 function Thumb({

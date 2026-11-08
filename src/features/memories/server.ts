@@ -8,6 +8,7 @@ export {
 } from './data/memory-photos';
 export {
   countMyPublishedMemories,
+  createMemoryFromImpression,
   getMyMemoryForEditor,
   listMyMemories,
   listMemoryQueue,

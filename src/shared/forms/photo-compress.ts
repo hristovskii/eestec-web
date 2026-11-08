@@ -1,6 +1,10 @@
-import { PHOTO_MAX_BYTES, PHOTO_MAX_SIDE, PHOTO_TYPES } from '../../domain/memory-fields';
+/** What a person can pick: compressed in the browser first (below). */
+export const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+export const PHOTO_MAX_BYTES = 15 * 1024 * 1024;
+/** Longest side after compression. */
+export const PHOTO_MAX_SIDE = 2000;
 
-// Photos are made smaller in the browser before they are sent (the editor says "Large photos are
+// Photos are made smaller in the browser before they are sent (the Memory editor and /submit say "Large photos are
 // compressed automatically"): at most 2000 px on the long side, as a JPEG, so a photo is a few
 // hundred KB and a Server Action never meets its size limit. Runs in the browser only.
 
