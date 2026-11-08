@@ -122,6 +122,24 @@ export function createMockEventsRepository(): EventsRepository {
       );
     },
 
+    listStarted(context) {
+      return Promise.resolve(
+        db.events
+          .filter(
+            (event) => isListed(event, context.now) && Date.parse(event.startsAt) <= context.now.getTime(),
+          )
+          .sort((a, b) => byStart(b, a))
+          .map((event) => ({
+            id: event.id,
+            slug: event.slug,
+            title: resolveLocalized(event.title, context.locale),
+            startsAt: event.startsAt,
+            city: resolveLocalized(event.city, context.locale),
+            country: resolveLocalized(event.country, context.locale),
+          })),
+      );
+    },
+
     upcomingSlugs(now) {
       return Promise.resolve(upcoming(now).map((event) => event.slug));
     },

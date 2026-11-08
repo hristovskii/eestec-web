@@ -86,6 +86,21 @@ export function describeMembersRepository(
       expect(member.items.map((item) => item.name)).toContain('Marija Stojanovska');
     });
 
+    it('gives authors their name always, and the page and photo only as far as the audience may see', async () => {
+      const repo = await createRepo();
+      const ids = ['u-marija', 'u-daniel', 'u-nobody'];
+      const visitor = await repo.findAuthors('visitor', ids);
+      const member = await repo.findAuthors('member', ids);
+      expect(member.map((author) => author.profile.userId).sort()).toEqual(['u-daniel', 'u-marija']);
+      expect(visitor.map((author) => author.profile.name).sort()).toEqual(
+        member.map((author) => author.profile.name).sort(),
+      );
+      expect(member.every((author) => author.page === 'full')).toBe(true);
+      // Whatever a visitor may not open is "restricted" (name only) and never "full".
+      for (const author of visitor) expect(['full', 'restricted']).toContain(author.page);
+      expect(await repo.findAuthors('member', [])).toEqual([]);
+    });
+
     it('never lists pending people, and sorts by name by default', async () => {
       const repo = await createRepo();
       const { items } = await repo.listActive('member', query(), 2026);

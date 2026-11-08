@@ -6,7 +6,7 @@ import { slugify } from '@/shared/lib/slug';
 
 import { adminMembers } from '../domain/admin-directory';
 import { type Directory, activeMembers, alumniList, boardView, profileResult } from '../domain/directory';
-import { canSee } from '../domain/visibility';
+import { canSee, isRestrictedFor } from '../domain/visibility';
 import { isReservedUsername } from '../domain/profile-self';
 import type {
   Badge,
@@ -164,6 +164,23 @@ export function createMockMembersRepository(
     },
     async getBoard(label) {
       return structuredClone(boardView(await directory(), label));
+    },
+    async findAuthors(audience, userIds) {
+      const { profiles, teams } = await directory();
+      const wanted = new Set(userIds);
+      return structuredClone(
+        profiles
+          .filter((profile) => wanted.has(profile.userId))
+          .map((profile) => ({
+            profile,
+            page: canSee(audience, profile)
+              ? ('full' as const)
+              : isRestrictedFor(audience, profile)
+                ? ('restricted' as const)
+                : ('none' as const),
+            teams: profile.teams.flatMap((entry) => teams.filter((team) => team.id === entry.teamId)),
+          })),
+      );
     },
     async getProfile(audience, username, currentYear) {
       return structuredClone(profileResult(await directory(), audience, username, currentYear));

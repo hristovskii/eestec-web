@@ -4,7 +4,10 @@ import { listApplicationOverview } from '@/features/applications/server';
 import { accessTo, type Actor } from '@/features/auth';
 import { listMemberRegistrations } from '@/features/auth/server';
 import { countNewMessages } from '@/features/contact/server';
+import { getEventsByIds } from '@/features/events/server';
 import { countNewApplications } from '@/features/join/server';
+import { getAuthorCards } from '@/features/members/server';
+import { listMemoryQueue } from '@/features/memories/server';
 import { countNewInquiries } from '@/features/partners/server';
 import { isEnabled } from '@/shared/config/flags';
 
@@ -23,14 +26,16 @@ const YEAR = {
 /** Dashboard for this admin: event managers see their own events only (D18). Dynamic (session). */
 export async function getDashboard(actor: Actor): Promise<DashboardData> {
   const own = accessTo(actor, 'dashboard') === 'own';
-  const [summary, applications, contact, partners, membership, registrations] = await Promise.all([
-    (await dashboardRepository()).getDashboard({ own }),
-    listApplicationOverview(actor),
-    countNewMessages(),
-    countNewInquiries(),
-    countNewApplications(),
-    listMemberRegistrations('pending'),
-  ]);
+  const [summary, applications, contact, partners, membership, registrations, memoryQueue] =
+    await Promise.all([
+      (await dashboardRepository()).getDashboard({ own }),
+      listApplicationOverview(actor),
+      countNewMessages(),
+      countNewInquiries(),
+      countNewApplications(),
+      listMemberRegistrations('pending'),
+      listMemoryQueue(),
+    ]);
   // Member registrations are the real ones (confirmed, waiting for the board), oldest first.
   const memberApprovals: PendingApproval[] = registrations.map((registration) => ({
     id: registration.userId,
@@ -39,6 +44,33 @@ export async function getDashboard(actor: Actor): Promise<DashboardData> {
     meta: `${registration.faculty}, ${YEAR[registration.year]}`,
     submittedAt: registration.confirmedAt ?? registration.submittedAt,
   }));
+  // Memories waiting for the board (and changes to published ones) are the real queue, oldest first.
+  const [authors, eventsById] = await Promise.all([
+    getAuthorCards(
+      'member',
+      'en',
+      memoryQueue.flatMap((item) => (item.authorId ? [item.authorId] : [])),
+    ),
+    getEventsByIds(
+      memoryQueue.flatMap((item) => (item.eventId ? [item.eventId] : [])),
+      'en',
+    ),
+  ]);
+  const memoryApprovals: PendingApproval[] = memoryQueue.map((item) => {
+    const author = item.authorId ? (authors[item.authorId]?.name ?? 'A member') : 'A former member';
+    const event =
+      eventsById.find((candidate) => candidate.id === item.eventId)?.title.text ?? item.otherEventName;
+    const parts: string[] = [author];
+    if (event) parts.push(event);
+    if (item.kind === 'revision') parts.push('changes');
+    return {
+      id: item.id,
+      type: 'memory',
+      title: item.title,
+      meta: parts.join(' · '),
+      submittedAt: item.submittedAt,
+    };
+  });
   // "Applications for open events": events whose form takes applications on the site right now
   // (drafts are not on the site).
   const openEvents = applications
@@ -59,13 +91,14 @@ export async function getDashboard(actor: Actor): Promise<DashboardData> {
     }));
   return {
     ...summary,
-    pending: [...summary.pending.filter((item) => item.type !== 'member'), ...memberApprovals],
+    pending: [...memberApprovals, ...memoryApprovals],
     counters: {
       ...summary.counters,
       memberRegistrations: {
         count: registrations.length,
         oldestAt: registrations[0] ? (registrations[0].confirmedAt ?? registrations[0].submittedAt) : null,
       },
+      memoriesToApprove: { count: memoryQueue.length, oldestAt: memoryQueue[0]?.submittedAt ?? null },
       membershipApplications: { count: membership },
       messages: { contact, partners },
       openEventApplications: {

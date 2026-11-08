@@ -6,7 +6,21 @@ import { mockTable } from '@/shared/data/mock/store';
 // member flow would send is kept here with its link, so a person (devtools panel) or a test
 // (`/api/dev-mailbox`) can open the link. Dev and preview only.
 
-export type MockMailKind = 'confirm' | 'reset' | 'approved' | 'rejected' | 'email_change' | 'deleted';
+export type MockMailKind =
+  | 'confirm'
+  | 'reset'
+  | 'approved'
+  | 'rejected'
+  | 'email_change'
+  | 'deleted'
+  // Memories (M17): the board's decision on a Memory or on changes to a published one.
+  | 'memory_published'
+  | 'memory_rejected'
+  | 'memory_changes_approved'
+  | 'memory_changes_rejected'
+  // The board is told about something new to look at (Memories, M17; ideas and feedback, M18).
+  | 'board_memory'
+  | 'board_idea';
 
 export type MockMail = {
   id: string;

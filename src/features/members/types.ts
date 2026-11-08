@@ -162,6 +162,23 @@ export type ActiveMembers = {
 export type AlumniQuery = { q?: string; limit: number | 'all' };
 export type AlumniList = { items: AlumniSummary[]; total: number; matching: number };
 
+/**
+ * What another feature needs to show a person as the author of something (a Memory): never
+ * anything the viewer may not see. `username` is null when the person has no page for this viewer.
+ */
+export type AuthorCardData = {
+  name: string;
+  initials: string;
+  username: string | null;
+  photo: ProfilePhoto | null;
+  /** Team names in the language of the page. */
+  teams: string[];
+  /** Year the person joined. */
+  since: number;
+  /** '' when hidden or empty. */
+  bio: string;
+};
+
 /** What /members/<username> may show the viewer. */
 export type ProfileResult =
   | {

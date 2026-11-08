@@ -212,6 +212,15 @@ export async function getEventsByIds(ids: readonly string[], locale: Locale) {
   return repo.listByIds(ids, { locale, now: now(), justEndedDays: settings.events.justEndedDays });
 }
 
+/** Listed events that have started, newest first: the picker of a Memory and of an impression. Cached. */
+export async function getStartedEvents(locale: Locale) {
+  'use cache';
+  cacheTag(eventTags.list);
+  cacheLife('events');
+  const [repo, settings] = await Promise.all([eventsRepository(), getSiteSettings(locale)]);
+  return repo.listStarted({ locale, now: now(), justEndedDays: settings.events.justEndedDays });
+}
+
 /** Upcoming addresses to prerender. */
 export async function getUpcomingSlugs(): Promise<string[]> {
   'use cache';

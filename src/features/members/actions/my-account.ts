@@ -10,17 +10,19 @@ import {
   passwordFailure,
   verifyMemberPassword,
 } from '@/features/auth/server';
+import { retireMemoriesOf } from '@/features/memories/server';
 import { type ActionResult, ok } from '@/shared/forms/action-result';
 
 import { membersRepository } from '../data';
 
 // /profile › Account › Delete my account. It spans three features, so it is composed here: the
-// profile, choices, CV and photo (members), the applications, and last the account itself
+// profile, choices, CV and photo (members), the applications, the Memories (drafts and waiting ones
+// always go; published ones only when asked) and last the account itself
 // (which also clears the session). No `refresh()`: the page would only redirect to log in.
 
 const deleteSchema = z.object({
   password: z.string().min(1),
-  /** "Also delete my Memories" (default off). Memories arrive in M17; until then there is nothing to delete. */
+  /** "Also delete my Memories" (default off): off keeps published ones as "A former member". */
   alsoDeleteMemories: z.boolean(),
 });
 
@@ -40,6 +42,7 @@ export async function deleteMyAccount(input: unknown): Promise<ActionResult<{ fi
   const { photoUrl } = await (await membersRepository('session')).deleteMine(session.userId);
   deleteMemberPhoto(photoUrl);
   await deleteApplicationsOf(session.email);
+  await retireMemoriesOf(session.userId, parsed.data.alsoDeleteMemories);
   const deleted = await deleteMemberAccount(session.userId);
   if (deleted.status !== 'deleted') return { ok: false, error: 'unexpected' };
   return ok({ firstName: session.name.split(' ')[0] ?? session.name });

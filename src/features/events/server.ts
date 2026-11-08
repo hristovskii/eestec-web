@@ -18,6 +18,7 @@ export {
   getEventPage,
   getEventsByIds,
   getEventsArchive,
+  getStartedEvents,
   getLatestEvents,
   getUpcomingEvents,
   getUpcomingSlugs,

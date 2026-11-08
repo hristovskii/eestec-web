@@ -18,6 +18,7 @@ import type {
   ContentStatus,
   EventEditor,
   EventOption,
+  PublicEventOption,
   EventRecord,
   EventTopic,
   EventType,
@@ -51,6 +52,8 @@ export interface EventsPublicRepository {
     ids: readonly string[],
     context: PublicContext,
   ): Promise<(EventSummary & { timing: EventTiming })[]>;
+  /** Listed events that have started, newest first (the picker for a Memory or an impression). */
+  listStarted(context: PublicContext): Promise<PublicEventOption[]>;
   /** A published or hidden event by its current address; null for drafts and unknown slugs. */
   findBySlug(slug: string, context: PublicContext): Promise<EventDetail | null>;
   /** Neighbours in the archive by start date (listed past events, any category). */

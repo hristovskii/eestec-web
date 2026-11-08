@@ -1201,6 +1201,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 
 ---
 
+**Notes from building (M17a, Memories data layer)**
+
+- `memories` is a new feature with one repository (`MemoriesRepository`: public reads of published Memories, the author's own methods that take the signed-in member's id, admin methods for callers that checked the permission) and a mock with 14 sample Memories (`docs/sample-data.md`). **`memories` never imports `members`**: `members` calls `memories` (delete account, the "published" count), so the author of a Memory is shown by route composition: the Memory carries `authorId`, the route asks `members.getAuthorCards(audience, locale, ids)` (name always; address, photo and bio only as far as the audience may see them, `findAuthors` on the members repository).
+- A Memory has the decided four statuses (D26): draft, pending, published, rejected. A published Memory edited by its author keeps its live content and gets **one revision** (`pending` or `rejected`); approving copies the revision over the live content. A waiting Memory is read-only for its author. **Unpublish** is a move back to draft (no new status), it drops a waiting revision and the Home feature flag. The address is made at the first submit (never `new`, `edit` or `preview`) and kept for good; drafts are reached by id.
+- Photos of Memories come from members, so they can't use the staff-only media upload: a Memories-owned file store (`data/memory-photos.ts`, served by `/api/dev-memory-photos/[id]`, dev and preview only) stands in for the public-media bucket; the browser compresses each photo before it is sent. Sample photos have no file (`fileId: null`, `sample` = caption).
+- The dashboard's Memories count and the Approvals badge now come from the Memories queue (waiting Memories plus waiting changes, oldest first); the sample queue has four entries, as the dashboard always said. The dashboard fixture no longer holds Memory rows.
+- Public events gained `listStarted` (listed events that have started, with city and country) for the pickers of a Memory and of an impression; `sendMockMail` is exported from `auth/server` with the Memory and board mail kinds; the activity log has the areas `memories` and `ideas`.
+- Deleting an account now calls `retireMemoriesOf(userId, alsoDeleteMemories)` before the account goes: drafts, waiting and not approved Memories are always deleted; published ones are deleted when the checkbox is ticked, otherwise they stay as "A former member" (`authorId: null`, `authorDeleted`).
+
 ## Verification
 
 **Per milestone:**

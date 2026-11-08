@@ -7,6 +7,7 @@ export { getMineContext, getMyProfile, getMyProfileView, type MyProfileData } fr
 export {
   getAdminBoards,
   getAudience,
+  getAuthorCards,
   getBoard,
   getProfile,
   getProfilePage,

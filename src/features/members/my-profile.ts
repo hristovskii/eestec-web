@@ -2,6 +2,7 @@ import 'server-only';
 
 import type { AccountDetails, Session } from '@/features/auth';
 import { getAccountDetails, getMemberRegistration, photoUrl } from '@/features/auth/server';
+import { countMyPublishedMemories } from '@/features/memories/server';
 import { getSiteSettings } from '@/features/settings/server';
 import { resolveLocalized } from '@/shared/i18n/localized';
 import type { Locale } from '@/shared/i18n/routing';
@@ -49,9 +50,10 @@ export async function getMyProfileView(session: Session, locale: Locale): Promis
   if (!data) return null;
   const { mine, details } = data;
   const { profile } = mine;
-  const [catalog, settings] = await Promise.all([
+  const [catalog, settings, memoriesPublished] = await Promise.all([
     (await membersRepository('session')).getCatalog(),
     getSiteSettings(locale),
+    countMyPublishedMemories(session.userId),
   ]);
   const teams = profile.teams.flatMap((entry) => {
     const team = catalog.teams.find((item) => item.id === entry.teamId);
@@ -87,7 +89,7 @@ export async function getMyProfileView(session: Session, locale: Locale): Promis
       passwordAge: details.passwordChangedAt
         ? relativeAge(details.passwordChangedAt, now().toISOString())
         : null,
-      memoriesPublished: 0,
+      memoriesPublished,
     },
     privacy: {
       dataConsentAt: details.dataConsentAt,
