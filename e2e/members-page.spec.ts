@@ -13,6 +13,12 @@ const asMember = (page: Page) =>
 
 const active = (page: Page) => page.locator('#active');
 const names = async (page: Page) => await active(page).getByRole('heading', { level: 3 }).allTextContents();
+/** React has taken over the filters (before that, typing and picking do nothing). */
+const hydrated = async (page: Page) =>
+  await page.waitForFunction(() => {
+    const element = document.querySelector('#active input, #board select');
+    return !!element && Object.keys(element).some((key) => key.startsWith('__reactProps'));
+  });
 const isMobile = () => test.info().project.name === 'mobile';
 
 test.describe('members page (M15b)', () => {
@@ -69,6 +75,7 @@ test.describe('members page (M15b)', () => {
   test('search, team, year and sort live in the address and filter the list', async ({ page }) => {
     await asMember(page);
     await page.goto('/en/members');
+    await hydrated(page);
     const search = active(page).getByRole('searchbox');
     await search.fill('ristov');
     await expect(page).toHaveURL(/q=ristov/);
@@ -99,12 +106,12 @@ test.describe('members page (M15b)', () => {
     await page.goto('/en/members?sort=longest');
     await expect.poll(async () => (await names(page))[0]).toBe('Aleksandar Popov');
     await page.goto('/en/members?sort=newest');
-    // Newest first: the people who joined this year come before those who joined in 2021 (members
-    // approved meanwhile by other tests joined this year too, so the very first name varies).
+    // Newest first: the longest-serving member is no longer on top (members approved meanwhile by
+    // other tests joined this year, so the list can run over to page 2: look at the first name only).
     await expect
       .poll(async () => {
-        const list = await names(page);
-        return list.indexOf('Damjan Velkov') < list.indexOf('Aleksandar Popov');
+        const first = (await names(page))[0];
+        return first !== undefined && first !== 'Aleksandar Popov';
       })
       .toBe(true);
   });
@@ -112,6 +119,7 @@ test.describe('members page (M15b)', () => {
   test('pages of 15 keep the filters in the address', async ({ page }) => {
     await asMember(page);
     await page.goto('/en/members');
+    await hydrated(page);
     await expect(active(page).getByRole('heading', { level: 3 })).toHaveCount(15);
     await expect(active(page).getByText(/Showing\s*1–15\s*of\s*\d+\s*members/)).toBeVisible();
     await active(page).getByRole('link', { name: 'Next page' }).click();
@@ -136,6 +144,7 @@ test.describe('members page (M15b)', () => {
 
   test('a past board has no e-mails, the board select keeps the choice in the address', async ({ page }) => {
     await page.goto('/en/members');
+    await hydrated(page);
     await page.getByLabel('Show board').selectOption('2025/2026');
     await expect(page).toHaveURL(/board=2025%2F2026/);
     const board = page.locator('#board');
@@ -147,6 +156,7 @@ test.describe('members page (M15b)', () => {
 
   test('alumni: nine first, show all and search', async ({ page }) => {
     await page.goto('/en/members');
+    await hydrated(page);
     const alumni = page.locator('#alumni');
     await expect(alumni.getByText(/\d+ former members who built LC Skopje\./)).toBeVisible();
     // The alumni search is drawn for large screens only.
