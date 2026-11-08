@@ -37,7 +37,7 @@ export type DashboardData = {
 export type DashboardSummary = {
   counters: Omit<
     DashboardCounters,
-    'openEventApplications' | 'membershipApplications' | 'messages' | 'memoriesToApprove'
+    'openEventApplications' | 'membershipApplications' | 'messages' | 'memoriesToApprove' | 'ideas'
   >;
   pending: PendingApproval[];
 };

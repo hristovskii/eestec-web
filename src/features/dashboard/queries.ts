@@ -5,6 +5,7 @@ import { accessTo, type Actor } from '@/features/auth';
 import { listMemberRegistrations } from '@/features/auth/server';
 import { countNewMessages } from '@/features/contact/server';
 import { getEventsByIds } from '@/features/events/server';
+import { countNewSubmissions } from '@/features/ideas/server';
 import { countNewApplications } from '@/features/join/server';
 import { getAuthorCards } from '@/features/members/server';
 import { listMemoryQueue } from '@/features/memories/server';
@@ -26,7 +27,7 @@ const YEAR = {
 /** Dashboard for this admin: event managers see their own events only (D18). Dynamic (session). */
 export async function getDashboard(actor: Actor): Promise<DashboardData> {
   const own = accessTo(actor, 'dashboard') === 'own';
-  const [summary, applications, contact, partners, membership, registrations, memoryQueue] =
+  const [summary, applications, contact, partners, membership, registrations, memoryQueue, ideas] =
     await Promise.all([
       (await dashboardRepository()).getDashboard({ own }),
       listApplicationOverview(actor),
@@ -35,6 +36,7 @@ export async function getDashboard(actor: Actor): Promise<DashboardData> {
       countNewApplications(),
       listMemberRegistrations('pending'),
       listMemoryQueue(),
+      countNewSubmissions(),
     ]);
   // Member registrations are the real ones (confirmed, waiting for the board), oldest first.
   const memberApprovals: PendingApproval[] = registrations.map((registration) => ({
@@ -94,6 +96,7 @@ export async function getDashboard(actor: Actor): Promise<DashboardData> {
     pending: [...memberApprovals, ...memoryApprovals],
     counters: {
       ...summary.counters,
+      ideas,
       memberRegistrations: {
         count: registrations.length,
         oldestAt: registrations[0] ? (registrations[0].confirmedAt ?? registrations[0].submittedAt) : null,
