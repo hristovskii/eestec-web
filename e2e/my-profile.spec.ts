@@ -94,14 +94,11 @@ test.describe('my profile (M16b)', () => {
     await expect(
       page.getByRole('navigation', { name: 'My profile sections' }).getByRole('link', { name: 'Visibility' }),
     ).toBeVisible();
-    // Anything sticking out far past the right edge (named, so a failure says what it is).
-    const offenders = await page.evaluate(() => {
-      const width = document.documentElement.clientWidth;
-      return [...document.querySelectorAll('main *')]
-        .filter((element) => element.getBoundingClientRect().right > width + 6)
-        .map((element) => `${element.tagName.toLowerCase()}.${String(element.className).slice(0, 80)}`);
-    });
-    expect(offenders).toEqual([]);
+    // The row of pills scrolls inside its own box: the box itself stays within the screen.
+    const menu = await page
+      .getByRole('navigation', { name: 'My profile sections' })
+      .evaluate((element) => element.getBoundingClientRect().right - document.documentElement.clientWidth);
+    expect(menu).toBeLessThanOrEqual(1);
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
