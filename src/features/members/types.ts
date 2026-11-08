@@ -280,6 +280,8 @@ export type ProfileBadgeView = {
 export type ProfilePageView =
   | {
       kind: 'full';
+      /** For other features' sections on the page (Memories by this person). */
+      userId: string;
       username: string;
       name: string;
       initials: string;

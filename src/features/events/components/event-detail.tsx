@@ -40,13 +40,15 @@ type EventDetailProps = {
   locale: Locale;
   /** Phase 2 (member accounts): "Were you there? Share your impression". */
   phase2: boolean;
+  /** Phase 2: the Memories written about this event (M17); left out when there are none. */
+  memories?: React.ReactNode;
 };
 
 /** `lang` only when the text fell back to Macedonian on the English page. */
 const langOf = (text: ResolvedText, locale: Locale) => (text.lang !== locale ? text.lang : undefined);
 
 /** /events/[slug] (EventDetail, -Mobile, -Minimal, -Ended, -Ended-Mobile). */
-export function EventDetail({ event, prev, next, locale, phase2 }: EventDetailProps) {
+export function EventDetail({ event, prev, next, locale, phase2, memories }: EventDetailProps) {
   const t = useTranslations('events');
   const tNav = useTranslations('nav');
   const scopeHref = `/events?tab=${event.scope}`;
@@ -156,7 +158,7 @@ export function EventDetail({ event, prev, next, locale, phase2 }: EventDetailPr
             </section>
           )}
 
-          {/* Memories from this event arrive with Memories (M17); Phase 1 hides sharing (CLAUDE.md). */}
+          {/* Phase 1 hides sharing (CLAUDE.md). */}
           {phase2 && !ended && (
             <div className="flex flex-col gap-3 rounded-lg bg-surface px-5 py-6 sm:flex-row sm:items-center sm:gap-6 sm:px-8 sm:py-7">
               <span
@@ -197,6 +199,8 @@ export function EventDetail({ event, prev, next, locale, phase2 }: EventDetailPr
         )}
         <EventPartners title={t('detail.partners')} sponsors={event.partners} className="lg:hidden" />
       </Container>
+
+      {memories}
 
       <AdjacentEvents prev={prev} next={next} locale={locale} />
     </>

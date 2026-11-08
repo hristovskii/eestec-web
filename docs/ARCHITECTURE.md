@@ -1210,6 +1210,16 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Public events gained `listStarted` (listed events that have started, with city and country) for the pickers of a Memory and of an impression; `sendMockMail` is exported from `auth/server` with the Memory and board mail kinds; the activity log has the areas `memories` and `ideas`.
 - Deleting an account now calls `retireMemoriesOf(userId, alsoDeleteMemories)` before the account goes: drafts, waiting and not approved Memories are always deleted; published ones are deleted when the checkbox is ticked, otherwise they stay as "A former member" (`authorId: null`, `authorDeleted`).
 
+**Notes from building (M17b, Memories: the read side)**
+
+- Routes: `/memories` (hero with the numbers and the share card, search + event, year, city or country, author and sort in the URL, 12 per page, a mobile Filters sheet, a designed empty state that names the place) and `/memories/[slug]` (breadcrumbs, event and type chips, author row, cover, text, photo grid with "+N more" and the shared lightbox, share links, the event card and the author card in a sticky aside, "More Memories from this event" and "Were you at … too?"). Both sit behind `phase2`; the post is cached per address (`memoryTags`), and what depends on the viewer (authors, the author's own notes) streams in a `Suspense`.
+- Authors are never resolved inside `memories`: the route asks `members.getAuthorCards(audience, locale, ids)`, so a members-only author shows as a name with initials (no photo, no link) to a visitor, and the filter lists only authors with a page. `?author=<username>` and `?event=<slug>` are the public addresses; an unknown value matches nothing (the empty state), never everything.
+- The author sees their own Memory at its address: a draft, a waiting one and one that was not approved open as a preview (a dark bar: "Preview", or "Waiting for the board"), a published one shows what readers see with "Changes waiting for review" (or "Your changes were not approved" with the board's reason). A draft has no address yet, so its preview is reached by its id. Nobody else gets anything but the 404.
+- Reads are counted when readers open a published post (not the author), after the response, so they cost nothing.
+- Memories show in three more places, each hidden when there is nothing to show: Home › Latest activity (featured first, then the newest), an event page ("Memories from this event", three cards and "All N stories"), and a member profile ("Memories by …", only on a profile the viewer may open in full). `MemoriesRow` is the one row component.
+- New shared pieces: `ShareButtons` (copy link, Facebook, LinkedIn, WhatsApp, e-mail: plain links, nothing from those sites is loaded), events `getEventCardsByIds`, `AuthorCardData` and `userId` on the full profile view.
+- A guest who presses "Share your memory" gets the dialog from MemoryStates (log in, or send a quick impression on `/submit`); members go to `/memories/new` (built in 17c).
+
 ## Verification
 
 **Per milestone:**

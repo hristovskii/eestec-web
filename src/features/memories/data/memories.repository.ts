@@ -54,7 +54,7 @@ export interface MemoriesRepository {
   /** By address (any status) or id; null for someone else's. */
   findMine(userId: string, ref: { slug: string } | { id: string }): Promise<OwnMemory | null>;
   /** The author's view of the post page: their draft, waiting, rejected or live version. */
-  findMinePost(userId: string, slug: string): Promise<{ post: MemoryPost; own: OwnMemory } | null>;
+  findMinePost(userId: string, slugOrId: string): Promise<{ post: MemoryPost; own: OwnMemory } | null>;
   /**
    * Saves what is in the editor without checking it ("Save draft", autosave). New (no id) creates a
    * draft; a draft or not-approved Memory is overwritten; a published one keeps its live version and

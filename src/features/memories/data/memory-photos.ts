@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { mockTable } from '@/shared/data/mock/store';
+import type { AnyMedia } from '@/shared/types/media';
 
 import type { MemoryPhotoFile } from '../types';
 
@@ -23,4 +24,27 @@ export const memoryPhotoUrl = (id: string) => `/api/dev-memory-photos/${id}`;
 
 export function deleteMockMemoryPhoto(id: string): void {
   delete table().files[id];
+}
+
+/**
+ * A photo of a Memory as an image for the site. A file lost with the mock store (it restarts empty)
+ * or a sample photo shows the striped placeholder.
+ */
+export function memoryImage(ref: {
+  fileId: string | null;
+  sample: string | null;
+  alt: string;
+  credit?: string;
+}): AnyMedia {
+  const credit = ref.credit ? { credit: ref.credit } : {};
+  const file = ref.fileId ? readMockMemoryPhoto(ref.fileId) : null;
+  if (ref.fileId && file)
+    return {
+      src: memoryPhotoUrl(ref.fileId),
+      width: file.width,
+      height: file.height,
+      alt: ref.alt,
+      ...credit,
+    };
+  return { sample: true, caption: ref.sample ?? '', alt: ref.alt, ...credit };
 }

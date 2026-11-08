@@ -11,7 +11,10 @@ import {
   RestrictedProfile,
 } from '@/features/members/public';
 import { getSession } from '@/features/auth/server';
-import { getAudience, getProfilePage, listPublicUsernames } from '@/features/members/server';
+import { MemoriesRow } from '@/features/memories/public';
+import { getMemoriesOfAuthor } from '@/features/memories/server';
+import { getAudience, getAuthorCards, getProfilePage, listPublicUsernames } from '@/features/members/server';
+import { isEnabled } from '@/shared/config/flags';
 import { currentLocale } from '@/shared/i18n/current-locale';
 import type { Locale } from '@/shared/i18n/routing';
 
@@ -38,6 +41,44 @@ export async function generateMetadata({
   };
 }
 
+// "Memories by …" (Phase 2): only for a profile the viewer may open in full; nothing when the person
+// wrote none. The cards' author is this person, so one lookup serves them all.
+async function ProfileMemories({
+  userId,
+  username,
+  name,
+  audience,
+  locale,
+}: {
+  userId: string;
+  username: string;
+  name: string;
+  audience: 'visitor' | 'member';
+  locale: Locale;
+}) {
+  const [t, { items, total }, authors] = await Promise.all([
+    getTranslations('memories.profileRow'),
+    getMemoriesOfAuthor(userId, locale, 3),
+    getAuthorCards(audience, locale, [userId]),
+  ]);
+  if (items.length === 0) return null;
+  return (
+    <MemoriesRow
+      id="memories"
+      headingLevel="h2"
+      title={t('title', { name })}
+      cards={items}
+      authors={authors}
+      locale={locale}
+      link={
+        total > items.length
+          ? { href: `/memories?author=${username}`, label: t('all', { count: total }) }
+          : undefined
+      }
+    />
+  );
+}
+
 async function Profile({
   params,
   searchParams,
@@ -61,7 +102,21 @@ async function Profile({
       {profile.kind === 'restricted' ? (
         <RestrictedProfile profile={profile} />
       ) : (
-        <MemberProfile profile={profile} params={profileParamsSchema.parse(query)} />
+        <MemberProfile
+          profile={profile}
+          params={profileParamsSchema.parse(query)}
+          memories={
+            isEnabled('phase2') ? (
+              <ProfileMemories
+                userId={profile.userId}
+                username={profile.username}
+                name={profile.name}
+                audience={audience}
+                locale={locale}
+              />
+            ) : undefined
+          }
+        />
       )}
     </>
   );

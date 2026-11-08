@@ -58,6 +58,7 @@ export function toProfileView(
   });
   return {
     kind: 'full',
+    userId: profile.userId,
     username: profile.username,
     name: profile.name,
     initials: initials(profile.name),

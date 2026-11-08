@@ -1,4 +1,6 @@
+import type { EventCardModel } from '@/features/events';
 import type { Paged } from '@/shared/data/paged';
+import type { AnyMedia } from '@/shared/types/media';
 
 // Memories (M17): stories with photos that members write about events and places. Draft →
 // waiting for approval → published, or not approved (reason) → edit and resubmit. Editing a
@@ -223,3 +225,78 @@ export type DecideMemoryResult =
 export type RetireResult = { deleted: number; kept: number };
 
 export type MemoriesPage = Paged<MemorySummary>;
+
+// ─── Public view models (resolved: images, event, language) ───
+
+/** What a Memory shows about the event it is about (an event of the site, or free text). */
+export type MemoryEventView = {
+  /** Present when the event is a listed event of the site. */
+  slug: string | null;
+  title: string;
+  /** Language of the title when it falls back (listed events only). */
+  titleLang: string | null;
+  href: string | null;
+  typeName: string | null;
+};
+
+export type MemoryCardModel = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  /** City, country. */
+  place: string;
+  cover: AnyMedia | null;
+  event: MemoryEventView;
+  authorId: string | null;
+  authorDeleted: boolean;
+  publishedAt: string;
+};
+
+export type MemoryPhotoView = { image: AnyMedia; caption: string };
+
+export type MemoryPostModel = {
+  id: string;
+  eventId: string | null;
+  slug: string;
+  title: string;
+  /** Sanitized HTML. */
+  body: string;
+  status: MemoryStatus;
+  place: string;
+  publishedAt: string;
+  happenedOn: string | null;
+  readMinutes: number;
+  wordCount: number;
+  readsCount: number;
+  cover: AnyMedia | null;
+  photos: AnyMedia[];
+  event: MemoryEventView;
+  /** The linked event as a card (aside), when it is a listed event. */
+  eventCard: EventCardModel | null;
+  authorId: string | null;
+  authorDeleted: boolean;
+};
+
+export type MemoriesFacetsView = {
+  events: { id: string; slug: string; title: string; titleLang: string | null; count: number }[];
+  years: number[];
+  places: string[];
+  authors: { authorId: string; count: number }[];
+  totals: { stories: number; events: number; cities: number };
+};
+
+/**
+ * A person shown as the author of a Memory: what the route got from `members` for the viewer. A
+ * Memory by a deleted account has no author ("A former member").
+ */
+export type MemoryAuthor = {
+  name: string;
+  initials: string;
+  /** null: the person has no page for this viewer. */
+  username: string | null;
+  photo: { src: string | null } | null;
+  teams: string[];
+  since: number;
+  bio: string;
+};

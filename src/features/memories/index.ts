@@ -9,4 +9,11 @@ export {
 export type { MemoryProblem } from './domain/memory-fields';
 export { placeLabel } from './domain/memory-place';
 export { MEMORIES_PAGE_SIZE, MEMORY_SORTS, MEMORY_STATUSES } from './types';
-export type { MemoryChange, MemoryContent, MemoryStatus } from './types';
+export type {
+  MemoryAuthor,
+  MemoryCardModel,
+  MemoryChange,
+  MemoryContent,
+  MemoryPostModel,
+  MemoryStatus,
+} from './types';
