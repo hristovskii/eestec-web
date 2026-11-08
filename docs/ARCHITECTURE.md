@@ -1064,6 +1064,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - **Mock mailbox** (`data/mailbox.ts`, dev and preview only): nothing is sent; every e-mail the flow would send is kept with its link. The dev toolbar lists the last six, `GET /api/dev-mailbox?to=` returns them as JSON (404 on production), and `/api/dev-member-photos/[id]` serves sign-up photos for the approvals preview. Real e-mail: M22.
 - Client forms keep their constants in `domain/register-form.ts` and load the zod schemas on first use (M13d rule).
 
+**Notes from building (M14b, log in, forgot password, reset, expired link)**
+
+- Routes under `src/app/[locale]/(site)/(auth)/`: `/login`, `/forgot-password`, `/reset-password?token=`, `/auth/expired?type=confirm|reset`. The group layout answers 404 while the `phase2` flag is off and sends `noindex`; the pages read the session or the link, so they stream in behind a card skeleton. "Check your inbox" appears in place after the action (no e-mail address in the URL).
+- **Log in** (`LoginForm`): one generic message for a wrong e-mail or password; the pause after 5 tries says how many minutes are left, **counted on the server** (the browser's clock can differ from the pinned mock clock); a board account gets "This is a board account" with a link to `/admin/login`; an unconfirmed account gets "Confirm your e-mail first" with "Resend e-mail" (mine, not drawn); a pending member who is already logged in and opens `/login` sees the drawn "waiting for board approval" notice instead of being sent away. `?next=` is only followed when it is a path on this site (`domain/next-path.ts`).
+- The forgot link sits beside the Password label, not inside it: a link inside a `<label>` becomes part of the field's accessible name.
+- Form kit: `PasswordInput` (eye with `aria-pressed`), `PasswordMeter` (four bars + the word, polite live region) and `PasswordRules` (ticks and crosses, never colour alone) in `shared/ui/form/password-field.tsx`; the rules logic stays in `auth/domain/password.ts`.
+- **`public.ts` entry.** A feature's public screens for routes (and the component lab) live in `public.ts`, not in `index.ts`: other features import the auth index, and the proxy reaches it through `events/server → media → auth`, so UI in the index ended up in the proxy ("Invalid import: root-params in Middleware"). `FEATURE_ENTRIES` in `eslint.config.mjs` now lists `index.ts`, `server.ts` and `public.ts`.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

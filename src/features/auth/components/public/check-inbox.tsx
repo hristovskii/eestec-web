@@ -7,7 +7,7 @@ import * as React from 'react';
 import { Link } from '@/shared/i18n/navigation';
 import { Button, buttonVariants } from '@/shared/ui/primitives/button';
 
-import { AuthCard } from './auth-shell';
+import { AuthCard, AuthTitle } from './auth-shell';
 
 const RESEND_SECONDS = 45;
 
@@ -46,13 +46,9 @@ export function CheckInbox({
         <Mail className="size-7" aria-hidden />
       </span>
       <div role="status" className="flex flex-col gap-2">
-        <h1
-          ref={headingRef}
-          tabIndex={-1}
-          className="text-[26px] leading-[1.2] font-bold outline-none lg:text-[30px]"
-        >
+        <AuthTitle ref={headingRef} tabIndex={-1} className="outline-none">
           {t('title')}
-        </h1>
+        </AuthTitle>
         <p className="text-body text-muted-ink">
           {t.rich(kind === 'reset' ? 'text' : 'confirmText', { email, strong })}
         </p>

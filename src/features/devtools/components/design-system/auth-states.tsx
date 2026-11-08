@@ -11,19 +11,19 @@ export function AuthStatesSection() {
       frames="01-AuthForm, 07-AuthPage, 07-AuthStates"
     >
       <div className="flex flex-col gap-10">
-        <AuthShell>
+        <AuthShell headingLevel="h2">
           <LoginForm pending={false} next="/" />
         </AuthShell>
-        <AuthShell>
+        <AuthShell headingLevel="h2">
           <LoginForm pending next="/" />
         </AuthShell>
-        <AuthShell>
+        <AuthShell headingLevel="h2">
           <ForgotFlow />
         </AuthShell>
-        <AuthShell>
+        <AuthShell headingLevel="h2">
           <ResetForm token="lab-link" email="marija.s@students.feit.ukim.edu.mk" name="Marija Stojanovska" />
         </AuthShell>
-        <AuthShell>
+        <AuthShell headingLevel="h2">
           <ExpiredFlow type="reset" />
         </AuthShell>
       </div>

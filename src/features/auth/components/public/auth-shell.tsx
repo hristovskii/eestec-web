@@ -1,17 +1,32 @@
+'use client';
+
 import * as React from 'react';
 
 import { cn } from '@/shared/lib/cn';
 import { Container } from '@/shared/ui/container';
 import { FormCard } from '@/shared/ui/form/form-field';
 
+type HeadingTag = 'h1' | 'h2';
+const HeadingLevel = React.createContext<HeadingTag>('h1');
+
 /** The grey page behind an auth card (AuthPage): the card sits in the middle, 480 px (760 px for sign-up). */
-export function AuthShell({ wide, children }: { wide?: boolean; children: React.ReactNode }) {
+export function AuthShell({
+  wide,
+  headingLevel = 'h1',
+  children,
+}: {
+  wide?: boolean;
+  headingLevel?: HeadingTag;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="bg-surface">
-      <Container className="flex justify-center pt-5 pb-10 lg:px-6 lg:pt-16 lg:pb-24">
-        <div className={cn('w-full', wide ? 'max-w-190' : 'max-w-120')}>{children}</div>
-      </Container>
-    </div>
+    <HeadingLevel value={headingLevel}>
+      <div className="bg-surface">
+        <Container className="flex justify-center pt-5 pb-10 lg:px-6 lg:pt-16 lg:pb-24">
+          <div className={cn('w-full', wide ? 'max-w-190' : 'max-w-120')}>{children}</div>
+        </Container>
+      </div>
+    </HeadingLevel>
   );
 }
 
@@ -32,10 +47,24 @@ export function AuthCardSkeleton() {
   );
 }
 
+/** The title of a screen: h1 on its own page, h2 where several screens share one page (the lab). */
+export function AuthTitle({
+  className,
+  ref,
+  ...props
+}: Omit<React.ComponentProps<'h1'>, 'ref'> & { ref?: React.Ref<HTMLHeadingElement> }) {
+  const tag = React.useContext(HeadingLevel);
+  return React.createElement(tag, {
+    ref,
+    className: cn('text-[26px] leading-[1.2] font-bold lg:text-[30px]', className),
+    ...props,
+  });
+}
+
 export function AuthHeading({ title, lead }: { title: string; lead?: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <h1 className="text-[26px] leading-[1.2] font-bold lg:text-[30px]">{title}</h1>
+      <AuthTitle>{title}</AuthTitle>
       {lead && <p className="text-[15px] leading-normal text-muted-ink">{lead}</p>}
     </div>
   );

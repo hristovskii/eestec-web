@@ -11,7 +11,7 @@ import { Input } from '@/shared/ui/primitives/input';
 
 import { requestMemberPasswordReset, resendConfirmationEmail } from '../../actions/member-sign-in';
 import { formText } from '../../domain/form-text';
-import { AuthCard } from './auth-shell';
+import { AuthCard, AuthTitle } from './auth-shell';
 import { CheckInbox } from './check-inbox';
 
 const KNOWN_ERRORS = ['required', 'email'];
@@ -45,7 +45,7 @@ export function ExpiredFlow({ type }: { type: 'confirm' | 'reset' }) {
         <Link2Off className="size-7" aria-hidden />
       </span>
       <div role="status" className="flex flex-col gap-2">
-        <h1 className="text-[26px] leading-[1.2] font-bold lg:text-[30px]">{t('title')}</h1>
+        <AuthTitle>{t('title')}</AuthTitle>
         <p className="text-body text-muted-ink">{t('text')}</p>
       </div>
       <form
