@@ -333,11 +333,13 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
       userId,
       decision,
       reason,
+      notify = true,
       now,
     }: {
       userId: string;
       decision: 'approve' | 'reject';
       reason: string;
+      notify?: boolean;
       now: Date;
     }): Promise<DecideRegistrationResult> {
       const registration = registrationOf(userId);
@@ -348,26 +350,28 @@ export function createMemberMethods({ accounts, attempts, setSession }: MemberCo
       if (decision === 'approve') {
         registration.status = 'active';
         account.memberStatus = 'active';
-        sendMockMail({
-          to: registration.email,
-          kind: 'approved',
-          subject: 'Your member account is approved',
-          link: localizedPath('/login', registration.locale),
-          reason: null,
-          sentAt: now.toISOString(),
-        });
+        if (notify)
+          sendMockMail({
+            to: registration.email,
+            kind: 'approved',
+            subject: 'Your member account is approved',
+            link: localizedPath('/login', registration.locale),
+            reason: null,
+            sentAt: now.toISOString(),
+          });
       } else {
         registration.status = 'rejected';
         registration.rejectionReason = reason.trim() || null;
         account.memberStatus = null;
-        sendMockMail({
-          to: registration.email,
-          kind: 'rejected',
-          subject: 'About your member account',
-          link: null,
-          reason: registration.rejectionReason,
-          sentAt: now.toISOString(),
-        });
+        if (notify)
+          sendMockMail({
+            to: registration.email,
+            kind: 'rejected',
+            subject: 'About your member account',
+            link: null,
+            reason: registration.rejectionReason,
+            sentAt: now.toISOString(),
+          });
       }
       return Promise.resolve({ status: 'decided', registration: { ...registration } });
     },

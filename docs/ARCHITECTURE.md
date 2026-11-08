@@ -1079,6 +1079,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - The header needed no change: the canvas has no pending state, so a pending member sees the same account menu as any member.
 - e2e `member-register.spec.ts` covers the form, every error, the photo, the bot field, Macedonian, phones, axe, and the whole life of an account made in the test (sign up → unconfirmed log-in → confirm → waiting → forgot → reset → log in with the new password). Tests wait for React to take over the form before using it (`hydrated()`): events on a server-rendered form do nothing until then.
 
+**Notes from building (M14d, Approvals › Member registrations)**
+
+- `/admin/approvals?type=members&open=<userId>&sort=oldest|newest` has no feature of its own, like the Inbox: the route composes `MemberApprovals` from `auth/admin.ts` on shared pieces in `shared/admin-ui/` (`ApprovalSplitView`: queue at 400 px with a tick box per row, "Select all" and "Approve selected", and the preview beside it; `DecisionBar`: Reject… and Approve, which stays at the bottom of the screen on phones). Memories (M17) add a tab and their own preview to the same shell. Only confirmed registrations (`pending`) are listed, oldest first; the list says how long each has waited ("5 h", from `shared/lib/approvals.ts`).
+- The preview shows what was entered (e-mail, faculty, year, phone, visibility, times, the photo from the mock store) and the checks the board looks at: e-mail confirmed, e-mail from a UKIM faculty (`isFacultyEmail`), profile photo present, consent given. **Reject…** is the shared `RejectDialog` (quick reasons, a text, "E-mail the reason" on by default); the reason is e-mailed and shown when the person tries to log in. Approve and reject go through one Server Action, `decideRegistrations` (area `approvals`: super admins and editors; event managers are sent away), recorded in the activity log.
+- **Counts are real:** the dashboard's member registrations (count, oldest, and the "Pending approvals" rows) and the sidebar badge come from `auth` (`listMemberRegistrations('pending')`), so **dashboard → auth** joins dashboard → contact, partners, join. The sample data has two registrations (the canvas shows three); the dashboard's Review buttons open `?open=<id>`.
+- `TablePanel` clips with `overflow-clip`, not `overflow-hidden`: hidden makes the panel a scroll container, and a sticky bar inside it never sticks.
+- e2e `admin-approvals.spec.ts` only looks at the two sample registrations (other tests use them); every test that decides something signs up members of its own through the real form and the mock mailbox (`e2e/support/members.ts`).
+- Housekeeping: `admin.en.json` had two identical `inbox` blocks (a merge of #30 and #31); one is gone.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

@@ -66,6 +66,8 @@ export interface AuthRepository {
     userId: string;
     decision: 'approve' | 'reject';
     reason: string;
+    /** E-mail the person about the decision ("E-mail the reason" is on by default). */
+    notify?: boolean;
     now: Date;
   }): Promise<DecideRegistrationResult>;
   /** Confirmed registrations waiting for a decision, and the oldest one's submit time. */
