@@ -103,3 +103,20 @@ export async function exportAdminMembers(params: AdminMembersParams) {
     teams: profile.teams.flatMap((entry) => page.teams.filter((team) => team.id === entry.teamId)),
   }));
 }
+
+/** Admin › Members › Teams / Badges: the lists with how many people have each. Callers check the permission. */
+export async function listAdminTeams() {
+  return (await membersRepository('session')).adminTeams();
+}
+export async function listAdminBadges() {
+  return (await membersRepository('session')).adminBadges();
+}
+
+/** Admin › Members › Board: every board, who a seat can go to, and the position e-mails (Settings). */
+export async function getAdminBoards() {
+  const [boards, settings] = await Promise.all([
+    (await membersRepository('session')).adminBoards(),
+    getSiteSettings('en'),
+  ]);
+  return { ...boards, roles: settings.boardRoles };
+}

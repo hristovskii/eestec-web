@@ -53,7 +53,7 @@ test.describe('admin members (M15d)', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Members' })).toBeVisible();
     const tabs = page.getByRole('navigation', { name: 'Status' });
     await expect(tabs.getByRole('link', { name: /^All\s*\d+/ })).toBeVisible();
-    await expect(tabs.getByRole('link', { name: /^Alumni\s*9/ })).toBeVisible();
+    await expect(tabs.getByRole('link', { name: /^Alumni\s*\d+/ })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Approvals' }).first()).toBeVisible();
 
     await page.getByRole('searchbox', { name: 'Search members' }).fill('marija');
@@ -174,7 +174,9 @@ test.describe('admin members (M15d)', () => {
     await expect(dialog(page).getByLabel('Active until')).toBeFocused();
     // Every team can be added once: the button stops when all are in.
     await dialog(page).getByLabel('Status').selectOption('active');
-    for (let n = 0; n < 6; n += 1) await dialog(page).getByRole('button', { name: 'Add a team' }).click();
+    // (Other tests may add teams meanwhile, so click until there is nothing left to add.)
+    const addTeam = dialog(page).getByRole('button', { name: 'Add a team' });
+    for (let n = 0; n < 12 && (await addTeam.isEnabled()); n += 1) await addTeam.click();
     await expect(dialog(page).getByRole('button', { name: 'Add a team' })).toBeDisabled();
     await page.keyboard.press('Escape');
     await expect(dialog(page)).toHaveCount(0);

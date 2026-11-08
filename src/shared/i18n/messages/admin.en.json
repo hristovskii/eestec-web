@@ -2553,14 +2553,176 @@
       "tooMany": "Too many.",
       "date": "Enter a date.",
       "order": "This date is before the member-since date.",
-      "duplicate": "Each one can be added once.",
-      "unexpected": "Something went wrong. Try again."
+      "duplicate": "That already exists.",
+      "unexpected": "Something went wrong. Try again.",
+      "label": "Write the years like 2026/2027.",
+      "person": "Choose a person.",
+      "taken": "That name is already used.",
+      "orderEnd": "The end date is before the start date."
     },
     "toasts": {
       "updated": "Member updated.",
       "forbidden": "You don’t have permission to do that.",
       "unexpected": "Something went wrong. Try again.",
       "notFound": "That member is no longer there."
+    },
+    "sections": {
+      "label": "Members sections",
+      "members": "Members",
+      "teams": "Teams",
+      "badges": "Badges",
+      "board": "Board"
+    },
+    "teams": {
+      "title": "Teams",
+      "text": "The team chips on the Members page, in this order. Drag to reorder. A team's address and its members stay when you rename it.",
+      "add": "Add team",
+      "edit": "Edit",
+      "delete": "Delete",
+      "people": "{count, plural, =0 {Nobody yet} one {# member} other {# members}}",
+      "order": "Teams",
+      "empty": {
+        "title": "No teams yet",
+        "text": "Add the teams that run your events, e.g. Events, IT, PR."
+      },
+      "dialog": {
+        "addTitle": "Add team",
+        "editTitle": "Edit {name}",
+        "name": "Team name",
+        "save": "Save team",
+        "saving": "Saving…"
+      },
+      "toasts": {
+        "created": "Team added.",
+        "updated": "Team renamed.",
+        "deleted": "Team deleted.",
+        "reordered": "Order saved.",
+        "forbidden": "You don’t have permission to do that.",
+        "unexpected": "Something went wrong. Try again.",
+        "notFound": "That team is no longer there."
+      },
+      "deleting": {
+        "title": "Delete {name}?",
+        "text": "This can’t be undone.",
+        "blockedTitle": "{name} still has members",
+        "blockedText": "{count, plural, one {# member is} other {# members are}} in this team. Take them out of it in Members first, then delete the team.",
+        "confirm": "Delete team",
+        "ok": "Got it"
+      }
+    },
+    "badges": {
+      "title": "Badges",
+      "text": "The badges you can give to members. They show on a member’s profile with the note you write when you give one.",
+      "add": "Add badge",
+      "edit": "Edit",
+      "delete": "Delete",
+      "awarded": "{count, plural, =0 {Not given yet} one {Given to # member} other {Given to # members}}",
+      "empty": {
+        "title": "No badges yet",
+        "text": "Add the badges you want to give, e.g. Organizer or Trainer."
+      },
+      "dialog": {
+        "addTitle": "Add badge",
+        "editTitle": "Edit {name}",
+        "name": "Badge name",
+        "description": "What it means",
+        "descriptionHelp": "Shown on the profile when you give the badge without a note.",
+        "icon": "Icon",
+        "icons": {
+          "calendar-check": "Calendar",
+          "globe": "Globe",
+          "users": "People",
+          "landmark": "Building",
+          "presentation": "Presentation",
+          "award": "Award",
+          "star": "Star",
+          "heart": "Heart"
+        },
+        "save": "Save badge",
+        "saving": "Saving…"
+      },
+      "toasts": {
+        "created": "Badge added.",
+        "updated": "Badge updated.",
+        "deleted": "Badge deleted.",
+        "forbidden": "You don’t have permission to do that.",
+        "unexpected": "Something went wrong. Try again.",
+        "notFound": "That badge is no longer there."
+      },
+      "deleting": {
+        "title": "Delete {name}?",
+        "text": "{count, plural, =0 {Nobody has it.} one {It is taken from 1 member.} other {It is taken from # members.}} This can’t be undone.",
+        "confirm": "Delete badge"
+      }
+    },
+    "board": {
+      "title": "Board",
+      "text": "The people on each board, shown on the Members page. Position e-mails come from Settings and are shown for the current board only.",
+      "show": "Board",
+      "current": "Current",
+      "new": "New board",
+      "editBoard": "Edit board",
+      "deleteBoard": "Delete board",
+      "roles": "Positions and their e-mails are edited in <link>Settings</link>.",
+      "seats": "Seats",
+      "addSeat": "Add seat",
+      "edit": "Edit",
+      "remove": "Remove",
+      "position": "Position",
+      "person": "Person",
+      "email": "E-mail",
+      "noEmail": "—",
+      "empty": {
+        "title": "No seats yet",
+        "text": "Add the people of this board, in the order the Members page should show them."
+      },
+      "noBoards": {
+        "title": "No boards yet",
+        "text": "Create the first board (for example 2026/2027). The first one is the current board."
+      },
+      "mandate": {
+        "addTitle": "New board",
+        "editTitle": "Edit board {label}",
+        "label": "Years",
+        "labelHelp": "Like 2026/2027.",
+        "startsOn": "Starts on",
+        "endsOn": "Ends on",
+        "current": "This is the current board",
+        "currentHelp": "Only the current board shows position e-mails. Marking another board moves this.",
+        "currentLocked": "The current board stays current until you mark another one.",
+        "save": "Save board",
+        "saving": "Saving…"
+      },
+      "seat": {
+        "addTitle": "Add seat",
+        "editTitle": "Edit seat",
+        "role": "Position (from Settings)",
+        "title": "Title on the Members page",
+        "titleHelp": "Shown as written, even if the position is renamed in Settings later.",
+        "person": "Person",
+        "choose": "Choose…",
+        "save": "Save seat",
+        "saving": "Saving…"
+      },
+      "deleteMandate": {
+        "title": "Delete board {label}?",
+        "text": "Its seats go with it. This can’t be undone.",
+        "confirm": "Delete board",
+        "currentTitle": "{label} is the current board",
+        "currentText": "Mark another board as current first, then delete this one.",
+        "ok": "Got it"
+      },
+      "toasts": {
+        "mandateCreated": "Board added.",
+        "mandateUpdated": "Board updated.",
+        "mandateDeleted": "Board deleted.",
+        "seatSaved": "Seat saved.",
+        "seatRemoved": "Seat removed.",
+        "reordered": "Order saved.",
+        "forbidden": "You don’t have permission to do that.",
+        "unexpected": "Something went wrong. Try again.",
+        "notFound": "That is no longer there."
+      }
     }
   }
 }

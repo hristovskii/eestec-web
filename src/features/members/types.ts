@@ -329,3 +329,33 @@ export type ProfileEdit = {
 };
 
 export type SaveProfileResult = { status: 'saved'; profile: Profile } | { status: 'not_found' };
+
+// ─── Admin › Teams, Badges, Board ───
+
+export type TeamInput = { name: Localized };
+export type TeamWithCount = Team & { members: number };
+export type SaveTeamResult =
+  { status: 'saved'; team: Team } | { status: 'duplicate' } | { status: 'not_found' };
+/** A team with people in it can't be deleted: take them out first. */
+export type RemoveTeamResult =
+  { status: 'removed' } | { status: 'in_use'; members: number } | { status: 'not_found' };
+
+export type BadgeInput = { name: Localized; description: Localized; icon: BadgeIcon };
+export type BadgeWithCount = Badge & { awarded: number };
+export type SaveBadgeResult =
+  { status: 'saved'; badge: Badge } | { status: 'duplicate' } | { status: 'not_found' };
+/** Deleting a badge takes it from everyone who has it: `affected` says how many. */
+export type RemoveBadgeResult = { status: 'removed'; affected: number } | { status: 'not_found' };
+
+export type MandateInput = { label: string; startsOn: string; endsOn: string; isCurrent: boolean };
+export type SaveMandateResult =
+  { status: 'saved'; mandate: BoardMandate } | { status: 'duplicate' } | { status: 'not_found' };
+/** The current board stays until another one is marked as current. */
+export type RemoveMandateResult = { status: 'removed' } | { status: 'current' } | { status: 'not_found' };
+
+export type SeatInput = { boardRoleId: string; title: string; userId: string };
+export type SaveSeatResult =
+  { status: 'saved'; mandate: BoardMandate } | { status: 'not_found' } | { status: 'person_not_found' };
+
+/** Everyone a seat can go to (active members and alumni), by name. */
+export type BoardPerson = { userId: string; name: string };

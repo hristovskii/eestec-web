@@ -21,6 +21,7 @@ const adminQuery = (patch: Partial<AdminMembersQuery> = {}): AdminMembersQuery =
 });
 
 const NOW = new Date('2026-10-04T16:18:00Z');
+const unique = () => crypto.randomUUID().slice(0, 6);
 
 /** What the board could edit, as it is now (to put it back after a test). */
 const editOf = (profile: Profile): ProfileEdit => ({
@@ -349,6 +350,240 @@ export function describeMembersRepository(
         const repo = await createRepo();
         const before = await adminProfile(repo, 'viktor-trajanov');
         expect(await repo.saveProfile('u-nobody', editOf(before), NOW)).toEqual({ status: 'not_found' });
+      });
+
+      describe('teams', () => {
+        it('lists the teams in their order with the people in each, and keeps the address when a team is renamed', async () => {
+          const repo = await createRepo();
+          const before = await repo.adminTeams();
+          expect(before.map((team) => team.slug).slice(0, 3)).toEqual(['events', 'it', 'pr']);
+          expect(before.find((team) => team.slug === 'events')?.members).toBeGreaterThanOrEqual(3);
+          const made = await repo.saveTeam({ name: { mk: `Testers ${unique()}`, en: 'Testers' } });
+          if (made.status !== 'saved') throw new Error('not saved');
+          try {
+            expect(made.team.slug).toMatch(/^testers/);
+            const renamed = await repo.saveTeam({ name: { mk: 'Quality', en: 'Quality' } }, made.team.id);
+            expect(renamed).toMatchObject({
+              status: 'saved',
+              team: { slug: made.team.slug, name: { mk: 'Quality' } },
+            });
+            const listed = (await repo.adminTeams()).find((team) => team.id === made.team.id);
+            expect(listed).toMatchObject({ members: 0, sortOrder: expect.any(Number) as number });
+          } finally {
+            await repo.removeTeam(made.team.id);
+          }
+          expect((await repo.adminTeams()).map((team) => team.id)).toEqual(before.map((team) => team.id));
+        });
+
+        it('refuses a second team with the same name, in either language', async () => {
+          const repo = await createRepo();
+          expect(await repo.saveTeam({ name: { mk: 'events' } })).toEqual({ status: 'duplicate' });
+          expect(await repo.saveTeam({ name: { mk: 'x' } }, 'nope')).toEqual({ status: 'not_found' });
+        });
+
+        it('does not delete a team with people in it, and deletes it when it is empty', async () => {
+          const repo = await createRepo();
+          const made = await repo.saveTeam({ name: { mk: `Temp ${unique()}` } });
+          if (made.status !== 'saved') throw new Error('not saved');
+          const viktor = await adminProfile(repo, 'viktor-trajanov');
+          try {
+            await repo.saveProfile(
+              viktor.userId,
+              { ...editOf(viktor), teams: [...viktor.teams, { teamId: made.team.id, role: 'member' }] },
+              NOW,
+            );
+            expect(await repo.removeTeam(made.team.id)).toEqual({ status: 'in_use', members: 1 });
+          } finally {
+            await repo.saveProfile(viktor.userId, editOf(viktor), NOW);
+          }
+          expect(await repo.removeTeam(made.team.id)).toEqual({ status: 'removed' });
+          expect(await repo.removeTeam(made.team.id)).toEqual({ status: 'not_found' });
+        });
+
+        it('puts the teams in the order given', async () => {
+          const repo = await createRepo();
+          const before = (await repo.adminTeams()).map((team) => team.id);
+          try {
+            await repo.reorderTeams([...before].reverse());
+            expect((await repo.adminTeams()).map((team) => team.id)).toEqual([...before].reverse());
+            const chips = (await repo.listActive('member', query(), 2026)).teams.map((team) => team.id);
+            expect(chips).toEqual([...before].reverse());
+          } finally {
+            await repo.reorderTeams(before);
+          }
+          expect((await repo.adminTeams()).map((team) => team.id)).toEqual(before);
+        });
+      });
+
+      describe('badges', () => {
+        it('creates, renames and counts a badge; refuses the same name twice', async () => {
+          const repo = await createRepo();
+          const made = await repo.saveBadge({
+            name: { mk: `Mentor ${unique()}` },
+            description: { mk: 'Mentors new members' },
+            icon: 'heart',
+          });
+          if (made.status !== 'saved') throw new Error('not saved');
+          try {
+            expect((await repo.adminBadges()).find((badge) => badge.id === made.badge.id)).toMatchObject({
+              awarded: 0,
+              icon: 'heart',
+            });
+            const edited = await repo.saveBadge(
+              { name: made.badge.name, description: { mk: 'Better words' }, icon: 'star' },
+              made.badge.id,
+            );
+            expect(edited).toMatchObject({
+              status: 'saved',
+              badge: { icon: 'star', description: { mk: 'Better words' } },
+            });
+            expect(
+              await repo.saveBadge({
+                name: { mk: made.badge.name.mk.toUpperCase() },
+                description: { mk: '' },
+                icon: 'star',
+              }),
+            ).toEqual({ status: 'duplicate' });
+            expect(
+              await repo.saveBadge({ name: { mk: 'x' }, description: { mk: '' }, icon: 'star' }, 'nope'),
+            ).toEqual({
+              status: 'not_found',
+            });
+          } finally {
+            await repo.removeBadge(made.badge.id);
+          }
+        });
+
+        it('takes a deleted badge away from the people who have it', async () => {
+          const repo = await createRepo();
+          const made = await repo.saveBadge({
+            name: { mk: `Temp ${unique()}` },
+            description: { mk: '' },
+            icon: 'award',
+          });
+          if (made.status !== 'saved') throw new Error('not saved');
+          const viktor = await adminProfile(repo, 'viktor-trajanov');
+          try {
+            await repo.saveProfile(
+              viktor.userId,
+              { ...editOf(viktor), badges: [{ badgeId: made.badge.id, note: 'x' }] },
+              NOW,
+            );
+            expect((await repo.adminBadges()).find((badge) => badge.id === made.badge.id)?.awarded).toBe(1);
+            expect(await repo.removeBadge(made.badge.id)).toEqual({ status: 'removed', affected: 1 });
+            expect((await adminProfile(repo, 'viktor-trajanov')).badges).toEqual([]);
+          } finally {
+            await repo.saveProfile(viktor.userId, editOf(viktor), NOW);
+          }
+          expect(await repo.removeBadge(made.badge.id)).toEqual({ status: 'not_found' });
+        });
+      });
+
+      describe('board', () => {
+        const mandate = () => {
+          const year = 2200 + Math.floor(Math.random() * 90);
+          return {
+            label: `${year}/${year + 1}`,
+            startsOn: `${year}-10-01`,
+            endsOn: `${year + 1}-09-30`,
+            isCurrent: false,
+          };
+        };
+
+        it('lists the boards, current first, and the people a seat can go to', async () => {
+          const repo = await createRepo();
+          const { mandates, people } = await repo.adminBoards();
+          expect(mandates[0]).toMatchObject({ label: '2026/2027', isCurrent: true });
+          expect(mandates.filter((item) => item.isCurrent)).toHaveLength(1);
+          expect(people.map((person) => person.name)).toContain('Marija Stojanovska');
+          expect(people.map((person) => person.name)).not.toContain('Elena Petrovska');
+          expect(people.map((person) => person.name)).toEqual(
+            [...people.map((person) => person.name)].sort((a, b) => a.localeCompare(b, 'en')),
+          );
+        });
+
+        it('adds a board with seats in order, shows it on the public page, and removes it', async () => {
+          const repo = await createRepo();
+          const input = mandate();
+          const made = await repo.saveMandate(input);
+          if (made.status !== 'saved') throw new Error('not saved');
+          const id = made.mandate.id;
+          try {
+            expect(made.mandate).toMatchObject({ isCurrent: false, seats: [] });
+            expect(await repo.saveMandate(input)).toEqual({ status: 'duplicate' });
+            const first = await repo.saveSeat(id, {
+              boardRoleId: 'role-chair',
+              title: 'Chair',
+              userId: 'u-marija',
+            });
+            const second = await repo.saveSeat(id, {
+              boardRoleId: 'role-pr',
+              title: 'PR',
+              userId: 'u-stefan',
+            });
+            if (first.status !== 'saved' || second.status !== 'saved') throw new Error('not saved');
+            expect(second.mandate.seats.map((seat) => seat.title)).toEqual(['Chair', 'PR']);
+            // Order, edit and the public page (names come from the profiles, a past board has no e-mails).
+            const [a, b] = second.mandate.seats;
+            await repo.reorderSeats(id, [b!.id, a!.id]);
+            await repo.saveSeat(
+              id,
+              { boardRoleId: 'role-pr', title: 'PR and media', userId: 'u-stefan' },
+              b!.id,
+            );
+            const view = await repo.getBoard(input.label);
+            expect(view.selected?.seats.map((seat) => [seat.title, seat.name])).toEqual([
+              ['PR and media', 'Stefan Nikolovski'],
+              ['Chair', 'Marija Stojanovska'],
+            ]);
+            expect(await repo.removeSeat(id, a!.id)).toBe(true);
+            expect(await repo.removeSeat(id, a!.id)).toBe(false);
+            expect(
+              await repo.saveSeat(id, { boardRoleId: 'role-pr', title: 'x', userId: 'u-nobody' }),
+            ).toEqual({
+              status: 'person_not_found',
+            });
+            expect(
+              await repo.saveSeat('nope', { boardRoleId: 'role-pr', title: 'x', userId: 'u-stefan' }),
+            ).toEqual({
+              status: 'not_found',
+            });
+          } finally {
+            expect(await repo.removeMandate(id)).toEqual({ status: 'removed' });
+          }
+          expect((await repo.getBoard(input.label)).selected?.label).toBe('2026/2027');
+        });
+
+        it('moves the current board when another is marked, never has none, and keeps the current one', async () => {
+          const repo = await createRepo();
+          const made = await repo.saveMandate({ ...mandate(), isCurrent: true });
+          if (made.status !== 'saved') throw new Error('not saved');
+          const original = (await repo.adminBoards()).mandates.find((item) => item.label === '2026/2027')!;
+          try {
+            const boards = (await repo.adminBoards()).mandates;
+            expect(boards.filter((item) => item.isCurrent).map((item) => item.id)).toEqual([made.mandate.id]);
+            expect(await repo.removeMandate(made.mandate.id)).toEqual({ status: 'current' });
+            // Unmarking the current board is ignored: mark another instead.
+            const kept = await repo.saveMandate(
+              { ...mandate(), label: made.mandate.label, isCurrent: false },
+              made.mandate.id,
+            );
+            expect(kept).toMatchObject({ status: 'saved', mandate: { isCurrent: true } });
+            expect((await repo.getBoard()).selected?.id).toBe(made.mandate.id);
+          } finally {
+            await repo.saveMandate(
+              {
+                label: original.label,
+                startsOn: original.startsOn,
+                endsOn: original.endsOn,
+                isCurrent: true,
+              },
+              original.id,
+            );
+            await repo.removeMandate(made.mandate.id);
+          }
+          expect((await repo.getBoard()).selected?.label).toBe('2026/2027');
+        });
       });
     });
   });

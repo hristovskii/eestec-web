@@ -1,6 +1,6 @@
 # eestec.mk — Architecture & Implementation Plan
 
-> Approved 2026-10-05. Decisions taken after approval are in §9. Built so far: M0–M13 (§8); each milestone's notes are under "Notes from building".
+> Approved 2026-10-05. Decisions taken after approval are in §9. Built so far: M0–M15 (§8); each milestone's notes are under "Notes from building".
 
 ## Context
 
@@ -1125,6 +1125,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - A person the board just approved is in the list at once (the mock adopts them from `auth`); the **first save stores their profile**, and the stored profile wins from then on (tested, also that saving twice does not make two). A badge keeps the day it was awarded when saved again; unknown teams and badges are ignored by the repository.
 - Admin writes: validate (zod, messages are `admin.members.errors` keys) → `authorize('edit', 'members')` → repository → activity log (new area `members`) → `refresh()`. Member reads are not cached, so there is nothing else to invalidate. Teams, badges and boards are edited in M15e.
 - e2e: each test that changes someone signs up and approves a member of its own (through the real form and Approvals) and edits only that one; the sample members are only looked at.
+
+**Notes from building (M15e, Admin › Members › Teams, Badges, Board)**
+
+- The sections are tabs in the address (`/admin/members?tab=teams|badges|board`, default Members). Layout is mine (nothing is drawn): Teams and Seats are reordered with the shared `SortableList` (mouse, touch and keyboard; the Members page chips and the board follow at once), Badges a plain list, each with an edit dialog.
+- **Teams:** Localized names, unique; the address (`?team=<slug>`) is made once from the name and kept when the team is renamed. A team with people in it **can't be deleted** (the dialog says how many; take them out in Members first). **Badges:** Localized name and meaning, an icon from a fixed Lucide list; deleting one takes it from everyone who has it (the dialog says how many, "Type DELETE").
+- **Board:** a board per mandate year (`2026/2027`, start and end dates), seats in the order the Members page shows them. A seat is a position from Settings › Contact & legal (for the e-mail), **the title as the Members page writes it** (suggested from the position, kept as written when the position is renamed later) and a person (active members and alumni). **Exactly one board is current**: marking one moves it, the first board is current, and the current board can't be unmarked or deleted (mark another first). Only the current board shows position e-mails. A person put on a board gets a stored profile.
+- Writes: validate (zod; messages are `admin.members.errors` keys) → `authorize('edit', 'members')` → repository → activity log (area `members`) → `refresh()`. Deleting answers with data (`in_use`, `current`, how many were affected) instead of failing, so the dialog can explain.
+- e2e: every test creates teams, badges and boards with names of its own (boards in a year after 2200) and deletes them again; read-only tests compare names, not counts, because tests that run at the same time approve new members and move people between lists.
 
 **Working rules while building**
 
