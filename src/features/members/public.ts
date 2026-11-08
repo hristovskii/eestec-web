@@ -5,3 +5,6 @@ export { MembersPage, type MembersViewer } from './components/members-page';
 export { MembersSkeleton } from './components/members-skeleton';
 export { ALUMNI_PREVIEW, MEMBERS_PAGE_SIZE, membersParamsSchema } from './schemas/members-params.schema';
 export { joinedFilter, joinedOptions, type MembersParams } from './schemas/members-href';
+export { MemberProfile, RestrictedProfile } from './components/member-profile';
+export { profileParamsSchema } from './schemas/profile-params.schema';
+export type { ProfileParams } from './schemas/profile-href';

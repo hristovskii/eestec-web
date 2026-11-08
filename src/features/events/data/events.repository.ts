@@ -10,6 +10,7 @@ import type {
   EventDetail,
   EventLink,
   EventSummary,
+  EventTiming,
   UpcomingEventSummary,
   AdminEventFacets,
   AdminEventRow,
@@ -42,6 +43,14 @@ export interface EventsPublicRepository {
   archiveFacets(query: { now: Date }): Promise<ArchiveFacets>;
   /** /upcoming: listed events that haven't ended, soonest first (both categories). */
   listUpcoming(context: PublicContext): Promise<UpcomingEventSummary[]>;
+  /**
+   * Listed events by id (a profile lists the events of a person), newest first, with whether they
+   * are still ahead. Drafts, hidden events and unknown ids are left out.
+   */
+  listByIds(
+    ids: readonly string[],
+    context: PublicContext,
+  ): Promise<(EventSummary & { timing: EventTiming })[]>;
   /** A published or hidden event by its current address; null for drafts and unknown slugs. */
   findBySlug(slug: string, context: PublicContext): Promise<EventDetail | null>;
   /** Neighbours in the archive by start date (listed past events, any category). */

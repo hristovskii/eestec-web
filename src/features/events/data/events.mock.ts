@@ -109,6 +109,19 @@ export function createMockEventsRepository(): EventsRepository {
       );
     },
 
+    listByIds(ids, context) {
+      const wanted = new Set(ids);
+      return Promise.resolve(
+        db.events
+          .filter((event) => wanted.has(event.id) && isListed(event, context.now))
+          .sort((a, b) => byStart(b, a))
+          .map((event) => ({
+            ...toSummary(event, { ...context, typeName: typeLocalized }),
+            timing: eventTiming(event, context.now),
+          })),
+      );
+    },
+
     upcomingSlugs(now) {
       return Promise.resolve(upcoming(now).map((event) => event.slug));
     },

@@ -902,6 +902,56 @@
       "active": "Active {years}",
       "now": "Now: {text}",
       "email": "E-mail {email}"
+    },
+    "profile": {
+      "back": "Members",
+      "teamChip": "{team} team",
+      "restrictedChip": "Members-only profile",
+      "alumniChip": "Alumni",
+      "memberSince": "Member since {date}",
+      "activeYears": "Active {years}",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "newTab": "(opens in a new tab)",
+      "copy": "Copy profile link",
+      "copied": "Link copied",
+      "facts": {
+        "label": "Facts",
+        "team": "{count, plural, one {Team} other {Teams}}",
+        "role": "Role",
+        "joined": "Joined",
+        "events": "Events",
+        "eventsValue": "{attended} attended · {organized} organized",
+        "active": "Active",
+        "highlight": "Remembered for",
+        "now": "Now"
+      },
+      "about": "About",
+      "events": {
+        "title": "Events",
+        "tabs": "Events",
+        "all": "All",
+        "organized": "Organized",
+        "attended": "Attended",
+        "organizer": "Organizer",
+        "participant": "Participant",
+        "upcoming": "Upcoming",
+        "showAll": "Show all {count} events →",
+        "showFewer": "Show fewer events"
+      },
+      "badges": "Badges",
+      "work": {
+        "title": "Want to work with {name}?",
+        "text": "Write to the {team} team and we’ll pass it on.",
+        "link": "Contact the {team} team →"
+      },
+      "restricted": {
+        "title": "{name} shares their profile with members only",
+        "text": "Log in with your EESTEC LC Skopje account to see their bio, events, badges and Memories.",
+        "login": "Log in",
+        "create": "Create account",
+        "notMember": "Not a member yet? <link>Become an EESTECer</link>"
+      }
     }
   },
   "auth": {

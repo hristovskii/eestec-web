@@ -203,6 +203,15 @@ export async function findPublicEvent(slug: string, locale: Locale): Promise<Eve
   return repo.findBySlug(slug, { locale, now: now(), justEndedDays: settings.events.justEndedDays });
 }
 
+/** Listed events by id, newest first (a member's profile), with whether they are still ahead. Cached. */
+export async function getEventsByIds(ids: readonly string[], locale: Locale) {
+  'use cache';
+  cacheTag(eventTags.list);
+  cacheLife('events');
+  const [repo, settings] = await Promise.all([eventsRepository(), getSiteSettings(locale)]);
+  return repo.listByIds(ids, { locale, now: now(), justEndedDays: settings.events.justEndedDays });
+}
+
 /** Upcoming addresses to prerender. */
 export async function getUpcomingSlugs(): Promise<string[]> {
   'use cache';

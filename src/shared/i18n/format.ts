@@ -29,6 +29,12 @@ const presets = {
     hour: '2-digit',
     minute: '2-digit',
   },
+  /** October 2023 */
+  monthYear: { month: 'long', year: 'numeric' },
+  /** Nov 2026 */
+  monthYearShort: { month: 'short', year: 'numeric' },
+  /** 7 */
+  dayNumber: { day: 'numeric' },
   /** 18:00 */
   time: { hour: '2-digit', minute: '2-digit' },
 } satisfies Record<string, Intl.DateTimeFormatOptions>;
