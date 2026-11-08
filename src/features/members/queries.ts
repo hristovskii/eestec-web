@@ -9,6 +9,7 @@ import { now } from '@/shared/lib/now';
 import { membersRepository } from './data';
 import { toProfileView } from './domain/profile-view';
 import { toActiveView, toAlumniView, toBoardView } from './domain/view';
+import type { AdminMembersParams } from './schemas/admin-members-params.schema';
 import type { ActiveMembersQuery, Audience, ProfilePageView, ProfileResult } from './types';
 
 // Member reads depend on who is looking, so they are not cached: the pages read the session anyway.
@@ -74,4 +75,31 @@ export async function getProfilePage(
 /** Usernames of public profiles (sitemap). */
 export async function listPublicUsernames() {
   return (await membersRepository()).listPublicUsernames();
+}
+
+const toAdminQuery = (params: AdminMembersParams) => ({
+  q: params.q,
+  status: params.status,
+  team: params.team,
+  sort: params.sort ?? 'name',
+  page: params.page,
+  pageSize: params.size,
+});
+
+/** Admin › Members: one page of profiles (every status), the tab counts, and the teams and badges to give. Callers check the permission. */
+export async function listAdminMembers(params: AdminMembersParams) {
+  const repo = await membersRepository('session');
+  const [page, catalog] = await Promise.all([repo.adminList(toAdminQuery(params)), repo.getCatalog()]);
+  const { counts, teams: _teams, ...rows } = page;
+  return { page: rows, counts, teams: catalog.teams, badges: catalog.badges };
+}
+
+/** Export CSV: every profile matching the filters (not just the page), with their teams. */
+export async function exportAdminMembers(params: AdminMembersParams) {
+  const repo = await membersRepository('session');
+  const page = await repo.adminList({ ...toAdminQuery(params), page: 1, pageSize: 100_000 });
+  return page.items.map((profile) => ({
+    profile,
+    teams: profile.teams.flatMap((entry) => page.teams.filter((team) => team.id === entry.teamId)),
+  }));
 }

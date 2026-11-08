@@ -433,6 +433,7 @@
       "applications": "Applications",
       "approvals": "Approvals",
       "inbox": "Inbox",
+      "members": "Members",
       "pages": "Pages",
       "partners": "Sponsors",
       "media": "Media library",
@@ -2445,6 +2446,121 @@
       "rejected": "Registration rejected",
       "forbidden": "Only editors and super admins can decide registrations.",
       "error": "Couldn’t save the decision. Try again."
+    }
+  },
+  "members": {
+    "title": "Members",
+    "description": "Everyone with a profile: teams, roles, badges, alumni and what the site shows. People who just signed up wait in Approvals.",
+    "hint": "New sign-ups are decided in <link>Approvals</link>. A person edits their own photo, bio, links and visibility; you can hide a photo or a bio, or the whole profile.",
+    "export": "Export CSV",
+    "tabs": {
+      "label": "Status",
+      "all": "All",
+      "active": "Active",
+      "alumni": "Alumni",
+      "inactive": "Inactive",
+      "hidden": "Hidden"
+    },
+    "statuses": {
+      "active": "Active",
+      "alumni": "Alumni",
+      "inactive": "Inactive",
+      "hidden": "Hidden"
+    },
+    "visibilities": {
+      "public": "Public",
+      "members_only": "Members only"
+    },
+    "filters": {
+      "search": "Search members",
+      "searchPlaceholder": "Search by name or username",
+      "team": "Team",
+      "teamAny": "All teams"
+    },
+    "columns": {
+      "member": "Member",
+      "teams": "Teams",
+      "status": "Status",
+      "visibility": "Visible to",
+      "since": "Member since"
+    },
+    "row": {
+      "edit": "Edit",
+      "view": "View profile",
+      "noTeam": "No team"
+    },
+    "empty": {
+      "filteredTitle": "No members match",
+      "filteredText": "Try another name or team, or look at all statuses.",
+      "clear": "Clear filters",
+      "noneTitle": "No members yet",
+      "noneText": "A person appears here once you approve their registration in Approvals."
+    },
+    "dialog": {
+      "title": "Edit {name}",
+      "text": "Status, teams, badges and events are the board’s. The person edits their photo, bio, links and visibility themselves.",
+      "viewProfile": "View profile",
+      "status": "Status",
+      "statusHelp": {
+        "active": "Shown in Active members.",
+        "alumni": "Shown in Alumni, with the years they were active.",
+        "inactive": "Has no public page. Their data stays.",
+        "hidden": "Has no public page. Use this to take a profile down."
+      },
+      "since": "Member since",
+      "until": "Active until",
+      "teams": "Teams",
+      "teamsEmpty": "Not in a team.",
+      "teamAdd": "Add a team",
+      "team": "Team",
+      "teamRole": "Role in the team",
+      "roles": {
+        "member": "Member",
+        "lead": "Team lead",
+        "trainer": "Trainer"
+      },
+      "badges": "Badges",
+      "badgesEmpty": "No badges.",
+      "badgeAdd": "Add a badge",
+      "badge": "Badge",
+      "badgeNote": "Note (optional)",
+      "badgeNotePlaceholder": "Helped organize 3 events",
+      "events": "Events",
+      "eventsEmpty": "No events linked. Only published events show on the profile.",
+      "eventAdd": "Add an event",
+      "event": "Event",
+      "eventRole": "Role",
+      "eventRoles": {
+        "organizer": "Organizer",
+        "participant": "Participant"
+      },
+      "choose": "Choose…",
+      "remove": "Remove {item}",
+      "alumniNow": "Now",
+      "alumniNowHelp": "What they do today, e.g. “Software engineer at Kodra”.",
+      "alumniHighlight": "Remembered for",
+      "alumniHighlightHelp": "e.g. “Chair 2021/22”.",
+      "moderation": "Moderation",
+      "hidePhoto": "Hide photo",
+      "hideBio": "Hide bio",
+      "moderationHelp": "A hidden photo shows as initials and a hidden bio is left out, until you switch it off. The person is not told.",
+      "save": "Save changes",
+      "saving": "Saving…"
+    },
+    "errors": {
+      "required": "Required.",
+      "tooLong": "Too long.",
+      "tooMany": "Too many.",
+      "date": "Enter a date.",
+      "order": "This date is before the member-since date.",
+      "duplicate": "Each one can be added once.",
+      "unexpected": "Something went wrong. Try again."
+    },
+    "toasts": {
+      "updated": "Member updated.",
+      "forbidden": "You don’t have permission to do that.",
+      "unexpected": "Something went wrong. Try again.",
+      "notFound": "That member is no longer there."
     }
   }
 }

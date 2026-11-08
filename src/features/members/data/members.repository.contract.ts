@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { ActiveMembersQuery } from '../types';
+import type { ActiveMembersQuery, AdminMembersQuery, Profile, ProfileEdit } from '../types';
 import type { MembersRepository } from './members.repository';
 
 // Runs against every implementation (mock now, Supabase later). Read-only: the sample data decides
@@ -12,6 +12,53 @@ const query = (patch: Partial<ActiveMembersQuery> = {}): ActiveMembersQuery => (
   pageSize: 100,
   ...patch,
 });
+
+const adminQuery = (patch: Partial<AdminMembersQuery> = {}): AdminMembersQuery => ({
+  sort: 'name',
+  page: 1,
+  pageSize: 100,
+  ...patch,
+});
+
+const NOW = new Date('2026-10-04T16:18:00Z');
+
+/** What the board could edit, as it is now (to put it back after a test). */
+const editOf = (profile: Profile): ProfileEdit => ({
+  status: profile.status,
+  memberSince: profile.memberSince,
+  activeTo: profile.activeTo,
+  teams: profile.teams,
+  badges: profile.badges.map(({ badgeId, note }) => ({ badgeId, note })),
+  events: profile.events,
+  alumniNow: profile.alumniNow,
+  alumniHighlight: profile.alumniHighlight,
+  hidePhoto: profile.hidePhoto,
+  hideBio: profile.hideBio,
+});
+
+async function adminProfile(repo: MembersRepository, username: string) {
+  const { items } = await repo.adminList(adminQuery({ q: username }));
+  const profile = items.find((item) => item.username === username);
+  if (!profile) throw new Error(`no profile ${username}`);
+  return profile;
+}
+
+/** Changes one sample profile for a test and always puts it back. */
+async function withEdit(
+  repo: MembersRepository,
+  username: string,
+  change: (before: ProfileEdit) => ProfileEdit,
+  test: (profile: Profile) => Promise<void>,
+) {
+  const before = await adminProfile(repo, username);
+  const saved = await repo.saveProfile(before.userId, change(editOf(before)), NOW);
+  if (saved.status !== 'saved') throw new Error('not saved');
+  try {
+    await test(saved.profile);
+  } finally {
+    await repo.saveProfile(before.userId, editOf(before), NOW);
+  }
+}
 
 export function describeMembersRepository(
   name: string,
@@ -151,6 +198,158 @@ export function describeMembersRepository(
       expect(usernames).toContain('daniel-ristov');
       expect(usernames).toContain('bojan-petreski');
       expect(usernames).not.toContain('marija-stojanovska');
+    });
+
+    describe('admin', () => {
+      it('lists every status, counts them for the tabs, and filters by name, status and team', async () => {
+        const repo = await createRepo();
+        const all = await repo.adminList(adminQuery());
+        expect(all.counts.all).toBe(all.total);
+        expect(all.counts.active + all.counts.alumni + all.counts.inactive + all.counts.hidden).toBe(
+          all.counts.all,
+        );
+        expect(all.counts.alumni).toBeGreaterThanOrEqual(9);
+        const alumni = await repo.adminList(adminQuery({ status: 'alumni' }));
+        expect(alumni.items.every((item) => item.status === 'alumni')).toBe(true);
+        // The tab counts ignore the status tab.
+        expect(alumni.counts).toEqual(all.counts);
+        const named = await repo.adminList(adminQuery({ q: 'MARIJA' }));
+        expect(named.items.map((item) => item.name)).toEqual(['Marija Stojanovska']);
+        expect((await repo.adminList(adminQuery({ q: 'ristov' }))).total).toBeGreaterThanOrEqual(2);
+        const events = await repo.adminList(adminQuery({ team: 'events' }));
+        expect(events.items.length).toBeGreaterThan(0);
+        expect(events.items.every((item) => item.teams.some((entry) => entry.teamId === 't-events'))).toBe(
+          true,
+        );
+        expect((await repo.adminList(adminQuery({ team: 'no-such-team' }))).total).toBe(0);
+      });
+
+      it('sorts by name, member since and status, and pages', async () => {
+        const repo = await createRepo();
+        const down = (await repo.adminList(adminQuery({ sort: '-name' }))).items.map((item) => item.name);
+        expect(down).toEqual([...down].sort((a, b) => b.localeCompare(a, 'en')));
+        const since = (await repo.adminList(adminQuery({ sort: 'since' }))).items.map(
+          (item) => item.memberSince,
+        );
+        expect(since).toEqual([...since].sort());
+        const status = (await repo.adminList(adminQuery({ sort: 'status' }))).items;
+        expect(status[0]?.status).toBe('active');
+        expect(status.at(-1)?.status).toBe('alumni');
+        const second = await repo.adminList(adminQuery({ pageSize: 10, page: 2 }));
+        expect(second.items).toHaveLength(10);
+        expect(second.page).toBe(2);
+      });
+
+      it('offers the teams and badges to give', async () => {
+        const catalog = await (await createRepo()).getCatalog();
+        expect(catalog.teams.map((team) => team.slug)).toEqual(['events', 'it', 'pr', 'hr', 'fr', 'design']);
+        expect(catalog.badges.map((badge) => badge.id)).toContain('b-organizer');
+      });
+
+      it('hides a profile at once from every public list and page, and shows it again when restored', async () => {
+        const repo = await createRepo();
+        await withEdit(
+          repo,
+          'viktor-trajanov',
+          (edit) => ({ ...edit, status: 'hidden' }),
+          async () => {
+            expect(await repo.getProfile('member', 'viktor-trajanov', 2026)).toBeNull();
+            expect(await repo.getProfile('visitor', 'viktor-trajanov', 2026)).toBeNull();
+            const list = await repo.listActive('member', query({ q: 'viktor' }), 2026);
+            expect(list.items).toEqual([]);
+            expect(await repo.listPublicUsernames()).not.toContain('viktor-trajanov');
+            const hidden = await repo.adminList(adminQuery({ status: 'hidden' }));
+            expect(hidden.items.map((item) => item.name)).toContain('Viktor Trajanov');
+          },
+        );
+        expect(await repo.getProfile('member', 'viktor-trajanov', 2026)).toMatchObject({ kind: 'full' });
+      });
+
+      it('changes teams, role and badges, and keeps the day a badge was awarded', async () => {
+        const repo = await createRepo();
+        await withEdit(
+          repo,
+          'viktor-trajanov',
+          (edit) => ({
+            ...edit,
+            teams: [
+              { teamId: 't-events', role: 'member' },
+              { teamId: 't-it', role: 'lead' },
+              { teamId: 't-gone', role: 'member' },
+            ],
+            badges: [
+              { badgeId: 'b-trainer', note: 'Soft skills' },
+              { badgeId: 'b-gone', note: '' },
+            ],
+          }),
+          async (profile) => {
+            expect(profile.teams.map((entry) => entry.teamId)).toEqual(['t-events', 't-it']);
+            expect(profile.badges).toEqual([
+              { badgeId: 'b-trainer', note: 'Soft skills', awardedAt: '2026-10-04' },
+            ]);
+            const card = (await repo.listActive('member', query({ q: 'viktor' }), 2026)).items[0];
+            expect(card?.role).toBe('lead');
+            expect(card?.teams.map((team) => team.slug)).toEqual(['events', 'it']);
+            // Saving again later keeps the original award day.
+            const again = await repo.saveProfile(
+              profile.userId,
+              { ...editOf(profile), badges: [{ badgeId: 'b-trainer', note: 'Soft skills 2' }] },
+              new Date('2027-01-01T00:00:00Z'),
+            );
+            expect(again.status === 'saved' && again.profile.badges[0]?.awardedAt).toBe('2026-10-04');
+          },
+        );
+      });
+
+      it('moves a member to the alumni with their years and lines, and drops the lines when they are active again', async () => {
+        const repo = await createRepo();
+        await withEdit(
+          repo,
+          'viktor-trajanov',
+          (edit) => ({
+            ...edit,
+            status: 'alumni',
+            activeTo: '2026-06-30',
+            alumniNow: { mk: 'Инженер', en: 'Engineer' },
+            alumniHighlight: null,
+          }),
+          async (profile) => {
+            expect(profile.alumniNow).toEqual({ mk: 'Инженер', en: 'Engineer' });
+            const alumni = await repo.listAlumni('member', { q: 'viktor', limit: 'all' });
+            expect(alumni.items.map((item) => item.name)).toEqual(['Viktor Trajanov']);
+            const back = await repo.saveProfile(
+              profile.userId,
+              { ...editOf(profile), status: 'active' },
+              NOW,
+            );
+            expect(back.status === 'saved' && [back.profile.activeTo, back.profile.alumniNow]).toEqual([
+              null,
+              null,
+            ]);
+          },
+        );
+      });
+
+      it('hides a photo or a bio without hiding the person', async () => {
+        const repo = await createRepo();
+        await withEdit(
+          repo,
+          'marija-stojanovska',
+          (edit) => ({ ...edit, hidePhoto: true, hideBio: true }),
+          async () => {
+            const full = await repo.getProfile('member', 'marija-stojanovska', 2026);
+            expect(full).toMatchObject({ kind: 'full', profile: { photo: null, bio: '' } });
+          },
+        );
+        const restored = await repo.getProfile('member', 'marija-stojanovska', 2026);
+        expect(restored?.kind === 'full' && restored.profile.bio).toContain('burek');
+      });
+
+      it('says when nobody has that id', async () => {
+        const repo = await createRepo();
+        const before = await adminProfile(repo, 'viktor-trajanov');
+        expect(await repo.saveProfile('u-nobody', editOf(before), NOW)).toEqual({ status: 'not_found' });
+      });
     });
   });
 }

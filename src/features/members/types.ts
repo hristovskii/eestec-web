@@ -292,3 +292,40 @@ export type ProfilePageView =
       teams: string[];
       memberSince: string;
     };
+
+// ─── Admin › Members ───
+
+export const ADMIN_MEMBER_SORTS = ['name', '-name', 'since', '-since', 'status'] as const;
+export type AdminMemberSort = (typeof ADMIN_MEMBER_SORTS)[number];
+
+export type AdminMembersQuery = {
+  /** Name or username contains. */
+  q?: string;
+  status?: ProfileStatus;
+  /** Team slug. */
+  team?: string;
+  sort: AdminMemberSort;
+  page: number;
+  pageSize: number;
+};
+
+/** Per status for the tabs; the counts ignore the status tab but not the search and the team. */
+export type AdminMemberCounts = Record<ProfileStatus | 'all', number>;
+
+/** What the board edits on a profile (the member edits the rest themselves, in M16). */
+export type ProfileEdit = {
+  status: ProfileStatus;
+  /** ISO date. */
+  memberSince: string;
+  /** ISO date; only alumni have one. */
+  activeTo: string | null;
+  teams: ProfileTeam[];
+  badges: { badgeId: string; note: string }[];
+  events: ProfileEvent[];
+  alumniNow: Localized | null;
+  alumniHighlight: Localized | null;
+  hidePhoto: boolean;
+  hideBio: boolean;
+};
+
+export type SaveProfileResult = { status: 'saved'; profile: Profile } | { status: 'not_found' };
