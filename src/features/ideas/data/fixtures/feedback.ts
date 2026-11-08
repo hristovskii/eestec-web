@@ -53,6 +53,7 @@ export const feedbackFixture: Feedback[] = [
     rating: 4,
     text: 'The lab day was the best part: real equipment and engineers who took time for every question. Next time, a bit more free time in Ohrid and fewer hours on the bus would be great.',
     ...person('Marija Stojanovska', '2026-10-04T09:14:00+02:00', 'u-marija'),
+    memoryId: 'mem-seven-days',
     createdAt: '2026-10-04T09:14:00+02:00',
   }),
   feedback({

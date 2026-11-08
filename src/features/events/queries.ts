@@ -5,12 +5,19 @@ import { getMediaItems } from '@/features/media/server';
 import { listSponsorOptions } from '@/features/partners/server';
 import { getSiteSettings } from '@/features/settings/server';
 import { now } from '@/shared/lib/now';
+import { slugify } from '@/shared/lib/slug';
 
 import { eventsAdminRepository, eventTaxonomyRepository } from './data';
 import { newEventInput } from './domain/new-event';
 import type { AdminEventsParams } from './schemas/admin-events-params.schema';
 import type { EventDraftInput } from './schemas/event.schema';
-import type { AdminEventRow, AdminEventsQuery, ApplicationCountsLoader, EventRecord } from './types';
+import type {
+  AdminEventRow,
+  AdminEventsQuery,
+  ApplicationCountsLoader,
+  EventEditor,
+  EventRecord,
+} from './types';
 
 /** Every event as a choice (admin forms: "Events they manage"). */
 export async function listEventOptions() {
@@ -148,4 +155,48 @@ export async function getEventEditor(id: string | null) {
     /** The sponsors to pick the event's partners from. */
     partners,
   };
+}
+
+const escapeHtml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/**
+ * A draft event made from an accepted idea ("Accept and create event draft"): the idea's title and
+ * text, dates for tomorrow (a draft needs a valid pair), nothing public. The caller checked that
+ * the person may create events. null: the draft could not be saved.
+ */
+export async function createEventDraft(
+  input: { title: string; description: string },
+  editor: EventEditor,
+): Promise<{ id: string; slug: string } | null> {
+  const [repo, taxonomy, { events }] = await Promise.all([
+    eventsAdminRepository(),
+    eventTaxonomyRepository(),
+    getSiteSettings('en'),
+  ]);
+  const types = await taxonomy.list('types');
+  const base = newEventInput(now(), {
+    typeId: types[0]?.id ?? '',
+    maxParticipants: events.defaultMaxParticipants,
+    waitlist: events.defaultWaitlistEnabled,
+  });
+  const title = input.title.trim().slice(0, 120);
+  let slug = slugify(title) || 'idea';
+  const first = slug;
+  for (let n = 2; await repo.slugTaken(slug); n += 1) slug = `${first.slice(0, 70)}-${n}`;
+  const paragraphs = input.description
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+  const result = await repo.save(
+    {
+      ...base,
+      slug,
+      title: { mk: title },
+      shortDescription: { mk: input.description.replace(/\s+/g, ' ').trim().slice(0, 160) },
+      description: { mk: paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('') },
+    },
+    editor,
+    now(),
+  );
+  return result.status === 'saved' ? { id: result.record.id, slug } : null;
 }
