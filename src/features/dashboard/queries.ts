@@ -2,24 +2,43 @@ import 'server-only';
 
 import { listApplicationOverview } from '@/features/applications/server';
 import { accessTo, type Actor } from '@/features/auth';
+import { listMemberRegistrations } from '@/features/auth/server';
 import { countNewMessages } from '@/features/contact/server';
 import { countNewApplications } from '@/features/join/server';
 import { countNewInquiries } from '@/features/partners/server';
 import { isEnabled } from '@/shared/config/flags';
 
 import { dashboardRepository } from './data';
-import type { AdminBadgeCounts, DashboardData, OpenEventApplications } from './types';
+import type { AdminBadgeCounts, DashboardData, OpenEventApplications, PendingApproval } from './types';
+
+const YEAR = {
+  '1': '1st year',
+  '2': '2nd year',
+  '3': '3rd year',
+  '4': '4th year',
+  master: 'Master’s',
+  phd: 'PhD',
+} as const;
 
 /** Dashboard for this admin: event managers see their own events only (D18). Dynamic (session). */
 export async function getDashboard(actor: Actor): Promise<DashboardData> {
   const own = accessTo(actor, 'dashboard') === 'own';
-  const [summary, applications, contact, partners, membership] = await Promise.all([
+  const [summary, applications, contact, partners, membership, registrations] = await Promise.all([
     (await dashboardRepository()).getDashboard({ own }),
     listApplicationOverview(actor),
     countNewMessages(),
     countNewInquiries(),
     countNewApplications(),
+    listMemberRegistrations('pending'),
   ]);
+  // Member registrations are the real ones (confirmed, waiting for the board), oldest first.
+  const memberApprovals: PendingApproval[] = registrations.map((registration) => ({
+    id: registration.userId,
+    type: 'member',
+    title: registration.name,
+    meta: `${registration.faculty}, ${YEAR[registration.year]}`,
+    submittedAt: registration.confirmedAt ?? registration.submittedAt,
+  }));
   // "Applications for open events": events whose form takes applications on the site right now
   // (drafts are not on the site).
   const openEvents = applications
@@ -40,8 +59,13 @@ export async function getDashboard(actor: Actor): Promise<DashboardData> {
     }));
   return {
     ...summary,
+    pending: [...summary.pending.filter((item) => item.type !== 'member'), ...memberApprovals],
     counters: {
       ...summary.counters,
+      memberRegistrations: {
+        count: registrations.length,
+        oldestAt: registrations[0] ? (registrations[0].confirmedAt ?? registrations[0].submittedAt) : null,
+      },
       membershipApplications: { count: membership },
       messages: { contact, partners },
       openEventApplications: {

@@ -19,6 +19,7 @@ const decision = z.object({
     .max(50),
   decision: z.enum(['approve', 'reject']),
   reason: z.string().trim().max(500).default(''),
+  notify: z.boolean().default(true),
 });
 
 /** Approve or reject one or more registrations ("Approve selected" sends several). */
@@ -34,6 +35,7 @@ export async function decideRegistrations(input: unknown): Promise<ActionResult<
       userId,
       decision: parsed.data.decision,
       reason: parsed.data.reason,
+      notify: parsed.data.notify,
       now: now(),
     });
     if (result.status !== 'decided') continue;

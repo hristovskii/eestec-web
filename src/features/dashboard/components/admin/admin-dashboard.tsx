@@ -204,7 +204,7 @@ export function AdminDashboard({
             >
               <ul className="divide-y divide-line">
                 {data.pending.map((item) => {
-                  const review = `/admin/approvals?type=${item.type === 'member' ? 'members' : 'memories'}&id=${item.id}`;
+                  const review = `/admin/approvals?type=${item.type === 'member' ? 'members' : 'memories'}&open=${item.id}`;
                   return (
                     <li key={item.id} className="flex items-center gap-4 px-5 py-3">
                       <span className="hidden w-20 shrink-0 sm:block">

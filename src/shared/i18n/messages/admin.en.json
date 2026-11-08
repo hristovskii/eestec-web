@@ -2359,148 +2359,92 @@
       "unexpected": "Couldn't save. Try again."
     }
   },
-  "inbox": {
-    "title": "Inbox",
-    "description": "Form submissions from the website. Replies are sent from your own e-mail.",
-    "tabsLabel": "Form",
+  "approvals": {
+    "title": "Approvals",
+    "description": "Everything members and visitors submitted, waiting for a decision. Nothing here is public yet.",
+    "tabsLabel": "Submission type",
     "tabs": {
-      "contact": "Contact messages",
-      "partners": "Partner inquiries",
-      "membership": "Membership applications"
+      "members": "Member registrations"
     },
-    "newCount": "{count} new",
-    "status": {
-      "new": "New",
-      "answered": "Answered",
-      "archived": "Archived",
-      "in_progress": "In progress",
-      "done": "Done",
-      "contacted": "Contacted",
-      "accepted": "Accepted",
-      "rejected": "Rejected"
+    "sortLabel": "Sort",
+    "sort": {
+      "oldest": "Oldest first",
+      "newest": "Newest first"
     },
-    "filters": {
-      "search": "Search name, e-mail or text",
-      "searchLabel": {
-        "contact": "Search messages",
-        "partners": "Search inquiries",
-        "membership": "Search applications"
-      },
-      "status": "Status",
-      "subject": "Subject",
-      "allSubjects": "All subjects",
-      "all": "All",
-      "clear": "Clear filters"
-    },
-    "markAllRead": "Mark all as read",
     "list": {
-      "unread": "Unread",
-      "back": "Back to the list",
-      "detail": "Selected item",
-      "noneSelected": "Choose an item on the left to read it."
+      "label": "Submissions",
+      "waiting": "{count, plural, one {# member registration waiting} other {# member registrations waiting}}",
+      "selectAll": "Select all",
+      "selectItem": "Select {name}",
+      "approveSelected": "Approve selected",
+      "approvingSelected": "Approving…",
+      "kind": "Member",
+      "detail": "Preview of the selected submission",
+      "noneSelected": "Pick a registration to see it.",
+      "back": "Back to the list"
+    },
+    "empty": {
+      "title": "Nothing is waiting",
+      "text": "New member registrations show up here once the person has confirmed their e-mail."
     },
     "detail": {
-      "status": "Status",
-      "markUnread": "Mark as unread",
-      "markRead": "Mark as read",
-      "reply": "Reply by e-mail",
-      "language": "Language"
-    },
-    "toasts": {
-      "statusChanged": "Status changed to “{status}”.",
-      "allRead": "{count, plural, =0 {Everything was already read.} one {# item marked as read.} other {# items marked as read.}}",
-      "error": "Couldn't save that. Try again.",
-      "forbidden": "Only editors and super admins can change the Inbox."
-    },
-    "contact": {
-      "list": "Messages",
-      "subject": "Subject",
-      "sentTo": "sent to",
-      "markAnswered": "Mark as answered",
-      "archive": "Archive",
-      "empty": "No messages yet",
-      "emptyHelp": "Messages sent from the Contact page appear here.",
-      "emptyFiltered": "No messages match these filters"
-    },
-    "partners": {
-      "list": "Inquiries",
-      "company": "Company",
-      "person": "Contact person",
-      "phone": "Phone",
-      "interests": "Interested in",
-      "reference": "Reference",
-      "interestNames": {
-        "sponsorship": "Sponsorship",
-        "workshop": "Workshop",
-        "job_fair": "Job fair",
-        "other": "Other"
-      },
-      "replySubject": "Partnership inquiry {reference}",
-      "markInProgress": "Mark in progress",
-      "markDone": "Mark as done",
-      "empty": "No inquiries yet",
-      "emptyHelp": "Inquiries from the For Companies page appear here.",
-      "emptyFiltered": "No inquiries match these filters"
-    },
-    "membership": {
-      "list": "Applications",
+      "waiting": "Waiting · {time}",
+      "by": "Member registration by <strong>{name}</strong>",
+      "position": "{index} of {total}",
+      "previous": "Previous submission",
+      "next": "Next submission",
+      "photoAlt": "Profile photo of {name}",
+      "noPhoto": "No photo",
+      "fields": "What was entered",
+      "email": "E-mail",
       "faculty": "Faculty",
-      "program": "Study program",
       "year": "Year of study",
       "phone": "Phone",
-      "interests": "Interests",
-      "heardFrom": "Heard about us from",
-      "submitted": "Sent",
-      "none": "None chosen",
-      "replySubject": "Your membership application",
-      "markContacted": "Mark as contacted",
-      "empty": "No applications yet",
-      "emptyHelp": "Applications from the Join Us page appear here.",
-      "emptyFiltered": "No applications match these filters"
-    },
-    "notes": {
-      "title": "Internal notes · only admins see these",
-      "label": "Add a note",
-      "placeholder": "Add a note…",
-      "add": "Add",
-      "empty": "No notes yet.",
-      "errors": {
-        "required": "Write a note first.",
-        "forbidden": "Only editors and super admins can add notes.",
-        "unexpected": "Couldn't save the note. Try again."
+      "visibility": "Profile visible to",
+      "submitted": "Submitted",
+      "confirmed": "E-mail confirmed",
+      "none": "Not given",
+      "years": {
+        "1": "1st year",
+        "2": "2nd year",
+        "3": "3rd year",
+        "4": "4th year",
+        "master": "Master’s",
+        "phd": "PhD"
+      },
+      "visibilityValue": {
+        "public": "Everyone (public)",
+        "members": "Members only"
+      },
+      "checks": "Checks",
+      "check": {
+        "photoYes": "Has a profile photo",
+        "photoNo": "No profile photo",
+        "domainYes": "E-mail is from a UKIM faculty",
+        "domainNo": "E-mail is not from a UKIM faculty",
+        "consent": "Agreed to the privacy policy",
+        "confirmed": "E-mail address confirmed"
       }
     },
-    "export": {
-      "button": "Export CSV",
-      "dialog": "Export to CSV",
-      "title": {
-        "contact": "Export contact messages",
-        "partners": "Export partner inquiries",
-        "membership": "Export membership applications"
+    "decision": {
+      "reject": "Reject…",
+      "rejectHint": "You can add a reason; the person gets it by e-mail.",
+      "approve": "Approve",
+      "approving": "Approving…",
+      "rejectTitle": "Reject this registration?",
+      "rejectDescription": "{name} · {email}",
+      "presets": {
+        "notMember": "Not on our member list",
+        "applyFirst": "Please apply on Join Us first",
+        "duplicate": "Duplicate account"
       },
-      "range": "Date range",
-      "ranges": {
-        "30d": "Last 30 days",
-        "year": "This academic year",
-        "all": "All time",
-        "custom": "Custom…"
-      },
-      "from": "From",
-      "to": "To",
-      "closed": {
-        "contact": "Include archived messages",
-        "partners": "Include finished inquiries",
-        "membership": "Include rejected applications"
-      },
-      "current": "Only the current filter ({filter})",
-      "currentNone": "Only the current filter (no filter set)",
-      "count": {
-        "contact": "{count, plural, one {# message} other {# messages}}",
-        "partners": "{count, plural, one {# inquiry} other {# inquiries}}",
-        "membership": "{count, plural, one {# application} other {# applications}}"
-      },
-      "opensIn": "opens in Excel or Google Sheets",
-      "download": "Download CSV"
+      "readOnly": "You can look at registrations, but only editors and super admins can decide."
+    },
+    "toasts": {
+      "approved": "{count, plural, one {# registration approved} other {# registrations approved}}",
+      "rejected": "Registration rejected",
+      "forbidden": "Only editors and super admins can decide registrations.",
+      "error": "Couldn’t save the decision. Try again."
     }
   }
 }

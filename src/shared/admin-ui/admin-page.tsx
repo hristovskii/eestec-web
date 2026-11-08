@@ -122,6 +122,8 @@ export function CountPill({ children }: { children: React.ReactNode }) {
 /** The white panel that holds tabs, filters, a table and its pagination. */
 export function TablePanel({ className, ...props }: React.ComponentProps<'section'>) {
   return (
-    <section className={cn('overflow-hidden rounded-md border border-line bg-white', className)} {...props} />
+    // `overflow-clip`, not `hidden`: it clips the rounded corners but is not a scroll container, so a
+    // sticky bar inside (the decision bar of Approvals on phones) still sticks to the screen.
+    <section className={cn('overflow-clip rounded-md border border-line bg-white', className)} {...props} />
   );
 }

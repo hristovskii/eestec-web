@@ -370,6 +370,22 @@ describe('mock member accounts', () => {
       ).resolves.toEqual({ status: 'rejected', reason: 'Not on our member list.' });
     });
 
+    it('sends no e-mail when the board turns "E-mail the reason" off', async () => {
+      const repo = createMockAuthRepository();
+      await repo.decideRegistration({
+        userId: 'u-daniel-feeit',
+        decision: 'reject',
+        reason: 'Duplicate',
+        notify: false,
+        now,
+      });
+      expect(listMockMail('daniel.ristov@students.feit.ukim.edu.mk')).toHaveLength(0);
+      await expect(repo.getRegistration('u-daniel-feeit')).resolves.toMatchObject({
+        status: 'rejected',
+        rejectionReason: 'Duplicate',
+      });
+    });
+
     it('decides once, and knows who it does not know', async () => {
       const repo = createMockAuthRepository();
       await repo.decideRegistration({ userId: 'u-elena', decision: 'approve', reason: '', now });
