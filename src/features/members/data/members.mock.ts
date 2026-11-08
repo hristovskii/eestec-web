@@ -3,6 +3,7 @@ import 'server-only';
 import type { ApprovedMemberIdentity } from '@/features/auth';
 import { mockTable } from '@/shared/data/mock/store';
 
+import { adminMembers } from '../domain/admin-directory';
 import { type Directory, activeMembers, alumniList, boardView, profileResult } from '../domain/directory';
 import { canSee } from '../domain/visibility';
 import type { Badge, BoardMandate, Profile, Team } from '../types';
@@ -80,6 +81,49 @@ export function createMockMembersRepository(
     },
     async getProfile(audience, username, currentYear) {
       return structuredClone(profileResult(await directory(), audience, username, currentYear));
+    },
+    async adminList(query) {
+      const { profiles, teams } = await directory();
+      return structuredClone({
+        ...adminMembers(profiles, teams, query),
+        teams: [...teams].sort((a, b) => a.sortOrder - b.sortOrder),
+      });
+    },
+    getCatalog() {
+      return Promise.resolve(
+        structuredClone({
+          teams: [...db.teams].sort((a, b) => a.sortOrder - b.sortOrder),
+          badges: db.badges,
+        }),
+      );
+    },
+    async saveProfile(userId, edit, now) {
+      const known = (await directory()).profiles.find((profile) => profile.userId === userId);
+      if (!known) return { status: 'not_found' as const };
+      // The first save of a person the board approved (not stored yet) keeps what they gave at sign-up.
+      let profile = db.profiles.find((item) => item.userId === userId);
+      if (!profile) {
+        profile = structuredClone(known);
+        db.profiles.push(profile);
+      }
+      const awarded = new Map(profile.badges.map((badge) => [badge.badgeId, badge.awardedAt]));
+      profile.status = edit.status;
+      profile.memberSince = edit.memberSince;
+      profile.activeTo = edit.status === 'alumni' ? edit.activeTo : null;
+      profile.teams = edit.teams.filter((entry) => db.teams.some((team) => team.id === entry.teamId));
+      profile.badges = edit.badges
+        .filter((entry) => db.badges.some((badge) => badge.id === entry.badgeId))
+        .map((entry) => ({
+          badgeId: entry.badgeId,
+          note: entry.note,
+          awardedAt: awarded.get(entry.badgeId) ?? now.toISOString().slice(0, 10),
+        }));
+      profile.events = edit.events;
+      profile.alumniNow = edit.status === 'alumni' ? edit.alumniNow : null;
+      profile.alumniHighlight = edit.status === 'alumni' ? edit.alumniHighlight : null;
+      profile.hidePhoto = edit.hidePhoto;
+      profile.hideBio = edit.hideBio;
+      return { status: 'saved' as const, profile: structuredClone(profile) };
     },
     async listPublicUsernames() {
       return (await directory()).profiles

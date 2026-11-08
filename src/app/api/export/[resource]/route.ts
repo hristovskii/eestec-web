@@ -3,6 +3,7 @@ import { committeesCsvResponse } from '@/features/committees/server';
 import { contactCsvResponse } from '@/features/contact/server';
 import { eventsCsvResponse } from '@/features/events/server';
 import { applicationsInboxCsvResponse } from '@/features/join/server';
+import { membersCsvResponse } from '@/features/members/server';
 import { inquiriesCsvResponse } from '@/features/partners/server';
 
 // CSV downloads of admin lists (permission-checked by each feature).
@@ -10,6 +11,7 @@ const EXPORTS: Record<string, (searchParams: URLSearchParams) => Promise<Respons
   events: (searchParams) => eventsCsvResponse(searchParams, applicationCounts),
   applications: applicationsCsvResponse,
   committees: committeesCsvResponse,
+  members: membersCsvResponse,
   'inbox-contact': contactCsvResponse,
   'inbox-partners': inquiriesCsvResponse,
   'inbox-membership': applicationsInboxCsvResponse,

@@ -1118,6 +1118,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Alumni use the same page: "Alumni" chip, "Active 2018–2023" instead of "Member since", and the board's "Remembered for" and "Now" lines in the hero (visible on phones too); no facts card.
 - Public profiles are in the sitemap (`phase2`); members-only ones are not. The sample profile of Marija lists four of the canvas's five events: "Exchange: Kraków Winter Edition, 2 Dec 2024" is not an event in the sample data (the sample Kraków exchange is the one of December 2026).
 
+**Notes from building (M15d, Admin › Members)**
+
+- `/admin/members` (area `members`: super admin and editor, D18; event managers go to `/admin?forbidden=1`) is my own layout, as no admin screen is drawn: status tabs with counts (All, Active, Alumni, Inactive, Hidden), search by name or username, team filter, a sortable table (cards on phones), one edit dialog per person, Export CSV (no e-mail, phone or faculty). Everything that narrows the list is in the address (`q`, `status`, `team`, `sort`, `page`, `size`).
+- The dialog edits what the board owns: **status** (active, alumni, inactive, hidden), member since, **teams with the role in the team** (member / lead / trainer), **badges with a note**, **events with the role** (D23; the picker lists every event, the profile shows only listed ones), and for alumni "active until", "Now" and "Remembered for" (Localized). **Moderation:** hide a photo (initials instead) and hide a bio, without hiding the person; hiding the whole profile is the status "Hidden" (reversible; hard deletion is `auth.deleteAccount`, M16). Visibility is the person's own choice and is only shown in the list.
+- A person the board just approved is in the list at once (the mock adopts them from `auth`); the **first save stores their profile**, and the stored profile wins from then on (tested, also that saving twice does not make two). A badge keeps the day it was awarded when saved again; unknown teams and badges are ignored by the repository.
+- Admin writes: validate (zod, messages are `admin.members.errors` keys) → `authorize('edit', 'members')` → repository → activity log (new area `members`) → `refresh()`. Member reads are not cached, so there is nothing else to invalidate. Teams, badges and boards are edited in M15e.
+- e2e: each test that changes someone signs up and approves a member of its own (through the real form and Approvals) and edits only that one; the sample members are only looked at.
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".
