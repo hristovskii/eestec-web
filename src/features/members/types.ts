@@ -151,6 +151,8 @@ export type ActiveMembers = {
   teamCounts: { team: Team; count: number }[];
   /** Everyone matching search and year, whatever the team. */
   allCount: number;
+  /** Every active member the audience may see, whatever the filters (the jump link's number). */
+  visibleTotal: number;
   /** Active members-only profiles a visitor cannot see (0 for members). */
   hiddenCount: number;
   /** Teams of the whole club, for the chips. */
@@ -222,6 +224,7 @@ export type ActiveMembersView = {
   pageCount: number;
   pageSize: number;
   allCount: number;
+  visibleTotal: number;
   hiddenCount: number;
   teams: TeamChip[];
 };

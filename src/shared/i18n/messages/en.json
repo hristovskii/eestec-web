@@ -805,6 +805,105 @@
       }
     }
   },
+  "members": {
+    "title": "Members",
+    "lead": "The students behind EESTEC LC Skopje: this year’s board, the teams that run our events, and the alumni who started it all.",
+    "leadShort": "This year’s board, the teams that run our events, and our alumni.",
+    "loading": "Loading members…",
+    "hero": {
+      "visitorTitle": "Are you a member?",
+      "visitorText": "Log in to see members-only profiles and keep yours up to date.",
+      "visitorTextShort": "Log in to see members-only profiles.",
+      "login": "Log in",
+      "create": "Create account",
+      "hi": "Hi, {name}",
+      "visibleMembers": "Your profile is visible to members only.",
+      "visiblePublic": "Your profile is public.",
+      "editProfile": "Edit my profile →"
+    },
+    "jump": {
+      "label": "On this page",
+      "board": "Board {label}",
+      "boardShort": "Board",
+      "active": "Active members",
+      "activeShort": "Active",
+      "alumni": "Alumni"
+    },
+    "board": {
+      "title": "Board {label}",
+      "introCurrent": "Elected for one mandate year. Write to a position e-mail and it reaches whoever holds the role.",
+      "introPast": "A past board. Position e-mails always reach the current board, so they are not shown here.",
+      "show": "Show board",
+      "empty": "No board has been published yet."
+    },
+    "active": {
+      "title": "Active members",
+      "search": "Search members by name",
+      "searchPlaceholder": "Search by name",
+      "year": "Year joined",
+      "anyYear": "Joined: any year",
+      "earlier": "{year} or earlier",
+      "sort": "Sort",
+      "sortName": "Name A–Z",
+      "sortNewest": "Newest members",
+      "sortLongest": "Longest active",
+      "teams": "Filter by team",
+      "allTeams": "All",
+      "showing": "Showing <strong>{from}–{to}</strong> of <strong>{total}</strong> members",
+      "found": "<strong>{count}</strong> members found",
+      "hiddenVisitor": "{count, plural, one {# more member shows their profile to members only.} other {# more members show their profile to members only.}}",
+      "hiddenLogin": "Log in to see them",
+      "hiddenVisitorShort": "{count, plural, one {# members-only profile hidden.} other {# members-only profiles hidden.}}",
+      "membersOnlyNote": "profiles are hidden from visitors.",
+      "membersOnlyPill": "Members only",
+      "back": "Back to members ↑",
+      "loadingList": "Loading members…"
+    },
+    "empty": {
+      "title": "No active members match",
+      "text": "{query, select, none {No members match these filters.} other {No one called “{query}” matches these filters.}} They might have a members-only profile, or they could be an alum.",
+      "textNoFilters": "There are no active members to show yet.",
+      "clear": "Clear filters",
+      "alumni": "Search alumni for “{query}”",
+      "searchTag": "“{query}”",
+      "teamTag": "{team} team",
+      "yearTag": "Joined {year}",
+      "clearAll": "Clear all"
+    },
+    "alumni": {
+      "title": "Alumni",
+      "intro": "{count, plural, one {# former member who built LC Skopje.} other {# former members who built LC Skopje.}} Many still come back as trainers, mentors and partners.",
+      "search": "Search alumni",
+      "showAll": "{count, plural, one {Show the alumnus} other {Show all # alumni}}",
+      "showLess": "Show fewer alumni",
+      "empty": "No alumni match “{query}”.",
+      "none": "No alumni to show yet.",
+      "clear": "Clear search"
+    },
+    "cta": {
+      "title": "Want to see yourself on this page?",
+      "text": "New members join at the start of every semester.",
+      "button": "Become an EESTECer"
+    },
+    "card": {
+      "role": {
+        "lead": "Team lead",
+        "trainer": "Trainer",
+        "member": "Member",
+        "new": "New member"
+      },
+      "since": "since {year}",
+      "sinceShort": "Since {year}",
+      "roleSince": "{role} · since {year}",
+      "membersOnly": "Members only",
+      "membersOnlyTitle": "Only logged-in members see this profile",
+      "photoAlt": "Photo of {name}",
+      "profileOf": "{name}, profile",
+      "active": "Active {years}",
+      "now": "Now: {text}",
+      "email": "E-mail {email}"
+    }
+  },
   "auth": {
     "login": {
       "title": "Log in",
