@@ -7,6 +7,8 @@ import { getMyApplications } from '@/features/applications/server';
 import { AccountCard } from '@/features/auth/public';
 import { requireMember } from '@/features/auth/server';
 import { getJoin } from '@/features/join/server';
+import { MyMemories } from '@/features/memories/public';
+import { getMyMemoriesView } from '@/features/memories/server';
 import { MyProfilePage, MyProfileSkeleton } from '@/features/members/public';
 import { deleteMyAccount, getMyProfileView } from '@/features/members/server';
 import { currentLocale } from '@/shared/i18n/current-locale';
@@ -24,10 +26,11 @@ async function ProfileContent({
   const [locale, query] = await Promise.all([currentLocale(), searchParams]);
   // Not signed in → /login?next=/profile; a board account without a member profile → home.
   const session = await requireMember(locale, '/profile');
-  const [view, join, applications] = await Promise.all([
+  const [view, join, applications, memories] = await Promise.all([
     getMyProfileView(session, locale),
     getJoin(locale),
     getMyApplications(session.email, locale),
+    getMyMemoriesView(session.userId, locale),
   ]);
   if (!view) notFound();
   // The faculties are the board's list from Join Us, as at sign-up.
@@ -36,6 +39,7 @@ async function ProfileContent({
       view={view}
       faculties={join.apply.faculties.map((faculty) => faculty.label)}
       applications={applications}
+      memories={<MyMemories rows={memories} />}
       account={
         <AccountCard
           email={view.email}

@@ -981,7 +981,8 @@
         "visibility": "Visibility",
         "applications": "My applications",
         "privacy": "Privacy & consent",
-        "account": "Account"
+        "account": "Account",
+        "memories": "My Memories"
       },
       "pending": {
         "title": "Your account is waiting for board approval",
@@ -1162,6 +1163,11 @@
         },
         "failed": "Couldn’t save. Try again.",
         "cvRemoved": "CV removed"
+      },
+      "memories": {
+        "title": "My Memories",
+        "help": "Stories you wrote. The board checks new ones and changes before they go live.",
+        "create": "Create a Memory"
       }
     }
   },
@@ -1536,6 +1542,246 @@
       "title": "Memories by {name}",
       "written": "{count} written",
       "all": "All {count}"
+    },
+    "editor": {
+      "titleNew": "New Memory",
+      "titleEdit": "Edit Memory",
+      "chip": {
+        "draft": "Draft",
+        "rejected": "Not approved",
+        "published": "Published"
+      },
+      "back": "Back to My Memories",
+      "saving": "Saving…",
+      "savedAt": "Draft saved at {time}",
+      "unsaved": "Unsaved changes",
+      "offline": "Offline. Saved on this device; it syncs when you're back online.",
+      "failed": "Couldn't save your draft.",
+      "retry": "Retry",
+      "restored": "We restored changes from this device that were not saved yet.",
+      "footnote": "Autosave every 10 seconds while typing. Leaving with unsaved changes asks first.",
+      "footnoteLive": "Your changes stay on this device until you submit them. Leaving with unsaved changes asks first.",
+      "preview": "Preview",
+      "saveDraft": "Save draft",
+      "submit": "Submit for review",
+      "resubmit": "Resubmit for review",
+      "submitChanges": "Submit changes",
+      "sending": "Sending…",
+      "story": "Your story",
+      "photos": "Photos",
+      "optional": "optional",
+      "photosIntro": "Only upload photos where everyone shown agreed to be on the site. Large photos are compressed automatically.",
+      "field": {
+        "title": "Title",
+        "titlePlaceholder": "e.g. Five days in Delft, zero days of sun",
+        "event": "Linked event",
+        "eventHelp": "Pick the event this story is about. Choose “Other” for a trip or event that isn't on the site.",
+        "eventPlaceholder": "Choose an event…",
+        "eventOther": "Other: not in the list",
+        "otherName": "Name of the event or trip",
+        "otherNameHelp": "You'll type the event or trip name yourself.",
+        "city": "City",
+        "country": "Country",
+        "date": "Date",
+        "dateHelp": "City, country and date were filled in from the event. Change them if your story happened somewhere else.",
+        "text": "Text",
+        "textHelp": "Paste from Google Docs or Word keeps headings, bold and lists.",
+        "words": "{count, plural, one {# word} other {# words}} · about {minutes} min read"
+      },
+      "cover": {
+        "label": "Cover photo",
+        "pick": "Choose a cover photo",
+        "replace": "Replace",
+        "remove": "Remove",
+        "alt": "Alt text",
+        "altHelp": "Describe the photo for people who can't see it.",
+        "credit": "Photo credit"
+      },
+      "gallery": {
+        "label": "Gallery",
+        "count": "{count} of {max} photos · drag to reorder",
+        "drop": "<strong>Drop photos here</strong> or browse",
+        "dropHelp": "JPG, PNG or WebP · up to {max} MB each · several at once",
+        "add": "Add photos to the gallery",
+        "dismiss": "Dismiss",
+        "needAlt": "{count, plural, one {# photo needs} other {# photos need}} alt text. Add it under the photo.",
+        "photoNumber": "Photo {n}",
+        "remove": "Remove photo {n}",
+        "altFor": "Alt text for photo {n}",
+        "altPlaceholder": "Describe this photo",
+        "altRequired": "Add alt text",
+        "uploading": "Uploading {name}…"
+      },
+      "errors": {
+        "banner": "Almost there: fix {count, plural, one {# thing} other {# things}} before submitting",
+        "bannerNote": "Your draft is saved. Save draft always works.",
+        "title": "Give your Memory a title",
+        "event": "Pick the event, or choose “Other”",
+        "place": "Add the city and the country",
+        "text": "Write your story",
+        "empty": "is empty",
+        "missing": "is missing",
+        "needAlt": "{count, plural, one {needs} other {need}} alt text",
+        "sendFailed": "Couldn't send it. Your changes are kept here. Try again.",
+        "locked": "This Memory is waiting for the board and can't be changed right now.",
+        "field": {
+          "title": "Title",
+          "event": "Linked event",
+          "place": "City and country",
+          "text": "Text",
+          "cover": "Cover photo",
+          "coverAlt": "Alt text of the cover photo",
+          "photoAlt": "{count, plural, one {# gallery photo} other {# gallery photos}}"
+        },
+        "photo": {
+          "type": "isn't a JPG, PNG or WebP photo.",
+          "big": "is larger than 15 MB.",
+          "unreadable": "couldn't be read.",
+          "failed": "couldn't be uploaded. Try again."
+        }
+      },
+      "rejected": {
+        "title": "Not approved yet: the board asked for changes",
+        "by": "{name}, Board · {date}. Fix it below and resubmit; it goes back to the board.",
+        "ask": "Ask a question"
+      },
+      "live": {
+        "title": "This Memory is live",
+        "text": "Published {date} · {reads} reads. Your changes go to the board first; the live version stays as it is until they approve them.",
+        "view": "View live version",
+        "pending": "Your earlier changes are still waiting. Submitting again replaces them.",
+        "rejected": "Your last changes were not approved: {reason}"
+      },
+      "sent": {
+        "title": "Sent to the board",
+        "text": "“{title}” is waiting for approval, usually within 3 days. We'll e-mail you when it's live or if they ask for changes.",
+        "textRevision": "Your changes to “{title}” are waiting for the board. The live version stays as it is until they approve them.",
+        "toMine": "Go to My Memories",
+        "another": "Write another Memory"
+      },
+      "toast": {
+        "saved": "Draft saved",
+        "failed": "Couldn't save the draft"
+      },
+      "leave": {
+        "title": "Leave without saving?",
+        "text": "You have changes in this Memory that are not saved yet.",
+        "textLive": "Your changes are only on this device until you submit them.",
+        "stay": "Stay on page",
+        "discard": "Discard changes",
+        "saveLeave": "Save draft & leave"
+      },
+      "aside": {
+        "label": "Help with this Memory",
+        "checklist": "Before you submit",
+        "done": "(done)",
+        "todo": "(still to do)",
+        "items": {
+          "title": "Title",
+          "event": "Linked event and place",
+          "text": "Text: {words, plural, one {# word} other {# words}}",
+          "cover": "Cover photo with alt text",
+          "photoAlt": "{count, plural, one {# gallery photo needs} other {# gallery photos need}} alt text",
+          "altOk": "Alt text on all photos"
+        },
+        "next": "What happens next",
+        "step1": {
+          "title": "Draft",
+          "text": "Only you can see it."
+        },
+        "step2": {
+          "title": "Board review",
+          "text": "Usually within 3 days."
+        },
+        "step3": {
+          "title": "Published",
+          "text": "On /memories and the event page."
+        },
+        "live1": {
+          "title": "Published",
+          "text": "Readers see the live version."
+        },
+        "live2": {
+          "title": "Board checks your changes",
+          "text": "The live version stays meanwhile."
+        },
+        "live3": {
+          "title": "Changes go live",
+          "text": "We e-mail you."
+        },
+        "tips": "Tips for a good Memory",
+        "tip1": "Start with a moment, not the schedule",
+        "tip2": "300–800 words is plenty",
+        "tip3": "5–15 photos, your best first",
+        "tip4": "Mention people by first name only"
+      },
+      "richText": {
+        "toolbar": "Formatting",
+        "style": "Text style",
+        "paragraph": "Paragraph",
+        "heading2": "Heading 2",
+        "heading3": "Heading 3",
+        "bold": "Bold",
+        "italic": "Italic",
+        "link": "Link",
+        "bulletList": "Bulleted list",
+        "orderedList": "Numbered list",
+        "quote": "Quote",
+        "image": "Insert image",
+        "undo": "Undo",
+        "redo": "Redo",
+        "linkAddress": "Link address",
+        "applyLink": "Apply",
+        "removeLink": "Remove link",
+        "pasteHint": "Paste from Word or Google Docs keeps headings, bold and lists.",
+        "words": "{count, plural, one {# word} other {# words}}"
+      },
+      "sortable": {
+        "handle": "Reorder {name}",
+        "instructions": "To reorder, press Space on the handle, move with the arrow keys, then press Space again to drop or Escape to cancel.",
+        "picked": "Picked up {name}.",
+        "over": "{name} is now at position {position} of {count}.",
+        "dropped": "{name} dropped at position {position} of {count}.",
+        "cancelled": "Reordering cancelled. {name} is back in place."
+      }
+    },
+    "mine": {
+      "create": "Create a Memory",
+      "untitled": "Untitled",
+      "empty": {
+        "title": "You haven't written a Memory yet",
+        "text": "Been to an event or a place with EESTEC? Write about it with photos. The board checks it before it goes live."
+      },
+      "filters": {
+        "label": "Show Memories",
+        "all": "All",
+        "draft": "Drafts",
+        "pending": "Waiting",
+        "rejected": "Not approved",
+        "published": "Published",
+        "none": "No Memories here."
+      },
+      "status": {
+        "draft": "Draft",
+        "pending": "Waiting for approval",
+        "rejected": "Not approved",
+        "published": "Published",
+        "changesPending": "Changes waiting",
+        "changesRejected": "Changes not approved"
+      },
+      "meta": {
+        "draft": "edited {date}",
+        "pending": "sent {date}",
+        "rejected": "checked {date}",
+        "published": "published {date} · {reads, plural, one {# read} other {# reads}}"
+      },
+      "boardNote": "Note from the board:",
+      "action": {
+        "continue": "Continue writing",
+        "view": "View",
+        "resubmit": "Edit and resubmit",
+        "edit": "Edit"
+      }
     }
   }
 }

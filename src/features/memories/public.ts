@@ -7,3 +7,5 @@ export { MemoryPost, type MemoryPostNotice } from './components/public/memory-po
 export { ShareMemoryButton } from './components/public/share-memory-button';
 export { memoriesParamsSchema } from './schemas/memories-params.schema';
 export { memoriesHref, type MemoriesParams } from './schemas/memories-href';
+export { MemoryEditorPage } from './components/public/memory-editor-page';
+export { MyMemories } from './components/public/my-memories';

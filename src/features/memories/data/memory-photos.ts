@@ -3,6 +3,7 @@ import 'server-only';
 import { mockTable } from '@/shared/data/mock/store';
 import type { AnyMedia } from '@/shared/types/media';
 
+import { memoryPhotoSrc } from '../domain/memory-fields';
 import type { MemoryPhotoFile } from '../types';
 
 // Photos of Memories, in memory (stands in for the public-media bucket): per server instance,
@@ -20,7 +21,7 @@ export function saveMockMemoryPhoto(photo: MemoryPhotoFile): string {
 
 export const readMockMemoryPhoto = (id: string): MemoryPhotoFile | null => table().files[id] ?? null;
 
-export const memoryPhotoUrl = (id: string) => `/api/dev-memory-photos/${id}`;
+export const memoryPhotoUrl = memoryPhotoSrc;
 
 export function deleteMockMemoryPhoto(id: string): void {
   delete table().files[id];

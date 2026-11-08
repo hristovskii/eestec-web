@@ -300,3 +300,20 @@ export type MemoryAuthor = {
   since: number;
   bio: string;
 };
+
+/** One row of My Memories on /profile. */
+export type MyMemoryRow = {
+  id: string;
+  slug: string | null;
+  title: string;
+  status: MemoryStatus;
+  /** A published Memory with changes waiting or not approved. */
+  revision: 'pending' | 'rejected' | null;
+  cover: AnyMedia | null;
+  eventTitle: string;
+  rejectionReason: string;
+  publishedAt: string | null;
+  submittedAt: string | null;
+  updatedAt: string;
+  readsCount: number;
+};

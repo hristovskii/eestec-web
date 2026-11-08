@@ -30,11 +30,14 @@ export function MyProfilePage({
   view,
   faculties,
   applications,
+  memories,
   account,
 }: {
   view: MyProfileView;
   faculties: string[];
   applications: MyApplicationView[];
+  /** My Memories (M17): the content of the card, brought by the route; null leaves the section out (Phase 1). */
+  memories?: React.ReactNode;
   /** The Account card's content: the account is `auth`'s, so the route brings it. */
   account: React.ReactNode;
 }) {
@@ -47,6 +50,7 @@ export function MyProfilePage({
       label: t('nav.applications'),
       ...(view.pending ? {} : { count: applications.length }),
     },
+    ...(memories === undefined ? [] : [{ id: 'memories', label: t('nav.memories') }]),
     { id: 'privacy', label: t('nav.privacy') },
     { id: 'account', label: t('nav.account') },
   ];
@@ -78,6 +82,11 @@ export function MyProfilePage({
             <Button asChild variant="quiet" size="sm">
               <Link href={`/members/${view.username}`}>{t('viewPublic')}</Link>
             </Button>
+            {memories !== undefined && (
+              <Button asChild size="sm">
+                <Link href="/memories/new">{t('memories.create')}</Link>
+              </Button>
+            )}
           </div>
         )}
       </Container>
@@ -141,6 +150,16 @@ export function MyProfilePage({
           >
             {view.pending ? null : <ApplicationsCard rows={applications} />}
           </MeCard>
+          {memories !== undefined && (
+            <MeCard
+              id="memories"
+              title={t('memories.title')}
+              help={view.pending ? t('afterApproval') : t('memories.help')}
+              className={view.pending ? 'opacity-70' : undefined}
+            >
+              {view.pending ? null : memories}
+            </MeCard>
+          )}
           <MeCard
             id="privacy"
             title={t('privacy.title')}

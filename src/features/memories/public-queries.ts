@@ -20,6 +20,7 @@ import type {
   MemoryPost,
   MemoryPostModel,
   MemorySummary,
+  MyMemoryRow,
   OwnMemory,
 } from './types';
 
@@ -213,4 +214,27 @@ export async function getMemorySlugs(): Promise<string[]> {
   cacheTag(memoryTags.list);
   cacheLife('events');
   return (await memoriesRepository()).listSlugs();
+}
+
+/** The member's own Memories for My Memories on /profile (any status, newest change first). Dynamic. */
+export async function getMyMemoriesView(userId: string, locale: Locale): Promise<MyMemoryRow[]> {
+  const items = await (await memoriesRepository('session')).listMine(userId);
+  const events = await eventsFor(
+    items.map((item) => item.eventId),
+    locale,
+  );
+  return items.map((item) => ({
+    id: item.id,
+    slug: item.slug,
+    title: item.title,
+    status: item.status,
+    revision: item.revision,
+    cover: item.cover ? memoryImage(item.cover) : null,
+    eventTitle: (item.eventId ? events.get(item.eventId)?.title.text : undefined) ?? item.otherEventName,
+    rejectionReason: item.rejectionReason,
+    publishedAt: item.publishedAt,
+    submittedAt: item.submittedAt,
+    updatedAt: item.updatedAt,
+    readsCount: item.readsCount,
+  }));
 }

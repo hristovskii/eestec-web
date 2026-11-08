@@ -8,6 +8,8 @@ export {
 } from './data/memory-photos';
 export {
   countMyPublishedMemories,
+  getMyMemoryForEditor,
+  listMyMemories,
   listMemoryQueue,
   memoryPhotoResponse,
   memoryQueueCount,
@@ -21,6 +23,7 @@ export {
   getMemoriesOfAuthor,
   getMemoriesOfEvent,
   getMemoryPost,
+  getMyMemoriesView,
   getMemorySlugs,
   getMyMemoryPost,
 } from './public-queries';
