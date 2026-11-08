@@ -53,6 +53,14 @@ export interface MembersRepository {
   getBoard(label?: string): Promise<BoardView>;
   /** null: no such page for this viewer (unknown, hidden, inactive). */
   getProfile(audience: Audience, username: string, currentYear: number): Promise<ProfileResult | null>;
+  /**
+   * The people behind these ids as authors: name always; the page, photo and bio only as far as the
+   * visibility rule lets this audience see them. Unknown ids are left out.
+   */
+  findAuthors(
+    audience: Audience,
+    userIds: readonly string[],
+  ): Promise<{ profile: Profile; page: 'full' | 'restricted' | 'none'; teams: Team[] }[]>;
   /** Usernames of every profile that is public, for the sitemap. */
   listPublicUsernames(): Promise<string[]>;
 

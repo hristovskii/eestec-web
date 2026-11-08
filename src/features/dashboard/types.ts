@@ -35,7 +35,10 @@ export type DashboardData = {
 
 /** What the dashboard's own repository holds; applications come from the applications feature (M7b), the inbox counts from contact, partners and join (M12d). */
 export type DashboardSummary = {
-  counters: Omit<DashboardCounters, 'openEventApplications' | 'membershipApplications' | 'messages'>;
+  counters: Omit<
+    DashboardCounters,
+    'openEventApplications' | 'membershipApplications' | 'messages' | 'memoriesToApprove'
+  >;
   pending: PendingApproval[];
 };
 

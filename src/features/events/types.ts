@@ -178,6 +178,19 @@ export type AdminEventFacets = { years: number[] };
 /** An event as a choice in admin forms ("Events they manage"). */
 export type EventOption = { id: string; title: string; startsAt: string };
 
+/**
+ * A listed event that has started, for the pickers on the public site (a Memory's event, the
+ * impression form): in the language of the page, with the place to pre-fill city and country.
+ */
+export type PublicEventOption = {
+  id: string;
+  slug: string;
+  title: string;
+  startsAt: string;
+  city: string;
+  country: string;
+};
+
 // ─── Public read models (already in one language; EN falls back to MK per field, D8) ───
 
 /** A library file an event uses, before the media feature resolves it to an image. */

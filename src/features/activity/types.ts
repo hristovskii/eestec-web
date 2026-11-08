@@ -18,6 +18,8 @@ export const ACTIVITY_AREAS = [
   'applications',
   'approvals',
   'inbox',
+  'memories',
+  'ideas',
   'members',
   'pages',
   'partners',

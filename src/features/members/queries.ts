@@ -3,14 +3,16 @@ import 'server-only';
 import { getSession } from '@/features/auth/server';
 import { getEventsByIds } from '@/features/events/server';
 import { getSiteSettings } from '@/features/settings/server';
+import { resolveLocalized } from '@/shared/i18n/localized';
 import type { Locale } from '@/shared/i18n/routing';
+import { initials } from '@/shared/lib/initials';
 import { now } from '@/shared/lib/now';
 
 import { membersRepository } from './data';
 import { toProfileView } from './domain/profile-view';
 import { toActiveView, toAlumniView, toBoardView } from './domain/view';
 import type { AdminMembersParams } from './schemas/admin-members-params.schema';
-import type { ActiveMembersQuery, Audience, ProfilePageView, ProfileResult } from './types';
+import type { ActiveMembersQuery, AuthorCardData, Audience, ProfilePageView, ProfileResult } from './types';
 
 // Member reads depend on who is looking, so they are not cached: the pages read the session anyway.
 // The audience is always derived from the session here, never from the address.
@@ -119,4 +121,32 @@ export async function getAdminBoards() {
     getSiteSettings('en'),
   ]);
   return { ...boards, roles: settings.boardRoles };
+}
+
+/**
+ * People as authors (Memories): name for everyone; the address, photo and bio only as far as this
+ * viewer may see them. Keyed by user id; unknown ids are missing from the result.
+ */
+export async function getAuthorCards(
+  audience: Audience,
+  locale: Locale,
+  userIds: readonly string[],
+): Promise<Record<string, AuthorCardData>> {
+  const unique = [...new Set(userIds)];
+  if (unique.length === 0) return {};
+  const found = await (await membersRepository()).findAuthors(audience, unique);
+  return Object.fromEntries(
+    found.map(({ profile, page, teams }) => [
+      profile.userId,
+      {
+        name: profile.name,
+        initials: initials(profile.name),
+        username: page === 'none' ? null : profile.username,
+        photo: page === 'full' && !profile.hidePhoto ? profile.photo : null,
+        teams: teams.map((team) => resolveLocalized(team.name, locale)),
+        since: Number(profile.memberSince.slice(0, 4)),
+        bio: page === 'full' && !profile.hideBio ? profile.bio : '',
+      } satisfies AuthorCardData,
+    ]),
+  );
 }

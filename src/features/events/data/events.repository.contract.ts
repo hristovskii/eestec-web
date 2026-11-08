@@ -81,6 +81,16 @@ export function describeEventsRepository(
       expect(new Set(options.map((option) => option.id)).size).toBe(options.length);
     });
 
+    it('lists the listed events that have started for the public pickers, newest first', async () => {
+      const options = await (await createRepo()).listStarted({ locale: 'en', now: NOW, justEndedDays: 14 });
+      expect(options.length).toBeGreaterThan(0);
+      expect(options.map((option) => option.id)).toContain('ev-power-up-2026');
+      expect(options.map((option) => option.id)).not.toContain('ev-ai-at-the-edge');
+      const times = options.map((option) => Date.parse(option.startsAt));
+      expect(times).toEqual([...times].sort((a, b) => b - a));
+      expect(times.every((time) => time <= NOW.getTime())).toBe(true);
+    });
+
     it('lists listed events by id, newest first, with their timing, and leaves out the rest', async () => {
       const repo = await createRepo();
       const context = { locale: 'en' as const, now: NOW, justEndedDays: 14 };
