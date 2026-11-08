@@ -2367,7 +2367,8 @@
     "description": "Everything members and visitors submitted, waiting for a decision. Nothing here is public yet.",
     "tabsLabel": "Submission type",
     "tabs": {
-      "members": "Member registrations"
+      "members": "Member registrations",
+      "memories": "Memories"
     },
     "sortLabel": "Sort",
     "sort": {
@@ -2448,6 +2449,85 @@
       "rejected": "Registration rejected",
       "forbidden": "Only editors and super admins can decide registrations.",
       "error": "Couldn’t save the decision. Try again."
+    },
+    "memories": {
+      "waiting": "{count, plural, one {# Memory waiting} other {# Memories waiting}}",
+      "kindMemory": "Memory",
+      "kindRevision": "Changes",
+      "former": "A former member",
+      "noEvent": "No event",
+      "rowExtra": "{author} · {event} · {photos}",
+      "photos": "{count, plural, one {# photo} other {# photos}}",
+      "noPhotos": "no photos",
+      "empty": {
+        "title": "Nothing is waiting",
+        "text": "New Memories, and changes to published ones, show up here once a member sends them."
+      },
+      "detail": {
+        "waiting": "Waiting · {time}",
+        "by": "Memory submitted by <strong>{name}</strong>",
+        "byRevision": "Changes to a published Memory by <strong>{name}</strong>",
+        "position": "{index} of {total}",
+        "previous": "Previous submission",
+        "next": "Next submission",
+        "preview": "Preview: how it will look on /memories",
+        "noCover": "No cover photo",
+        "morePhotos": "+{count}",
+        "changesTitle": "What changed",
+        "changes": {
+          "title": "Title",
+          "text": "Text",
+          "cover": "Cover photo",
+          "photos": "Photos",
+          "event": "Linked event",
+          "place": "City and country",
+          "date": "Date"
+        },
+        "facts": "Facts",
+        "event": "Linked event",
+        "eventOther": "{name} (not an event of the site)",
+        "place": "Place and date",
+        "noDate": "no date",
+        "length": "Length",
+        "lengthValue": "{words, plural, one {# word} other {# words}} · {photos, plural, one {# photo} other {# photos}}",
+        "earlier": "Author's earlier posts",
+        "earlierValue": "{count} approved",
+        "earlierNone": "none yet",
+        "checks": "Checks",
+        "check": {
+          "coverAlt": "Cover photo has alt text",
+          "coverNo": "Cover photo is missing or has no alt text",
+          "event": "Linked to an event of the site",
+          "eventNo": "Not linked to an event of the site",
+          "photoAlt": "Alt text on all gallery photos",
+          "photoAltNo": "{count, plural, one {# gallery photo has} other {# gallery photos have}} no alt text"
+        },
+        "feature": "Feature on the Home page"
+      },
+      "decision": {
+        "reject": "Reject…",
+        "rejectHint": "You can add a reason; the author gets it by e-mail.",
+        "edit": "Edit before publishing",
+        "approve": "Approve & publish",
+        "approveChanges": "Approve & publish changes",
+        "approving": "Publishing…",
+        "rejectTitle": "Reject this Memory?",
+        "rejectTitleRevision": "Reject these changes?",
+        "rejectDescription": "“{title}” by {author}",
+        "presets": {
+          "alt": "Photos need alt text",
+          "offTopic": "Not about an EESTEC event",
+          "shorter": "Needs shorter text"
+        },
+        "readOnly": "You can look at Memories, but only editors and super admins can decide."
+      },
+      "toasts": {
+        "approved": "{count, plural, one {# Memory published} other {# Memories published}}",
+        "rejected": "Sent back to the author",
+        "forbidden": "Only editors and super admins can decide Memories.",
+        "error": "Couldn’t save the decision. Try again.",
+        "approvedChanges": "Changes published"
+      }
     }
   },
   "members": {
@@ -2725,6 +2805,111 @@
         "unexpected": "Something went wrong. Try again.",
         "notFound": "That is no longer there."
       }
+    }
+  },
+  "memories": {
+    "title": "Memories",
+    "description": "Every Memory members wrote. Edit one, take it off the site, delete it, or feature it on the Home page.",
+    "tabsLabel": "Status",
+    "tabs": {
+      "all": "All",
+      "draft": "Drafts",
+      "pending": "Waiting",
+      "rejected": "Not approved",
+      "published": "Published"
+    },
+    "search": "Search titles",
+    "columns": {
+      "title": "Title",
+      "author": "Author",
+      "event": "Event",
+      "status": "Status",
+      "updated": "Updated"
+    },
+    "status": {
+      "draft": "Draft",
+      "pending": "Waiting",
+      "rejected": "Not approved",
+      "published": "Published",
+      "changesPending": "Changes waiting",
+      "changesRejected": "Changes not approved",
+      "featured": "On Home"
+    },
+    "former": "A former member",
+    "noEvent": "No event",
+    "rowActions": {
+      "label": "Actions for {title}",
+      "edit": "Edit",
+      "view": "View on the site",
+      "feature": "Feature on Home",
+      "unfeature": "Remove from Home",
+      "unpublish": "Unpublish",
+      "delete": "Delete"
+    },
+    "empty": {
+      "title": "No Memories yet",
+      "filteredTitle": "No Memories match",
+      "text": "Memories appear here as soon as a member starts writing one.",
+      "clear": "Clear filters"
+    },
+    "perPage": "Memories per page",
+    "unpublish": {
+      "title": "Unpublish “{title}”?",
+      "text": "It leaves the site at once and goes back to the author as a draft. They can edit it and send it again.",
+      "confirm": "Unpublish",
+      "cancel": "Cancel"
+    },
+    "delete": {
+      "title": "Delete “{title}”?",
+      "text": "The text and the photos are deleted for good, and the author is not told. This can't be undone.",
+      "confirm": "Delete Memory"
+    },
+    "toasts": {
+      "saved": "Memory saved",
+      "unpublished": "Memory unpublished",
+      "deleted": "Memory deleted",
+      "featured": "Featured on the Home page",
+      "unfeatured": "Removed from the Home page",
+      "error": "Couldn’t save. Try again.",
+      "forbidden": "You don't have permission for this."
+    },
+    "edit": {
+      "title": "Edit Memory",
+      "back": "All Memories",
+      "waitingNote": "These are the changes waiting for approval. Saving here edits them before they go live; the live version is not touched.",
+      "statusLine": "{status} · by {author}",
+      "sections": {
+        "story": "Story",
+        "photos": "Photos",
+        "home": "Home page"
+      },
+      "fields": {
+        "title": "Title",
+        "event": "Linked event",
+        "eventNone": "Not linked to an event of the site",
+        "otherName": "Name of the event or trip",
+        "city": "City",
+        "country": "Country",
+        "date": "Date",
+        "text": "Text",
+        "cover": "Cover photo",
+        "coverAlt": "Alt text",
+        "coverCredit": "Photo credit",
+        "photoAlt": "Alt text of photo {n}",
+        "photoCaption": "Caption of photo {n}",
+        "photoRemove": "Remove photo {n}",
+        "noPhotos": "No gallery photos.",
+        "feature": "Feature on the Home page",
+        "featureHelp": "Published Memories only. Featured ones come first in Home › Latest activity."
+      },
+      "photosNote": "Members add photos in the editor; here you can fix alt texts and captions, reorder with the arrows, or remove a photo.",
+      "moveUp": "Move photo {n} earlier",
+      "moveDown": "Move photo {n} later",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "unsaved": "Unsaved changes",
+      "discard": "Discard",
+      "notFound": "This Memory doesn't exist any more."
     }
   }
 }
