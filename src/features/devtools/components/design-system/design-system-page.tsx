@@ -7,6 +7,7 @@ import { CommitteesSection } from './committees';
 import { CardsSection } from './cards';
 import { FormsSection } from './forms';
 import { CompanyFormStatesSection } from './company-form-states';
+import { AuthStatesSection } from './auth-states';
 import { ContactFormStatesSection } from './contact-form-states';
 import { JoinStatesSection } from './join-states';
 import { ColorsSection, LayoutAndIconsSection, LogosSection, TypographySection } from './foundations';
@@ -26,6 +27,7 @@ const toc = [
   ['join-states', 'Membership form'],
   ['company-form-states', 'Partnership inquiry form'],
   ['contact-form-states', 'Contact form'],
+  ['auth-states', 'Member log in'],
   ['navigation', 'Lists'],
   ['overlays', 'Overlays'],
   ['layout', 'Layout & icons'],
@@ -80,6 +82,7 @@ export function DesignSystemPage() {
         <JoinStatesSection />
         <CompanyFormStatesSection />
         <ContactFormStatesSection />
+        <AuthStatesSection />
         <NavigationSection />
         <OverlaysSection />
         <LayoutAndIconsSection />

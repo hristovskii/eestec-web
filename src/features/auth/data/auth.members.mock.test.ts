@@ -176,7 +176,7 @@ describe('mock member accounts', () => {
           status: 'invalid',
         });
       const locked = await repo.signInMember({ email, password: 'nope', remember: false, now });
-      expect(locked).toMatchObject({ status: 'locked' });
+      expect(locked).toMatchObject({ status: 'locked', minutes: 15 });
       await expect(
         repo.signInMember({ email, password: SAMPLE_PASSWORD, remember: false, now: later(5) }),
       ).resolves.toMatchObject({
