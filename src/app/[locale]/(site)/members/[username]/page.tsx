@@ -6,9 +6,11 @@ import { Suspense } from 'react';
 import {
   MemberProfile,
   MembersSkeleton,
+  PreviewBar,
   profileParamsSchema,
   RestrictedProfile,
 } from '@/features/members/public';
+import { getSession } from '@/features/auth/server';
 import { getAudience, getProfilePage, listPublicUsernames } from '@/features/members/server';
 import { currentLocale } from '@/shared/i18n/current-locale';
 import type { Locale } from '@/shared/i18n/routing';
@@ -46,11 +48,23 @@ async function Profile({
   locale: Locale;
 }) {
   const [{ username }, query] = await Promise.all([params, searchParams]);
-  const audience = await getAudience();
+  // "See what visitors see" from /profile: the person's own page, as a visitor gets it.
+  const wantsPreview = (Array.isArray(query.preview) ? query.preview[0] : query.preview) === 'visitor';
+  const session = wantsPreview ? await getSession() : null;
+  const preview = wantsPreview && session?.username === username;
+  const audience = preview ? 'visitor' : await getAudience();
   const profile = await getProfilePage(audience, locale, username);
   if (!profile) notFound();
-  if (profile.kind === 'restricted') return <RestrictedProfile profile={profile} />;
-  return <MemberProfile profile={profile} params={profileParamsSchema.parse(query)} />;
+  return (
+    <>
+      {preview && <PreviewBar />}
+      {profile.kind === 'restricted' ? (
+        <RestrictedProfile profile={profile} />
+      ) : (
+        <MemberProfile profile={profile} params={profileParamsSchema.parse(query)} />
+      )}
+    </>
+  );
 }
 
 // /members/<username> (MemberProfile, -Restricted): what the viewer may see is decided in the data

@@ -56,3 +56,21 @@ describe('social links', () => {
     expect(socialUrlProblem('https://github.com.evil.io/x', 'github')).toBe('urlHost');
   });
 });
+
+describe('profile photo', () => {
+  it('takes a JPG or PNG up to 8 MB', async () => {
+    const { photoPickProblem } = await import('./profile-self');
+    expect(photoPickProblem({ type: 'image/png', size: 8_000_000 })).toBeNull();
+    expect(photoPickProblem({ type: 'image/jpeg', size: 100 })).toBeNull();
+    expect(photoPickProblem({ type: 'image/gif', size: 100 })).toBe('photoType');
+    expect(photoPickProblem({ type: 'application/pdf', size: 100 })).toBe('photoType');
+    expect(photoPickProblem({ type: 'image/png', size: 8_000_001 })).toBe('photoSize');
+  });
+
+  it('knows a JPEG by its first bytes', async () => {
+    const { isJpeg } = await import('./profile-self');
+    expect(isJpeg(new Uint8Array([0xff, 0xd8, 0xff, 0xe0]))).toBe(true);
+    expect(isJpeg(new Uint8Array([0x89, 0x50, 0x4e, 0x47]))).toBe(false);
+    expect(isJpeg(new Uint8Array([]))).toBe(false);
+  });
+});

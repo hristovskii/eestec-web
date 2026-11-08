@@ -951,7 +951,133 @@
         "login": "Log in",
         "create": "Create account",
         "notMember": "Not a member yet? <link>Become an EESTECer</link>"
+      },
+      "preview": {
+        "title": "This is what visitors see",
+        "text": "Only you see this note.",
+        "back": "Back to My profile"
       }
+    },
+    "me": {
+      "title": "My profile",
+      "loggedInAs": "Logged in as <strong>{email}</strong>",
+      "viewPublic": "View my public profile",
+      "chip": {
+        "public": "Visible to everyone",
+        "members": "Visible to members only",
+        "pending": "Not visible yet"
+      },
+      "nav": {
+        "label": "My profile sections",
+        "profile": "Profile",
+        "visibility": "Visibility"
+      },
+      "pending": {
+        "title": "Your account is waiting for board approval",
+        "text": "Finish your profile now. Nobody else can see it until the board approves you, usually within 3 days. Applications and Memories open after approval.",
+        "questions": "Questions?"
+      },
+      "afterApproval": "Available after approval",
+      "profile": {
+        "title": "Profile",
+        "help": "Shown on your profile page and member card.",
+        "photoLabel": "Profile photo",
+        "photoEmpty": "Your photo",
+        "photoChange": "Change photo",
+        "photoRemove": "Remove",
+        "photoHelp": "JPG or PNG, up to 8 MB. You can drag to adjust the square crop after upload.",
+        "photoSaving": "Saving photo…",
+        "name": "Full name",
+        "username": "Profile address",
+        "usernamePrefix": "eestec.mk/members/",
+        "usernameHelp": "Lower-case letters, digits and hyphens. Links to your old address stop working.",
+        "bio": "Short bio",
+        "bioCounter": "{count} / {max}",
+        "faculty": "Faculty",
+        "facultyChoose": "Choose your faculty",
+        "year": "Year of study",
+        "yearChoose": "Choose your year of study",
+        "linkedin": "LinkedIn",
+        "github": "GitHub",
+        "phone": "Phone",
+        "phoneNote": "never shown publicly",
+        "photoAlt": "Photo of {name}"
+      },
+      "years": {
+        "1": "1st year",
+        "2": "2nd year",
+        "3": "3rd year",
+        "4": "4th year",
+        "master": "Master’s",
+        "phd": "PhD"
+      },
+      "board": {
+        "title": "Set by the board",
+        "team": "{count, plural, one {Team} other {Teams}}",
+        "noTeam": "No team yet",
+        "role": "Role",
+        "since": "Member since",
+        "badges": "Badges",
+        "write": "Something wrong here? Write to <link>{email}</link>."
+      },
+      "saveBar": {
+        "unsaved": "Unsaved changes",
+        "discard": "Discard",
+        "save": "Save changes",
+        "saving": "Saving…"
+      },
+      "toast": {
+        "saved": "Profile saved",
+        "view": "View",
+        "failed": "Couldn’t save. Your changes are kept here.",
+        "retry": "Retry"
+      },
+      "leave": {
+        "title": "Leave without saving?",
+        "text": "You have unsaved changes on your profile.",
+        "stay": "Keep editing",
+        "leave": "Leave and discard"
+      },
+      "visibility": {
+        "title": "Who can see my profile",
+        "help": "Saved as soon as you pick one.",
+        "legend": "Profile visibility",
+        "public": "Public",
+        "publicHelp": "Anyone on eestec.mk sees your photo, bio, events, badges and Memories.",
+        "members": "Members only",
+        "membersHelp": "Logged-in members see everything. Visitors see only your name and team.",
+        "preview": "See what visitors see →",
+        "pendingNote": "Nobody sees your profile until the board approves you. Your choice is kept for then.",
+        "saved": "Visibility saved",
+        "failed": "Couldn’t save. Try again."
+      },
+      "crop": {
+        "title": "Adjust your photo",
+        "hint": "Drag the picture to move it.",
+        "zoom": "Zoom",
+        "cancel": "Cancel",
+        "use": "Use photo",
+        "alt": "Preview of your photo",
+        "failed": "That picture could not be opened. Try another one."
+      },
+      "errors": {
+        "nameShort": "Enter your full name (at least 2 characters).",
+        "nameLong": "Keep your name to 80 characters.",
+        "usernameInvalid": "Use 3 to 30 lower-case letters, digits or hyphens (not at the start or end).",
+        "usernameReserved": "That address is not available. Pick another.",
+        "usernameTaken": "Someone already uses this address.",
+        "bioLong": "Keep your bio to 400 characters.",
+        "urlInvalid": "Enter a link that starts with https://",
+        "urlHostLinkedin": "This is not a LinkedIn address.",
+        "urlHostGithub": "This is not a GitHub address.",
+        "facultyRequired": "Choose your faculty.",
+        "yearRequired": "Choose your year of study.",
+        "phoneInvalid": "Enter a phone number with digits, spaces, + or -.",
+        "photoType": "Use a JPG or PNG picture.",
+        "photoSize": "That picture is too big. Use one up to 8 MB.",
+        "unexpected": "Something went wrong. Try again."
+      },
+      "summary": "{count, plural, one {Please fix # field} other {Please fix # fields}}"
     }
   },
   "auth": {

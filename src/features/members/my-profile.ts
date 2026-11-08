@@ -2,11 +2,16 @@ import 'server-only';
 
 import type { AccountDetails, Session } from '@/features/auth';
 import { getAccountDetails, getMemberRegistration, photoUrl } from '@/features/auth/server';
+import { getSiteSettings } from '@/features/settings/server';
+import { resolveLocalized } from '@/shared/i18n/localized';
+import type { Locale } from '@/shared/i18n/routing';
+import { initials } from '@/shared/lib/initials';
 import { now } from '@/shared/lib/now';
 
 import { membersRepository } from './data';
 import { type SignUpFacts, toMineContext } from './domain/mine-context';
-import type { MineContext, MineView } from './types';
+import { memberRole } from './domain/member-role';
+import type { MineContext, MineView, MyProfileView } from './types';
 
 // "My profile" (/profile): the signed-in member's own data. It depends on who is signed in, so
 // nothing here is cached. The caller has checked the session (requireMember / currentMember).
@@ -35,4 +40,46 @@ export async function getMyProfile(session: Session): Promise<MyProfileData | nu
     getAccountDetails(session.userId),
   ]);
   return details ? { context, mine, details } : null;
+}
+
+/** The Profile and Visibility parts of /profile in the language of the page. */
+export async function getMyProfileView(session: Session, locale: Locale): Promise<MyProfileView | null> {
+  const data = await getMyProfile(session);
+  if (!data) return null;
+  const { mine, details } = data;
+  const { profile } = mine;
+  const [catalog, settings] = await Promise.all([
+    (await membersRepository('session')).getCatalog(),
+    getSiteSettings(locale),
+  ]);
+  const teams = profile.teams.flatMap((entry) => {
+    const team = catalog.teams.find((item) => item.id === entry.teamId);
+    return team ? [resolveLocalized(team.name, locale)] : [];
+  });
+  return {
+    pending: mine.pending,
+    email: details.email,
+    name: profile.name,
+    initials: initials(profile.name),
+    username: profile.username,
+    photo: profile.photo,
+    visibility: profile.visibility,
+    values: {
+      name: profile.name,
+      username: profile.username,
+      bio: profile.bio,
+      linkedinUrl: profile.linkedinUrl,
+      githubUrl: profile.githubUrl,
+      faculty: profile.faculty,
+      phone: details.phone,
+      year: details.year ?? '',
+    },
+    board: {
+      teams,
+      role: memberRole(profile.teams, profile.memberSince, now().getFullYear()),
+      since: profile.memberSince,
+      badges: profile.badges.length,
+      email: settings.boardRoles.find((role) => role.id === 'role-members')?.email ?? null,
+    },
+  };
 }

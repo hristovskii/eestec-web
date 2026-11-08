@@ -1,4 +1,4 @@
-import { expect, type Browser } from '@playwright/test';
+import { expect, type Browser, type Page } from '@playwright/test';
 
 import { PORT } from './servers';
 
@@ -46,4 +46,54 @@ export async function signUpPendingMember(browser: Browser, name: string): Promi
     await context.close();
   }
   return email;
+}
+
+/** React has taken over the first element that matches (before that, typing and clicking do nothing). */
+export async function hydrated(page: Page, selector: string) {
+  await page.waitForFunction((css) => {
+    const element = document.querySelector(css);
+    return !!element && Object.keys(element).some((key) => key.startsWith('__reactProps'));
+  }, selector);
+}
+
+/** Logs in through the real form (a member who chose their own password at sign-up). */
+export async function logInAs(page: Page, email: string, password = MEMBER_PASSWORD) {
+  await page.goto('/en/login');
+  await hydrated(page, 'form input[type="password"]');
+  await page.getByLabel('E-mail').fill(email);
+  await page.getByLabel('Password', { exact: true }).fill(password);
+  await page.getByRole('button', { name: 'Log in', exact: true }).click();
+  await expect(page).not.toHaveURL(/\/login/);
+}
+
+/** The board approves a registration (in a browser of its own, so the caller's session stays). */
+export async function approveMember(browser: Browser, name: string) {
+  const context = await browser.newContext({ baseURL: `http://localhost:${PORT}` });
+  await context.addCookies([
+    { name: 'eestec_mock_persona', value: 'super-admin', url: `http://localhost:${PORT}` },
+  ]);
+  const page = await context.newPage();
+  try {
+    await page.goto('/admin/approvals');
+    await page
+      .getByRole('list', { name: 'Submissions' })
+      .getByRole('link', { name: new RegExp(name) })
+      .click();
+    await page
+      .getByRole('region', { name: 'Preview of the selected submission' })
+      .getByRole('button', { name: 'Approve', exact: true })
+      .click();
+    await expect(
+      page.locator('[data-sonner-toast]').filter({ hasText: '1 registration approved' }),
+    ).toBeVisible();
+  } finally {
+    await context.close();
+  }
+}
+
+/** A member of our own, approved by the board: name, e-mail (password: MEMBER_PASSWORD) and profile address. */
+export async function createApprovedMember(browser: Browser, name: string) {
+  const email = await signUpPendingMember(browser, name);
+  await approveMember(browser, name);
+  return { name, email, username: name.toLowerCase().replace(/ /g, '-') };
 }

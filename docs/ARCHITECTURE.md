@@ -1145,6 +1145,16 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Photo: the browser crops a square and sends a ~600 px JPEG (the Server Action body limit is 6 MB; the 8 MB limit is for the file the person picks). The crop maths is a pure, tested function (`domain/crop.ts`).
 - Sample data: Marija has account details (phone, 3rd year, consent 12 Oct 2023, password changed "4 months ago"), her choices and a CV entry without content, and **three of the generated applications carry her e-mail** (one of Leading Teams' pending rows is now accepted; every event keeps its total). See `docs/sample-data.md`.
 
+**Notes from building (M16b, /profile: Profile and Visibility)**
+
+- `/profile` is `(site)/profile` (phase 2 gate in its layout, `noindex`, not in the sitemap). `requireMember(locale, '/profile')` sends a visitor to `/login?next=%2Fprofile` and a board account without a member profile home; **a member waiting for approval may open it** (dark banner, no "View my public profile", the visibility card says nobody sees the profile yet; what they write is the draft from M16a).
+- The Profile card is one client form: **controlled fields, a save bar only while something differs from what was saved** ("Unsaved changes", Discard, Save changes), the zod schema loaded on first focus (page weight), an error summary that takes focus in an effect, a toast with "View" after saving and an error toast with "Retry" that stays until closed, and `useUnsavedChanges` with a leave dialog. State that follows the server (`initial`) is reset _while rendering_ when its content changes, not in an effect (the `react-hooks` lint rule forbids that).
+- **Photo:** saved as soon as it is cropped (not with the save bar). Pick (JPG/PNG, 8 MB) → "Adjust your photo" (drag, arrow keys, native range slider; `domain/crop.ts`) → a 600 px JPEG is sent → the server checks size, type and the JPEG bytes. The old file is deleted.
+- **Visibility** saves on pick with rollback on failure. "See what visitors see →" opens `/members/<username>?preview=visitor`, which only the owner gets: the same page with the visitor audience and a bar to go back.
+- The drawn phone frame is a reduced mock (no Visibility or Account pills, no address, faculty, year or phone fields); the phone gets the whole page in one column with pills for the sections. The Memories section, its menu item and both "Create a Memory" buttons are not built until M17 (`/memories/new` does not exist yet).
+- The faculty list is the board's Join Us list, as at sign-up; a faculty that is no longer in it stays selectable for who has it. The years use their own labels (`members.me.years`).
+- No design-system lab entry for this page: the save bar, crop dialog and banner are only used here (the e2e spec covers their states).
+
 **Working rules while building**
 
 - Small milestones. After each one: stop, show what changed and how to check it, wait for "go".

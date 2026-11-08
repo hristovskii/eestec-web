@@ -59,3 +59,26 @@ export function socialUrlProblem(value: string, site: keyof typeof HOSTS): 'urlI
   const host = url.hostname.toLowerCase();
   return HOSTS[site].some((allowed) => host === allowed || host.endsWith(`.${allowed}`)) ? null : 'urlHost';
 }
+
+/**
+ * The profile photo: the person picks a JPG or PNG up to 8 MB; the browser crops a square and sends
+ * a JPEG of about 600 px (the Server Action body limit is 6 MB, and the photo is small anyway).
+ */
+export const PHOTO = {
+  pickTypes: ['image/jpeg', 'image/png'],
+  pickMaxBytes: 8_000_000,
+  /** The cropped file that is sent. */
+  sendType: 'image/jpeg',
+  sendMaxBytes: 2_000_000,
+  /** Side of the square that is sent, in pixels. */
+  size: 600,
+} as const;
+
+/** A problem key for a file the person picked, or null. */
+export function photoPickProblem(file: { size: number; type: string }): 'photoType' | 'photoSize' | null {
+  if (!(PHOTO.pickTypes as readonly string[]).includes(file.type)) return 'photoType';
+  return file.size > PHOTO.pickMaxBytes ? 'photoSize' : null;
+}
+
+/** The first bytes of a JPEG (FF D8 FF): the server does not trust the type the browser names. */
+export const isJpeg = (bytes: Uint8Array) => bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;

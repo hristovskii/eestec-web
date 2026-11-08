@@ -43,6 +43,7 @@ type Seed = {
   since_date?: string;
   events?: ProfileEvent[];
   badges?: Profile['badges'];
+  faculty?: string;
 };
 
 const person = (seed: Seed): Profile => ({
@@ -61,7 +62,7 @@ const person = (seed: Seed): Profile => ({
   activeTo: null,
   alumniNow: null,
   alumniHighlight: null,
-  faculty: '',
+  faculty: seed.faculty ?? '',
   teams: seed.teams ?? [],
   badges: seed.badges ?? [],
   events: seed.events ?? [],
@@ -98,6 +99,8 @@ export const profilesFixture: Profile[] = [
     since_date: '2023-10-01',
     userId: 'u-marija',
     username: 'marija-stojanovska',
+    // From MyProfile.dc.html (the faculty select shows FEEIT).
+    faculty: 'FEEIT',
     teams: [lead('t-events')],
     visibility: 'members_only',
     bio: MARIJA_BIO,
