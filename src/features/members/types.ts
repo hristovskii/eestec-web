@@ -235,3 +235,60 @@ export type BoardPageView = {
 };
 
 export type AlumniView = { items: AlumniCardData[]; total: number; matching: number };
+
+/** One event on a profile, already in the language of the page. */
+export type ProfileEventView = {
+  id: string;
+  title: string;
+  /** The language the title is in (an English page falls back to Macedonian per field). */
+  lang: 'mk' | 'en';
+  startsAt: string;
+  typeName: string;
+  scope: 'local' | 'international';
+  place: string;
+  timing: 'upcoming' | 'past';
+  role: EventRole;
+  /** /upcoming/<slug> until it ends, then /events/<slug>. */
+  path: string;
+};
+
+export type ProfileBadgeView = {
+  id: string;
+  name: string;
+  /** What the badge was awarded for ("Helped organize 3 events"); falls back to what the badge means. */
+  text: string;
+  icon: BadgeIcon;
+};
+
+export type ProfilePageView =
+  | {
+      kind: 'full';
+      username: string;
+      name: string;
+      initials: string;
+      photo: ProfilePhoto | null;
+      status: 'active' | 'alumni';
+      visibility: ProfileVisibility;
+      teams: { slug: string; name: string; role: TeamRole }[];
+      role: MemberRoleKey;
+      memberSince: string;
+      since: number;
+      /** Alumni: "2018–2023". */
+      activeYears: string | null;
+      alumniNow: string;
+      alumniHighlight: string;
+      bio: string;
+      linkedinUrl: string;
+      githubUrl: string;
+      badges: ProfileBadgeView[];
+      events: ProfileEventView[];
+      counts: { attended: number; organized: number };
+    }
+  | {
+      kind: 'restricted';
+      username: string;
+      name: string;
+      initials: string;
+      teams: string[];
+      memberSince: string;
+    };

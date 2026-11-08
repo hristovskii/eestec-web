@@ -1,13 +1,15 @@
 import 'server-only';
 
 import { getSession } from '@/features/auth/server';
+import { getEventsByIds } from '@/features/events/server';
 import { getSiteSettings } from '@/features/settings/server';
 import type { Locale } from '@/shared/i18n/routing';
 import { now } from '@/shared/lib/now';
 
 import { membersRepository } from './data';
+import { toProfileView } from './domain/profile-view';
 import { toActiveView, toAlumniView, toBoardView } from './domain/view';
-import type { ActiveMembersQuery, Audience, ProfileResult } from './types';
+import type { ActiveMembersQuery, Audience, ProfilePageView, ProfileResult } from './types';
 
 // Member reads depend on who is looking, so they are not cached: the pages read the session anyway.
 // The audience is always derived from the session here, never from the address.
@@ -54,6 +56,19 @@ export async function getBoard(locale: Locale, label?: string) {
 /** What /members/<username> may show this viewer; null: 404. */
 export async function getProfile(audience: Audience, username: string): Promise<ProfileResult | null> {
   return (await membersRepository()).getProfile(audience, username, currentYear());
+}
+
+/** What /members/<username> shows this viewer, in the language of the page, events resolved; null: 404. */
+export async function getProfilePage(
+  audience: Audience,
+  locale: Locale,
+  username: string,
+): Promise<ProfilePageView | null> {
+  const result = await getProfile(audience, username);
+  if (!result) return null;
+  const ids = result.kind === 'full' ? result.profile.events.map((entry) => entry.eventId) : [];
+  const events = ids.length > 0 ? await getEventsByIds(ids, locale) : [];
+  return toProfileView(result, events, locale);
 }
 
 /** Usernames of public profiles (sitemap). */

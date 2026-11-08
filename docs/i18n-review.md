@@ -32,6 +32,7 @@ written by the board in the admin.
 | M14b      | `auth.*` (log in, forgot / reset password, expired link, errors), `ui.form.password.*`              | ☐ needs review      |
 | M14c      | `auth.register.*`, `auth.check.*`, `auth.pending.*` (sign-up, confirm e-mail, waiting for approval) | ☐ needs review      |
 | M15b      | `members.*` (the Members page: hero, board, active members, alumni, member cards)                   | ☐ needs review      |
+| M15c      | `members.profile.*` (a member's profile, the members-only view)                                     | ☐ needs review      |
 | —         | Fixed label decided in D7: `deadline_soon` → "Се затвора наскоро"                                   | ✓ given by the user |
 
 ## What the M13 pass found (for the native reviewer)
