@@ -19,6 +19,16 @@ export async function countMyPublishedMemories(userId: string): Promise<number> 
   return (await memoriesRepository('session')).countPublishedBy(userId);
 }
 
+/** Every Memory of this member, newest change first (the My Memories section of /profile). */
+export async function listMyMemories(userId: string) {
+  return (await memoriesRepository('session')).listMine(userId);
+}
+
+/** What the editor opens with: the member's own Memory by address or id; null for someone else's. */
+export async function getMyMemoryForEditor(userId: string, ref: { slug: string } | { id: string }) {
+  return (await memoriesRepository('session')).findMine(userId, ref);
+}
+
 /** Waiting Memories and waiting changes to published ones: the number on Approvals. */
 export async function memoryQueueCount(): Promise<number> {
   return (await memoriesRepository('session')).queueCount();
