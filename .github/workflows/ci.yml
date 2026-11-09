@@ -76,4 +76,5 @@ jobs:
       - run: pnpm exec supabase start -x realtime,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor,postgrest
       - run: pnpm exec supabase db reset
       - run: pnpm exec supabase test db
+      - run: bash supabase/tests/application-concurrency.sh
       - run: pnpm exec supabase db lint --fail-on error

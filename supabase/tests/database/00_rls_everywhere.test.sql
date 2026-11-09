@@ -1,7 +1,7 @@
 -- Every table in `public` has row-level security, and the public roles hold no write grants on the
 -- tables that are meant to be reached only through functions or the service role.
 begin;
-select plan(4);
+select plan(5);
 
 select is(
   (select count(*)::integer from pg_class c
@@ -30,6 +30,14 @@ select is(
       and table_name in ('auth_links', 'login_lockouts', 'mfa_backup_codes', 'storage_cleanup_queue')),
   0,
   'link, lockout, backup-code and cleanup tables are for the service role only'
+);
+
+select is(
+  (select count(*)::integer from pg_proc p join pg_namespace n on n.oid = p.pronamespace,
+    lateral aclexplode(coalesce(p.proacl, acldefault('f', p.proowner))) a
+    where n.nspname = 'public' and a.grantee = 0 and a.privilege_type = 'EXECUTE'),
+  0,
+  'PUBLIC has no implicit execution privilege on public functions'
 );
 
 select * from finish();

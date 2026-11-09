@@ -56,6 +56,7 @@ rollback;`. Fixtures are inserted inside the test (as `postgres`), including `au
   - `pg_temp.act_as(uid, aal)` → `reset role; set_config('request.jwt.claims', {sub, role: 'authenticated', aal}); set local role authenticated`
   - `pg_temp.act_as_visitor()` → role `anon`
   - `pg_temp.changed(sql)` → rows a statement changed (a data-modifying CTE cannot be nested in a select)
+  - Explicitly `grant execute on all functions in schema pg_temp to anon, authenticated, service_role` after creating test helpers: M19b revoked the global PUBLIC function default.
   - call `reset role` before inserting fixtures or reading server-only tables as `postgres`.
 - Test every role that matters for a table: visitor, pending member, active member, alumni, event manager, editor, super admin without
   and with `aal2`. Use `throws_ok(sql, '42501', null, desc)` for denied writes/calls and `is(count, n, desc)` for what each role sees.
