@@ -42,3 +42,20 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  # Local Supabase: migrations apply, the policies hold (pgTAP), the functions lint clean.
+  supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Database, Auth and Storage are enough: the migrations need the auth and storage schemas.
+      - run: pnpm exec supabase start -x realtime,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor,postgrest
+      - run: pnpm exec supabase db reset
+      - run: pnpm exec supabase test db
+      - run: pnpm exec supabase db lint --fail-on error
