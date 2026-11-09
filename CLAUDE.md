@@ -79,3 +79,4 @@ Also read before building: `docs/sample-data.md` (every kind of sample content a
 - `pnpm lighthouse` needs a production build made with `NEXT_PUBLIC_SITE_URL=http://localhost:3200` (otherwise the canonical audit fails). Metadata: leave a key out instead of passing `undefined` or `""` when it is empty, or the layout's value is hidden.
 - The axe helper waits for finite transitions; a form's focus moves in a `useEffect`, never in `requestAnimationFrame` (validation that awaits a lazy chunk renders later than the frame).
 - Entries: `index.ts` is imported by other features (and, through them, by the proxy): keep UI out of it. A feature's public screens for routes and the lab go in `public.ts`.
+- CI runs e2e in four shards (`pnpm e2e --shard=n/4`, one runner each, `fullyParallel`): a test must not depend on another test's data or order, and a spec that changes content restores it. Run one shard locally the same way to reproduce a CI failure.
