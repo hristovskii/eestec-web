@@ -243,10 +243,13 @@ export function SubmitForm(props: SubmitFormProps) {
     setErrors({});
     startSending(async () => {
       if (!idea) {
-        // Each photo becomes a JPEG of at most 2000 px before it travels.
+        // Each photo becomes a small JPEG before it travels: ten of them stay under the request limit (D29).
         try {
           for (const { file } of photos) {
-            const prepared = await preparePhoto(file);
+            const prepared = await preparePhoto(file, {
+              maxSide: IDEA_LIMITS.photoSide,
+              maxBytes: IDEA_LIMITS.photoBytes,
+            });
             data.append(
               SUBMIT_FIELDS.photos,
               new File([prepared.blob], prepared.name, { type: 'image/jpeg' }),
@@ -254,8 +257,10 @@ export function SubmitForm(props: SubmitFormProps) {
             data.append('photoWidths', String(prepared.width));
             data.append('photoHeights', String(prepared.height));
           }
-        } catch {
-          setErrors({ photos: ['photoUnreadable'] });
+        } catch (error) {
+          setErrors({
+            photos: [error instanceof Error && error.message === 'big' ? 'photoSize' : 'photoUnreadable'],
+          });
           return;
         }
       }

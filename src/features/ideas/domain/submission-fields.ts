@@ -9,10 +9,12 @@ export const IDEA_LIMITS = {
   descriptionMin: 20,
   name: 100,
   email: 254,
-  attachmentBytes: 10 * 1024 * 1024,
-  /** Photos of a feedback: the browser makes each a JPEG of at most 2000 px first. */
+  /** Vercel refuses a request body over about 4.5 MB: the attachment, or all photos together, stay under it (D29). */
+  attachmentBytes: 4 * 1024 * 1024,
+  /** Photos of a feedback: the browser makes each a JPEG of at most `photoSide` px and `photoBytes` first. */
   photos: 10,
-  photoBytes: 10 * 1024 * 1024,
+  photoBytes: 400 * 1024,
+  photoSide: 1600,
   memoryTitle: 100,
   otherEvent: 120,
   impression: 2000,
