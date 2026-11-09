@@ -2911,5 +2911,133 @@
       "discard": "Discard",
       "notFound": "This Memory doesn't exist any more."
     }
+  },
+  "ideas": {
+    "title": "Ideas & Feedback",
+    "description": "Everything sent from /submit. Impressions that members turned into Memories also wait in Approvals › Memories.",
+    "tabsLabel": "Show",
+    "tabs": {
+      "ideas": "Ideas",
+      "feedback": "Event feedback",
+      "ratings": "Ratings per event"
+    },
+    "newCount": "{count} new",
+    "exportCsv": "Export CSV",
+    "formSettings": "Form settings",
+    "readOnly": "You can read the feedback and ratings of your own events.",
+    "status": {
+      "new": "New",
+      "under_review": "Under review",
+      "accepted": "Accepted",
+      "archived": "Archived"
+    },
+    "filters": {
+      "status": "Status",
+      "all": "All",
+      "searchIdeas": "Search ideas",
+      "searchFeedback": "Search feedback",
+      "type": "Idea type",
+      "allTypes": "All idea types",
+      "event": "Event",
+      "allEvents": "All events",
+      "clear": "Clear filters",
+      "search": "Search…"
+    },
+    "ideas": {
+      "list": "Ideas",
+      "empty": "No ideas yet",
+      "emptyHelp": "Ideas sent from /submit show up here.",
+      "emptyFiltered": "No ideas match",
+      "attachment": "Attachment",
+      "download": "Download",
+      "typeLabel": "Idea type",
+      "meta": "{when} · {type}"
+    },
+    "feedback": {
+      "list": "Event feedback",
+      "empty": "No feedback yet",
+      "emptyHelp": "Impressions sent from /submit show up here, never on the public site.",
+      "emptyFiltered": "No feedback matches",
+      "photos": "Photos",
+      "download": "Download photo {n}",
+      "meta": "{when} · {event}",
+      "alsoMemory": "The author also asked to publish this as a Memory. It is waiting in Approvals.",
+      "openApprovals": "Open in Approvals",
+      "unrated": "No rating",
+      "rated": "{count} of 5",
+      "memoryBadge": "also a Memory",
+      "photoOf": "Photo {n}"
+    },
+    "sender": {
+      "anonymous": "Anonymous",
+      "member": "member",
+      "notMember": "not a member",
+      "noEmail": "no e-mail",
+      "noName": "No name given"
+    },
+    "detail": {
+      "status": "Status",
+      "owner": "Owner",
+      "noOwner": "No owner",
+      "reply": "Reply by e-mail",
+      "accept": "Accept and create event draft",
+      "openDraft": "Open the event draft",
+      "archive": "Archive",
+      "anonymousNote": "Sent anonymously: nothing is known about the sender, so there is nobody to reply to."
+    },
+    "toasts": {
+      "ownerChanged": "Owner changed",
+      "accepted": "Accepted: the event draft is ready",
+      "error": "Couldn't save that. Try again.",
+      "forbidden": "Only editors and super admins can change ideas and feedback."
+    },
+    "ratings": {
+      "yearLabel": "Academic year",
+      "year": "Academic year {year}",
+      "allTime": "All time",
+      "average": "Average of all ratings:",
+      "from": "from {count, plural, one {# response} other {# responses}}",
+      "table": "Ratings per event",
+      "columns": {
+        "event": "Event",
+        "responses": "Responses",
+        "average": "Average",
+        "spread": "Spread",
+        "latest": "Latest comment"
+      },
+      "spread": "{stars, plural, one {# star} other {# stars}}: {count}",
+      "comments": "All {count} comments",
+      "noComment": "No comment",
+      "emptyTitle": "No ratings in this period",
+      "emptyText": "Ratings come from the stars people give on /submit. Pick another academic year to look further back.",
+      "averageOf": "{value} out of 5"
+    },
+    "settings": {
+      "title": "Form settings · /submit",
+      "description": "The line under each form's title, the idea types, and who is told about new submissions.",
+      "introIdea": "Intro text · Submit an idea",
+      "introImpression": "Intro text · Impression / feedback",
+      "types": "Idea types · drag to reorder",
+      "typeName": "Name of idea type {n}",
+      "typeSort": "idea types",
+      "addType": "Add type",
+      "removeType": "Remove {name}",
+      "notify": "E-mail the board on every new submission",
+      "notifyHelp": "To the addresses in Settings › E-mail notifications",
+      "notifyLocked": "Only super admins change this switch: it is in Settings › E-mail notifications.",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Form settings saved",
+      "error": "Couldn't save. Try again.",
+      "errors": {
+        "required": "Write the Macedonian text",
+        "tooLong": "That is too long",
+        "noTypes": "Keep at least one idea type",
+        "tooManyTypes": "At most 12 idea types",
+        "inUse": "“{name}” is used by ideas, so it can't be removed."
+      },
+      "open": "Form settings"
+    }
   }
 }

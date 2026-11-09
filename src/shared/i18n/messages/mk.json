@@ -1836,9 +1836,9 @@
       "idea": {
         "type": "Каква идеја е?",
         "title": "Наслов",
-        "titlePlaceholder": "Кратко име за вашата идеја",
+        "titlePlaceholder": "на пр. Работилница за почетници по дизајн на PCB",
         "description": "Опишете ја вашата идеја",
-        "descriptionPlaceholder": "Што би сакале да видите и зошто?",
+        "descriptionPlaceholder": "Што е, за кого е и зошто би било одлично? Доволни се неколку реченици.",
         "attachment": "Прилог",
         "attachmentHelp": "PDF, JPG или PNG · до 10 MB"
       },
@@ -1944,7 +1944,8 @@
           "profile": "Оди на Мојот профил",
           "memories": "Прочитајте Сеќавања од {event}"
         }
-      }
+      },
+      "emailPlaceholder": "Само ако сакате одговор"
     }
   }
 }

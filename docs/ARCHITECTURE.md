@@ -1,6 +1,6 @@
 # eestec.mk — Architecture & Implementation Plan
 
-> Approved 2026-10-05. Decisions taken after approval are in §9. Built so far: M0–M17 (§8); each milestone's notes are under "Notes from building".
+> Approved 2026-10-05. Decisions taken after approval are in §9. Built so far: M0–M18 (§8); each milestone's notes are under "Notes from building".
 
 ## Context
 
@@ -1263,6 +1263,15 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - A **bot** (filled honeypot) or a form sent in under three seconds gets the normal thank-you and nothing is stored.
 - **Turn this into a Memories post** (active members and alumni only, not with anonymous) is one call: `submitImpression` stores the feedback and asks `memories` for a waiting Memory (`createMemoryFromImpression`: same text and photos, empty alt text for the editor's checklist, the event's city and country, the board is told). The confirmation links to My profile. The design copy said the member can open the Memory in the editor while it waits; waiting Memories are read-only (D27), so the confirmation says they can edit it once it is approved.
 - Confirmations (idea named / anonymous / no e-mail, feedback, feedback + Memory) use the member's first name, the weekly meeting day and time from Settings, and the e-mail the copy went to (mock mail kinds `idea_copy`, `feedback_copy`; the board hears through `board_idea`, `board_feedback`, which name the title or event and never the sender, when Settings › E-mail notifications › Ideas & feedback is on).
+
+**Notes from building (M18c, Admin › Ideas & Feedback)**
+
+- `/admin/ideas?tab=ideas|feedback|ratings` is the Inbox pattern again (`InboxSplitView`, `InboxDetail`, `StatusSelect`, `NotesPanelView`, filters and page numbers in the URL, the open item in `?open=`, a list or the open item on phones). **Ideas**: status (New / Under review / Accepted / Archived), owner (a board person or "No owner"), the text and attachment (download through the private route), internal notes, Reply by e-mail (only when the sender gave an address), Archive and **Accept and create event draft**. **Event feedback**: stars, the text, photos, status, owner, notes, and a banner "The author also asked to publish this as a Memory" with a link to Approvals. **Ratings per event** is computed from the rated feedback (average, spread bars, latest comment, "All N comments" → the feedback of that event), for an academic year (September to August; the current one unless `?year=` says, or `all`).
+- Anonymous senders show as "Anonymous" with no address and no Reply button; the CSV exports (`/api/export/ideas-ideas`, `ideas-feedback`) leave the identity columns empty for them. The toolbar button downloads everything; the date-range popover of the Inbox is not part of this screen.
+- **Accept and create event draft** (`ideas.acceptIdea` → `events.createEventDraft`) makes a draft event from the idea's title and text (dates for tomorrow, the first event type, nothing public), remembers it on the idea and turns the button into "Open the event draft". It needs both the Ideas and the event-create permission. "Ideas that became events" on `/submit` lists accepted ideas whose draft has been published since.
+- **Form settings** is a drawer: the line under each tab's title and the idea types (add, rename, drag to reorder, remove) in both languages, and the notification switch. A type that ideas use cannot be removed (the answer names it). The switch is Settings › E-mail notifications › "Ideas & feedback": only super admins change it (`settings.setNotificationEnabled`), editors see it locked.
+- **Event managers** (D18) see two tabs, Event feedback and Ratings, limited to the events they manage, read-only and without notes; the Ideas address shows their feedback, someone else's feedback does not open by its address, and the ideas export answers 403. The sample feedback is about past events nobody manages, so their list is empty in the sample.
+- Not built (D30): "Add photos to the event gallery" and "Share with the organizers" on a piece of feedback, and the date-range export popover. The sample feedback of Marija on Power Up is linked to her waiting Memory, as the canvas shows.
 
 ## Verification
 

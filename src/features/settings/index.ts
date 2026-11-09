@@ -14,3 +14,4 @@ export type {
   SocialPlatform,
   Weekday,
 } from './types';
+export { setNotificationEnabled } from './actions/set-notification';

@@ -6,8 +6,8 @@ type InboxDetailProps = {
   /** "Elena Petrovska": the avatar shows the initials. */
   name: string;
   initials: string;
-  /** Shown under the name as a mailto link. */
-  email: string;
+  /** Shown under the name as a mailto link; none (an anonymous sender): no line. */
+  email?: string | null;
   /** "Sun 4 Oct 2026, 17:42 · Subject: Membership · sent to members@eestec.mk". */
   meta: React.ReactNode;
   /** Status select and icon buttons, top right. */
@@ -45,9 +45,11 @@ export function InboxDetail({
           </span>
           <div className="flex min-w-0 flex-col gap-0.5">
             <h2 className="text-[16px] leading-tight font-bold">{name}</h2>
-            <a href={`mailto:${email}`} className="text-[13px] break-all text-brand-dark">
-              {email}
-            </a>
+            {email && (
+              <a href={`mailto:${email}`} className="text-[13px] break-all text-brand-dark">
+                {email}
+              </a>
+            )}
             <span className="text-[13px] text-muted-ink">{meta}</span>
           </div>
         </div>

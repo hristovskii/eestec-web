@@ -100,8 +100,8 @@ export function SubmitAside({ tab, became }: { tab: SubmitTab; became: BecameEve
             <p className="text-small text-ink-2">{t('readsText')}</p>
           </section>
           {became.length > 0 && (
-            <section aria-labelledby="sf-aside-became" className={card}>
-              <h2 id="sf-aside-became" className="text-[18px] font-bold">
+            <section aria-labelledby="sf-aside-became" className={cn(card, 'border-0 bg-surface')}>
+              <h2 id="sf-aside-became" className="text-[12px] font-bold tracking-wide text-ink-2 uppercase">
                 {t('becameTitle')}
               </h2>
               <ul className="flex flex-col gap-3">
@@ -119,7 +119,7 @@ export function SubmitAside({ tab, became }: { tab: SubmitTab; became: BecameEve
               </ul>
             </section>
           )}
-          <section aria-labelledby="sf-aside-organize" className={cn(card, 'bg-surface')}>
+          <section aria-labelledby="sf-aside-organize" className={card}>
             <h2 id="sf-aside-organize" className="text-[18px] font-bold">
               {t('organizeTitle')}
             </h2>

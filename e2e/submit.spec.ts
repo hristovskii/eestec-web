@@ -1,6 +1,7 @@
 import { expect, type Page, test } from '@playwright/test';
 
 import { seriousViolations } from './support/axe';
+import { ownDevice } from './support/devices';
 import { createApprovedMember, hydrated, logInAs } from './support/members';
 
 // /submit (M18b): both tabs, the answers, the states, anonymous, the member's Memory, the limit of
@@ -17,14 +18,6 @@ const PNG = (name: string) => ({
     'base64',
   ),
 });
-
-/** A device of its own for this test: the limiter keys on the forwarded address. */
-async function ownDevice(page: Page) {
-  const a = Math.floor(Math.random() * 200) + 20;
-  await page.context().setExtraHTTPHeaders({
-    'x-forwarded-for': `10.${a}.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}`,
-  });
-}
 
 const ideaForm = (page: Page) => page.getByRole('form', { name: 'Submit an idea' });
 const impressionForm = (page: Page) => page.getByRole('form', { name: 'Share an impression or feedback' });
