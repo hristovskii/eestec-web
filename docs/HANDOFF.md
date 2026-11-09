@@ -11,8 +11,9 @@ Keep this file current: when a milestone or sub-PR merges, update "Status", "Wha
 - Repo: `hristovskii/eestec-web` (local folder `eestec-lc-skopje`), branch `main`, squash merges only.
 - **Done and merged: M0–M18** (Phase 1 and Phase 2 frontend on mock repositories), **M18d** (upload limits, D23–D30 confirmed) and
   **M19a** (Supabase project, identity and people schema, RLS, pgTAP; PR #58, commit `791474a`).
-- **Open PR when this was written: #59** `ci: run the e2e suite in four parallel shards` (CI only; merge when green).
-  Check with `gh pr list`. M19b must start from a `main` that includes it.
+- **CI** runs e2e in four shards since PR #59 (commit `ed9e96e`, about 5 minutes instead of 16). That PR also hardened the
+  `admin-home` spec ("hides a section…"): it now waits for the public page and restores the Home layout on failure. Before that fix a
+  failed first attempt poisoned its own retry and the Memories-on-Home spec. Check open PRs with `gh pr list`.
 - **Next: M19b** (site content, events, applications, inboxes), then M19c, M19d, then M20 → M23.
 - The app still runs on mocks (`DATA_SOURCE=mock`). **No app code reads Supabase yet.** M19 only adds the database.
 - The owner reviews each finished milestone: stop at the end of a milestone with a report and wait for "go" (see §6).
@@ -38,7 +39,7 @@ pnpm db:stop
 - Env: nothing is required. `.env.example` lists the optional ones. Supabase variables become required only when
   `DATA_SOURCE=supabase` (added in M19d).
 - Tooling in place: lefthook (prettier + eslint on commit, commitlint on message, typecheck + unit on push), CI
-  (`check`, `e2e` ×4 shards after PR #59, `supabase` job).
+  (`check`, `e2e` ×4 shards, `supabase` job).
 
 ## 3. Milestone status
 
