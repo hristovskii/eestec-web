@@ -1840,7 +1840,7 @@
         "description": "Describe your idea",
         "descriptionPlaceholder": "What is it, who is it for, and why would it be great? A few sentences is enough.",
         "attachment": "Attachment",
-        "attachmentHelp": "PDF, JPG or PNG · up to 10 MB"
+        "attachmentHelp": "PDF, JPG or PNG · up to 4 MB"
       },
       "impression": {
         "event": "Which event?",
@@ -1887,13 +1887,13 @@
         "tooLong": "That is too long",
         "description": "Tell us a bit more: at least {min} characters",
         "attachmentType": "Use a PDF, JPG or PNG file",
-        "attachmentSize": "The file is larger than 10 MB",
+        "attachmentSize": "The file is larger than 4 MB",
         "event": "Pick the event, or “Other”",
         "otherEvent": "Tell us which event or visit it was",
         "impression": "Write at least a sentence",
         "photoCount": "You can add up to 10 photos",
         "photoType": "Photos must be JPG, PNG or WebP",
-        "photoSize": "A photo is larger than 10 MB",
+        "photoSize": "A photo is too large: try a smaller one",
         "photoUnreadable": "A photo could not be read: try another one",
         "email": "Check the e-mail address",
         "consent": "Please agree, or remove the e-mail",

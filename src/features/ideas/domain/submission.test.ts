@@ -57,14 +57,14 @@ describe('idea schema', () => {
     });
   });
 
-  it('checks the attachment: PDF, JPG or PNG up to 10 MB', () => {
+  it('checks the attachment: PDF, JPG or PNG up to 4 MB', () => {
     const file = (type: string, size = 1000) => ({ name: 'plan', type, size });
     expect(schema.safeParse({ ...idea, attachment: file('application/pdf') }).success).toBe(true);
     expect(errorsOf(schema.safeParse({ ...idea, attachment: file('text/html') }) as never)).toEqual({
       attachment: ['attachmentType'],
     });
     expect(
-      errorsOf(schema.safeParse({ ...idea, attachment: file('image/png', 11 * 1024 * 1024) }) as never),
+      errorsOf(schema.safeParse({ ...idea, attachment: file('image/png', 5 * 1024 * 1024) }) as never),
     ).toEqual({ attachment: ['attachmentSize'] });
   });
 
@@ -101,7 +101,7 @@ describe('impression schema', () => {
     expect(schema.safeParse({ ...impression, asMemory: true, memoryTitle: 'Lab day' }).success).toBe(true);
   });
 
-  it('allows ten photos of an image type, each up to 10 MB', () => {
+  it('allows ten photos of an image type, each up to 400 KB', () => {
     const photo = { name: 'a.jpg', type: 'image/jpeg', size: 1000 };
     expect(schema.safeParse({ ...impression, photos: Array(10).fill(photo) }).success).toBe(true);
     expect(errorsOf(schema.safeParse({ ...impression, photos: Array(11).fill(photo) }) as never)).toEqual({
@@ -110,6 +110,9 @@ describe('impression schema', () => {
     expect(
       errorsOf(schema.safeParse({ ...impression, photos: [{ ...photo, type: 'application/pdf' }] }) as never),
     ).toEqual({ photos: ['photoType'] });
+    expect(
+      errorsOf(schema.safeParse({ ...impression, photos: [{ ...photo, size: 401 * 1024 }] }) as never),
+    ).toEqual({ photos: ['photoSize'] });
   });
 });
 

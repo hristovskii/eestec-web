@@ -40,8 +40,8 @@ const nextConfig: NextConfig = {
     // The page's CSS (about 28 KB) goes into the HTML instead of three blocking requests (Lighthouse).
     inlineCss: true,
     // Application forms upload a CV of up to 5 MB with the answers (spec 03); /submit sends an
-    // attachment of up to 10 MB, or up to ten compressed photos, with the answers (D29).
-    serverActions: { bodySizeLimit: '12mb' },
+    // attachment of up to 4 MB, or up to ten photos of 400 KB, with the answers (D29).
+    serverActions: { bodySizeLimit: '6mb' },
   },
   cacheLife: {
     // Time-based states (deadline soon, just ended, upcoming → archive) refresh within 10 minutes (decided).
