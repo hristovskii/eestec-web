@@ -121,55 +121,79 @@ test.describe('home admin (M8b)', () => {
         await expect(list.getByRole('listitem')).toHaveCount(7);
         return list.getByRole('listitem').locator('span.font-medium').allInnerTexts();
       };
-      const before = await names();
-      expect(before[0]).toBe('What is EESTEC');
       const latest = page.getByRole('switch', { name: 'Show Latest activity on Home' });
-      await expect(latest).toBeChecked();
-      await latest.click();
       const announced = (text: string) =>
         expect(page.getByRole('status').filter({ hasText: text })).toBeAttached();
-      const handle = page.getByRole('button', { name: 'Reorder EESTEC across Europe (map)' });
-      await handle.focus();
-      await page.keyboard.press('Space');
-      await announced('EESTEC across Europe (map) is now at position 4 of 7.');
-      await page.keyboard.press('ArrowUp');
-      await announced('EESTEC across Europe (map) is now at position 3 of 7.');
-      await page.keyboard.press('Space');
-      await announced('EESTEC across Europe (map) dropped at position 3 of 7.');
-      await save(page).click();
-      await expect(toast(page, 'Home page saved')).toBeVisible();
-      await page.reload();
-      expect((await names())[2]).toBe('EESTEC across Europe (map)');
-      await expect(page.getByRole('switch', { name: 'Show Latest activity on Home' })).not.toBeChecked();
-      // The public page follows: no "Latest activity", and the map now comes before the numbers.
-      const site = await page.context().newPage();
-      const headings = async () => {
-        await site.goto('/en');
-        await expect(site.getByRole('heading', { level: 1 })).toHaveText(/\S/);
-        return site.locator('main h2').allInnerTexts();
+      // Moves a section up one place with the keyboard (it sits at position `from` before).
+      const moveUp = async (title: string, from: number) => {
+        await page.getByRole('button', { name: `Reorder ${title}` }).focus();
+        await page.keyboard.press('Space');
+        await announced(`${title} is now at position ${from} of 7.`);
+        await page.keyboard.press('ArrowUp');
+        await announced(`${title} is now at position ${from - 1} of 7.`);
+        await page.keyboard.press('Space');
+        await announced(`${title} dropped at position ${from - 1} of 7.`);
       };
-      let seen = await headings();
-      expect(seen).not.toContain("What we've been up to");
-      expect(seen.indexOf('EESTEC across Europe')).toBeLessThan(seen.indexOf('EESTEC in numbers'));
-      // Back to how it was.
-      await page.getByRole('switch', { name: 'Show Latest activity on Home' }).click();
-      // Moving "EESTEC in numbers" up puts the map back below it.
-      const numbers = page.getByRole('button', { name: 'Reorder EESTEC in numbers' });
-      await numbers.focus();
-      await page.keyboard.press('Space');
-      await announced('EESTEC in numbers is now at position 4 of 7.');
-      await page.keyboard.press('ArrowUp');
-      await announced('EESTEC in numbers is now at position 3 of 7.');
-      await page.keyboard.press('Space');
-      await announced('EESTEC in numbers dropped at position 3 of 7.');
-      await save(page).click();
-      await expect(page.getByText('All changes saved')).toBeVisible();
-      await page.reload();
-      expect(await names()).toEqual(before);
-      seen = await headings();
-      expect(seen).toContain("What we've been up to");
-      expect(seen.indexOf('EESTEC in numbers')).toBeLessThan(seen.indexOf('EESTEC across Europe'));
-      await site.close();
+      // The store is shared and the retry of a failed attempt starts from whatever it left: put the
+      // layout back (section shown, numbers before the map) whatever step stopped the test.
+      const putBack = async () => {
+        await page.goto('/admin/pages/home');
+        const current = await names();
+        let changed = false;
+        if (!(await latest.isChecked())) {
+          await latest.click();
+          changed = true;
+        }
+        if (current[2] === 'EESTEC across Europe (map)') {
+          await moveUp('EESTEC in numbers', 4);
+          changed = true;
+        }
+        if (changed) {
+          await save(page).click();
+          await expect(page.getByText('All changes saved')).toBeVisible();
+        }
+      };
+      let site: Page | undefined;
+      try {
+        const before = await names();
+        expect(before[0]).toBe('What is EESTEC');
+        await expect(latest).toBeChecked();
+        await latest.click();
+        await moveUp('EESTEC across Europe (map)', 4);
+        await save(page).click();
+        await expect(toast(page, 'Home page saved')).toBeVisible();
+        await page.reload();
+        expect((await names())[2]).toBe('EESTEC across Europe (map)');
+        await expect(latest).not.toBeChecked();
+        // The public page follows: no "Latest activity", and the map now comes before the numbers.
+        site = await page.context().newPage();
+        const publicPage = site;
+        let seen: string[] = [];
+        const headings = async () => {
+          await publicPage.goto('/en');
+          await expect(publicPage.getByRole('heading', { level: 1 })).toHaveText(/\S/);
+          return publicPage.locator('main h2').allInnerTexts();
+        };
+        // The cached page is replaced right after the save, but a busy server may need a moment.
+        await expect
+          .poll(async () => (seen = await headings()), { timeout: 20_000, intervals: [500, 1_000, 2_000] })
+          .not.toContain("What we've been up to");
+        expect(seen.indexOf('EESTEC across Europe')).toBeLessThan(seen.indexOf('EESTEC in numbers'));
+        // Back to how it was: show the section, and move "EESTEC in numbers" up (the map goes below it).
+        await latest.click();
+        await moveUp('EESTEC in numbers', 4);
+        await save(page).click();
+        await expect(page.getByText('All changes saved')).toBeVisible();
+        await page.reload();
+        expect(await names()).toEqual(before);
+        await expect
+          .poll(async () => (seen = await headings()), { timeout: 20_000, intervals: [500, 1_000, 2_000] })
+          .toContain("What we've been up to");
+        expect(seen.indexOf('EESTEC in numbers')).toBeLessThan(seen.indexOf('EESTEC across Europe'));
+      } finally {
+        await site?.close();
+        await putBack();
+      }
     });
   });
 
