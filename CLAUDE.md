@@ -1,6 +1,7 @@
 # eestec.mk — project instructions for Claude Code
 
-It tells Claude Code how to build and change the site.
+It tells Claude Code how to build and change the site. `AGENTS.md` carries the same rules for other agents (Codex): keep the two in
+sync. **Current status and what is left: `docs/HANDOFF.md`.** Backend plan: `docs/M19-backend-plan.md`; SQL conventions: `supabase/AGENTS.md`.
 
 ## What we are building
 
