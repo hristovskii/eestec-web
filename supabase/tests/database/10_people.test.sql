@@ -79,6 +79,8 @@ begin
 end
 $$;
 
+grant execute on all functions in schema pg_temp to anon, authenticated, service_role;
+
 -- ───────────── Visitor ─────────────
 select pg_temp.act_as_visitor();
 select is((select count(*)::integer from public.profiles), 2, 'a visitor reads the public active and alumni profiles only');

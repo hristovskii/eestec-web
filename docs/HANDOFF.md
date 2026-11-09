@@ -10,11 +10,11 @@ Keep this file current: when a milestone or sub-PR merges, update "Status", "Wha
 
 - Repo: `hristovskii/eestec-web` (local folder `eestec-lc-skopje`), branch `main`, squash merges only.
 - **Done and merged: M0–M18** (Phase 1 and Phase 2 frontend on mock repositories), **M18d** (upload limits, D23–D30 confirmed) and
-  **M19a** (Supabase project, identity and people schema, RLS, pgTAP; PR #58, commit `791474a`).
+  **M19a** (Supabase project, identity and people schema, RLS, pgTAP; PR #58, commit `791474a`) and **M19b** (content, events, applications and inboxes).
 - **CI** runs e2e in four shards since PR #59 (commit `ed9e96e`, about 5 minutes instead of 16). That PR also hardened the
   `admin-home` spec ("hides a section…"): it now waits for the public page and restores the Home layout on failure. Before that fix a
   failed first attempt poisoned its own retry and the Memories-on-Home spec. Check open PRs with `gh pr list`.
-- **Next: M19b** (site content, events, applications, inboxes), then M19c, M19d, then M20 → M23.
+- **Next: combined M19c/d** (member content and storage/seed), after owner go; then M20 → M23.
 - The app still runs on mocks (`DATA_SOURCE=mock`). **No app code reads Supabase yet.** M19 only adds the database.
 - The owner reviews each finished milestone: stop at the end of a milestone with a report and wait for "go" (see §6).
 
@@ -29,7 +29,7 @@ pnpm dev                     # http://localhost:3000, lab at /design-system
 # Backend (needs Docker running)
 pnpm db:start                # local Supabase: db, auth, storage only (first run pulls images, several minutes)
 pnpm db:reset                # applies supabase/migrations/*.sql
-pnpm db:test                 # pgTAP in supabase/tests/database (50 checks at M19a)
+pnpm db:test                 # pgTAP in supabase/tests/database (140 checks at M19b)
 pnpm db:lint                 # plpgsql lint, must report no errors
 pnpm db:stop
 ```
@@ -62,9 +62,9 @@ pnpm db:stop
 | M17          | Memories (list, post, editor, approvals, admin)                                                       | done                           | #50–#53          |
 | M18          | Submit + Ideas; M18d lowered upload limits for Vercel                                                 | done                           | #54–#57          |
 | **M19a**     | Supabase setup, identity/people schema, RLS, pgTAP, CI job                                            | **done**                       | #58              |
-| M19b         | Site content, events, applications, inboxes (schema + RLS + RPCs + tests)                             | **next**                       | —                |
-| M19c         | Memories, ideas/feedback, rate limit, delete-account function                                         | todo                           | —                |
-| M19d         | Storage buckets, generated types, seed from fixtures, purge, `DATA_SOURCE=supabase`, docs             | todo                           | —                |
+| M19b         | Site content, events, applications, inboxes (schema + RLS + RPCs + tests)                             | **done**                       | —                |
+| M19c         | Memories, ideas/feedback, rate limit, delete-account function (combine with M19d)                     | **next**                       | —                |
+| M19d         | Storage buckets, generated types, seed from fixtures, purge, `DATA_SOURCE=supabase`, docs (with M19c) | **next**                       | —                |
 | M20          | `*.supabase.ts` repositories per feature; contract suites green against local Supabase                | todo                           | —                |
 | M21          | Supabase Auth, MFA, lockout use, invites, own e-mail links, role claims                               | todo                           | —                |
 | M22          | Edge Functions + cron, transactional e-mail, CV export + log, orphan-file cleanup                     | todo                           | —                |
@@ -91,7 +91,7 @@ seeded entity tables, writes with a state machine only through RPCs, a pgTAP tes
 ### M19b, M19c, M19d (database)
 
 The full plan is `docs/M19-backend-plan.md` (decisions, per-feature mismatches between the draft schema and the code, RPC lists,
-RLS rules, storage buckets, seed/purge design). Sub-PR split, one branch each:
+RLS rules, storage buckets, seed/purge design). M19b is complete; the owner requested M19c and M19d as one combined branch and PR after reviewing M19b:
 
 - **M19b** site content, events, applications, inboxes: `page_content` (one jsonb row per page), `site_settings`, `seo_pages`,
   `social_links`, `committees`; `event_types`, `event_topics` (+links), `events`, `event_gallery`, `event_partners`,
@@ -144,13 +144,9 @@ review `docs/i18n-review.md` with a native reviewer, go live, then enable Phase 
 - Macedonian strings drafted by the assistant await the owner's review: `docs/i18n-review.md` (about 30 open rows; ти/Вие, борд/одбор).
 - Sample content has known flaws the board must fix (invented quotes, the 600 MKD fee, …): `docs/sample-data.md`.
 - Vercel plan (Hobby allows one team member; image optimization quotas) is unconfirmed (ARCHITECTURE §9 risks).
-- Assumptions made while planning M19 that the owner has **not** confirmed (record as D31+ in ARCHITECTURE §9 when confirmed or changed):
-  board seat is removed when its account is deleted; `event_managers` rows stay when a role is removed but policies join
-  `admin_roles.role = 'event_manager'`; account deletion nulls name/e-mail/user on that member's ideas and feedback; avatars in a
-  public bucket with unguessable paths (rows listed to owner and staff only) and `hide_photo` applied on read; Memory photos public
-  once published; `committee_status` lower-case in the database; SVG uploads rejected in the media bucket; "Attended" on a profile
-  counts accepted applications to events that have ended; whether event managers see the sender identity of feedback;
-  inactive/hidden/rejected members' sign-in behaviour is decided in the app (the database only stores `status`).
+- Owner-confirmed M19 choices: remove board seats on account deletion; keep former organizers' assignments without management access; count accepted applications to ended events as Attended; hide feedback sender identity from event managers; clear identity from retained ideas and feedback on account deletion; private authorized avatars and unpublished Memory photos; reject uploaded SVG. Decide inactive/hidden/rejected member sign-in in M21.
+- Submission RPCs are service-role only: M20 must call them after Server Action spam/consent checks and supply only a verified profile ID. Migration `0004` fixes M19a PUBLIC function defaults; test helpers explicitly grant their temporary functions to test roles.
+- Before the combined M19c/d PR: implement the owner-confirmed private photo delivery, extend the dashboard for Memories and ideas, ensure purge cannot remove board-edited sample content, and add a reproducible concurrency regression for any new state machines. The event application concurrency check is `bash supabase/tests/application-concurrency.sh`.
 
 ## 6. How to work (the owner's rules)
 

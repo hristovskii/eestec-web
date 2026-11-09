@@ -1,6 +1,6 @@
 # M19: Supabase schema, the plan and the research behind it
 
-Approved by the owner 2026-11-09. **M19a is built** (PR #58). M19b, M19c, M19d remain. This file is the working plan; update it when
+Approved by the owner 2026-11-09. **M19a and M19b are built.** The owner requested M19c and M19d as one combined PR after reviewing M19b. This file is the working plan; update it when
 something changes, and put what you learn in `docs/ARCHITECTURE.md` "Notes from building (M19x)". SQL conventions: `supabase/AGENTS.md`.
 
 ## 1. Goal and boundaries
@@ -94,22 +94,20 @@ area, target, href)`, `reference_counters (kind, year, last)`.
 RPCs (`security definer`):
 
 - `submit_application`: lock the event row (`for update`); recheck published/hidden, not ended, `via = 'form'`, opening and stop time
-  (deadline, or start when none or when auto-close is on); read capacity/waitlist/admission from `events`; reject duplicate e-mail;
-  status: Selection → `pending`; First come → `accepted` while places are free and nobody waits, `waitlist` when full or a queue
-  exists, otherwise refuse `full` (D11/D22); places taken = `accepted` rows; no automatic promotion (the board accepts the next
+  (the earlier of deadline and start when auto-close is on; start when it is off); read capacity/waitlist/admission from `events`; reject duplicate e-mail;
+  status: Selection → `pending` while capacity remains; First come → `accepted` while places are free and nobody waits. Both modes use `waitlist` when full, or refuse `full` when disabled (D11/D22); places taken = `accepted` rows; no automatic promotion (the board accepts the next
   person); assign reference (`AIE-2026-0042` style: 3-letter slug prefix, event start year (Skopje), non-reusing number) and position.
 - `submit_contact_message`, `submit_membership` (also checks `join.apply.open`), `submit_partner_inquiry`: reference counters in the same
-  transaction; spam guard stays in the Server Action.
+  transaction; service-role execution only, after the Server Action spam and consent checks.
 - `record_activity(action, area, target, href)` (staff only; triggers only for pure row events: exports, backups, bulk and section
   edits are not row events). `remove_event_type(id, replacement)`, `dashboard_counts()` (one call instead of loading every event).
 - `profile_events(profile_id)` derived per D23, published events only; **"Attended" counts accepted applications to events that have
-  ended** (assumption).
+  ended** (confirmed by the owner).
 
 RLS: public reads of listed events (`published and (publish_at is null or <= now())`; hidden events are reachable by slug, so serve
 lists from a view or RPC that returns `published` only), sponsors, pages; event manager: select/update only own events and, for those,
 applications, forms, gallery, partners (no create/delete/reassign, D18); editor vs super admin per D18 (Settings and Admin users are
-super admin only; Activity log read-only for editors); anon insert only through RPCs; applicant sees/deletes own (match by verified
-`auth.jwt() ->> 'email'` or `profile_id`; the code identifies applicants by e-mail today). Media: add a policy so a manager can read
+super admin only; Activity log read-only for editors); submission RPCs are service-role only and called by Server Actions after spam and consent validation; applicant sees/deletes own (match by the confirmed email in `auth.users` or `profile_id`). Media: add a policy so a manager can read
 media referenced by their events.
 
 ### M19c: member content
@@ -140,16 +138,15 @@ locale, status, owner_id, memory_id, consent_at)`, `feedback_photos` (private bu
   recorded; returns `retryAt` = oldest hit in window + 1 h); purge older than 1 h (D28, overrides the older 30-day note).
 - `delete_member_data(uid, also_delete_memories)`: retire memories → delete the member's applications → delete profile/account rows,
   consents, seats, CV and photo rows → return storage paths; the caller removes files and then the Auth user; refuse board accounts
-  with an admin role; null name/e-mail/user on the member's ideas and feedback (assumption).
+  with an admin role; null name/e-mail/user on the member's ideas and feedback (confirmed by the owner).
 - `cv_export_log (exported_by, sponsor_id, profile_id, exported_at)`: table shape only; the member sees only a yearly count through a
   function (`my_cv_export_count`), never the table.
-- RLS: anonymous ideas store no identity; event managers see feedback and ratings of their own events only, read-only, no notes, and
-  no ideas; editors/super admin all; authors cannot self-publish.
+- RLS: anonymous ideas store no identity; event managers see feedback and ratings of their own events only, read-only, without sender identity, notes or ideas; editors/super admin all; authors cannot self-publish.
 
 ### M19d: storage, types, seed, purge, wiring
 
-- Buckets: `public-media`, `documents` (public read), `avatars` (public URL, unguessable paths; rows listed to owner/staff),
-  `memory-photos` (public once published), `cvs` (private), `submissions` (private), `application-files` (private).
+- Buckets: `public-media`, `documents` (public read), `avatars` (private, authorized delivery),
+  `memory-photos` (private until published; authorized delivery), `cvs` (private), `submissions` (private), `application-files` (private).
   `storage.objects` policies per bucket; `allowed_mime_types` is client-declared, so keep server-side magic-byte checks; SVG not allowed.
   CVs and application files use the signed two-step upload (decide the detail in M20).
 - Generated types at `src/shared/data/supabase/database.types.ts` (ARCHITECTURE §1.5), ignored by ESLint/Prettier or formatted after
@@ -192,8 +189,7 @@ locale, status, owner_id, memory_id, consent_at)`, `feedback_photos` (private bu
     after `retentionMonths` (default 12), so `contact_messages.email` must be nullable.
 11. **Storage cannot be deleted from SQL**: CV opt-out, account deletion, memory delete/unpublish/revision approval enqueue paths in
     `storage_cleanup_queue`; M22 empties it. A failed Storage copy before a DB transaction leaves orphans for the GC job.
-12. **Open owner questions** (assumptions in `docs/HANDOFF.md` §5): board seat on account deletion; organizer history; sign-in of
-    inactive/hidden/rejected members; feedback sender identity for event managers; "Attended" semantics.
+12. **Open owner question:** sign-in of inactive, hidden and rejected members is deferred to M21. The other M19 assumptions were confirmed (see `docs/HANDOFF.md` §5).
 
 ## 6. Verification for every sub-PR
 
