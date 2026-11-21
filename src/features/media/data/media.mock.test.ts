@@ -8,7 +8,7 @@ import { readMockFile, receiveMockUpload } from './mock-storage';
 
 beforeEach(() => resetMockStore());
 
-describeMediaRepository('mock', createMockMediaRepository, ({ uploadId, ...file }) => {
+describeMediaRepository('mock', createMockMediaRepository, ({ uploadId, uploadUrl: _url, ...file }) => {
   expect(receiveMockUpload(uploadId, file)).toBe('ok');
 });
 

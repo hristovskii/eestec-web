@@ -2603,6 +2603,13 @@ export type Database = {
         Args: { p_bucket: string; p_path: string; p_user: string };
         Returns: boolean;
       };
+      media_uploaders: {
+        Args: { p_ids: string[] };
+        Returns: {
+          id: string;
+          name: string;
+        }[];
+      };
       media_usage: { Args: { p_id: string }; Returns: Json };
       members_hidden_count: { Args: Record<PropertyKey, never>; Returns: number };
       memory_admin_remove: { Args: { p_id: string }; Returns: boolean };

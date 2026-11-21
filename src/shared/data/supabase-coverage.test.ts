@@ -20,7 +20,6 @@ const PENDING = [
   'idea-form',
   'submissions',
   'membership',
-  'media',
   'members',
   'memories',
   'notes',

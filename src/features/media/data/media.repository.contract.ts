@@ -11,7 +11,18 @@ const query = (patch: Partial<MediaListQuery> = {}): MediaListQuery => ({
 });
 
 const now = new Date('2026-10-04T16:18:00Z');
-const ana = { userId: 'u-ana', name: 'Ana Trajkovska' };
+/** The people the suite acts as: who uploads, and who else has files in the library. */
+export type MediaPeople = {
+  uploader: { userId: string; name: string };
+  other: { userId: string };
+  stranger: string;
+};
+
+const MOCK_PEOPLE: MediaPeople = {
+  uploader: { userId: 'u-ana', name: 'Ana Trajkovska' },
+  other: { userId: 'u-daniel' },
+  stranger: 'u-someone-else',
+};
 
 /**
  * Shared contract for every MediaRepository. `deliver` puts the file bytes where the
@@ -20,8 +31,16 @@ const ana = { userId: 'u-ana', name: 'Ana Trajkovska' };
 export function describeMediaRepository(
   name: string,
   create: () => MediaRepository | Promise<MediaRepository>,
-  deliver: (upload: { uploadId: string; userId: string; mimeType: string; bytes: Uint8Array }) => void,
+  deliver: (upload: {
+    uploadId: string;
+    uploadUrl: string;
+    userId: string;
+    mimeType: string;
+    bytes: Uint8Array;
+  }) => void | Promise<void>,
+  people: MediaPeople | (() => MediaPeople) = MOCK_PEOPLE,
 ) {
+  const who = () => (typeof people === 'function' ? people() : people);
   describe(`MediaRepository (${name})`, () => {
     it('lists newest first with counts, and filters by kind, missing alt text and uploader', async () => {
       const repo = await create();
@@ -38,9 +57,9 @@ export function describeMediaRepository(
       expect(missing.total).toBe(all.counts.missingAlt);
       expect(missing.items.every((item) => item.kind === 'image' && item.alt === null)).toBe(true);
 
-      const own = await repo.list(query({ uploadedBy: 'u-daniel' }));
+      const own = await repo.list(query({ uploadedBy: who().other.userId }));
       expect(own.items.length).toBeGreaterThan(0);
-      expect(own.items.every((item) => item.uploadedBy.userId === 'u-daniel')).toBe(true);
+      expect(own.items.every((item) => item.uploadedBy.userId === who().other.userId)).toBe(true);
       expect(own.counts.all).toBe(own.total);
     });
 
@@ -52,6 +71,7 @@ export function describeMediaRepository(
 
     it('uploads in two steps; nothing is recorded before the file arrives', async () => {
       const repo = await create();
+      const ana = who().uploader;
       const bytes = new Uint8Array([137, 80, 78, 71]);
       const { uploadId, uploadUrl } = await repo.createUpload({
         fileName: 'lab.png',
@@ -67,11 +87,11 @@ export function describeMediaRepository(
         mimeType: 'image/png',
         received: false,
       });
-      await expect(repo.getUpload(uploadId, 'u-someone-else')).resolves.toBeNull();
+      await expect(repo.getUpload(uploadId, who().stranger)).resolves.toBeNull();
 
-      deliver({ uploadId, userId: ana.userId, mimeType: 'image/png', bytes });
+      await deliver({ uploadId, uploadUrl, userId: ana.userId, mimeType: 'image/png', bytes });
       await expect(repo.getUpload(uploadId, ana.userId)).resolves.toMatchObject({ received: true });
-      await expect(repo.confirmUpload({ ...confirm, userId: 'u-someone-else' })).resolves.toBeNull();
+      await expect(repo.confirmUpload({ ...confirm, userId: who().stranger })).resolves.toBeNull();
       const item = await repo.confirmUpload(confirm);
       expect(item).toMatchObject({ fileName: 'lab.png', kind: 'image', alt: 'The FEEIT lab', width: 10 });
       expect((await repo.list(query())).items[0]?.id).toBe(item!.id);
@@ -79,12 +99,29 @@ export function describeMediaRepository(
 
     it('updates alt text and credit, and deletes', async () => {
       const repo = await create();
-      const [first] = (await repo.list(query({ missingAlt: true }))).items;
-      const updated = await repo.update(first!.id, { alt: 'Dev boards next to a laptop', credit: 'PR team' });
+      const ana = who().uploader;
+      const bytes = new Uint8Array([137, 80, 78, 71]);
+      const { uploadId, uploadUrl } = await repo.createUpload({
+        fileName: 'to-delete.png',
+        mimeType: 'image/png',
+        size: bytes.byteLength,
+        uploadedBy: ana,
+      });
+      await deliver({ uploadId, uploadUrl, userId: ana.userId, mimeType: 'image/png', bytes });
+      const made = await repo.confirmUpload({
+        uploadId,
+        userId: ana.userId,
+        alt: null,
+        width: 4,
+        height: 4,
+        now,
+      });
+      expect(made).toMatchObject({ alt: null });
+      const updated = await repo.update(made!.id, { alt: 'Dev boards next to a laptop', credit: 'PR team' });
       expect(updated).toMatchObject({ alt: 'Dev boards next to a laptop', credit: 'PR team' });
-      await expect(repo.remove(first!.id)).resolves.toBe(true);
-      await expect(repo.get(first!.id)).resolves.toBeNull();
-      await expect(repo.remove(first!.id)).resolves.toBe(false);
+      await expect(repo.remove(made!.id)).resolves.toBe(true);
+      await expect(repo.get(made!.id)).resolves.toBeNull();
+      await expect(repo.remove(made!.id)).resolves.toBe(false);
     });
   });
 }
