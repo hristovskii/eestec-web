@@ -47,7 +47,7 @@ export async function submitMessage(data: FormData): Promise<ActionResult<Messag
   const spam = checkSpamGuard(data);
   if (spam !== 'ok') return conflict(messageFailureFor(spam));
 
-  const { subjects } = await (await contactRepository()).get();
+  const { subjects } = await (await contactRepository('service')).get();
   const parsed = buildContactSchema(subjects.map((subject) => subject.id)).safeParse(readContactForm(data));
   if (!parsed.success)
     return { ok: false, error: 'validation', fieldErrors: fieldErrorsFrom(parsed.error.issues) };

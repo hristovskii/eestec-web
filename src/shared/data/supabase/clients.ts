@@ -56,3 +56,12 @@ export async function clientForScope(scope: RepoScope): Promise<DbClient> {
   if (scope === 'service') return serviceClient();
   return scope === 'session' ? sessionClient() : publicClient();
 }
+
+/**
+ * The `supabase` entry of a repository registration: builds the client for the requested scope and hands
+ * it, with the scope, to the repository factory (`supabase: withClient(createSupabaseXRepository)`).
+ */
+export const withClient =
+  <T>(factory: (client: DbClient, scope: RepoScope) => T) =>
+  async (scope: RepoScope): Promise<T> =>
+    factory(await clientForScope(scope), scope);

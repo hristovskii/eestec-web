@@ -41,22 +41,22 @@ export function dataErrorKind(code: string | undefined): DataErrorKind {
 export const toDataError = (error: Pick<PostgrestError, 'code' | 'message'>): DataError =>
   new DataError(dataErrorKind(error.code), error.message, error.code);
 
-type Result<T> = { data: T | null; error: Pick<PostgrestError, 'code' | 'message'> | null };
+type Result<D> = { data: D; error: Pick<PostgrestError, 'code' | 'message'> | null };
 
 /** The data of a successful call; a failed call throws a DataError. */
-export function unwrap<T>(result: Result<T>): T {
+export function unwrap<D>(result: Result<D>): NonNullable<D> {
   if (result.error) throw toDataError(result.error);
-  return result.data as T;
+  return result.data as NonNullable<D>;
 }
 
 /** Like `unwrap`, but "no such row" is `null` instead of an error. */
-export function unwrapMaybe<T>(result: Result<T>): T | null {
+export function unwrapMaybe<D>(result: Result<D>): NonNullable<D> | null {
   if (result.error) {
     const error = toDataError(result.error);
     if (error.kind === 'not_found') return null;
     throw error;
   }
-  return result.data;
+  return result.data ?? null;
 }
 
 /** True when `error` is a DataError of one of these kinds (repositories turn them into results). */
