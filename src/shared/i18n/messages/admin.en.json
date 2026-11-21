@@ -355,7 +355,7 @@
     },
     "uploadDialog": {
       "title": "Upload files",
-      "text": "Images up to 5 MB (JPG, PNG, WebP, GIF, SVG), PDFs up to 10 MB.",
+      "text": "Images up to 5 MB (JPG, PNG, WebP, GIF), PDFs up to 10 MB.",
       "choose": "Choose files or drag them here",
       "chooseMore": "Add more files",
       "remove": "Remove {name}",
@@ -371,7 +371,7 @@
       "needsAlt": "{count, plural, one {Add alt text to # image to upload it.} other {Add alt text to # images to upload them.}}"
     },
     "errors": {
-      "type": "This file type isn't accepted. Use JPG, PNG, WebP, GIF, SVG or PDF.",
+      "type": "This file type isn't accepted. Use JPG, PNG, WebP, GIF or PDF.",
       "size": "Too big. Images can be up to 5 MB, PDFs up to 10 MB.",
       "empty": "This file is empty.",
       "altRequired": "Add alt text, or mark the image as decorative.",
@@ -2038,7 +2038,7 @@
       "tier": "Tier",
       "logo": "Logo",
       "noLogo": "No logo. The name is shown as text.",
-      "logoHelp": "SVG is best, or a PNG with a transparent background, trimmed to the logo. The site reads its proportions and sizes every logo to the same visual area.",
+      "logoHelp": "Use a PNG with a transparent background, trimmed to the logo. The site reads its proportions and sizes every logo to the same visual area.",
       "website": "Website",
       "websiteHelp": "Optional. Without it the logo is not a link.",
       "activeFrom": "Active from",

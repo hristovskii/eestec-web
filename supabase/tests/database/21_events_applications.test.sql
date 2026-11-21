@@ -1,4 +1,5 @@
 begin;
+\ir ../helpers/isolate.inc
 select plan(38);
 insert into auth.users(id,aud,role,email,email_confirmed_at) values
  ('30000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk',now()),

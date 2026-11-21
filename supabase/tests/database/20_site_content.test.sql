@@ -1,5 +1,6 @@
 -- Site settings and committee permissions, including the super-admin MFA boundary.
 begin;
+\ir ../helpers/isolate.inc
 select plan(17);
 
 insert into auth.users (id, aud, role, email) values

@@ -1,4 +1,5 @@
 begin;
+\ir ../helpers/isolate.inc
 select plan(24);
 insert into auth.users(id,aud,role,email) values
  ('40000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
@@ -28,7 +29,7 @@ set local role service_role;
 select throws_ok($$select public.submit_contact_message('Sender','sender@test.mk','41000000-0000-0000-0000-000000000001','Hello','en',false)$$,'22023',null,'contact submission requires consent');
 select ok(public.submit_contact_message('Sender','sender@test.mk','41000000-0000-0000-0000-000000000001','Hello','en',true) like 'MSG-%','contact returns a reference');
 select ok(public.submit_partner_inquiry('Sender','sender@test.mk','Company','123',array['other'],'Hello','en',true) like 'PRT-%','inquiry returns a reference');
-select ok(public.submit_membership('Sender','sender@test.mk','','Faculty','','',array[]::text[],'','en',true) like 'MEM-%','membership returns a reference');
+select ok((public.submit_membership('Sender','sender@test.mk','','Faculty','','',array[]::text[],'','en',true)->>'reference') like 'MEM-%','membership returns a reference');
 select pg_temp.visitor();
 select throws_ok($$insert into public.contact_messages(reference,name,subject,routed_to,message,locale) values ('a','b','c','d','e','en')$$,'42501',null,'visitor cannot insert directly');
 select pg_temp.act_as('40000000-0000-0000-0000-000000000002');

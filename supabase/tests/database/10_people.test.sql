@@ -1,5 +1,6 @@
 -- Profiles, accounts, teams, board, media and the functions around them, per role.
 begin;
+\ir ../helpers/isolate.inc
 select plan(38);
 
 -- ───────────── Who is who ─────────────

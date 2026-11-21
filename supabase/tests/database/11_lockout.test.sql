@@ -1,5 +1,6 @@
 -- Sign-in lockout and the tables only the server reaches.
 begin;
+\ir ../helpers/isolate.inc
 select plan(8);
 
 insert into auth.users (id, aud, role, email) values

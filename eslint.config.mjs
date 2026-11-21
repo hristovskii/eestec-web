@@ -20,6 +20,7 @@ export default defineConfig([
     'next-env.d.ts',
     'playwright-report/**',
     'test-results/**',
+    'src/shared/data/supabase/database.types.ts',
   ]),
   ...nextVitals,
   ...nextTs,

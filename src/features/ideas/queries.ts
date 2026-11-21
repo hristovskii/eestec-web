@@ -23,8 +23,8 @@ export async function getIdeaFormSettings() {
 
 /**
  * A file that came with an idea or a feedback, for the board only (mock stand-in for a signed link).
- * Event managers may open photos of feedback of their own events (D18); nobody else, and nothing
- * at all on real data until the private bucket exists.
+ * Event managers read the rating and impression of feedback on their own events (D18) but never its
+ * photos or attachments (D29, D33); nothing at all on real data until the private bucket exists.
  */
 export async function submissionFileResponse(id: string): Promise<Response> {
   if (!(devSurfacesEnabled() && env.DATA_SOURCE === 'mock'))
@@ -32,11 +32,8 @@ export async function submissionFileResponse(id: string): Promise<Response> {
   const owner = await (await submissionsRepository('session')).fileOwner(id);
   const file = owner ? readMockSubmissionFile(id) : null;
   if (!owner || !file) return new Response('Not found', { status: 404 });
-  const allowed = await authorize(
-    'view',
-    'ideas',
-    owner.kind === 'feedback' && owner.eventId ? { eventId: owner.eventId } : undefined,
-  );
+  // 'edit' is the board's right on ideas: event managers only have 'ownRead' (D18), which must not reach files.
+  const allowed = await authorize('edit', 'ideas');
   if (!allowed) return new Response('Forbidden', { status: 403 });
   return new Response(new Uint8Array(file.bytes), {
     headers: {

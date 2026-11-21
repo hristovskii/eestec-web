@@ -26,6 +26,7 @@
     "db:test": "supabase test db",
     "db:lint": "supabase db lint --fail-on error",
     "db:stop": "supabase stop",
+    "db:types": "bash scripts/generate-db-types.sh",
     "check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm i18n:check"
   },
   "dependencies": {
