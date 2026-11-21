@@ -3,8 +3,13 @@ import 'server-only';
 import { type DataSource } from '@/shared/config/data-source';
 import { env } from '@/shared/config/env';
 
-/** 'public': cookie-less, cacheable reads of published content. 'session': the visitor's or admin's session. */
-export type RepoScope = 'public' | 'session';
+/**
+ * 'public': cookie-less, cacheable reads of published content.
+ * 'session': the visitor's or admin's session.
+ * 'service': server-only, bypasses RLS (D32): the submit RPCs, the rate limit and account deletion, called
+ * from Server Actions only after their spam, consent and session checks.
+ */
+export type RepoScope = 'public' | 'session' | 'service';
 
 type Implementations<T> = { [K in DataSource]?: (scope: RepoScope) => T | Promise<T> } & {
   mock: (scope: RepoScope) => T | Promise<T>;
