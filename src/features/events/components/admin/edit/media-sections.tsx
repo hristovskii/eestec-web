@@ -23,7 +23,7 @@ import { EVENT_LIMITS, VIDEO_URL } from '../../../schemas/event.schema';
 import { useEventForm } from './form-kit';
 import { OptionalLabel } from './main-sections';
 
-const PHOTO_TYPES = IMAGE_TYPES.filter((type) => type !== 'image/svg+xml' && type !== 'image/gif');
+const PHOTO_TYPES = IMAGE_TYPES.filter((type) => type !== 'image/gif');
 
 /** "cover-ai-edge.jpg · 1920 × 1200 · 284 KB" */
 function fileLine(item: MediaItem) {

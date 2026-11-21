@@ -1,5 +1,6 @@
 -- Event application data is visible only to its applicant, assigned manager, or staff.
 begin;
+\ir ../helpers/isolate.inc
 select plan(10);
 insert into auth.users(id,aud,role,email,email_confirmed_at) values
  ('60000000-0000-0000-0000-000000000001','authenticated','authenticated','pending@test.mk',now()),

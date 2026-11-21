@@ -11,7 +11,7 @@ The website of EESTEC LC Skopje (eestec.mk): a public site, member accounts (Pha
 ## Sources of truth (read before changing anything)
 
 0. `docs/HANDOFF.md`: current status, what is done, what is left, how to work with the owner.
-1. `docs/ARCHITECTURE.md`: the approved architecture, folder rules, milestones (§8) and the decisions log (§9, D1–D30), plus
+1. `docs/ARCHITECTURE.md`: the approved architecture, folder rules, milestones (§8) and the decisions log (§9, D1–D36), plus
    "Notes from building" for every milestone. It overrides everything below where they differ.
 2. `docs/M19-backend-plan.md`: the backend (Supabase) plan with all research findings. `supabase/AGENTS.md`: SQL conventions.
 3. `specs/00-overview-and-design-system.md` … `specs/11-admin-panel.md` (the original specs)
@@ -88,7 +88,7 @@ pnpm dev            # dev server
 pnpm check          # typecheck, lint, format, unit, i18n keys
 pnpm build          # must pass with no env vars
 pnpm e2e            # Playwright (desktop + mobile); CI runs it in 4 shards: pnpm e2e --shard=1/4
-pnpm db:start | db:reset | db:test | db:lint | db:stop   # local Supabase (Docker)
+pnpm db:start | db:reset | db:test | db:lint | db:types | db:stop   # local Supabase (Docker)
 ```
 
 ## Working style
@@ -145,3 +145,4 @@ pnpm db:start | db:reset | db:test | db:lint | db:stop   # local Supabase (Docke
 - A cookie change or `refresh()` inside a Server Action re-renders the current page (a redirect then wipes client state).
 - Flaky specs seen in CI (re-run the failed job, harden if yours): admin-foundation login redirect, admin-users invite/withdraw
   (mobile), application form builder, privacy editor clean-up, Google Fonts download failure during the build.
+- Database tests: public roles have **column grants** on `events` and `memories` (no `select *` as `anon`/`authenticated`; the editor id is read through `event_updated_by()`), and every pgTAP file starts with `\ir ../helpers/isolate.inc` so the seeded rows do not disturb its fixtures. `supabase/seed.sql` is generated: `UPDATE_SEED=1 pnpm exec vitest run scripts/generate-seed.test.ts`; `pnpm db:types` regenerates the types (CI compares).

@@ -5,7 +5,8 @@ import { formatBytes, kindOf, needsAlt, uploadProblem } from './upload-rules';
 describe('upload rules', () => {
   it('accepts images and PDFs only', () => {
     expect(kindOf('image/png')).toBe('image');
-    expect(kindOf('image/svg+xml')).toBe('image');
+    expect(kindOf('image/svg+xml')).toBeNull();
+    expect(uploadProblem({ type: 'image/svg+xml', size: 100 })).toBe('type');
     expect(kindOf('application/pdf')).toBe('document');
     expect(kindOf('text/html')).toBeNull();
     expect(uploadProblem({ type: 'application/zip', size: 10 })).toBe('type');

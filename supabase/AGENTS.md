@@ -7,17 +7,18 @@ research behind it: `docs/M19-backend-plan.md`. Status and what is left: `docs/H
 
 ```bash
 pnpm db:start   # local Supabase (db, auth, storage only), needs Docker
-pnpm db:reset   # drop and re-apply every migration (and supabase/seed.sql once it exists)
+pnpm db:reset   # drop and re-apply every migration and supabase/seed.sql
+pnpm db:types   # regenerate src/shared/data/supabase/database.types.ts (CI fails on a diff)
 pnpm db:test    # pgTAP: supabase/tests/database/*.test.sql
 pnpm db:lint    # plpgsql_check: must report no errors
 ```
 
-CI job `supabase` runs reset, test and lint on every PR. `pnpm build` and the app do not need the database yet.
+CI job `supabase` runs reset, test, both concurrency scripts (`supabase/tests/*-concurrency.sh`), lint and the types diff on every PR. `pnpm build` and the app do not need the database yet.
 
 ## Migrations
 
-- Files: `supabase/migrations/<YYYYMMDDHHMMSS>_<name>.sql`, applied in name order. Existing: `20261110000001_foundation`,
-  `…0002_access`, `…0003_member_functions`. New ones continue after the highest timestamp (`20261110000004_…`).
+- Files: `supabase/migrations/<YYYYMMDDHHMMSS>_<name>.sql`, applied in name order. Existing: `20261110000001_foundation` to
+  `…0014_m19b_fixes` (see the list in the folder). New ones continue after the highest timestamp (`20261110000015_…`).
 - **Never edit a migration that is on `main`**: add a new one. (Before a milestone's PR merges you may still edit its own files.)
 - One concern per file; comments say why (decisions, D-numbers). Keep the "DECIDED" rules (statuses, 5 fails → 15 min, …).
 
@@ -67,5 +68,8 @@ rollback;`. Fixtures are inserted inside the test (as `postgres`), including `au
 ## Seed (M19d)
 
 `supabase/seed.sql` is generated from the app fixtures by `scripts/generate-seed.ts` (run under Vitest) and committed; a drift test
-fails if it is stale. Never edit it by hand. Every row is `is_sample = true` except the shipped `/brand` media. `purge_sample_data()`
-must leave no sample row (tested).
+fails if it is stale (`UPDATE_SEED=1 pnpm exec vitest run scripts/generate-seed.test.ts` rewrites it). Never edit it by hand. Every row is `is_sample = true` except the shipped `/brand` media. `purge_sample_data()`
+must leave no sample row (tested); it needs a super admin with a 2-step session. Sample accounts use `sample+<uuid>@example.invalid`.
+
+Tests include `\ir ../helpers/isolate.inc` right after `begin;` so the seeded rows do not disturb their fixtures (rolled back).
+Public roles have column grants on some tables (`events`, `memories`): a test that runs `select *` as `anon` or `authenticated` fails; list columns.

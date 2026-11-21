@@ -3,7 +3,7 @@ import type { MediaKind } from '../types';
 // Upload rules: what the Media library accepts. The same rules run in the browser (instant
 // feedback) and on the server (the real check).
 
-export const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'] as const;
+export const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const;
 export const DOCUMENT_TYPES = ['application/pdf'] as const;
 export const ACCEPTED_TYPES: readonly string[] = [...IMAGE_TYPES, ...DOCUMENT_TYPES];
 

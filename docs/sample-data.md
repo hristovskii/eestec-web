@@ -3,10 +3,20 @@
 Everything the site shows today comes from sample data transcribed from the design canvas (CLAUDE.md:
 "never invent content, mark it as sample"). The mock repositories keep it in memory; it is **not**
 real. This page lists where each kind of sample data lives and who has to replace it. M19 turns the
-fixtures into `supabase/seed.sql` with every sample row flagged and purgeable; M23 purges them.
+fixtures into `supabase/seed.sql` (built in M19) with every sample row flagged (`is_sample = true`) and purgeable; M23 purges them.
 
 The site shows a "Preview with sample data" ribbon while `DATA_SOURCE=mock` outside development, so
 a sample deployment can never be mistaken for the real site.
+
+## In the database (M19)
+
+`supabase/seed.sql` is generated from these fixtures (`scripts/generate-seed.ts`; never edit it by hand) and loaded by `pnpm db:reset`.
+Every row of every entity table, and every sample person in `auth.users` (banned, no usable password, address
+`sample+<uuid>@example.invalid`), has `is_sample = true`; only the shipped `/brand/*` media are real. **Editing a sample row in the
+admin flips it to real**, so `purge_sample_data()` (super admin with 2-step; M23) never deletes content the board has changed. The
+purge first checks that nothing real still points at a sample row (a real event using a sample type, a real note on a sample message…)
+and returns the list instead of deleting anything; resolve those by editing or replacing the sample row, then run it again.
+Seed counts: 23 events, 35 committees, 20 sponsors, 7 contact messages, 13 Memories, 10 ideas, 12 feedback entries.
 
 ## Committees (Map / Committees, Home map) — the board must replace this
 

@@ -1,7 +1,7 @@
 # Handoff: where the project stands and what is left
 
-Written 2026-11-09 so another AI agent (Codex) or a person can continue without the earlier conversation.
-Read this first, then `AGENTS.md` (rules), `docs/ARCHITECTURE.md` (decisions D1–D30, milestones §8, notes from building) and
+Written 2026-11-09 so another AI agent (Codex) or a person can continue without the earlier conversation; updated 2026-11-21 after the M19 database work was reviewed, hardened and finished.
+Read this first, then `AGENTS.md` (rules), `docs/ARCHITECTURE.md` (decisions D1–D36, milestones §8, notes from building) and
 `docs/M19-backend-plan.md` (the backend plan with all research findings).
 
 Keep this file current: when a milestone or sub-PR merges, update "Status", "What is left" and the date at the top.
@@ -14,7 +14,8 @@ Keep this file current: when a milestone or sub-PR merges, update "Status", "Wha
 - **CI** runs e2e in four shards since PR #59 (commit `ed9e96e`, about 5 minutes instead of 16). That PR also hardened the
   `admin-home` spec ("hides a section…"): it now waits for the public page and restores the Home layout on failure. Before that fix a
   failed first attempt poisoned its own retry and the Memories-on-Home spec. Check open PRs with `gh pr list`.
-- **Next: combined M19c/d** (member content and storage/seed), after owner go; then M20 → M23.
+- **M19c and M19d** (member content, storage, seed, purge, types, env) are built as one combined PR together with `0014_m19b_fixes.sql`
+  (fixes to gaps found in the merged M19b schema). **Next: M20** (repositories), after the owner's "go"; then M21 → M23.
 - The app still runs on mocks (`DATA_SOURCE=mock`). **No app code reads Supabase yet.** M19 only adds the database.
 - The owner reviews each finished milestone: stop at the end of a milestone with a report and wait for "go" (see §6).
 
@@ -23,14 +24,17 @@ Keep this file current: when a milestone or sub-PR merges, update "Status", "Wha
 ```bash
 nvm use                      # Node 24 (.nvmrc); pnpm 11
 pnpm install
-pnpm check                   # typecheck, lint, format, 599 unit tests, i18n keys (must be green)
+pnpm check                   # typecheck, lint, format, 604 unit tests, i18n keys (must be green)
 pnpm dev                     # http://localhost:3000, lab at /design-system
 
 # Backend (needs Docker running)
 pnpm db:start                # local Supabase: db, auth, storage only (first run pulls images, several minutes)
 pnpm db:reset                # applies supabase/migrations/*.sql
-pnpm db:test                 # pgTAP in supabase/tests/database (140 checks at M19b)
+pnpm db:test                 # pgTAP in supabase/tests/database (305 checks in 14 files)
 pnpm db:lint                 # plpgsql lint, must report no errors
+pnpm db:types                # regenerate src/shared/data/supabase/database.types.ts (CI fails on a diff)
+bash supabase/tests/application-concurrency.sh      # two connections, first-come places
+bash supabase/tests/member-content-concurrency.sh   # Memory decisions, rate limit, accept_idea, deletion vs save
 pnpm db:stop
 ```
 
@@ -62,9 +66,9 @@ pnpm db:stop
 | M17          | Memories (list, post, editor, approvals, admin)                                                       | done                           | #50–#53          |
 | M18          | Submit + Ideas; M18d lowered upload limits for Vercel                                                 | done                           | #54–#57          |
 | **M19a**     | Supabase setup, identity/people schema, RLS, pgTAP, CI job                                            | **done**                       | #58              |
-| M19b         | Site content, events, applications, inboxes (schema + RLS + RPCs + tests)                             | **done**                       | —                |
-| M19c         | Memories, ideas/feedback, rate limit, delete-account function (combine with M19d)                     | **next**                       | —                |
-| M19d         | Storage buckets, generated types, seed from fixtures, purge, `DATA_SOURCE=supabase`, docs (with M19c) | **next**                       | —                |
+| M19b         | Site content, events, applications, inboxes (schema + RLS + RPCs + tests)                             | **done**                       | #61              |
+| M19c         | Memories, ideas/feedback, rate limit, durable account deletion; plus `0014` fixes to the M19b schema  | **done** (combined PR with d)  | this PR          |
+| M19d         | Storage buckets, generated types, seed from fixtures, purge, `DATA_SOURCE=supabase`, docs (with M19c) | **done** (combined PR with c)  | this PR          |
 | M20          | `*.supabase.ts` repositories per feature; contract suites green against local Supabase                | todo                           | —                |
 | M21          | Supabase Auth, MFA, lockout use, invites, own e-mail links, role claims                               | todo                           | —                |
 | M22          | Edge Functions + cron, transactional e-mail, CV export + log, orphan-file cleanup                     | todo                           | —                |
@@ -88,10 +92,10 @@ seeded entity tables, writes with a state machine only through RPCs, a pgTAP tes
 
 ## 5. What is left
 
-### M19b, M19c, M19d (database)
+### M19 (database): done
 
-The full plan is `docs/M19-backend-plan.md` (decisions, per-feature mismatches between the draft schema and the code, RPC lists,
-RLS rules, storage buckets, seed/purge design). M19b is complete; the owner requested M19c and M19d as one combined branch and PR after reviewing M19b:
+The full plan is `docs/M19-backend-plan.md`; what was built, and where it differs from the plan, is in `docs/ARCHITECTURE.md` "Notes
+from building (M19a, M19b, M19 review fixes / M19c / M19d)". What the sub-PRs contain:
 
 - **M19b** site content, events, applications, inboxes: `page_content` (one jsonb row per page), `site_settings`, `seo_pages`,
   `social_links`, `committees`; `event_types`, `event_topics` (+links), `events`, `event_gallery`, `event_partners`,
@@ -100,11 +104,13 @@ RLS rules, storage buckets, seed/purge design). M19b is complete; the owner requ
   `reference_counters`; RPCs `submit_application`, `submit_contact_message`, `submit_membership`, `submit_partner_inquiry`,
   `record_activity`, `remove_event_type`, `dashboard_counts`, `profile_events` (derived, D23); RLS + pgTAP.
 - **M19c** memories (+photos, revisions, queue view and the whole state machine as RPCs), `idea_types`, `ideas`, `feedback`,
-  `feedback_photos`, `submit_idea`, `submit_impression`, `accept_idea`, `event_ratings`, `submission_log` + `rate_limit_hit`,
-  `delete_member_data`, `cv_export_log` (table shape only); RLS + pgTAP.
+  `submission_files` (idea attachment and feedback photos), `submit_idea`, `submit_impression`, `accept_idea`, `event_ratings`,
+  `submission_log` + `rate_limit_hit`, durable account deletion (`begin_member_deletion`, `mark_deletion_file_done`,
+  `finish_member_deletion`; replaces the planned `delete_member_data`), `cv_export_log` (table shape only); RLS + pgTAP.
 - **M19d** buckets and `storage.objects` policies, generated types at `src/shared/data/supabase/database.types.ts`,
   `scripts/generate-seed.ts` (run under Vitest) → `supabase/seed.sql`, `purge_sample_data()`, `'supabase'` in `DATA_SOURCES` with the
   "required only when selected" env rule, the unit test that lists repositories without a Supabase implementation, docs.
+- **`0014` (review fixes to M19b)**: see ARCHITECTURE D34-D36 and the M19 notes.
 
 ### M20 repositories
 
@@ -117,6 +123,14 @@ Open items that land here: the **5 MB CV through a Server Action** (application 
 limit: move CVs to the two-step signed upload (like the Media library) or lower the limit; every anonymous submit goes through
 its RPC, never an anon insert policy; `applications` repository is hard-wired to scope `'public'` today and mixes anonymous, member
 and admin calls: split by scope; `settings` repository has no scope and serves private recipients through the public read.
+Also decided for M20 (ARCHITECTURE D32, D33, D36, all "not yet confirmed" except D33): a server-only `service` scope for the submit RPCs
+(no scope reaches them today); remove the mock's manager access to feedback photos; `SubmitResult` needs `'closed'`; contact and
+settings repositories split a public read from an edit read (`routeEmail`, recipients); `MembershipApplication`/`PartnerInquiry`
+`email`, `ContactMessage.subjectId` and `InternalNote.authorId` are nullable in SQL (retention, deleted accounts); aggregate reads,
+the Skopje-year filter with an `mk` title sort, the partners-page save RPC, an atomic settings save and the private-photo delivery
+route (SQL helpers `can_read_memory_photo`/`can_read_avatar` exist) are designed with their repositories; deleting an event with
+applications cascades today (decide: restrict or confirm); `memory_admin_save` with a revision flag and no revision returns false
+(the mock writes the live content: align the mock).
 
 ### M21 auth
 
@@ -144,9 +158,10 @@ review `docs/i18n-review.md` with a native reviewer, go live, then enable Phase 
 - Macedonian strings drafted by the assistant await the owner's review: `docs/i18n-review.md` (about 30 open rows; ти/Вие, борд/одбор).
 - Sample content has known flaws the board must fix (invented quotes, the 600 MKD fee, …): `docs/sample-data.md`.
 - Vercel plan (Hobby allows one team member; image optimization quotas) is unconfirmed (ARCHITECTURE §9 risks).
-- Owner-confirmed M19 choices: remove board seats on account deletion; keep former organizers' assignments without management access; count accepted applications to ended events as Attended; hide feedback sender identity from event managers; clear identity from retained ideas and feedback on account deletion; private authorized avatars and unpublished Memory photos; reject uploaded SVG. Decide inactive/hidden/rejected member sign-in in M21.
-- Submission RPCs are service-role only: M20 must call them after Server Action spam/consent checks and supply only a verified profile ID. Migration `0004` fixes M19a PUBLIC function defaults; test helpers explicitly grant their temporary functions to test roles.
-- Before the combined M19c/d PR: implement the owner-confirmed private photo delivery, extend the dashboard for Memories and ideas, ensure purge cannot remove board-edited sample content, and add a reproducible concurrency regression for any new state machines. The event application concurrency check is `bash supabase/tests/application-concurrency.sh`.
+- Owner-confirmed M19 choices (re-confirmed 2026-11-21): remove board seats on account deletion; keep former organizers' assignments without management access; count accepted applications to ended events as Attended; hide feedback sender identity from event managers; clear identity from retained ideas and feedback on account deletion; private authorized avatars and unpublished Memory photos; reject uploaded SVG. Decide inactive/hidden/rejected member sign-in in M21.
+- Submission RPCs are service-role only (D31, D32): M20 must call them after Server Action spam/consent checks and supply only a verified profile ID. Migration `0004` fixes M19a PUBLIC function defaults; test helpers explicitly grant their temporary functions to test roles.
+- Event managers get no feedback photos (D33). The purge is for a super admin with 2-step (D34).
+- Public roles have column grants on `events` and `memories`: repositories must list columns (no `select *`) and read `updated_by` through `event_updated_by()`.
 
 ## 6. How to work (the owner's rules)
 
@@ -166,7 +181,7 @@ config deps e2e docs ci`; there is no `inbox` or `db` scope: use `data` for data
 6. **Docs with every milestone.** Add "Notes from building (Mx)" to `docs/ARCHITECTURE.md`; update `docs/sample-data.md` when sample
    content is added; add a row to `docs/i18n-review.md` for new Macedonian strings; add decisions as D31+ ("not yet confirmed by the
    owner" until they are).
-7. **Ask first** before changing a DECIDED rule, a status list, the colour palette, or anything in the D1–D30 table. Never invent
+7. **Ask first** before changing a DECIDED rule, a status list, the colour palette, or anything in the D1–D36 table. Never invent
    content: seed with the design sample content and mark it as sample data.
 8. **Flaky CI specs seen so far** (re-run the failed job; harden if it is your spec): admin-foundation login redirect, admin-users
    "invite … withdraw" (mobile), admin application form builder, privacy editor clean-up, occasional Google Fonts download failure in
