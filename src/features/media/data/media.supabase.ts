@@ -5,6 +5,7 @@ import type { DbClient } from '@/shared/data/supabase/clients';
 import type { Tables } from '@/shared/data/supabase/database.types';
 import { DataError, unwrap, unwrapMaybe } from '@/shared/data/supabase/errors';
 import { isUuid } from '@/shared/data/supabase/ids';
+import { mediaSource } from '@/shared/data/supabase/media-source';
 
 import { kindOf } from '../domain/upload-rules';
 import type { MediaCounts, MediaItem, MediaListQuery } from '../types';
@@ -27,11 +28,7 @@ const safeName = (fileName: string) => fileName.replace(/[^A-Za-z0-9._-]+/g, '-'
  * signed Storage URL the browser PUTs to; `confirmUpload` marks it ready with its alt text.
  */
 export function createSupabaseMediaRepository(client: DbClient): MediaRepository {
-  const srcOf = (row: Row): string | null => {
-    if (row.public_path) return row.public_path;
-    if (!row.bucket || !row.path) return null;
-    return client.storage.from(row.bucket).getPublicUrl(row.path).data.publicUrl;
-  };
+  const srcOf = (row: Row): string | null => mediaSource(client, row);
 
   async function toItems(rows: Row[]): Promise<MediaItem[]> {
     const ids = [...new Set(rows.map((row) => row.uploaded_by).filter((id): id is string => !!id))];

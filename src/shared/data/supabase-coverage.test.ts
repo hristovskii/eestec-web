@@ -25,7 +25,6 @@ const PENDING = [
   'notes',
   'partners',
   'partner-inquiries',
-  'settings',
 ];
 
 function registrations() {

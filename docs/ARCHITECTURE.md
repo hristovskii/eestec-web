@@ -1346,6 +1346,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - `remove` refuses a file the site still uses (`media_usage`, D36) with a `DataError('in_use')`; the admin action turns it into `{ok: false, error: 'conflict', message: 'in_use'}`, then deletes the row and the Storage object.
 - The media contract suite now takes the people it acts as (uploader, another uploader, a stranger) and an async `deliver` that receives the signed URL; the update/delete test works on its own upload instead of a seeded file that may be in use.
 
+**Notes from building (M20c, settings)**
+
+- Settings span four tables; `readRecord` assembles them (`site_settings` keys, `board_roles`, `social_links`, `seo_pages` with the share image rebuilt from its media row). The pure resolution (`toSiteSettings`, `toResolvedSeo`, `toPrivacyPolicy` in `domain/resolve.ts`) is shared with the mock. `settingsRepository` now has a scope: public reads for the chrome, `session` for the Settings page, the privacy editor and the notification toggles.
+- `save` is one call, `save_site_settings` (migration `0016`): super admin with 2-step only, all four tables in one transaction; board roles keep their ids (a role that still has seats cannot be removed, the foreign key refuses), social links are replaced, SEO pages are upserted. The privacy text is the one key an editor may write (`savePrivacy`).
+- Notification recipients are readable by a super admin only; any other caller gets "nobody enabled", which only the Settings page and the mailer ever read. The page SEO share image is rebuilt from `seo_pages.share_media_id` and `share_alt`; `ImageAsset`s of Branding stay whole inside their jsonb value.
+- Migration `0016` also lets everyone read media rows without a bucket (files shipped in `/public` and sample placeholders): without it a visitor could not read the row behind an image that points at one.
+- The settings contract suite now restores what it saves (it shares the database with the other suites and with re-runs).
+
 ## Verification
 
 **Per milestone:**

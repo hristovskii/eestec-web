@@ -24,7 +24,7 @@ export async function savePrivacy(input: unknown): Promise<ActionResult<PrivacyR
 
   const { title, body, isPlaceholder } = parsed.data;
   const saved = await (
-    await settingsRepository()
+    await settingsRepository('session')
   ).savePrivacy({
     title,
     isPlaceholder,

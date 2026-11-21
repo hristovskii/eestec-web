@@ -24,7 +24,7 @@ export async function setNotificationEnabled(input: unknown): Promise<ActionResu
   if (!parsed.success) return { ok: false, error: 'unexpected' };
   const { kind, enabled } = parsed.data;
 
-  const repo = await settingsRepository();
+  const repo = await settingsRepository('session');
   const { privacy: _privacy, ...record } = await repo.getRecord();
   if (record.notifications[kind].enabled === enabled) return ok({ enabled });
   await repo.save({

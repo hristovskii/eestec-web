@@ -30,7 +30,7 @@ export async function saveSettings(input: unknown): Promise<ActionResult<Setting
   if (!parsed.success)
     return { ok: false, error: 'validation', fieldErrors: fieldErrorsFrom(parsed.error.issues) };
 
-  const repo = await settingsRepository();
+  const repo = await settingsRepository('session');
   const sections = changedSections(await repo.getRecord(), parsed.data);
   const saved = await repo.save(parsed.data);
   if (sections.length > 0) {

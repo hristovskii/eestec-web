@@ -2674,6 +2674,7 @@ export type Database = {
       resolve_event_address: { Args: { p_slug: string }; Returns: Json };
       save_application_form: { Args: { p_event: string; p_fields: Json; p_intro: Json }; Returns: undefined };
       save_contact_page: { Args: { p_content: Json; p_subjects: Json }; Returns: undefined };
+      save_site_settings: { Args: { p_data: Json }; Returns: undefined };
       set_application_status: {
         Args: {
           p_event: string;
