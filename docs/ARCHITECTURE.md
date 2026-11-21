@@ -1331,6 +1331,14 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - `pnpm db:start` and the CI `supabase` job now start PostgREST (supabase-js needs it); the CI job runs `pnpm test:supabase` after the lint.
 - `src/shared/data/supabase-coverage.test.ts` is the visible checklist: it lists the repositories without a Supabase implementation and fails in both directions, so `PENDING` only shrinks as each PR lands.
 
+**Notes from building (M20b, simple content repositories)**
+
+- Supabase repositories for Home, Journey, Join Us (one `page_content` row each, staff write, everyone reads), the Contact page and Committees. Their contract suites (`*.supabase.test.ts`) run the same `describeXRepository` as the mocks.
+- `supabase: withClient(createSupabaseXRepository)` is the registration pattern: `withClient` builds the client for the requested scope and passes it, with the scope, to the factory. Page content goes through `readPageContent` / `writePageContent`; `toJson` types a domain object for a `jsonb` column; `isUuid` makes a mock-style id "not found" instead of a database error.
+- Contact: where a subject's messages go (`contact_subject_routes`) is readable only by staff and the service role, so on the **public** scope `routeEmail` is `''` (the public page never shows it). The admin editor reads it with the session scope and `submit-message` with the **service** scope; `save` is the single `save_contact_page` call. New subjects get their database id from the save.
+- Committees: the map has about sixty rows, so the admin list filters in memory with one shared pure function (`domain/admin-list.ts`, now also used by the mock). The home flag moves only through `set_home_committee`, import is the `import_committees` call, and a duplicate name and country is a `23505` turned into `{status: 'duplicate'}`.
+- Contract suites commit rows (committees are not cleaned up); run `pnpm db:reset` before `pnpm test:supabase` for a clean slate.
+
 ## Verification
 
 **Per milestone:**

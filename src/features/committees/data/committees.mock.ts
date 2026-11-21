@@ -1,10 +1,9 @@
 import 'server-only';
 
 import { mockTable } from '@/shared/data/mock/store';
-import { paginate } from '@/shared/data/paged';
-import { countryName } from '@/shared/i18n/country';
 
-import type { Committee, CommitteeCounts } from '../types';
+import { adminCommitteeList, committeeByName } from '../domain/admin-list';
+import type { Committee } from '../types';
 import type { CommitteesRepository } from './committees.repository';
 import { committeesFixture } from './fixtures/committees';
 
@@ -13,7 +12,6 @@ const tables = () =>
 
 const key = (committee: Pick<Committee, 'name' | 'country'>) =>
   `${committee.name.trim().toLowerCase()}|${committee.country}`;
-const byName = (a: Committee, b: Committee) => a.name.localeCompare(b.name, 'en');
 const newId = () => `cm-${crypto.randomUUID().slice(0, 8)}`;
 
 export function createMockCommitteesRepository(): CommitteesRepository {
@@ -26,45 +24,11 @@ export function createMockCommitteesRepository(): CommitteesRepository {
 
   return {
     list() {
-      return Promise.resolve(structuredClone([...db.committees].sort(byName)));
+      return Promise.resolve(structuredClone([...db.committees].sort(committeeByName)));
     },
 
     adminList(query) {
-      const needle = query.q?.trim().toLowerCase();
-      const matching = db.committees.filter(
-        (committee) =>
-          (!query.country || committee.country === query.country) &&
-          (!needle ||
-            committee.name.toLowerCase().includes(needle) ||
-            committee.city.mk.toLowerCase().includes(needle) ||
-            !!committee.city.en?.toLowerCase().includes(needle) ||
-            countryName(committee.country, 'en').toLowerCase().includes(needle)),
-      );
-      const counts: CommitteeCounts = { all: matching.length, lc: 0, observer: 0, jlc: 0 };
-      for (const committee of matching) counts[committee.status] += 1;
-      const rows = matching.filter((committee) => !query.status || committee.status === query.status);
-      const sorted = [...rows].sort((a, b) => {
-        switch (query.sort) {
-          case 'name':
-            return byName(a, b);
-          case '-name':
-            return byName(b, a);
-          case 'country':
-            return countryName(a.country, 'en').localeCompare(countryName(b.country, 'en')) || byName(a, b);
-          case '-country':
-            return countryName(b.country, 'en').localeCompare(countryName(a.country, 'en')) || byName(a, b);
-          case 'status':
-            return a.status.localeCompare(b.status) || byName(a, b);
-        }
-      });
-      const countries = [...new Set(db.committees.map((committee) => committee.country))].sort((a, b) =>
-        countryName(a, 'en').localeCompare(countryName(b, 'en')),
-      );
-      return Promise.resolve({
-        ...paginate(structuredClone(sorted), query.page, query.pageSize),
-        counts,
-        countries,
-      });
+      return Promise.resolve(adminCommitteeList(db.committees, query));
     },
 
     get(id) {
