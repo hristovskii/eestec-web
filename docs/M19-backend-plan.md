@@ -1,6 +1,6 @@
 # M19: Supabase schema, the plan and the research behind it
 
-Approved by the owner 2026-11-09. **M19a and M19b are built.** The owner requested M19c and M19d as one combined PR after reviewing M19b. This file is the working plan; update it when
+Approved by the owner 2026-11-09. **M19a, M19b, M19c and M19d are built** (M19c and M19d as one combined PR, which also carries `0014`, fixes to the M19b schema found in the 2026-11-21 review). What was built and where it differs from this plan is in `docs/ARCHITECTURE.md` "Notes from building". This file is the working plan; update it when
 something changes, and put what you learn in `docs/ARCHITECTURE.md` "Notes from building (M19x)". SQL conventions: `supabase/AGENTS.md`.
 
 ## 1. Goal and boundaries
@@ -190,6 +190,15 @@ locale, status, owner_id, memory_id, consent_at)`, `feedback_photos` (private bu
 11. **Storage cannot be deleted from SQL**: CV opt-out, account deletion, memory delete/unpublish/revision approval enqueue paths in
     `storage_cleanup_queue`; M22 empties it. A failed Storage copy before a DB transaction leaves orphans for the GC job.
 12. **Open owner question:** sign-in of inactive, hidden and rejected members is deferred to M21. The other M19 assumptions were confirmed (see `docs/HANDOFF.md` §5).
+
+## 5b. As built: differences from sections 3 and 4
+
+- `retire_memories` and `delete_member_data` became `begin_member_deletion`, `mark_deletion_file_done`, `finish_member_deletion` (tables `account_deletion_jobs`, `account_deletion_files`): Storage and Auth cannot be changed from SQL, so deletion is durable and in steps.
+- `feedback_photos` became `submission_files` (idea attachment and feedback photos in one private table). `submission_log` has no `form` column and `rate_limit_hit(device_hash)` takes one hash: the limit is shared by both tabs (D28).
+- `event_ratings(from, until, event_ids)` gets the academic-year window from the caller (the app owns the rule) and returns the latest comment and an `other_key` for free-text events.
+- The search index on Memories is two trigram indexes (title, city); plain-body search is not indexed.
+- Added: `0014` (activity for managers, membership duplicate result, application files with the application, reference prefix, column grants on `events`, slug helpers, committee import, `media_usage`), `can_read_memory_photo` / `can_read_avatar`, `memory_discard`, `memory_admin_remove`, `memory_set_featured`, `purge_sample_data` protection triggers, `is_sample` flipping on board edits.
+- Deferred to M20 with their repositories: see ARCHITECTURE D36.
 
 ## 6. Verification for every sub-PR
 

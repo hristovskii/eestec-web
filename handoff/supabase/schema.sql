@@ -1,3 +1,4 @@
+-- SUPERSEDED (M19): the pre-M1 draft, kept as history. The migrations in supabase/migrations are the source of truth.
 -- eestec.mk · DRAFT Supabase schema
 -- Derived from the design canvas and specs 00–11. A starting point, not a final migration:
 -- review names, add indexes as needed, and write full RLS policies per table.

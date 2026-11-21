@@ -52,7 +52,7 @@ Also read before building: `docs/sample-data.md` (every kind of sample content a
 
 - `src/app/`: thin routes only. `src/features/<name>/`: one domain each (components, data, actions, schemas, types). `src/shared/`: design system, layout, lib, config, i18n.
 - Features expose `index.ts` (client-safe), `server.ts` (server-only), `admin.ts` (admin UI); no deep imports between features; `shared` never imports features.
-- Commands: `pnpm dev`, `pnpm check` (typecheck, lint, format, unit, i18n keys), `pnpm build` (must pass with no env vars), `pnpm e2e`.
+- Commands: `pnpm dev`, `pnpm check` (typecheck, lint, format, unit, i18n keys), `pnpm build` (must pass with no env vars), `pnpm e2e`; database (Docker): `pnpm db:start | db:reset | db:test | db:lint | db:types | db:stop`.
 
 ## Working style
 
@@ -81,3 +81,4 @@ Also read before building: `docs/sample-data.md` (every kind of sample content a
 - The axe helper waits for finite transitions; a form's focus moves in a `useEffect`, never in `requestAnimationFrame` (validation that awaits a lazy chunk renders later than the frame).
 - Entries: `index.ts` is imported by other features (and, through them, by the proxy): keep UI out of it. A feature's public screens for routes and the lab go in `public.ts`.
 - CI runs e2e in four shards (`pnpm e2e --shard=n/4`, one runner each, `fullyParallel`): a test must not depend on another test's data or order, and a spec that changes content restores it. Run one shard locally the same way to reproduce a CI failure.
+- Database tests: public roles have **column grants** on `events` and `memories` (no `select *` as `anon`/`authenticated`; the editor id is read through `event_updated_by()`), and every pgTAP file starts with `\ir ../helpers/isolate.inc` so the seeded rows do not disturb its fixtures. `supabase/seed.sql` is generated: `UPDATE_SEED=1 pnpm exec vitest run scripts/generate-seed.test.ts`; `pnpm db:types` regenerates the types (CI compares).
