@@ -112,25 +112,48 @@ from building (M19a, M19b, M19 review fixes / M19c / M19d)". What the sub-PRs co
   "required only when selected" env rule, the unit test that lists repositories without a Supabase implementation, docs.
 - **`0014` (review fixes to M19b)**: see ARCHITECTURE D34-D36 and the M19 notes.
 
-### M20 repositories
+### M20 repositories (in progress)
 
-One `*.supabase.ts` per feature behind the existing interface (`src/features/*/data/*.repository.ts`), registered in each feature's
-`data/index.ts` through `selectImplementation`. The existing contract suites (`*.repository.contract.ts`, 20 of 21 repositories;
-`auth.repository.ts` has none yet) must run against both mock and local Supabase. Needs the Supabase clients
-(`src/shared/data/supabase/`: anon cookie-less for scope `'public'`, cookie client for `'session'`), `proxy.ts` session refresh with
-`getClaims()`, and a CI step that exports `API_URL`/`ANON_KEY`/`SERVICE_ROLE_KEY` from `supabase status -o env`.
-Open items that land here: the **5 MB CV through a Server Action** (application form and member CV) exceeds Vercel's ~4.5 MB body
-limit: move CVs to the two-step signed upload (like the Media library) or lower the limit; every anonymous submit goes through
-its RPC, never an anon insert policy; `applications` repository is hard-wired to scope `'public'` today and mixes anonymous, member
-and admin calls: split by scope; `settings` repository has no scope and serves private recipients through the public read.
-Also decided for M20 (ARCHITECTURE D32 and D33 confirmed, D36 not yet): a server-only `service` scope for the submit RPCs
-(no scope reaches them today); remove the mock's manager access to feedback photos; `SubmitResult` needs `'closed'`; contact and
-settings repositories split a public read from an edit read (`routeEmail`, recipients); `MembershipApplication`/`PartnerInquiry`
-`email`, `ContactMessage.subjectId` and `InternalNote.authorId` are nullable in SQL (retention, deleted accounts); aggregate reads,
-the Skopje-year filter with an `mk` title sort, the partners-page save RPC, an atomic settings save and the private-photo delivery
-route (SQL helpers `can_read_memory_photo`/`can_read_avatar` exist) are designed with their repositories; deleting an event with
-applications cascades today (decide: restrict or confirm); `memory_admin_save` with a revision flag and no revision returns false
-(the mock writes the live content: align the mock).
+One `*.supabase.ts` per feature behind the existing interface, registered through `supabase: withClient(createSupabaseXRepository)`
+(the factory receives a `DbClient` and the scope). **Done:** the clients, session refresh, contract harness and rate limiter (M20a, #63);
+home, journey, join, contact page, committees (M20b, #64); media, settings, partners (M20c, #65). The visible checklist is
+`src/shared/data/supabase-coverage.test.ts` (`PENDING` lists what is missing and only shrinks). How to work: write the factory, a
+`*.supabase.test.ts` that calls the existing `describeXRepository` (adapt the contract where it hard-codes fixture ids or leaves state
+behind: take the people as a parameter, restore what a test saves), register it, remove the entry from `PENDING`, `pnpm db:reset &&
+pnpm test:supabase`. Rules that held so far: take `now` from the argument, never SQL `now()`, for domain rules; list columns
+(public roles have column grants on `events` and `memories`); `isUuid` turns a mock-style id into "not found"; a failing database
+call is a `DataError` (`conflict`, `in_use`, `forbidden`, `invalid`, `not_found`) that the repository turns into the result type the
+interface already has; actions catch `in_use` and answer `conflict`. The suites commit rows, so run `pnpm db:reset` first.
+
+**Left, in this order (each a small PR from an up-to-date `main`, new migrations continue at `0018`):**
+
+1. **M20d events** (public, admin, taxonomy; the largest): `listArchive`/`archiveFacets` (Skopje year, `mk` title sort), `adminList`
+   counts and facets, taxonomy usage counts need SQL (D36); `findBySlug` joins topics, gallery media, partners (`event_by_slug` returns
+   ids only); `save` = `event_save` (`slug_taken`/`not_found` from error codes), `setStatus` = `set_event_status`, `remove` =
+   `remove_events` (decide: restrict while applications exist, owner-confirmed 2026-11-21), `slugTaken` = `slug_taken`,
+   `resolveAddress` = `resolve_event_address`, who edited last = `event_updated_by`. The contract suite hard-codes fixture ids and
+   counts (map with `seedId` from `scripts/generate-seed.ts`, or look up by slug).
+2. **M20e applications**: split the repository by scope (public form/availability, member `listByEmail`/`withdraw`, admin list/status);
+   `submit` through the **service** scope (`submit_application` takes `p_files`; CV and application file limit lowered to about 4 MB, D37);
+   add `'closed'` to `SubmitResult`; drop `deleteByEmail` (account deletion replaces it); needs `application_list`,
+   `application_summaries`, `application_answer_counts` (SQL).
+3. **M20f inboxes**: messages, membership, inquiries (service-scope submits; make `submit_*` return the stored row as jsonb, nullable
+   `email`/`subjectId`), notes (`add_internal_note`, counts RPC, nullable `authorId`), activity (keep the triggers, make them skip no-op
+   and read-only updates; explicit `record_activity` for publish/export/bulk; actors RPC), dashboard (`dashboard_counts` plus a
+   `dashboard_pending` list).
+4. **M20g members** (32 methods): `board_view`, `author_cards`, `profile_restricted`, `admin_save_member`, `reorder_*`, own profile with
+   column-granted updates, `username_taken` and list counts (SQL), avatars and CV (4 MB) through Storage with the private delivery route
+   using `can_read_avatar`; `deleteMine` is the durable deletion flow (service scope).
+5. **M20h memories and ideas**: memories (30 methods; the RPCs exist, facets and admin counts need SQL, private photo route using
+   `can_read_memory_photo`, align the mock for `memory_admin_save` with a revision flag and none), idea form (`save_idea_form` atomic),
+   submissions (`submit_idea`/`submit_impression` on the service scope, `accept_idea` replaces `linkEventDraft`, counts RPCs,
+   `event_feedback_for_manager` without sender or photos, D33).
+6. **M20i auth subset and account deletion**: `getSession`, registrations (`decide_member_registrations`; the e-mail and confirmation
+   live in `auth.users`: new listing RPC), account details, admin updates; sign-in, reset, MFA and invites stay `NotImplementedError`
+   for M21; an `AccountDeletion` port over `begin_member_deletion` / `mark_deletion_file_done` / `finish_member_deletion` replaces
+   `applications.deleteByEmail`, `memories.retire`, `members.deleteMine`, `auth.deleteAccount`.
+
+At the end of M20: stop, report what exists and how to check it, and wait for "go" (M21). e2e stays on mock throughout.
 
 ### M21 auth
 
