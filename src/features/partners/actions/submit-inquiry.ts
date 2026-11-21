@@ -44,7 +44,7 @@ export async function submitInquiry(data: FormData): Promise<ActionResult<Inquir
 
   const { company, person, email, phone, interests, message } = parsed.data;
   const inquiry = await (
-    await inquiriesRepository()
+    await inquiriesRepository('service')
   ).submit({ company, contactPerson: person, email, phone, interests, message, locale }, now());
 
   return ok({

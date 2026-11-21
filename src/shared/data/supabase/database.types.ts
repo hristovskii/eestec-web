@@ -2511,6 +2511,14 @@ export type Database = {
     Functions: {
       accept_idea: { Args: { p_event_data: Json; p_id: string }; Returns: string };
       account_deletion_pending: { Args: { p_user: string }; Returns: boolean };
+      activity_actors: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          initials: string;
+          name: string;
+          user_id: string;
+        }[];
+      };
       activity_initials: { Args: { p_name: string }; Returns: string };
       add_internal_note: {
         Args: { p_body: string; p_entity_id: string; p_entity_type: string };
@@ -2565,6 +2573,7 @@ export type Database = {
       };
       dashboard_counts: { Args: Record<PropertyKey, never>; Returns: Json };
       dashboard_counts_m19b: { Args: Record<PropertyKey, never>; Returns: Json };
+      dashboard_pending: { Args: Record<PropertyKey, never>; Returns: Json };
       decide_member_registrations: {
         Args: { p_decision: string; p_ids: string[]; p_reason?: string };
         Returns: Json;
@@ -2612,6 +2621,7 @@ export type Database = {
       };
       finish_member_deletion: { Args: { p_user: string }; Returns: boolean };
       import_committees: { Args: { p_items: Json }; Returns: Json };
+      internal_note_counts: { Args: { p_entity_type: string }; Returns: Json };
       is_active_member: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_event_manager_of: { Args: { p_event: string }; Returns: boolean };
       is_localized: { Args: { value: Json }; Returns: boolean };
@@ -2738,9 +2748,10 @@ export type Database = {
           p_locale: string;
           p_message: string;
           p_name: string;
+          p_now?: string;
           p_subject: string;
         };
-        Returns: string;
+        Returns: Json;
       };
       submit_idea: {
         Args: {
@@ -2784,6 +2795,7 @@ export type Database = {
           p_interests: string[];
           p_locale: string;
           p_name: string;
+          p_now?: string;
           p_phone: string;
           p_study_program: string;
           p_year: string;
@@ -2799,9 +2811,10 @@ export type Database = {
           p_locale: string;
           p_message: string;
           p_name: string;
+          p_now?: string;
           p_phone: string;
         };
-        Returns: string;
+        Returns: Json;
       };
       update_submission: {
         Args: {

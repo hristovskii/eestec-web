@@ -62,7 +62,7 @@ export async function submitMembership(data: FormData): Promise<ActionResult<Mem
   const { name, email, phone, faculty, program, year, interests, heardFrom } = parsed.data;
   const at = now();
   const result = await (
-    await membershipRepository()
+    await membershipRepository('service')
   ).submit(
     {
       name,

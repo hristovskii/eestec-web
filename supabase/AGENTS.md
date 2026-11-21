@@ -48,6 +48,10 @@ public.touch_updated_at()`.
 10. Foreign keys: choose `on delete` on purpose (cascade, set null or restrict) and index the referencing column. Dates and years that
     the site shows are Europe/Skopje (`at time zone 'Europe/Skopje'`).
 11. Enums for fixed status lists that are DECIDED; never invent a status. Ask the owner before changing one.
+12. Submit RPCs (service role only) return the stored row as jsonb and take the app's clock as `p_now timestamptz default null`
+    (consent time, creation time and the year of the reference), as the repositories take `now` from the caller. Audit triggers
+    (`audit_row_change`) skip an update that changes nothing; pass columns that do not count as a change (for example `'read_at'`)
+    as the third trigger argument.
 
 ## Tests (pgTAP)
 

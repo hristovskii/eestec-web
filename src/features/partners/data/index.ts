@@ -5,6 +5,7 @@ import { withClient } from '@/shared/data/supabase/clients';
 
 import { createMockInquiriesRepository } from './inquiries.mock';
 import type { InquiriesRepository } from './inquiries.repository';
+import { createSupabaseInquiriesRepository } from './inquiries.supabase';
 import { createMockPartnersRepository } from './partners.mock';
 import { createSupabasePartnersRepository } from './partners.supabase';
 import type { PartnersRepository } from './partners.repository';
@@ -17,10 +18,13 @@ export const partnersRepository = (scope: RepoScope = 'public') =>
     scope,
   );
 
-/** Inquiries come from anonymous visitors (the form) and are read by the board; actions check who may do what. */
-export const inquiriesRepository = (scope: RepoScope = 'public') =>
+/**
+ * The form stores an inquiry with the service scope (after the spam, validation and consent checks, D32); the board
+ * reads and changes inquiries with the session scope. Actions check who may do what.
+ */
+export const inquiriesRepository = (scope: RepoScope = 'session') =>
   selectImplementation<InquiriesRepository>(
     'partner-inquiries',
-    { mock: createMockInquiriesRepository },
+    { mock: createMockInquiriesRepository, supabase: withClient(createSupabaseInquiriesRepository) },
     scope,
   );

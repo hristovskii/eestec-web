@@ -30,10 +30,10 @@ export function inboxTime(iso: string, now: Date): string {
 }
 
 /** Every word of the search appears in at least one of the texts (any letter case). */
-export function matchesQuery(query: string | undefined, ...texts: (string | undefined)[]): boolean {
+export function matchesQuery(query: string | undefined, ...texts: (string | null | undefined)[]): boolean {
   const words = (query ?? '').toLowerCase().split(/\s+/).filter(Boolean);
   if (words.length === 0) return true;
-  const haystack = texts.join(' ').toLowerCase();
+  const haystack = texts.filter(Boolean).join(' ').toLowerCase();
   return words.every((word) => haystack.includes(word));
 }
 

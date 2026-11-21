@@ -182,12 +182,14 @@ function InquiryDetail({
       }
       actions={
         <>
-          <Button asChild>
-            <a href={reply}>
-              <Reply aria-hidden />
-              {labels.reply}
-            </a>
-          </Button>
+          {inquiry.email && (
+            <Button asChild>
+              <a href={reply}>
+                <Reply aria-hidden />
+                {labels.reply}
+              </a>
+            </Button>
+          )}
           {canEdit && inquiry.status === 'new' && (
             <StatusButton
               id={inquiry.id}

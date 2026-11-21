@@ -6,7 +6,7 @@ import type { MessagesRepository } from './messages.repository';
 // Runs against every implementation (mock now, Supabase in M20). Each test puts the data back or
 // adds a message of its own (messages are never deleted).
 
-const input: ContactMessageInput = {
+const defaultInput: ContactMessageInput = {
   name: 'Marija Stojanovska',
   email: 'marija@example.org',
   subjectId: 'subject-membership',
@@ -20,10 +20,13 @@ const NOW = new Date('2026-10-04T17:12:00.000Z');
 export function describeMessagesRepository(
   name: string,
   createRepo: () => MessagesRepository | Promise<MessagesRepository>,
+  /** A database needs a subject that exists (its wording and where it routes to): the implementation supplies it. */
+  getInput: () => ContactMessageInput | Promise<ContactMessageInput> = () => defaultInput,
 ) {
   describe(`MessagesRepository (${name})`, () => {
     it('stores a message as new and unread, with consent recorded and a reference', async () => {
       const repo = await createRepo();
+      const input = await getInput();
       const stored = await repo.submit(input, NOW);
       expect(stored).toMatchObject({ ...input, status: 'new', readAt: null, consentAt: NOW.toISOString() });
       expect(stored.reference).toMatch(/^MSG-2026-\d{4}$/);
@@ -32,6 +35,7 @@ export function describeMessagesRepository(
 
     it('gives every message of the year its own, rising reference', async () => {
       const repo = await createRepo();
+      const input = await getInput();
       const first = await repo.submit(input, NOW);
       const second = await repo.submit(input, NOW);
       expect(Number(second.reference.slice(-4))).toBe(Number(first.reference.slice(-4)) + 1);
@@ -50,6 +54,7 @@ export function describeMessagesRepository(
 
     it('changes the status and the read mark of one message', async () => {
       const repo = await createRepo();
+      const input = await getInput();
       const stored = await repo.submit(input, NOW);
       expect((await repo.updateStatus(stored.id, 'answered'))?.status).toBe('answered');
       expect((await repo.setRead(stored.id, NOW))?.readAt).toBe(NOW.toISOString());
@@ -61,7 +66,7 @@ export function describeMessagesRepository(
 
     it('marks every unread message read and says how many', async () => {
       const repo = await createRepo();
-      await repo.submit(input, NOW);
+      await repo.submit(await getInput(), NOW);
       const unread = (await repo.list()).filter((message) => message.readAt === null).length;
       expect(unread).toBeGreaterThan(0);
       expect(await repo.markAllRead(NOW)).toBe(unread);

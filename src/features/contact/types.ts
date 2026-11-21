@@ -84,9 +84,10 @@ export type ContactMessage = {
   /** "MSG-2026-0231", shown to the sender and in the Inbox. */
   reference: string;
   name: string;
-  email: string;
-  /** The subject the person chose, and its wording in the language of the page they used. */
-  subjectId: string;
+  /** null: the address was erased (the sender asked to be forgotten); there is nobody to reply to. */
+  email: string | null;
+  /** The subject the person chose, and its wording in the language of the page they used. null: the subject was deleted since. */
+  subjectId: string | null;
   subject: string;
   /** The address the subject routed it to when it was sent. */
   routedTo: string;
@@ -101,5 +102,8 @@ export type ContactMessage = {
 
 export type ContactMessageInput = Pick<
   ContactMessage,
-  'name' | 'email' | 'subjectId' | 'subject' | 'routedTo' | 'message' | 'locale'
->;
+  'name' | 'subject' | 'routedTo' | 'message' | 'locale'
+> & {
+  email: string;
+  subjectId: string;
+};

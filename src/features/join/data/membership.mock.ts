@@ -19,7 +19,10 @@ export function createMockMembershipRepository(): MembershipRepository {
   return {
     submit(input, now) {
       const open = db.applications.some(
-        (application) => sameEmail(application.email, input.email) && application.status !== 'rejected',
+        (application) =>
+          !!application.email &&
+          sameEmail(application.email, input.email) &&
+          application.status !== 'rejected',
       );
       if (open) return Promise.resolve({ status: 'duplicate' });
       const application: MembershipApplication = {

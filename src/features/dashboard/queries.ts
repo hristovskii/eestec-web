@@ -13,16 +13,8 @@ import { countNewInquiries } from '@/features/partners/server';
 import { isEnabled } from '@/shared/config/flags';
 
 import { dashboardRepository } from './data';
+import { YEAR_LABEL } from './domain/pending-members';
 import type { AdminBadgeCounts, DashboardData, OpenEventApplications, PendingApproval } from './types';
-
-const YEAR = {
-  '1': '1st year',
-  '2': '2nd year',
-  '3': '3rd year',
-  '4': '4th year',
-  master: 'Master’s',
-  phd: 'PhD',
-} as const;
 
 /** Dashboard for this admin: event managers see their own events only (D18). Dynamic (session). */
 export async function getDashboard(actor: Actor): Promise<DashboardData> {
@@ -43,7 +35,7 @@ export async function getDashboard(actor: Actor): Promise<DashboardData> {
     id: registration.userId,
     type: 'member',
     title: registration.name,
-    meta: `${registration.faculty}, ${YEAR[registration.year]}`,
+    meta: `${registration.faculty}, ${YEAR_LABEL[registration.year]}`,
     submittedAt: registration.confirmedAt ?? registration.submittedAt,
   }));
   // Memories waiting for the board (and changes to published ones) are the real queue, oldest first.

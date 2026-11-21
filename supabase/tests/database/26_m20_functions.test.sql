@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(35);
+select plan(64);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -112,5 +112,67 @@ select is((select count(*)::integer from public.application_summaries(array['a60
 reset role; set local role service_role;
 select is(public.delete_applications_by_email(' y@test.MK'),1,'deletion by e-mail ignores case and spaces');
 select is((select waitlist_position from public.applications where reference = 'APP-0003'),1,'and closes the gap in the waitlist');
+-- M20f: inboxes, notes, activity, dashboard
+reset role;
+insert into public.contact_subjects(id,name,team_label,route_note,shortcut_label) values
+ ('a7000000-0000-0000-0000-000000000001','{"mk":"Тема","en":"Topic"}','{"mk":"T"}','{"mk":""}','{"mk":""}');
+insert into public.contact_subject_routes(subject_id,route_email) values ('a7000000-0000-0000-0000-000000000001','route@test.mk');
+insert into public.page_content(page,content) values ('join','{"apply":{"open":true}}') on conflict (page) do update set content = excluded.content;
+set local role service_role;
+select is(public.submit_contact_message('Sender','s@test.mk','a7000000-0000-0000-0000-000000000001','Hello','en',true,'2027-01-02 12:00+01')->>'reference','MSG-2027-0001','a message takes its reference year from the app clock');
+select is(public.submit_contact_message('Sender','s@test.mk','a7000000-0000-0000-0000-000000000001','Hello','mk',true,'2027-01-02 12:00+01')->>'subject','Тема','the subject is worded in the language of the page');
+select is((public.submit_partner_inquiry('P','p@test.mk','Co','',array['other'],'Hi','en',true,'2027-01-02 12:00+01')->>'consent_at')::timestamptz,'2027-01-02 12:00+01'::timestamptz,'consent is recorded at the app clock');
+select is(public.submit_membership('M','m@test.mk','','F','','',array[]::text[],'','en',true,'2027-01-02 12:00+01')#>>'{application,status}','new','a membership submission returns the stored application');
+select is(public.submit_membership('M','M@test.mk','','F','','',array[]::text[],'','en',true,'2027-01-02 12:00+01')->>'status','duplicate','and a duplicate is still a result');
+reset role;
+insert into public.contact_messages(id,reference,name,email,subject,routed_to,message,locale) values
+ ('a7000000-0000-0000-0000-000000000009','T-AUDIT','N','n@test.mk','S','r@test.mk','M','en');
+update public.contact_messages set status = 'new' where reference = 'T-AUDIT';
+select is((select count(*)::integer from public.activity_log where target = 'T-AUDIT'),0,'a status set to the value it had is not logged');
+update public.contact_messages set read_at = now() where reference = 'T-AUDIT';
+select is((select count(*)::integer from public.activity_log where target = 'T-AUDIT'),0,'marking an item read is not logged');
+update public.contact_messages set status = 'answered' where reference = 'T-AUDIT';
+select is((select count(*)::integer from public.activity_log where target = 'T-AUDIT' and action = 'updated' and area = 'inbox'),1,'a real change is logged');
+
+update public.events set status = 'published' where id = 'a6000000-0000-0000-0000-000000000003';
+select is((select count(*)::integer from public.activity_log where target = 'H' and action = 'updated'),0,'an event going live is not logged as a plain update (the app logs "published")');
+update public.events set status = 'hidden' where id = 'a6000000-0000-0000-0000-000000000003';
+select is((select count(*)::integer from public.activity_log where target = 'H' and action = 'updated'),1,'but another change of the event is');
+
+select pg_temp.visitor();
+select throws_ok($$select public.mark_all_inbox_read('contact_message', now())$$,'42501',null,'visitors cannot mark messages read');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000002');
+select throws_ok($$select public.mark_all_inbox_read('contact_message', now())$$,'42501',null,'managers cannot mark messages read');
+select is((public.dashboard_pending()->>'count')::integer,0,'a manager has no approvals');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000003');
+select throws_ok($$select public.dashboard_pending()$$,'42501',null,'a plain member cannot read the dashboard');
+select is(public.internal_note_counts('contact_message'),'{}'::jsonb,'a plain member counts no notes (row-level security)');
+select is((select count(*)::integer from public.activity_actors()),0,'and sees no one in the activity log');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is(public.mark_all_inbox_read('contact_message', '2027-01-03 10:00+01'),2,'both unread messages are marked read (the audit row was read already)');
+select is(public.mark_all_inbox_read('contact_message', '2027-01-03 10:00+01'),0,'and nothing the second time');
+select throws_ok($$select public.mark_all_inbox_read('idea', now())$$,'22023',null,'an unknown inbox is refused');
+select lives_ok($$select public.add_internal_note('contact_message','a7000000-0000-0000-0000-000000000009','one')$$,'staff add a note');
+select lives_ok($$select public.add_internal_note('contact_message','a7000000-0000-0000-0000-000000000009','two')$$,'and another');
+select is(public.internal_note_counts('contact_message'),'{"a7000000-0000-0000-0000-000000000009": 2}'::jsonb,'notes are counted per item');
+select is(public.internal_note_counts('partner_inquiry'),'{}'::jsonb,'per kind');
+reset role;
+insert into public.activity_log(actor,actor_name,actor_initials,action,area,target,created_at) values
+ ('a1000000-0000-0000-0000-000000000001','Old Name','OE','created','pages','x','2026-01-01'),
+ ('a1000000-0000-0000-0000-000000000004','Sue Super','SS','created','pages','y','2026-01-02');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is((select count(*)::integer from public.activity_actors() where user_id in ('a1000000-0000-0000-0000-000000000001','a1000000-0000-0000-0000-000000000004')),2,'each person appears once');
+select is((select name from public.activity_actors() where user_id = 'a1000000-0000-0000-0000-000000000001'),'Edi Editor','under the name of their latest entry');
+select is((public.dashboard_pending()->>'count')::integer,0,'no member is waiting yet');
+reset role;
+insert into auth.users(id,aud,role,email,email_confirmed_at) values ('a8000000-0000-0000-0000-000000000001','authenticated','authenticated','wait@test.mk','2027-01-02 09:00+01');
+insert into auth.users(id,aud,role,email) values ('a8000000-0000-0000-0000-000000000002','authenticated','authenticated','unconfirmed@test.mk');
+insert into public.profiles(id,username,full_name,status) values
+ ('a8000000-0000-0000-0000-000000000001','wait','Wait Member','pending'),('a8000000-0000-0000-0000-000000000002','unconf','Unconfirmed Member','pending');
+insert into public.member_accounts(profile_id,faculty,year_of_study,data_consent_at) values ('a8000000-0000-0000-0000-000000000001','FEEIT','2',now());
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is(public.dashboard_pending()#>>'{items,0,name}','Wait Member','a confirmed registration waits for the board');
+select is(public.dashboard_pending()#>>'{items,0,faculty}','FEEIT','with its faculty');
+select is((public.dashboard_pending()->>'count')::integer,1,'an unconfirmed one does not count');
 select * from finish();
 rollback;

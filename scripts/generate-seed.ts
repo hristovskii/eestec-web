@@ -711,7 +711,7 @@ export function generateSeed(): string {
       id: seedId('internal_notes', note.id),
       entity_type: note.entityType,
       entity_id: seedId(noteTables[note.entityType], note.entityId),
-      author: userId(note.authorId),
+      author: note.authorId ? userId(note.authorId) : null,
       author_name: note.authorName,
       author_initials: note.authorInitials,
       body: note.body,

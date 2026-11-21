@@ -13,13 +13,14 @@ export type InternalNote = {
   id: string;
   entityType: NoteEntity;
   entityId: string;
-  authorId: string;
+  /** null: the author's account was deleted; the name stays. */
+  authorId: string | null;
   authorName: string;
   authorInitials: string;
   body: string;
   createdAt: string;
 };
 
-export type InternalNoteInput = Omit<InternalNote, 'id' | 'createdAt'>;
+export type InternalNoteInput = Omit<InternalNote, 'id' | 'createdAt' | 'authorId'> & { authorId: string };
 
 export const NOTE_LIMITS = { body: 1000 } as const;
