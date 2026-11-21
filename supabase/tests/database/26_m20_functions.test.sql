@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(27);
+select plan(35);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -90,5 +90,27 @@ select is((select count(*)::integer from public.events_updated_by(array['a600000
 select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
 select is(public.remove_events(array['a6000000-0000-0000-0000-000000000001','a6000000-0000-0000-0000-000000000002']::uuid[]),array['a6000000-0000-0000-0000-000000000002']::uuid[],'an event without applications is deleted');
 select is((select count(*)::integer from public.events where id = 'a6000000-0000-0000-0000-000000000001'),1,'an event with applications stays');
+-- applications: form for an event, summaries, answer counts, deletion by e-mail
+reset role;
+insert into public.application_forms(event_id,intro,fields) values ('a6000000-0000-0000-0000-000000000001','{"mk":"Intro"}','[{"key":"why"}]');
+insert into public.events(id,slug,title,short_description,scope,type_id,starts_at,ends_at,location,city,country,description,requirements,seo_title,seo_description,status,publish_at) values
+ ('a6000000-0000-0000-0000-000000000003','hidden-form','{"mk":"H"}','{"mk":"S"}','local','a5000000-0000-0000-0000-000000000001',now()+interval '1 day',now()+interval '2 days','{"mk":"Here"}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','hidden',null);
+insert into public.application_forms(event_id,intro,fields) values ('a6000000-0000-0000-0000-000000000003','{"mk":"Hidden intro"}','[]');
+update public.applications set answers = '{"why":"Because","empty":"","flag":false}', read_at = null where reference = 'APP-0001';
+insert into public.applications(event_id,reference,name,email,status,waitlist_position,locale) values
+ ('a6000000-0000-0000-0000-000000000001','APP-0002','Y','y@test.mk','waitlist',1,'en'),
+ ('a6000000-0000-0000-0000-000000000001','APP-0003','Z','Z@Test.mk','waitlist',2,'en');
+select pg_temp.visitor();
+select is(public.application_form_for_event('a6000000-0000-0000-0000-000000000003')->>'intro','{"mk": "Hidden intro"}','a visitor gets the form of a hidden event');
+select is(public.application_form_for_event('a6000000-0000-0000-0000-000000000001'),null,'but not the form of a draft event');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is((select total from public.application_summaries(array['a6000000-0000-0000-0000-000000000001']::uuid[])),3::bigint,'the board counts every application of an event');
+select is((select waitlist from public.application_summaries(array['a6000000-0000-0000-0000-000000000001']::uuid[])),2::bigint,'per status');
+select is(public.application_answer_counts('a6000000-0000-0000-0000-000000000001'),'{"why": 1}'::jsonb,'only answered questions are counted');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000003');
+select is((select count(*)::integer from public.application_summaries(array['a6000000-0000-0000-0000-000000000001']::uuid[])),0,'a plain member counts nothing (row-level security)');
+reset role; set local role service_role;
+select is(public.delete_applications_by_email(' y@test.MK'),1,'deletion by e-mail ignores case and spaces');
+select is((select waitlist_position from public.applications where reference = 'APP-0003'),1,'and closes the gap in the waitlist');
 select * from finish();
 rollback;

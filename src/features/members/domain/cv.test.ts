@@ -3,10 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { cleanFileName, cvPickProblem, formatFileSize, isPdf } from './cv';
 
 describe('CV rules', () => {
-  it('takes a PDF up to 5 MB and says what is wrong otherwise', () => {
+  it('takes a PDF up to 4 MB and says what is wrong otherwise', () => {
     expect(cvPickProblem({ type: 'application/pdf', size: 240_000 })).toBeNull();
-    expect(cvPickProblem({ type: 'application/pdf', size: 5_000_000 })).toBeNull();
-    expect(cvPickProblem({ type: 'application/pdf', size: 5_000_001 })).toBe('cvSize');
+    expect(cvPickProblem({ type: 'application/pdf', size: 4_000_000 })).toBeNull();
+    expect(cvPickProblem({ type: 'application/pdf', size: 4_000_001 })).toBe('cvSize');
     expect(cvPickProblem({ type: 'application/pdf', size: 0 })).toBe('cvSize');
     expect(
       cvPickProblem({

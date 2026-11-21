@@ -34,7 +34,7 @@ export async function setMyChoice(input: unknown): Promise<ActionResult<MemberCo
   return ok(consents);
 }
 
-/** The CV (a PDF up to 5 MB), only while CV sharing is on. */
+/** The CV (a PDF up to 4 MB), only while CV sharing is on. */
 export async function uploadMyCv(formData: FormData): Promise<ActionResult<CvInfo>> {
   const session = await currentMember();
   if (!session) return { ok: false, error: 'forbidden' };

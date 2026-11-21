@@ -18,7 +18,7 @@ import type { Application, ApplicationField, ApplicationsSummary } from './types
 
 /** The Applications column of Admin › Events: totals, and "full" when the accepted fill the places. */
 export const applicationCounts: ApplicationCountsLoader = async (rows) => {
-  const summaries = await (await applicationsRepository()).summaries(rows.map((row) => row.id));
+  const summaries = await (await applicationsRepository('session')).summaries(rows.map((row) => row.id));
   return Object.fromEntries(
     rows.flatMap((row) => {
       const summary = summaries[row.id];
@@ -66,7 +66,7 @@ export async function listApplicationOverview(actor: Actor): Promise<Application
   const [rows, settings, repo] = await Promise.all([
     listApplicationEvents(actor),
     getSiteSettings('en'),
-    applicationsRepository(),
+    applicationsRepository('session'),
   ]);
   const summaries = await repo.summaries(rows.map((row) => row.id));
   const at = now();
@@ -96,7 +96,7 @@ export async function getEventApplications(actor: Actor, params: AdminApplicatio
   if (!params.event || !can(actor, 'view', 'applications', { eventId: params.event })) return null;
   const event = (await listApplicationOverview(actor)).find((row) => row.id === params.event);
   if (!event) return null;
-  const repo = await applicationsRepository();
+  const repo = await applicationsRepository('session');
   const [page, form, opened, accepted] = await Promise.all([
     repo.list({
       eventId: event.id,
@@ -125,7 +125,7 @@ export async function getEventApplications(actor: Actor, params: AdminApplicatio
 export async function exportEventApplications(actor: Actor, params: AdminApplicationsParams) {
   const loaded = await getEventApplications(actor, { ...params, page: 1, size: 100, open: undefined });
   if (!loaded) return null;
-  const repo = await applicationsRepository();
+  const repo = await applicationsRepository('session');
   const all = await repo.list({
     eventId: loaded.event.id,
     status: params.status,
@@ -146,7 +146,7 @@ export async function getFormBuilder(actor: Actor, eventId: string) {
   if (!can(actor, 'view', 'applications', { eventId })) return null;
   const event = (await listApplicationEvents(actor)).find((row) => row.id === eventId);
   if (!event) return null;
-  const repo = await applicationsRepository();
+  const repo = await applicationsRepository('session');
   const [stored, answerCounts, summaries] = await Promise.all([
     repo.getForm(eventId),
     repo.answerCounts(eventId),
@@ -165,7 +165,7 @@ export async function getFormBuilder(actor: Actor, eventId: string) {
 /** For the event edit form: "Edit application form · 8 questions →", when this admin may edit it. */
 export async function getFormLink(actor: Actor, eventId: string) {
   if (!can(actor, 'edit', 'applications', { eventId })) return null;
-  const form = await (await applicationsRepository()).getForm(eventId);
+  const form = await (await applicationsRepository('session')).getForm(eventId);
   return {
     href: `/admin/applications/${eventId}/form`,
     questions: (form?.fields ?? DEFAULT_APPLICATION_FIELDS).length,

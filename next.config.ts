@@ -39,9 +39,10 @@ const nextConfig: NextConfig = {
   experimental: {
     // The page's CSS (about 28 KB) goes into the HTML instead of three blocking requests (Lighthouse).
     inlineCss: true,
-    // Application forms upload a CV of up to 5 MB with the answers (spec 03); /submit sends an
-    // attachment of up to 4 MB, or up to ten photos of 400 KB, with the answers (D29).
-    serverActions: { bodySizeLimit: '6mb' },
+    // Application forms upload a CV of up to 4 MB with the answers (spec 03, D37); /submit sends an
+    // attachment of up to 4 MB, or up to ten photos of 400 KB, with the answers (D29). Vercel refuses a
+    // request body over about 4.5 MB, so a 4 MB file plus the answers must fit under that.
+    serverActions: { bodySizeLimit: '4.5mb' },
   },
   cacheLife: {
     // Time-based states (deadline soon, just ended, upcoming → archive) refresh within 10 minutes (decided).

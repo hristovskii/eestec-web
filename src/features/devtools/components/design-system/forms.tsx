@@ -79,7 +79,7 @@ export function FormsSection() {
             />
           )}
         </FormField>
-        <FileDropzone id="f-cv" name="cv" label="CV (PDF, max 5 MB)" accept="application/pdf" />
+        <FileDropzone id="f-cv" name="cv" label="CV (PDF, max 4 MB)" accept="application/pdf" />
         <div className="flex flex-col justify-center gap-3.5">
           <ChoiceLabel control={<Checkbox defaultChecked />}>
             I agree that EESTEC LC Skopje processes my personal data for this application.{' '}

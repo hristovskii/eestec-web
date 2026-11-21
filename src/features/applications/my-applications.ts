@@ -16,7 +16,7 @@ import { type MyApplicationView, toMyApplications } from './domain/my-applicatio
 export type { MyApplicationView };
 
 export async function getMyApplications(email: string, locale: Locale): Promise<MyApplicationView[]> {
-  const applications = await (await applicationsRepository()).listByEmail(email);
+  const applications = await (await applicationsRepository('session')).listByEmail(email);
   if (applications.length === 0) return [];
   const events = await getEventsByIds([...new Set(applications.map((item) => item.eventId))], locale);
   return toMyApplications(applications, events);
@@ -24,7 +24,7 @@ export async function getMyApplications(email: string, locale: Locale): Promise<
 
 /** The person takes an application back (or leaves the waitlist): it is deleted and the places refresh. */
 export async function withdrawMyApplication(id: string, email: string): Promise<boolean> {
-  const repo = await applicationsRepository();
+  const repo = await applicationsRepository('session');
   const application = (await repo.listByEmail(email)).find((item) => item.id === id);
   if (!application) return false;
   const result = await repo.withdraw(id, email);
@@ -36,7 +36,8 @@ export async function withdrawMyApplication(id: string, email: string): Promise<
 
 /** Account deletion: every application of this e-mail goes. */
 export async function deleteApplicationsOf(email: string): Promise<number> {
-  const repo = await applicationsRepository();
+  // Service scope: the caller has already verified the member (password and session); no row-level security here.
+  const repo = await applicationsRepository('service');
   const events = new Set((await repo.listByEmail(email)).map((item) => item.eventId));
   const count = await repo.deleteByEmail(email);
   for (const eventId of events) updateTag(applicationTags.event(eventId));
@@ -46,7 +47,7 @@ export async function deleteApplicationsOf(email: string): Promise<number> {
 
 /** "Download my data": every application of this e-mail as stored (answers included; uploaded files by name only). */
 export async function exportApplicationsOf(email: string) {
-  const rows = await (await applicationsRepository()).listByEmail(email);
+  const rows = await (await applicationsRepository('session')).listByEmail(email);
   return rows.map((row) => ({
     reference: row.reference,
     eventId: row.eventId,

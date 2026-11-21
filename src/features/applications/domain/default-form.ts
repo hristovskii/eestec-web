@@ -78,7 +78,7 @@ export const DEFAULT_APPLICATION_FIELDS: ApplicationField[] = [
   {
     key: 'cv',
     type: 'file',
-    label: text('CV (PDF, max 5 MB)', 'CV (PDF, најмногу 5 MB)'),
+    label: text('CV (PDF, max 4 MB)', 'CV (PDF, најмногу 4 MB)'),
     required: false,
     help: empty,
     placeholder: empty,

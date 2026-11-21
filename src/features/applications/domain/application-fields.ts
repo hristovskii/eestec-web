@@ -8,7 +8,7 @@ export const NAME_MAX = 120;
 export const EMAIL_MAX = 200;
 export const TEXT_MAX = 200;
 export const LONG_TEXT_MAX = 2000;
-export const FILE_MAX_BYTES = 5 * 1024 * 1024;
+export const FILE_MAX_BYTES = 4 * 1024 * 1024;
 export const FILE_TYPES = ['application/pdf'] as const;
 
 /** Names of the form controls (FormData). */

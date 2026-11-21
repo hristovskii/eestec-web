@@ -57,10 +57,13 @@ export async function submitApplication(data: FormData): Promise<ActionResult<Ap
   if (spam === 'bot') return conflict('spam');
   if (spam === 'too_fast') return conflict('tooFast');
 
-  const [event, settings, repo] = await Promise.all([
+  // Reading the form and the places is public; storing a file and saving the application go through the
+  // service scope, only after the spam and consent checks above and the validation below (D32).
+  const [event, settings, repo, writer] = await Promise.all([
     findPublicEvent(slug, locale),
     getSiteSettings(locale),
-    applicationsRepository(),
+    applicationsRepository('public'),
+    applicationsRepository('service'),
   ]);
   if (!event || event.timing !== 'upcoming' || event.applications.via !== 'form')
     return { ok: false, error: 'not_found' };
@@ -94,11 +97,11 @@ export async function submitApplication(data: FormData): Promise<ActionResult<Ap
       fileErrors[`answers.${field.key}`] = ['fileType'];
       continue;
     }
-    files[field.key] = await repo.storeFile({ name: file.name, type: 'application/pdf', bytes }, now());
+    files[field.key] = await writer.storeFile({ name: file.name, type: 'application/pdf', bytes }, now());
   }
   if (Object.keys(fileErrors).length > 0) return { ok: false, error: 'validation', fieldErrors: fileErrors };
 
-  const result = await repo.submit(
+  const result = await writer.submit(
     {
       eventId: event.id,
       name: parsed.data.name,

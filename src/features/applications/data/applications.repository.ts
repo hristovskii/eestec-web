@@ -19,7 +19,9 @@ export type SubmitResult =
   /** Every place is taken and the event has no waitlist (D11). */
   | { status: 'full' }
   /** This e-mail already applied to this event. */
-  | { status: 'duplicate' };
+  | { status: 'duplicate' }
+  /** The event stopped taking applications between the page and the submit (deadline, not open yet, unpublished). */
+  | { status: 'closed' };
 
 /** A private upload as it arrives from the form (CVs; never public, data-model.md). */
 export type UploadInput = { name: string; type: string; bytes: Uint8Array };

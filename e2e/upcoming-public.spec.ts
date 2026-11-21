@@ -156,7 +156,7 @@ test.describe('upcoming event page (M7a)', () => {
       .setInputFiles({ name: 'cv.docx', mimeType: 'application/msword', buffer: Buffer.from('doc') });
     await apply.getByRole('button', { name: 'Submit application' }).click();
     await expect(page.getByRole('alert').filter({ hasText: /Please fix/ })).toContainText(
-      'CV (PDF, max 5 MB): Upload a PDF file.',
+      'CV (PDF, max 4 MB): Upload a PDF file.',
     );
   });
 
