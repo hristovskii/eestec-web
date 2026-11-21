@@ -102,7 +102,13 @@ export async function deleteEvents(input: unknown): Promise<ActionResult<{ delet
   if (!context || context.events.length === 0) return { ok: false, error: 'forbidden' };
   const { session, repo, events } = context;
   const removed = await repo.remove(events.map((event) => event.id));
-  await recordActivity(session, { action: 'deleted', area: 'events', target: describe(events) });
+  // Events that already have applications are not deleted (the board hides them instead): nothing removed is a conflict.
+  if (removed.length === 0) return { ok: false, error: 'conflict', message: 'has_applications' };
+  await recordActivity(session, {
+    action: 'deleted',
+    area: 'events',
+    target: describe(events.filter((event) => removed.includes(event.id))),
+  });
   changed();
   return ok({ deleted: removed.length });
 }

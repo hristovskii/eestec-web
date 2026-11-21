@@ -2587,6 +2587,14 @@ export type Database = {
       };
       event_save: { Args: { p_data: Json; p_id: string }; Returns: string };
       event_updated_by: { Args: { p_id: string }; Returns: Json };
+      events_updated_by: {
+        Args: { p_ids: string[] };
+        Returns: {
+          event_id: string;
+          name: string;
+          user_id: string;
+        }[];
+      };
       finish_member_deletion: { Args: { p_user: string }; Returns: boolean };
       import_committees: { Args: { p_items: Json }; Returns: Json };
       is_active_member: { Args: Record<PropertyKey, never>; Returns: boolean };
