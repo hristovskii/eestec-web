@@ -58,7 +58,7 @@ export async function submitMessage(data: FormData): Promise<ActionResult<Messag
 
   const subjectName = resolveLocalized(subject.name, locale);
   const stored = await (
-    await messagesRepository()
+    await messagesRepository('service')
   ).submit(
     { name, email, subjectId, subject: subjectName, routedTo: subject.routeEmail, message, locale },
     now(),

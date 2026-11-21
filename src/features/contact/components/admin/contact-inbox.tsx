@@ -180,12 +180,14 @@ function ContactMessageDetail({
       }
       actions={
         <>
-          <Button asChild>
-            <a href={reply}>
-              <Reply aria-hidden />
-              {labels.reply}
-            </a>
-          </Button>
+          {message.email && (
+            <Button asChild>
+              <a href={reply}>
+                <Reply aria-hidden />
+                {labels.reply}
+              </a>
+            </Button>
+          )}
           {canEdit && message.status !== 'answered' && (
             <StatusButton
               id={message.id}

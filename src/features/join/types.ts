@@ -110,7 +110,8 @@ export type MembershipStatus = (typeof MEMBERSHIP_STATUSES)[number];
 export type MembershipApplication = {
   id: string;
   name: string;
-  email: string;
+  /** null: the address was erased; there is nobody to reply to. */
+  email: string | null;
   phone: string;
   /** The wording of the option the person chose, in the language of the page they used. */
   faculty: string;
@@ -128,5 +129,5 @@ export type MembershipApplication = {
 
 export type MembershipInput = Omit<
   MembershipApplication,
-  'id' | 'status' | 'readAt' | 'createdAt' | 'consentAt'
->;
+  'id' | 'status' | 'readAt' | 'createdAt' | 'consentAt' | 'email'
+> & { email: string };

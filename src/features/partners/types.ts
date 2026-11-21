@@ -182,7 +182,8 @@ export type PartnerInquiry = {
   reference: string;
   company: string;
   contactPerson: string;
-  email: string;
+  /** null: the address was erased; there is nobody to reply to. */
+  email: string | null;
   phone: string;
   interests: InquiryInterest[];
   message: string;
@@ -196,5 +197,5 @@ export type PartnerInquiry = {
 
 export type PartnerInquiryInput = Omit<
   PartnerInquiry,
-  'id' | 'reference' | 'status' | 'readAt' | 'createdAt' | 'consentAt'
->;
+  'id' | 'reference' | 'status' | 'readAt' | 'createdAt' | 'consentAt' | 'email'
+> & { email: string };

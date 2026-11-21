@@ -8,19 +8,7 @@ import { describe, expect, it } from 'vitest';
  * a "supabase" implementation. `PENDING` is what is still missing; implementing a repository means
  * removing it here (the test fails both ways), so the list only shrinks.
  */
-const PENDING = [
-  'activity',
-  'auth',
-  'contact-messages',
-  'dashboard',
-  'idea-form',
-  'submissions',
-  'membership',
-  'members',
-  'memories',
-  'notes',
-  'partner-inquiries',
-];
+const PENDING = ['auth', 'idea-form', 'submissions', 'members', 'memories'];
 
 function registrations() {
   const files = [

@@ -8,6 +8,7 @@ import { createSupabaseJoinRepository } from './join.supabase';
 import type { JoinRepository } from './join.repository';
 import { createMockMembershipRepository } from './membership.mock';
 import type { MembershipRepository } from './membership.repository';
+import { createSupabaseMembershipRepository } from './membership.supabase';
 
 /** Public reads are cookie-less; admin writes check permissions in their actions. */
 export const joinRepository = (scope: RepoScope = 'public') =>
@@ -17,6 +18,13 @@ export const joinRepository = (scope: RepoScope = 'public') =>
     scope,
   );
 
-/** Applications come from anonymous visitors (the form) and are read by the board; actions check who may do what. */
-export const membershipRepository = (scope: RepoScope = 'public') =>
-  selectImplementation<MembershipRepository>('membership', { mock: createMockMembershipRepository }, scope);
+/**
+ * The form stores an application with the service scope (after the spam, validation and consent checks, D32); the
+ * board reads and changes applications with the session scope. Actions check who may do what.
+ */
+export const membershipRepository = (scope: RepoScope = 'session') =>
+  selectImplementation<MembershipRepository>(
+    'membership',
+    { mock: createMockMembershipRepository, supabase: withClient(createSupabaseMembershipRepository) },
+    scope,
+  );

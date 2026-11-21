@@ -192,12 +192,14 @@ function ApplicationDetail({
       }
       actions={
         <>
-          <Button asChild>
-            <a href={reply}>
-              <Reply aria-hidden />
-              {labels.reply}
-            </a>
-          </Button>
+          {application.email && (
+            <Button asChild>
+              <a href={reply}>
+                <Reply aria-hidden />
+                {labels.reply}
+              </a>
+            </Button>
+          )}
           {canEdit && application.status === 'new' && (
             <StatusButton
               id={application.id}

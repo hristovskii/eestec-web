@@ -7,27 +7,43 @@ import type { NotesRepository } from './notes.repository';
 
 const NOW = new Date('2026-10-04T18:05:00+02:00');
 
-const input = (entityId: string, body: string): InternalNoteInput => ({
-  entityType: 'partner_inquiry',
-  entityId,
-  authorId: 'u-test',
-  authorName: 'Test Admin',
-  authorInitials: 'TA',
-  body,
-});
+/** Who the notes are written by, and whether the implementation takes the time it is given (a database uses its own clock). */
+export type NotesContractOptions = {
+  /** Read when a test runs (the person may be created in `beforeAll`). */
+  author?: () => { id: string; name: string; initials: string };
+  databaseClock?: boolean;
+};
 
 export function describeNotesRepository(
   name: string,
   createRepo: () => NotesRepository | Promise<NotesRepository>,
+  options: NotesContractOptions = {},
 ) {
+  const author = () => options.author?.() ?? { id: 'u-test', name: 'Test Admin', initials: 'TA' };
+  const input = (entityId: string, body: string): InternalNoteInput => ({
+    entityType: 'partner_inquiry',
+    entityId,
+    authorId: author().id,
+    authorName: author().name,
+    authorInitials: author().initials,
+    body,
+  });
+  const newId = () => crypto.randomUUID();
+
   describe(`NotesRepository (${name})`, () => {
     it('adds a note and lists the notes of one item, oldest first', async () => {
       const repo = await createRepo();
-      const entityId = `pi-${crypto.randomUUID().slice(0, 8)}`;
+      const entityId = newId();
       expect(await repo.list('partner_inquiry', entityId)).toEqual([]);
       const first = await repo.add(input(entityId, 'First'), new Date('2026-10-04T18:05:00+02:00'));
       const second = await repo.add(input(entityId, 'Second'), new Date('2026-10-04T19:05:00+02:00'));
-      expect(first).toMatchObject({ body: 'First', authorName: 'Test Admin', createdAt: NOW.toISOString() });
+      expect(first).toMatchObject({
+        body: 'First',
+        authorId: author().id,
+        authorName: author().name,
+        authorInitials: author().initials,
+      });
+      if (!options.databaseClock) expect(first.createdAt).toBe(NOW.toISOString());
       expect((await repo.list('partner_inquiry', entityId)).map((note) => note.id)).toEqual([
         first.id,
         second.id,
@@ -36,8 +52,8 @@ export function describeNotesRepository(
 
     it('keeps the notes of different items and kinds apart, and counts them', async () => {
       const repo = await createRepo();
-      const one = `pi-${crypto.randomUUID().slice(0, 8)}`;
-      const other = `pi-${crypto.randomUUID().slice(0, 8)}`;
+      const one = newId();
+      const other = newId();
       await repo.add(input(one, 'A'), NOW);
       await repo.add(input(one, 'B'), NOW);
       await repo.add(input(other, 'C'), NOW);

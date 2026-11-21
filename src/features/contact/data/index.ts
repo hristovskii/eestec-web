@@ -8,6 +8,7 @@ import { createSupabaseContactRepository } from './contact.supabase';
 import type { ContactRepository } from './contact.repository';
 import { createMockMessagesRepository } from './messages.mock';
 import type { MessagesRepository } from './messages.repository';
+import { createSupabaseMessagesRepository } from './messages.supabase';
 
 /**
  * Public reads are cookie-less and never carry a subject's route e-mail (it is '' there); the admin editor
@@ -20,6 +21,13 @@ export const contactRepository = (scope: RepoScope = 'public') =>
     scope,
   );
 
-/** Messages come from anonymous visitors (the form) and are read by the board; actions check who may do what. */
-export const messagesRepository = (scope: RepoScope = 'public') =>
-  selectImplementation<MessagesRepository>('contact-messages', { mock: createMockMessagesRepository }, scope);
+/**
+ * The form stores a message with the service scope (after the spam, validation and consent checks, D32); the board
+ * reads and changes messages with the session scope. Actions check who may do what.
+ */
+export const messagesRepository = (scope: RepoScope = 'session') =>
+  selectImplementation<MessagesRepository>(
+    'contact-messages',
+    { mock: createMockMessagesRepository, supabase: withClient(createSupabaseMessagesRepository) },
+    scope,
+  );
