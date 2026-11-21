@@ -33,7 +33,7 @@ export async function getPrivacyPolicy(locale: Locale) {
 
 /** Admin › Pages › Contact › Privacy policy: both languages, never cached. Callers check the permission. */
 export async function getPrivacyForEdit() {
-  const repo = await settingsRepository();
+  const repo = await settingsRepository('session');
   return (await repo.getRecord()).privacy;
 }
 
@@ -48,7 +48,7 @@ export async function getPageSeo(page: SeoPageKey, locale: Locale) {
 
 /** Admin › Settings form: both languages, never cached. Callers check the permission. */
 export async function getSettingsForEdit() {
-  const repo = await settingsRepository();
+  const repo = await settingsRepository('session');
   return repo.getRecord();
 }
 

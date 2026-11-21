@@ -2603,6 +2603,13 @@ export type Database = {
         Args: { p_bucket: string; p_path: string; p_user: string };
         Returns: boolean;
       };
+      media_uploaders: {
+        Args: { p_ids: string[] };
+        Returns: {
+          id: string;
+          name: string;
+        }[];
+      };
       media_usage: { Args: { p_id: string }; Returns: Json };
       members_hidden_count: { Args: Record<PropertyKey, never>; Returns: number };
       memory_admin_remove: { Args: { p_id: string }; Returns: boolean };
@@ -2661,12 +2668,16 @@ export type Database = {
       renumber_event_waitlist: { Args: { p_event: string }; Returns: undefined };
       reorder_event_taxonomy: { Args: { p_ids: string[]; p_kind: string }; Returns: boolean };
       reorder_seats: { Args: { p_ids: string[]; p_mandate: string }; Returns: undefined };
+      reorder_sponsors: { Args: { p_ids: string[]; p_tier: string }; Returns: boolean };
       reorder_teams: { Args: { p_ids: string[] }; Returns: undefined };
       require_memory_author: { Args: Record<PropertyKey, never>; Returns: string };
       require_staff: { Args: Record<PropertyKey, never>; Returns: undefined };
       resolve_event_address: { Args: { p_slug: string }; Returns: Json };
       save_application_form: { Args: { p_event: string; p_fields: Json; p_intro: Json }; Returns: undefined };
       save_contact_page: { Args: { p_content: Json; p_subjects: Json }; Returns: undefined };
+      save_partners_page: { Args: { p_content: Json; p_packages: Json }; Returns: undefined };
+      save_site_settings: { Args: { p_data: Json }; Returns: undefined };
+      save_sponsor_tiers: { Args: { p_tiers: Json }; Returns: Json };
       set_application_status: {
         Args: {
           p_event: string;
@@ -2779,6 +2790,7 @@ export type Database = {
         };
         Returns: boolean;
       };
+      uuid_or_null: { Args: { p_text: string }; Returns: string };
       verified_email_matches: { Args: { p_email: string }; Returns: boolean };
       withdraw_application: { Args: { p_id: string }; Returns: boolean };
     };

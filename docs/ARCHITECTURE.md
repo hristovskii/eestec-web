@@ -1339,6 +1339,26 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Committees: the map has about sixty rows, so the admin list filters in memory with one shared pure function (`domain/admin-list.ts`, now also used by the mock). The home flag moves only through `set_home_committee`, import is the `import_committees` call, and a duplicate name and country is a `23505` turned into `{status: 'duplicate'}`.
 - Contract suites commit rows (committees are not cleaned up); run `pnpm db:reset` before `pnpm test:supabase` for a clean slate.
 
+**Notes from building (M20c, media)**
+
+- The Media library on `media`: `createUpload` reserves a `pending` row and returns a signed Storage URL (`createSignedUploadUrl`, policy: staff and managers write to their own folder); the browser PUTs the file; `confirmUpload` checks the object exists (`storage.exists`), then marks the row ready with its alt text and width/height (the upload time is the database clock, so the caller's `now` is not used). Images go to `public-media`, PDFs to `documents`. Listing is the library only (`status = ready`, no bucket or one of the two public buckets), counts follow the uploader filter, search escapes the characters PostgREST filters use.
+- Uploader names come from `media_uploaders(ids)` (migration `0015`: staff see every uploader, anyone else only themselves), because names live in tables an editor cannot all read.
+- `remove` refuses a file the site still uses (`media_usage`, D36) with a `DataError('in_use')`; the admin action turns it into `{ok: false, error: 'conflict', message: 'in_use'}`, then deletes the row and the Storage object.
+- The media contract suite now takes the people it acts as (uploader, another uploader, a stranger) and an async `deliver` that receives the signed URL; the update/delete test works on its own upload instead of a seeded file that may be in use.
+
+**Notes from building (M20c, settings)**
+
+- Settings span four tables; `readRecord` assembles them (`site_settings` keys, `board_roles`, `social_links`, `seo_pages` with the share image rebuilt from its media row). The pure resolution (`toSiteSettings`, `toResolvedSeo`, `toPrivacyPolicy` in `domain/resolve.ts`) is shared with the mock. `settingsRepository` now has a scope: public reads for the chrome, `session` for the Settings page, the privacy editor and the notification toggles.
+- `save` is one call, `save_site_settings` (migration `0016`): super admin with 2-step only, all four tables in one transaction; board roles keep their ids (a role that still has seats cannot be removed, the foreign key refuses), social links are replaced, SEO pages are upserted. The privacy text is the one key an editor may write (`savePrivacy`).
+- Notification recipients are readable by a super admin only; any other caller gets "nobody enabled", which only the Settings page and the mailer ever read. The page SEO share image is rebuilt from `seo_pages.share_media_id` and `share_alt`; `ImageAsset`s of Branding stay whole inside their jsonb value.
+- Migration `0016` also lets everyone read media rows without a bucket (files shipped in `/public` and sample placeholders): without it a visitor could not read the row behind an image that points at one.
+- The settings contract suite now restores what it saves (it shares the database with the other suites and with re-runs).
+
+**Notes from building (M20c, partners)**
+
+- The For Companies page: the text is the `partners` page row with its package list emptied; the packages are `partner_packages` and are the source of truth for the list on read. Saving is one call (`save_partners_page`, migration `0017`): the highlight ("Most chosen") moves in three steps so the unique index never sees two, packages keep their ids and the rest are removed. Tiers save through `save_sponsor_tiers` (a tier that still has sponsors is answered as `in_use` with its ids, not raised); `reorder_sponsors` gives a tier's sponsors a new order inside the slots they had.
+- Sponsors are listed in one board order and a new one goes last overall (`0017` makes the append trigger global; the page groups them by tier). Visitors see active sponsors by RLS; the board sees all. Removing a sponsor that events still list as a partner is refused by the foreign key (`DataError('in_use')`); the admin action answers `conflict`.
+
 ## Verification
 
 **Per milestone:**

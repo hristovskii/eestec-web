@@ -1,10 +1,8 @@
 import 'server-only';
 
 import { mockTable } from '@/shared/data/mock/store';
-import { resolveLocalized, resolveText } from '@/shared/i18n/localized';
-import { nextMeetingAt } from '@/shared/lib/next-meeting';
-import { isEmptyRichText } from '@/shared/lib/rich-text';
 
+import { toPrivacyPolicy, toResolvedSeo, toSiteSettings } from '../domain/resolve';
 import type { SettingsRepository } from './settings.repository';
 import { settingsFixture } from './fixtures/settings';
 
@@ -13,31 +11,11 @@ export function createMockSettingsRepository(): SettingsRepository {
 
   return {
     getSiteSettings({ locale, now }) {
-      const { privacy: _privacy, seo: _seo, notifications: _notifications, ...record } = table.record;
-      return Promise.resolve({
-        ...record,
-        footerTagline: resolveLocalized(record.footerTagline, locale),
-        contact: {
-          mainEmail: record.contact.mainEmail,
-          address: resolveLocalized(record.contact.address, locale),
-          officeRoom: resolveLocalized(record.contact.officeRoom, locale),
-        },
-        weeklyMeeting: {
-          ...record.weeklyMeeting,
-          room: resolveLocalized(record.weeklyMeeting.room, locale),
-          nextAt: nextMeetingAt(record.weeklyMeeting, now).toISOString(),
-        },
-        currentYear: now.getFullYear(),
-      });
+      return Promise.resolve(toSiteSettings(table.record, locale, now));
     },
 
     getPageSeo({ page, locale }) {
-      const seo = table.record.seo[page];
-      return Promise.resolve({
-        title: resolveLocalized(seo.title, locale),
-        description: resolveLocalized(seo.description, locale),
-        shareImage: seo.shareImage,
-      });
+      return Promise.resolve(toResolvedSeo(table.record.seo[page], locale));
     },
 
     getRecord() {
@@ -55,14 +33,7 @@ export function createMockSettingsRepository(): SettingsRepository {
     },
 
     getPrivacyPolicy({ locale }) {
-      const { privacy } = table.record;
-      const useEnglish = locale === 'en' && !isEmptyRichText(privacy.body.en ?? '');
-      return Promise.resolve({
-        title: resolveText(privacy.title, locale).text,
-        body: useEnglish ? (privacy.body.en ?? '') : privacy.body.mk,
-        isPlaceholder: privacy.isPlaceholder,
-        lang: useEnglish ? 'en' : 'mk',
-      });
+      return Promise.resolve(toPrivacyPolicy(table.record.privacy, locale));
     },
   };
 }

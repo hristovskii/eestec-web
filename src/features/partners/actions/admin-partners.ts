@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 import { recordActivity } from '@/features/activity/server';
 import { authorize } from '@/features/auth/server';
+import { isDataError } from '@/shared/data/supabase/errors';
 import { type ActionResult, fieldErrorsFrom, ok } from '@/shared/forms/action-result';
 
 import { partnersTags } from '../cache-tags';
@@ -72,7 +73,14 @@ export async function deleteSponsor(input: unknown): Promise<ActionResult<{ dele
   if (!session) return { ok: false, error: 'forbidden' };
   const repo = await partnersRepository('session');
   const sponsor = await repo.getSponsor(parsed.data);
-  const deleted = await repo.removeSponsor(parsed.data);
+  let deleted: boolean;
+  try {
+    deleted = await repo.removeSponsor(parsed.data);
+  } catch (error) {
+    // A sponsor that events still list as a partner stays: take it off those events first.
+    if (isDataError(error, 'in_use')) return { ok: false, error: 'conflict', message: 'in_use' };
+    throw error;
+  }
   if (deleted) {
     await recordActivity(session, {
       action: 'deleted',

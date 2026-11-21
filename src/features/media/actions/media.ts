@@ -4,6 +4,7 @@ import { refresh } from 'next/cache';
 
 import { recordActivity } from '@/features/activity/server';
 import { authorize } from '@/features/auth/server';
+import { isDataError } from '@/shared/data/supabase/errors';
 import { type ActionResult, type FieldErrors, fieldErrorsFrom, ok } from '@/shared/forms/action-result';
 import { now } from '@/shared/lib/now';
 
@@ -101,7 +102,13 @@ export async function deleteMedia(input: unknown): Promise<ActionResult> {
   if (!existing) return { ok: false, error: 'not_found' };
   const session = await authorize('delete', 'media', { ownerId: existing.uploadedBy.userId });
   if (!session) return { ok: false, error: 'forbidden' };
-  await repo.remove(existing.id);
+  try {
+    await repo.remove(existing.id);
+  } catch (error) {
+    // A file the site still shows cannot be removed (the database refuses); the board replaces it first.
+    if (isDataError(error, 'in_use')) return { ok: false, error: 'conflict', message: 'in_use' };
+    throw error;
+  }
   await recordActivity(session, { action: 'deleted', area: 'media', target: existing.fileName });
   refresh();
   return ok(undefined);

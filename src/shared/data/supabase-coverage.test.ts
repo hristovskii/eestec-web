@@ -20,13 +20,10 @@ const PENDING = [
   'idea-form',
   'submissions',
   'membership',
-  'media',
   'members',
   'memories',
   'notes',
-  'partners',
   'partner-inquiries',
-  'settings',
 ];
 
 function registrations() {
