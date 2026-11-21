@@ -174,7 +174,7 @@ export function createSupabaseMediaRepository(client: DbClient): MediaRepository
       return { mimeType: row.mime_type ?? '', received: received.data === true };
     },
 
-    async confirmUpload({ uploadId, userId, alt, credit, width, height, now }) {
+    async confirmUpload({ uploadId, userId, alt, credit, width, height }) {
       const pending = await this.getUpload(uploadId, userId);
       if (!pending?.received) return null;
       const kind = kindOf(pending.mimeType) ?? 'document';
@@ -187,7 +187,6 @@ export function createSupabaseMediaRepository(client: DbClient): MediaRepository
             credit: credit ?? null,
             width: kind === 'image' && width ? width : null,
             height: kind === 'image' && height ? height : null,
-            created_at: now.toISOString(),
           })
           .eq('id', uploadId)
           .eq('uploaded_by', userId)
