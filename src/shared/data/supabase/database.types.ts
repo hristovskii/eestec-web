@@ -2517,6 +2517,7 @@ export type Database = {
         Returns: string;
       };
       admin_save_member: { Args: { p_edit: Json; p_user: string }; Returns: boolean };
+      application_answer_counts: { Args: { p_event: string }; Returns: Json };
       application_availability: {
         Args: { p_event_ids: string[] };
         Returns: {
@@ -2526,7 +2527,20 @@ export type Database = {
         }[];
       };
       application_form_by_slug: { Args: { p_slug: string }; Returns: Json };
+      application_form_for_event: { Args: { p_event: string }; Returns: Json };
       application_reference_prefix: { Args: { p_slug: string }; Returns: string };
+      application_summaries: {
+        Args: { p_event_ids: string[] };
+        Returns: {
+          accepted: number;
+          event_id: string;
+          new_count: number;
+          pending: number;
+          rejected: number;
+          total: number;
+          waitlist: number;
+        }[];
+      };
       author_cards: {
         Args: { p_ids: string[] };
         Returns: {
@@ -2555,6 +2569,7 @@ export type Database = {
         Args: { p_decision: string; p_ids: string[]; p_reason?: string };
         Returns: Json;
       };
+      delete_applications_by_email: { Args: { p_email: string }; Returns: number };
       event_agenda_valid: { Args: { p_agenda: Json }; Returns: boolean };
       event_by_slug: { Args: { p_slug: string }; Returns: Json };
       event_feedback_for_manager: {

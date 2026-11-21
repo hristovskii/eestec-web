@@ -149,9 +149,9 @@ test.describe('my applications and privacy (M16c)', () => {
     await input.setInputFiles({
       name: 'huge.pdf',
       mimeType: 'application/pdf',
-      buffer: Buffer.alloc(5_000_001, 1),
+      buffer: Buffer.alloc(4_000_001, 1),
     });
-    await expect(card.getByText('That file is too big. PDF files up to 5 MB work.')).toBeVisible();
+    await expect(card.getByText('That file is too big. PDF files up to 4 MB work.')).toBeVisible();
     // A file that says it is a PDF but is not one is refused by the server.
     await input.setInputFiles({
       name: 'fake.pdf',
@@ -162,7 +162,7 @@ test.describe('my applications and privacy (M16c)', () => {
 
     await input.setInputFiles(PDF);
     await expect(card.getByTestId('cv-name')).toHaveText('my-cv.pdf');
-    await expect(card.getByText('PDF only, up to 5 MB.')).toBeVisible();
+    await expect(card.getByText('PDF only, up to 4 MB.')).toBeVisible();
 
     // Kept after a reload; replace it with another file.
     await page.reload();

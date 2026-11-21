@@ -10,7 +10,6 @@ import { describe, expect, it } from 'vitest';
  */
 const PENDING = [
   'activity',
-  'applications',
   'auth',
   'contact-messages',
   'dashboard',

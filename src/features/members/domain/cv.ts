@@ -1,7 +1,7 @@
-// The CV a member shares with partner companies (decided: PDF only, up to 5 MB, off by default,
+// The CV a member shares with partner companies (decided: PDF only, up to 4 MB, off by default,
 // deleted the moment sharing is turned off). Rules without zod, shared by the form and the server.
 
-export const CV = { type: 'application/pdf', maxBytes: 5_000_000, nameMax: 120 } as const;
+export const CV = { type: 'application/pdf', maxBytes: 4_000_000, nameMax: 120 } as const;
 
 /** A problem key for a file the person picked, or null. */
 export function cvPickProblem(file: { size: number; type: string }): 'cvType' | 'cvSize' | null {

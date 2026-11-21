@@ -72,9 +72,9 @@ export async function applicationsCsvResponse(searchParams: URLSearchParams): Pr
 
 /** A CV from an application (private: admins with access to the event only). */
 export async function applicationFileResponse(fileId: string): Promise<Response> {
-  const repo = await applicationsRepository();
-  const file = await repo.getFile(fileId);
-  const owner = file ? await repo.findByFile(fileId) : null;
+  // The bytes sit in a private bucket only the service role reaches; who may open them follows the event.
+  const file = await (await applicationsRepository('service')).getFile(fileId);
+  const owner = file ? await (await applicationsRepository('session')).findByFile(fileId) : null;
   const session = owner ? await authorize('view', 'applications', { eventId: owner.eventId }) : null;
   if (!file || !owner || !session) return new Response('Not found', { status: 404 });
   return new Response(file.bytes as BodyInit, {

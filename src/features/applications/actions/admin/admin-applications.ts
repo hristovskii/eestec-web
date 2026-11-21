@@ -39,7 +39,7 @@ export async function setApplicationsStatus(input: unknown): Promise<ActionResul
   const { eventId, ids, status } = parsed.data;
   const session = await authorize('edit', 'applications', { eventId });
   if (!session) return { ok: false, error: 'forbidden' };
-  const repo = await applicationsRepository();
+  const repo = await applicationsRepository('session');
   const changed = await repo.setStatus(eventId, ids, status);
   if (changed.length > 0) {
     const title = (await listEventOptions()).find((event) => event.id === eventId)?.title ?? eventId;
@@ -63,7 +63,7 @@ export async function markApplicationRead(input: unknown): Promise<ActionResult>
   if (!parsed.success) return { ok: false, error: 'unexpected' };
   const session = await authorize('view', 'applications', { eventId: parsed.data.eventId });
   if (!session) return { ok: false, error: 'forbidden' };
-  const repo = await applicationsRepository();
+  const repo = await applicationsRepository('session');
   const application = await repo.get(parsed.data.id);
   if (!application || application.eventId !== parsed.data.eventId) return { ok: false, error: 'not_found' };
   if (!application.readAt) {

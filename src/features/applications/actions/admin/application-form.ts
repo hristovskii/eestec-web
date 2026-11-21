@@ -51,7 +51,7 @@ export async function saveApplicationForm(input: unknown): Promise<ActionResult<
   if (!parsed.success)
     return { ok: false, error: 'validation', fieldErrors: fieldErrorsFrom(parsed.error.issues) };
   const form = normalizeForm(parsed.data);
-  const saved = await (await applicationsRepository()).saveForm({ eventId, ...form });
+  const saved = await (await applicationsRepository('session')).saveForm({ eventId, ...form });
   await afterChange(context, eventId);
   return ok(saved);
 }
@@ -62,7 +62,7 @@ export async function resetApplicationForm(input: unknown): Promise<ActionResult
   if (!parsed.success) return { ok: false, error: 'unexpected' };
   const context = await changed(parsed.data.eventId, 'application form reset to the default questions');
   if (!context) return { ok: false, error: 'forbidden' };
-  await (await applicationsRepository()).deleteForm(parsed.data.eventId);
+  await (await applicationsRepository('session')).deleteForm(parsed.data.eventId);
   await afterChange(context, parsed.data.eventId);
   return ok(undefined);
 }
