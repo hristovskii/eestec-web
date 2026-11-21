@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(13);
+select plan(22);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -55,5 +55,23 @@ select is((select count(*)::integer from public.board_roles where title = 'Presi
 select throws_ok($$select public.save_site_settings('{"settings":{}}')$$,'22023',null,'an incomplete payload is refused');
 select lives_ok($$select public.save_site_settings(pg_temp.payload('Chair'))$$,'saving again replaces the roles');
 select is((select count(*)::integer from public.board_roles),1,'removed roles are gone');
+-- partners: packages, tiers, sponsor order
+reset role;
+insert into public.sponsor_tiers(id,name,size) values ('a3000000-0000-0000-0000-000000000001','{"mk":"Gold"}','large'),('a3000000-0000-0000-0000-000000000002','{"mk":"Silver"}','small');
+insert into public.sponsors(id,name,tier_id,sort_order) values
+ ('a4000000-0000-0000-0000-000000000001','A','a3000000-0000-0000-0000-000000000001',0),
+ ('a4000000-0000-0000-0000-000000000002','B','a3000000-0000-0000-0000-000000000002',1),
+ ('a4000000-0000-0000-0000-000000000003','C','a3000000-0000-0000-0000-000000000001',2);
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000003');
+select throws_ok($$select public.reorder_sponsors('a3000000-0000-0000-0000-000000000001',array['a4000000-0000-0000-0000-000000000003','a4000000-0000-0000-0000-000000000001']::uuid[])$$,'42501',null,'a member cannot reorder sponsors');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is(public.reorder_sponsors('a3000000-0000-0000-0000-000000000001',array['a4000000-0000-0000-0000-000000000003','a4000000-0000-0000-0000-000000000001']::uuid[]),true,'the sponsors of a tier take the new order');
+select is((select array_agg(name order by sort_order) from public.sponsors),array['C','B','A'],'they keep the slots they had in the overall list');
+select is(public.reorder_sponsors('a3000000-0000-0000-0000-000000000001',array['a4000000-0000-0000-0000-000000000003']::uuid[]),false,'a partial list changes nothing');
+select is(public.save_sponsor_tiers('[{"id":"a3000000-0000-0000-0000-000000000002","name":{"mk":"Silver"},"size":"small"}]')->>'status','in_use','a tier with sponsors cannot be removed');
+select is(public.save_sponsor_tiers('[{"id":"a3000000-0000-0000-0000-000000000002","name":{"mk":"Silver"},"size":"small"},{"id":"a3000000-0000-0000-0000-000000000001","name":{"mk":"Gold"},"size":"large"},{"id":"new","name":{"mk":"Bronze"},"size":"small"}]')->>'status','ok','tiers save in the given order and new ones are added');
+select is((select name->>'mk' from public.sponsor_tiers order by sort_order limit 1),'Silver','the order of the tiers follows the list');
+select lives_ok($$select public.save_partners_page('{"hero":{}}','[{"name":{"mk":"A"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":true},{"name":{"mk":"B"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":false}]')$$,'the page and its packages save together');
+select throws_ok($$select public.save_partners_page('{"hero":{}}','[{"name":{"mk":"A"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":true},{"name":{"mk":"B"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":true}]')$$,'22023',null,'two highlighted packages are refused');
 select * from finish();
 rollback;

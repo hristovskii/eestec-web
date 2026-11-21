@@ -23,7 +23,6 @@ const PENDING = [
   'members',
   'memories',
   'notes',
-  'partners',
   'partner-inquiries',
 ];
 

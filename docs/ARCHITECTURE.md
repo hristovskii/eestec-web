@@ -1354,6 +1354,11 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Migration `0016` also lets everyone read media rows without a bucket (files shipped in `/public` and sample placeholders): without it a visitor could not read the row behind an image that points at one.
 - The settings contract suite now restores what it saves (it shares the database with the other suites and with re-runs).
 
+**Notes from building (M20c, partners)**
+
+- The For Companies page: the text is the `partners` page row with its package list emptied; the packages are `partner_packages` and are the source of truth for the list on read. Saving is one call (`save_partners_page`, migration `0017`): the highlight ("Most chosen") moves in three steps so the unique index never sees two, packages keep their ids and the rest are removed. Tiers save through `save_sponsor_tiers` (a tier that still has sponsors is answered as `in_use` with its ids, not raised); `reorder_sponsors` gives a tier's sponsors a new order inside the slots they had.
+- Sponsors are listed in one board order and a new one goes last overall (`0017` makes the append trigger global; the page groups them by tier). Visitors see active sponsors by RLS; the board sees all. Removing a sponsor that events still list as a partner is refused by the foreign key (`DataError('in_use')`); the admin action answers `conflict`.
+
 ## Verification
 
 **Per milestone:**

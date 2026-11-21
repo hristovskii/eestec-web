@@ -1,15 +1,21 @@
 import 'server-only';
 
 import { type RepoScope, selectImplementation } from '@/shared/data/select-implementation';
+import { withClient } from '@/shared/data/supabase/clients';
 
 import { createMockInquiriesRepository } from './inquiries.mock';
 import type { InquiriesRepository } from './inquiries.repository';
 import { createMockPartnersRepository } from './partners.mock';
+import { createSupabasePartnersRepository } from './partners.supabase';
 import type { PartnersRepository } from './partners.repository';
 
 /** Public reads are cookie-less; admin writes check permissions in their actions. */
 export const partnersRepository = (scope: RepoScope = 'public') =>
-  selectImplementation<PartnersRepository>('partners', { mock: createMockPartnersRepository }, scope);
+  selectImplementation<PartnersRepository>(
+    'partners',
+    { mock: createMockPartnersRepository, supabase: withClient(createSupabasePartnersRepository) },
+    scope,
+  );
 
 /** Inquiries come from anonymous visitors (the form) and are read by the board; actions check who may do what. */
 export const inquiriesRepository = (scope: RepoScope = 'public') =>
