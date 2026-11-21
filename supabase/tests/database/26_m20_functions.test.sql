@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(22);
+select plan(27);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -73,5 +73,22 @@ select is(public.save_sponsor_tiers('[{"id":"a3000000-0000-0000-0000-00000000000
 select is((select name->>'mk' from public.sponsor_tiers order by sort_order limit 1),'Silver','the order of the tiers follows the list');
 select lives_ok($$select public.save_partners_page('{"hero":{}}','[{"name":{"mk":"A"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":true},{"name":{"mk":"B"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":false}]')$$,'the page and its packages save together');
 select throws_ok($$select public.save_partners_page('{"hero":{}}','[{"name":{"mk":"A"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":true},{"name":{"mk":"B"},"text":{"mk":""},"price_text":{"mk":""},"cta":{"mk":""},"highlighted":true}]')$$,'22023',null,'two highlighted packages are refused');
+-- events: who saved last, and events with applications are not deleted
+reset role;
+insert into public.event_types(id,name) values ('a5000000-0000-0000-0000-000000000001','{"mk":"Type"}');
+insert into public.events(id,slug,title,short_description,scope,type_id,starts_at,ends_at,location,city,country,description,requirements,seo_title,seo_description,status,updated_by) values
+ ('a6000000-0000-0000-0000-000000000001','with-applicants','{"mk":"A"}','{"mk":"S"}','local','a5000000-0000-0000-0000-000000000001',now()+interval '1 day',now()+interval '2 days','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','draft','a1000000-0000-0000-0000-000000000001'),
+ ('a6000000-0000-0000-0000-000000000002','without-applicants','{"mk":"B"}','{"mk":"S"}','local','a5000000-0000-0000-0000-000000000001',now()+interval '1 day',now()+interval '2 days','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','{"mk":""}','draft',null);
+insert into public.applications(event_id,reference,name,email,status,locale) values ('a6000000-0000-0000-0000-000000000001','APP-0001','X','x@test.mk','pending','en');
+insert into public.event_managers(event_id,user_id) values ('a6000000-0000-0000-0000-000000000001','a1000000-0000-0000-0000-000000000002');
+select pg_temp.visitor();
+select throws_ok($$select * from public.events_updated_by(array['a6000000-0000-0000-0000-000000000001']::uuid[])$$,'42501',null,'visitors cannot ask who edited');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is((select name from public.events_updated_by(array['a6000000-0000-0000-0000-000000000001']::uuid[])),'Edi Editor','staff see who saved last');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000002');
+select is((select count(*)::integer from public.events_updated_by(array['a6000000-0000-0000-0000-000000000001','a6000000-0000-0000-0000-000000000002']::uuid[])),1,'a manager only for their events (and only where an editor is recorded)');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is(public.remove_events(array['a6000000-0000-0000-0000-000000000001','a6000000-0000-0000-0000-000000000002']::uuid[]),array['a6000000-0000-0000-0000-000000000002']::uuid[],'an event without applications is deleted');
+select is((select count(*)::integer from public.events where id = 'a6000000-0000-0000-0000-000000000001'),1,'an event with applications stays');
 select * from finish();
 rollback;

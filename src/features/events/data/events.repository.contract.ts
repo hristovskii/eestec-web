@@ -6,8 +6,27 @@ import type { EventInput, EventsRepository, EventTaxonomyRepository } from './ev
 // Runs against every implementation (mock now, Supabase in M20). Each test creates what it
 // changes, so the suite works on a shared, seeded database.
 
+/**
+ * Maps a fixture id of the mock data ("ev-power-up-2026") to the id the implementation under test uses:
+ * the mock keeps it, the Supabase seed derives a UUID from it. Call `setFixtureIds` before describing.
+ */
+let idOf = (_table: string, id: string) => id;
+export const setFixtureIds = (map: (table: string, id: string) => string) => {
+  idOf = map;
+};
+
 const NOW = new Date('2026-10-04T18:18:00+02:00');
-const editor = { userId: 'u-test', name: 'Test Editor' };
+let editor = { userId: 'u-test', name: 'Test Editor' };
+/** Who the suite saves as: a database records the signed-in account, so its tests pass theirs. */
+export const setContractEditor = (who: { userId: string; name: string }) => {
+  editor = who;
+};
+
+/** What an implementation enforces on its own: the database refuses to publish an image without alt text. */
+let allowsPublishedWithoutAlt = true;
+export const setContractOptions = (options: { publishedWithoutAlt: boolean }) => {
+  allowsPublishedWithoutAlt = options.publishedWithoutAlt;
+};
 const query = (patch: Partial<AdminEventsQuery> = {}): AdminEventsQuery => ({
   sort: 'smart',
   page: 1,
@@ -23,7 +42,7 @@ export const eventInput = (patch: Partial<EventInput> = {}): EventInput => ({
   title: { mk: 'Contract test event' },
   shortDescription: { mk: 'A short description.' },
   scope: 'local',
-  typeId: 'type-workshop',
+  typeId: idOf('event_types', 'type-workshop'),
   topicIds: [],
   partnerIds: [],
   startsAt: '2026-12-01T10:00:00+01:00',
@@ -84,8 +103,8 @@ export function describeEventsRepository(
     it('lists the listed events that have started for the public pickers, newest first', async () => {
       const options = await (await createRepo()).listStarted({ locale: 'en', now: NOW, justEndedDays: 14 });
       expect(options.length).toBeGreaterThan(0);
-      expect(options.map((option) => option.id)).toContain('ev-power-up-2026');
-      expect(options.map((option) => option.id)).not.toContain('ev-ai-at-the-edge');
+      expect(options.map((option) => option.id)).toContain(idOf('events', 'ev-power-up-2026'));
+      expect(options.map((option) => option.id)).not.toContain(idOf('events', 'ev-ai-at-the-edge'));
       const times = options.map((option) => Date.parse(option.startsAt));
       expect(times).toEqual([...times].sort((a, b) => b - a));
       expect(times.every((time) => time <= NOW.getTime())).toBe(true);
@@ -95,13 +114,18 @@ export function describeEventsRepository(
       const repo = await createRepo();
       const context = { locale: 'en' as const, now: NOW, justEndedDays: 14 };
       const found = await repo.listByIds(
-        ['ev-ai-at-the-edge', 'ev-power-up-2026', 'ev-eestech-challenge-2025', 'ev-nope'],
+        [
+          idOf('events', 'ev-ai-at-the-edge'),
+          idOf('events', 'ev-power-up-2026'),
+          idOf('events', 'ev-eestech-challenge-2025'),
+          idOf('events', 'ev-nope'),
+        ],
         context,
       );
       expect(found.map((event) => event.id)).toEqual([
-        'ev-ai-at-the-edge',
-        'ev-power-up-2026',
-        'ev-eestech-challenge-2025',
+        idOf('events', 'ev-ai-at-the-edge'),
+        idOf('events', 'ev-power-up-2026'),
+        idOf('events', 'ev-eestech-challenge-2025'),
       ]);
       expect(found.map((event) => event.timing)).toEqual(['upcoming', 'past', 'past']);
       expect(await repo.listByIds([], context)).toEqual([]);
@@ -143,7 +167,7 @@ export function describeEventsRepository(
         query({
           q: event.title.mk.toLowerCase(),
           status: 'draft',
-          typeId: 'type-workshop',
+          typeId: idOf('event_types', 'type-workshop'),
           year: 2031,
           scope: 'international',
         }),
@@ -244,14 +268,15 @@ export function describeEventsRepository(
       await make({ startsAt: '2026-12-01T10:00:00+01:00', endsAt: '2026-12-01T18:00:00+01:00' });
 
       const { items } = await repo.listArchive(archiveQuery({ q: marker.toLowerCase() }));
-      expect(items.map((event) => event.startsAt)).toEqual([
-        '2026-06-02T10:00:00+02:00',
-        '2026-06-01T10:00:00+02:00',
+      // The same instants, whatever offset the implementation writes them with.
+      expect(items.map((event) => Date.parse(event.startsAt))).toEqual([
+        Date.parse('2026-06-02T10:00:00+02:00'),
+        Date.parse('2026-06-01T10:00:00+02:00'),
       ]);
       const all = await repo.listArchive(archiveQuery());
       expect(all.items.every((event) => Date.parse(event.endsAt) < NOW.getTime())).toBe(true);
       const oldest = await repo.listArchive(archiveQuery({ q: marker.toLowerCase(), sort: 'oldest' }));
-      expect(oldest.items[0]?.startsAt).toBe('2026-06-01T10:00:00+02:00');
+      expect(Date.parse(oldest.items[0]!.startsAt)).toBe(Date.parse('2026-06-01T10:00:00+02:00'));
     });
 
     it('lists past events of both categories when no scope is given (Home › Latest activity)', async () => {
@@ -266,9 +291,13 @@ export function describeEventsRepository(
     it('filters the archive by type and year and counts both categories', async () => {
       const repo = await createRepo();
       const marker = `Facet ${unique()}`;
-      await repo.save(past('2019-03-01', { title: { mk: marker }, typeId: 'type-social' }), editor, NOW);
+      await repo.save(
+        past('2019-03-01', { title: { mk: marker }, typeId: idOf('event_types', 'type-social') }),
+        editor,
+        NOW,
+      );
       const byYear = await repo.listArchive(
-        archiveQuery({ q: marker.toLowerCase(), year: 2019, typeId: 'type-social' }),
+        archiveQuery({ q: marker.toLowerCase(), year: 2019, typeId: idOf('event_types', 'type-social') }),
       );
       expect(byYear.total).toBe(1);
       expect((await repo.listArchive(archiveQuery({ q: marker.toLowerCase(), year: 2020 }))).total).toBe(0);
@@ -293,23 +322,26 @@ export function describeEventsRepository(
       expect(await repo.findBySlug('no-such-event', context)).toBeNull();
     });
 
-    it('lifts the first heading of the description and drops images without alt text', async () => {
-      const repo = await createRepo();
-      const event = await create(repo, {
-        ...past('2026-05-01'),
-        description: { mk: '<h3>About the lecture</h3><p>Text</p>' },
-        cover: { mediaId: 'media-soft-skills', alt: null },
-        gallery: [
-          { mediaId: 'media-power-up', alt: 'Solar plant' },
-          { mediaId: 'media-career-day', alt: null },
-        ],
-      });
-      const detail = await repo.findBySlug(event.slug, context);
-      expect(detail?.aboutTitle?.text).toBe('About the lecture');
-      expect(detail?.description.text).toBe('<p>Text</p>');
-      expect(detail?.cover).toBeNull();
-      expect(detail?.gallery.map((photo) => photo.mediaId)).toEqual(['media-power-up']);
-    });
+    it.skipIf(!allowsPublishedWithoutAlt)(
+      'lifts the first heading of the description and drops images without alt text',
+      async () => {
+        const repo = await createRepo();
+        const event = await create(repo, {
+          ...past('2026-05-01'),
+          description: { mk: '<h3>About the lecture</h3><p>Text</p>' },
+          cover: { mediaId: idOf('media', 'media-soft-skills'), alt: null },
+          gallery: [
+            { mediaId: idOf('media', 'media-power-up'), alt: 'Solar plant' },
+            { mediaId: idOf('media', 'media-career-day'), alt: null },
+          ],
+        });
+        const detail = await repo.findBySlug(event.slug, context);
+        expect(detail?.aboutTitle?.text).toBe('About the lecture');
+        expect(detail?.description.text).toBe('<p>Text</p>');
+        expect(detail?.cover).toBeNull();
+        expect(detail?.gallery.map((photo) => photo.mediaId)).toEqual([idOf('media', 'media-power-up')]);
+      },
+    );
 
     it('links to the previous and next event in the archive', async () => {
       const repo = await createRepo();
@@ -437,8 +469,10 @@ export function describeEventTaxonomyRepository(
         status: 'replacement_required',
         eventCount: 1,
       });
-      expect(await taxonomy.remove('types', type.id, 'type-workshop')).toEqual({ status: 'removed' });
-      expect((await events.get(event.id))?.typeId).toBe('type-workshop');
+      expect(await taxonomy.remove('types', type.id, idOf('event_types', 'type-workshop'))).toEqual({
+        status: 'removed',
+      });
+      expect((await events.get(event.id))?.typeId).toBe(idOf('event_types', 'type-workshop'));
       expect((await taxonomy.list('types')).some((item) => item.id === type.id)).toBe(false);
     });
 
