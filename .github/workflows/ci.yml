@@ -72,11 +72,13 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # Database, Auth and Storage are enough: the migrations need the auth and storage schemas.
-      - run: pnpm exec supabase start -x realtime,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor,postgrest
+      # Database, Auth, Storage and the API (PostgREST, for the contract suites) are enough.
+      - run: pnpm exec supabase start -x realtime,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
       - run: pnpm exec supabase db reset
       - run: pnpm exec supabase test db
       - run: bash supabase/tests/application-concurrency.sh
       - run: bash supabase/tests/member-content-concurrency.sh
       - run: pnpm exec supabase db lint --fail-on error
+      # The repositories' contract suites against the migrated and seeded database.
+      - run: pnpm test:supabase
       - run: pnpm db:types && git diff --exit-code -- src/shared/data/supabase/database.types.ts
