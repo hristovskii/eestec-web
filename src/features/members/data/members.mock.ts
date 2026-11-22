@@ -5,8 +5,16 @@ import { mockTable } from '@/shared/data/mock/store';
 import { slugify } from '@/shared/lib/slug';
 
 import { adminMembers } from '../domain/admin-directory';
-import { type Directory, activeMembers, alumniList, boardView, profileResult } from '../domain/directory';
-import { canSee, isRestrictedFor } from '../domain/visibility';
+import {
+  type Directory,
+  activeMembers,
+  alumniList,
+  boardView,
+  findAuthors,
+  profileResult,
+} from '../domain/directory';
+import { canSee } from '../domain/visibility';
+import { NO_CONSENTS, profileFromContext } from '../domain/mine-profile';
 import { isReservedUsername } from '../domain/profile-self';
 import type {
   Badge,
@@ -39,13 +47,6 @@ type Tables = {
   cvs: Record<string, { info: CvInfo; bytes: Uint8Array | null }>;
   /** Partners' CV exports (the admin export that writes here comes later): [{ userId, at }]. */
   cvExports: { userId: string; at: string }[];
-};
-
-const NO_CONSENTS: MemberConsents = {
-  newsletter: false,
-  galleryName: false,
-  cvOptIn: false,
-  cvConsentAt: null,
 };
 
 const tables = () =>
@@ -83,32 +84,6 @@ export function profileFromIdentity(identity: ApprovedMemberIdentity): Profile {
     alumniNow: null,
     alumniHighlight: null,
     faculty: identity.faculty,
-    teams: [],
-    badges: [],
-    events: [],
-  };
-}
-
-/** The profile a person has before anything is stored: what they gave at sign-up, no team, member since then. */
-function profileFromContext(who: MineContext): Profile {
-  return {
-    userId: who.userId,
-    username: who.username,
-    name: who.name,
-    photo: who.photoUrl ? { src: who.photoUrl } : null,
-    hidePhoto: false,
-    bio: '',
-    hideBio: false,
-    linkedinUrl: '',
-    githubUrl: '',
-    visibility: who.visibility,
-    // Waiting for the board: nobody sees it.
-    status: who.pending ? 'inactive' : 'active',
-    memberSince: who.since.slice(0, 10),
-    activeTo: null,
-    alumniNow: null,
-    alumniHighlight: null,
-    faculty: who.faculty,
     teams: [],
     badges: [],
     events: [],
@@ -166,21 +141,7 @@ export function createMockMembersRepository(
       return structuredClone(boardView(await directory(), label));
     },
     async findAuthors(audience, userIds) {
-      const { profiles, teams } = await directory();
-      const wanted = new Set(userIds);
-      return structuredClone(
-        profiles
-          .filter((profile) => wanted.has(profile.userId))
-          .map((profile) => ({
-            profile,
-            page: canSee(audience, profile)
-              ? ('full' as const)
-              : isRestrictedFor(audience, profile)
-                ? ('restricted' as const)
-                : ('none' as const),
-            teams: profile.teams.flatMap((entry) => teams.filter((team) => team.id === entry.teamId)),
-          })),
-      );
+      return structuredClone(findAuthors(await directory(), audience, userIds));
     },
     async getProfile(audience, username, currentYear) {
       return structuredClone(profileResult(await directory(), audience, username, currentYear));

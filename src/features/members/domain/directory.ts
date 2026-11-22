@@ -4,6 +4,7 @@ import type {
   AlumniList,
   AlumniQuery,
   Audience,
+  AuthorFound,
   Badge,
   BoardMandate,
   BoardView,
@@ -41,6 +42,8 @@ export function activeMembers(
   audience: Audience,
   query: ActiveMembersQuery,
   currentYear: number,
+  /** A database tells a visitor how many members-only profiles exist even when it does not hand them over. */
+  knownHiddenCount = 0,
 ): ActiveMembers {
   const needle = lower(query.q ?? '');
   const teams = [...directory.teams].sort(byTeamOrder);
@@ -96,7 +99,9 @@ export function activeMembers(
     allCount: matching.length,
     visibleTotal: visible.length,
     hiddenCount:
-      audience === 'visitor' ? active.filter((profile) => profile.visibility === 'members_only').length : 0,
+      audience === 'visitor'
+        ? Math.max(knownHiddenCount, active.filter((profile) => profile.visibility === 'members_only').length)
+        : 0,
     teams,
   };
 }
@@ -197,4 +202,32 @@ export function profileResult(
     }),
     role: memberRole(profile.teams, profile.memberSince, currentYear),
   };
+}
+
+/** The people behind these ids as authors: the name always, the rest only as far as this audience may see it. Unknown ids are left out. */
+export function findAuthors(
+  directory: Directory,
+  audience: Audience,
+  userIds: readonly string[],
+): AuthorFound[] {
+  const wanted = new Set(userIds);
+  return directory.profiles
+    .filter((profile) => wanted.has(profile.userId))
+    .map((profile) => {
+      const page = canSee(audience, profile)
+        ? 'full'
+        : isRestrictedFor(audience, profile)
+          ? 'restricted'
+          : 'none';
+      return {
+        userId: profile.userId,
+        name: profile.name,
+        username: page === 'none' ? null : profile.username,
+        page,
+        photo: page === 'full' ? photoOf(profile) : null,
+        bio: page === 'full' && !profile.hideBio ? profile.bio : '',
+        since: yearOf(profile.memberSince),
+        teams: teamsOf(directory, profile).map((team) => team.name),
+      };
+    });
 }

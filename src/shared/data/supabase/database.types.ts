@@ -2524,7 +2524,7 @@ export type Database = {
         Args: { p_body: string; p_entity_id: string; p_entity_type: string };
         Returns: string;
       };
-      admin_save_member: { Args: { p_edit: Json; p_user: string }; Returns: boolean };
+      admin_save_member: { Args: { p_edit: Json; p_now?: string; p_user: string }; Returns: boolean };
       application_answer_counts: { Args: { p_event: string }; Returns: Json };
       application_availability: {
         Args: { p_event_ids: string[] };
@@ -2554,6 +2554,7 @@ export type Database = {
         Returns: {
           bio: string;
           full_name: string;
+          page: string;
           photo_bucket: string;
           photo_path: string;
           photo_public_path: string;
@@ -2644,6 +2645,7 @@ export type Database = {
         }[];
       };
       media_usage: { Args: { p_id: string }; Returns: Json };
+      members_directory: { Args: Record<PropertyKey, never>; Returns: Json };
       members_hidden_count: { Args: Record<PropertyKey, never>; Returns: number };
       memory_admin_remove: { Args: { p_id: string }; Returns: boolean };
       memory_admin_save: {
@@ -2669,6 +2671,7 @@ export type Database = {
         Returns: undefined;
       };
       my_cv_export_count: { Args: { p_year: number }; Returns: number };
+      my_profile: { Args: { p_year: number }; Returns: Json };
       next_reference_number: { Args: { p_kind: string; p_year: number }; Returns: number };
       profile_events: {
         Args: { p_profile: string };
@@ -2678,6 +2681,7 @@ export type Database = {
           event_role: string;
         }[];
       };
+      profile_json: { Args: { p_id: string }; Returns: Json };
       profile_restricted: {
         Args: { p_username: string };
         Returns: {
@@ -2816,6 +2820,7 @@ export type Database = {
         };
         Returns: Json;
       };
+      update_my_profile: { Args: { p_edit: Json }; Returns: Json };
       update_submission: {
         Args: {
           p_id: string;
@@ -2826,6 +2831,7 @@ export type Database = {
         };
         Returns: boolean;
       };
+      username_taken: { Args: { p_except?: string; p_username: string }; Returns: boolean };
       uuid_or_null: { Args: { p_text: string }; Returns: string };
       verified_email_matches: { Args: { p_email: string }; Returns: boolean };
       withdraw_application: { Args: { p_id: string }; Returns: boolean };

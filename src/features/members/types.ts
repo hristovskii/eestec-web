@@ -179,6 +179,26 @@ export type AuthorCardData = {
   bio: string;
 };
 
+/**
+ * A person as the author of something (a Memory), already reduced to what this viewer may see: the name always; the
+ * page, photo and bio only as far as the visibility rule lets them. `page` says what opening the profile gives.
+ */
+export type AuthorFound = {
+  userId: string;
+  name: string;
+  /** null: there is no page to link to (page "none"). */
+  username: string | null;
+  page: 'full' | 'restricted' | 'none';
+  /** Only with a full page, and not when the board hid it. */
+  photo: ProfilePhoto | null;
+  /** '' when hidden, empty or not for this viewer. */
+  bio: string;
+  /** Year the person joined. */
+  since: number;
+  /** Team names (every team the person is in, in the board's order). */
+  teams: Localized[];
+};
+
 /** What /members/<username> may show the viewer. */
 export type ProfileResult =
   | {

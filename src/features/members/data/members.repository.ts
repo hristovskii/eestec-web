@@ -2,6 +2,7 @@ import type { Paged } from '@/shared/data/paged';
 
 import type {
   ActiveMembers,
+  AuthorFound,
   AdminMemberCounts,
   AdminMembersQuery,
   ActiveMembersQuery,
@@ -57,10 +58,7 @@ export interface MembersRepository {
    * The people behind these ids as authors: name always; the page, photo and bio only as far as the
    * visibility rule lets this audience see them. Unknown ids are left out.
    */
-  findAuthors(
-    audience: Audience,
-    userIds: readonly string[],
-  ): Promise<{ profile: Profile; page: 'full' | 'restricted' | 'none'; teams: Team[] }[]>;
+  findAuthors(audience: Audience, userIds: readonly string[]): Promise<AuthorFound[]>;
   /** Usernames of every profile that is public, for the sitemap. */
   listPublicUsernames(): Promise<string[]>;
 

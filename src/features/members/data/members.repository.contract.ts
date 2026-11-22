@@ -68,10 +68,22 @@ async function withEdit(
   }
 }
 
+export type MembersContractOptions = {
+  /** Maps a fixture id ("u-marija", "t-events") to the id the implementation uses (the seed derives UUIDs). */
+  ids?: (id: string) => string;
+  /**
+   * "My profile" acts as people who exist only for the mock (made-up ids, drafts, files kept in memory); a database
+   * suite covers that part with real accounts in its own file.
+   */
+  mine?: boolean;
+};
+
 export function describeMembersRepository(
   name: string,
   createRepo: () => MembersRepository | Promise<MembersRepository>,
+  options: MembersContractOptions = {},
 ) {
+  const id = options.ids ?? ((fixtureId: string) => fixtureId);
   describe(`MembersRepository (${name})`, () => {
     it('shows visitors public profiles only, and counts the members-only ones without naming them', async () => {
       const repo = await createRepo();
@@ -88,13 +100,11 @@ export function describeMembersRepository(
 
     it('gives authors their name always, and the page and photo only as far as the audience may see', async () => {
       const repo = await createRepo();
-      const ids = ['u-marija', 'u-daniel', 'u-nobody'];
+      const ids = [id('u-marija'), id('u-daniel'), id('u-nobody')];
       const visitor = await repo.findAuthors('visitor', ids);
       const member = await repo.findAuthors('member', ids);
-      expect(member.map((author) => author.profile.userId).sort()).toEqual(['u-daniel', 'u-marija']);
-      expect(visitor.map((author) => author.profile.name).sort()).toEqual(
-        member.map((author) => author.profile.name).sort(),
-      );
+      expect(member.map((author) => author.userId).sort()).toEqual([id('u-daniel'), id('u-marija')].sort());
+      expect(visitor.map((author) => author.name).sort()).toEqual(member.map((author) => author.name).sort());
       expect(member.every((author) => author.page === 'full')).toBe(true);
       // Whatever a visitor may not open is "restricted" (name only) and never "full".
       for (const author of visitor) expect(['full', 'restricted']).toContain(author.page);
@@ -196,7 +206,7 @@ export function describeMembersRepository(
       const restricted = await repo.getProfile('visitor', 'marija-stojanovska', 2026);
       expect(restricted).toEqual({
         kind: 'restricted',
-        userId: 'u-marija',
+        userId: id('u-marija'),
         username: 'marija-stojanovska',
         name: 'Marija Stojanovska',
         teams: [expect.objectContaining({ slug: 'events' })],
@@ -206,11 +216,10 @@ export function describeMembersRepository(
       expect(JSON.stringify(restricted)).not.toMatch(/burek|linkedin|ai-at-the-edge/);
       const full = await repo.getProfile('member', 'marija-stojanovska', 2026);
       expect(full).toMatchObject({ kind: 'full', role: 'lead' });
-      expect(full?.kind === 'full' && full.badges.map((entry) => entry.badge.id)).toEqual([
-        'b-organizer',
-        'b-first-international',
-        'b-team-lead',
-      ]);
+      // The same three badges (an implementation may order them by the day they were awarded).
+      expect(full?.kind === 'full' && full.badges.map((entry) => entry.badge.id).sort()).toEqual(
+        [id('b-organizer'), id('b-first-international'), id('b-team-lead')].sort(),
+      );
       expect(await repo.getProfile('member', 'elena-petrovska', 2026)).toBeNull();
       expect(await repo.getProfile('member', 'nobody-here', 2026)).toBeNull();
     });
@@ -241,9 +250,9 @@ export function describeMembersRepository(
         expect((await repo.adminList(adminQuery({ q: 'ristov' }))).total).toBeGreaterThanOrEqual(2);
         const events = await repo.adminList(adminQuery({ team: 'events' }));
         expect(events.items.length).toBeGreaterThan(0);
-        expect(events.items.every((item) => item.teams.some((entry) => entry.teamId === 't-events'))).toBe(
-          true,
-        );
+        expect(
+          events.items.every((item) => item.teams.some((entry) => entry.teamId === id('t-events'))),
+        ).toBe(true);
         expect((await repo.adminList(adminQuery({ team: 'no-such-team' }))).total).toBe(0);
       });
 
@@ -266,7 +275,7 @@ export function describeMembersRepository(
       it('offers the teams and badges to give', async () => {
         const catalog = await (await createRepo()).getCatalog();
         expect(catalog.teams.map((team) => team.slug)).toEqual(['events', 'it', 'pr', 'hr', 'fr', 'design']);
-        expect(catalog.badges.map((badge) => badge.id)).toContain('b-organizer');
+        expect(catalog.badges.map((badge) => badge.id)).toContain(id('b-organizer'));
       });
 
       it('hides a profile at once from every public list and page, and shows it again when restored', async () => {
@@ -296,19 +305,19 @@ export function describeMembersRepository(
           (edit) => ({
             ...edit,
             teams: [
-              { teamId: 't-events', role: 'member' },
-              { teamId: 't-it', role: 'lead' },
-              { teamId: 't-gone', role: 'member' },
+              { teamId: id('t-events'), role: 'member' },
+              { teamId: id('t-it'), role: 'lead' },
+              { teamId: id('t-gone'), role: 'member' },
             ],
             badges: [
-              { badgeId: 'b-trainer', note: 'Soft skills' },
-              { badgeId: 'b-gone', note: '' },
+              { badgeId: id('b-trainer'), note: 'Soft skills' },
+              { badgeId: id('b-gone'), note: '' },
             ],
           }),
           async (profile) => {
-            expect(profile.teams.map((entry) => entry.teamId)).toEqual(['t-events', 't-it']);
+            expect(profile.teams.map((entry) => entry.teamId)).toEqual([id('t-events'), id('t-it')]);
             expect(profile.badges).toEqual([
-              { badgeId: 'b-trainer', note: 'Soft skills', awardedAt: '2026-10-04' },
+              { badgeId: id('b-trainer'), note: 'Soft skills', awardedAt: '2026-10-04' },
             ]);
             const card = (await repo.listActive('member', query({ q: 'viktor' }), 2026)).items[0];
             expect(card?.role).toBe('lead');
@@ -316,7 +325,7 @@ export function describeMembersRepository(
             // Saving again later keeps the original award day.
             const again = await repo.saveProfile(
               profile.userId,
-              { ...editOf(profile), badges: [{ badgeId: 'b-trainer', note: 'Soft skills 2' }] },
+              { ...editOf(profile), badges: [{ badgeId: id('b-trainer'), note: 'Soft skills 2' }] },
               new Date('2027-01-01T00:00:00Z'),
             );
             expect(again.status === 'saved' && again.profile.badges[0]?.awardedAt).toBe('2026-10-04');
@@ -371,7 +380,7 @@ export function describeMembersRepository(
       it('says when nobody has that id', async () => {
         const repo = await createRepo();
         const before = await adminProfile(repo, 'viktor-trajanov');
-        expect(await repo.saveProfile('u-nobody', editOf(before), NOW)).toEqual({ status: 'not_found' });
+        expect(await repo.saveProfile(id('u-nobody'), editOf(before), NOW)).toEqual({ status: 'not_found' });
       });
 
       describe('teams', () => {
@@ -529,28 +538,28 @@ export function describeMembersRepository(
           const input = mandate();
           const made = await repo.saveMandate(input);
           if (made.status !== 'saved') throw new Error('not saved');
-          const id = made.mandate.id;
+          const mandateId = made.mandate.id;
           try {
             expect(made.mandate).toMatchObject({ isCurrent: false, seats: [] });
             expect(await repo.saveMandate(input)).toEqual({ status: 'duplicate' });
-            const first = await repo.saveSeat(id, {
-              boardRoleId: 'role-chair',
+            const first = await repo.saveSeat(mandateId, {
+              boardRoleId: id('role-chair'),
               title: 'Chair',
-              userId: 'u-marija',
+              userId: id('u-marija'),
             });
-            const second = await repo.saveSeat(id, {
-              boardRoleId: 'role-pr',
+            const second = await repo.saveSeat(mandateId, {
+              boardRoleId: id('role-pr'),
               title: 'PR',
-              userId: 'u-stefan',
+              userId: id('u-stefan'),
             });
             if (first.status !== 'saved' || second.status !== 'saved') throw new Error('not saved');
             expect(second.mandate.seats.map((seat) => seat.title)).toEqual(['Chair', 'PR']);
             // Order, edit and the public page (names come from the profiles, a past board has no e-mails).
             const [a, b] = second.mandate.seats;
-            await repo.reorderSeats(id, [b!.id, a!.id]);
+            await repo.reorderSeats(mandateId, [b!.id, a!.id]);
             await repo.saveSeat(
-              id,
-              { boardRoleId: 'role-pr', title: 'PR and media', userId: 'u-stefan' },
+              mandateId,
+              { boardRoleId: id('role-pr'), title: 'PR and media', userId: id('u-stefan') },
               b!.id,
             );
             const view = await repo.getBoard(input.label);
@@ -558,20 +567,24 @@ export function describeMembersRepository(
               ['PR and media', 'Stefan Nikolovski'],
               ['Chair', 'Marija Stojanovska'],
             ]);
-            expect(await repo.removeSeat(id, a!.id)).toBe(true);
-            expect(await repo.removeSeat(id, a!.id)).toBe(false);
+            expect(await repo.removeSeat(mandateId, a!.id)).toBe(true);
+            expect(await repo.removeSeat(mandateId, a!.id)).toBe(false);
             expect(
-              await repo.saveSeat(id, { boardRoleId: 'role-pr', title: 'x', userId: 'u-nobody' }),
+              await repo.saveSeat(mandateId, {
+                boardRoleId: id('role-pr'),
+                title: 'x',
+                userId: id('u-nobody'),
+              }),
             ).toEqual({
               status: 'person_not_found',
             });
             expect(
-              await repo.saveSeat('nope', { boardRoleId: 'role-pr', title: 'x', userId: 'u-stefan' }),
+              await repo.saveSeat('nope', { boardRoleId: id('role-pr'), title: 'x', userId: id('u-stefan') }),
             ).toEqual({
               status: 'not_found',
             });
           } finally {
-            expect(await repo.removeMandate(id)).toEqual({ status: 'removed' });
+            expect(await repo.removeMandate(mandateId)).toEqual({ status: 'removed' });
           }
           expect((await repo.getBoard(input.label)).selected?.label).toBe('2026/2027');
         });
@@ -609,7 +622,7 @@ export function describeMembersRepository(
       });
     });
 
-    describe('my profile (M16)', () => {
+    describe.runIf(options.mine !== false)('my profile (M16)', () => {
       const person = (patch: Partial<MineContext> = {}): MineContext => {
         const id = unique();
         return {

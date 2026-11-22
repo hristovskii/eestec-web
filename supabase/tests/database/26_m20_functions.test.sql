@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(64);
+select plan(89);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -174,5 +174,51 @@ select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
 select is(public.dashboard_pending()#>>'{items,0,name}','Wait Member','a confirmed registration waits for the board');
 select is(public.dashboard_pending()#>>'{items,0,faculty}','FEEIT','with its faculty');
 select is((public.dashboard_pending()->>'count')::integer,1,'an unconfirmed one does not count');
+-- M20g: members
+reset role;
+insert into auth.users(id,aud,role,email) values
+ ('a9000000-0000-0000-0000-000000000001','authenticated','authenticated','one@test.mk'),
+ ('a9000000-0000-0000-0000-000000000002','authenticated','authenticated','two@test.mk'),
+ ('a9000000-0000-0000-0000-000000000003','authenticated','authenticated','three@test.mk'),
+ ('a9000000-0000-0000-0000-000000000004','authenticated','authenticated','four@test.mk');
+insert into public.profiles(id,username,full_name,visibility,status,member_since) values
+ ('a9000000-0000-0000-0000-000000000001','pub-one','Public One','public','active','2020-05-05'),
+ ('a9000000-0000-0000-0000-000000000002','mem-two','Members Two','members_only','active','2021-06-06'),
+ ('a9000000-0000-0000-0000-000000000003','hid-three','Hidden Three','public','hidden','2022-07-07'),
+ ('a9000000-0000-0000-0000-000000000004','pen-four','Pending Four','members_only','pending',null);
+insert into public.member_accounts(profile_id,faculty,data_consent_at) values
+ ('a9000000-0000-0000-0000-000000000001','FEEIT',now()),('a9000000-0000-0000-0000-000000000002','FINKI',now());
+insert into public.badges(id,name,icon) values ('a9b00000-0000-0000-0000-000000000001','{"mk":"B"}','star');
+select pg_temp.visitor();
+select is(jsonb_array_length(public.members_directory()),1,'a visitor gets the public active profiles only');
+select is((select e->>'faculty' from jsonb_array_elements(public.members_directory()) e where e->>'username' = 'pub-one'),'','and never the faculty');
+select is((select page from public.author_cards(array['a9000000-0000-0000-0000-000000000001']::uuid[])),'full','an author with a public profile has a full page');
+select is((select page from public.author_cards(array['a9000000-0000-0000-0000-000000000002']::uuid[])),'restricted','a members-only author has a restricted page for a visitor');
+select is((select page from public.author_cards(array['a9000000-0000-0000-0000-000000000003']::uuid[])),'none','a hidden author has no page');
+select throws_ok($$select public.username_taken('PUB-ONE')$$,'42501',null,'a visitor cannot probe addresses');
+select pg_temp.act_as('a9000000-0000-0000-0000-000000000002');
+select is(jsonb_array_length(public.members_directory()),2,'a member also gets the members-only profiles');
+select is((select e->>'faculty' from jsonb_array_elements(public.members_directory()) e where e->>'username' = 'mem-two'),'FINKI','a person gets their own faculty');
+select is((select e->>'faculty' from jsonb_array_elements(public.members_directory()) e where e->>'username' = 'pub-one'),'','but not other people’s');
+select is(public.username_taken('PUB-ONE'),true,'an address is taken in any letter case');
+select is(public.username_taken('mem-two','a9000000-0000-0000-0000-000000000002'),false,'but not by oneself');
+select is(public.update_my_profile('{"name":"Members Two","username":"pub-one","faculty":"FINKI"}')->>'status','username_taken','an address another profile has is a result');
+select is(public.update_my_profile('{"name":"Members Two","username":"mem-new","bio":"Hi","faculty":"FINKI"}')->>'status','saved','the edit is saved');
+select is(public.my_profile(2026)#>>'{profile,username}','mem-new','and read back with my_profile');
+select is(public.my_profile(2026)#>>'{consents,newsletter}','false','with every choice off');
+select throws_ok($$select public.profile_json('a9000000-0000-0000-0000-000000000001')$$,'42501',null,'the profile builder is not callable by a member');
+select throws_ok($$select public.admin_save_member('a9000000-0000-0000-0000-000000000001','{"status":"active"}')$$,'42501',null,'a member cannot save another profile');
+select pg_temp.act_as('a9000000-0000-0000-0000-000000000004');
+select is(public.update_my_profile('{"name":"Pending Four","username":"pen-four","bio":"Draft"}')->>'status','saved','a person waiting for the board edits their own profile');
+select is(public.my_profile(2026)#>>'{profile,status}','pending','which is still pending');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000003');
+select is(public.update_my_profile('{"name":"No Row","username":"no-row"}')->>'status','not_found','a person without a profile row has none to edit');
+select is(public.my_profile(2026),null,'and nothing to read');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is(jsonb_array_length(public.members_directory()),3,'staff get hidden profiles too, and never pending ones');
+select is((select e->>'faculty' from jsonb_array_elements(public.members_directory()) e where e->>'username' = 'pub-one'),'FEEIT','and every faculty');
+select is(public.admin_save_member('a9000000-0000-0000-0000-000000000001','{"status":"active","member_since":"2020-05-05","badges":[{"badge_id":"a9b00000-0000-0000-0000-000000000001","note":"n"}]}','2027-03-04 23:30+00'),true,'staff save a profile');
+reset role;
+select is((select awarded_at from public.member_badges where profile_id = 'a9000000-0000-0000-0000-000000000001'),'2027-03-05'::date,'a new badge is awarded on the app’s day in Skopje');
 select * from finish();
 rollback;
