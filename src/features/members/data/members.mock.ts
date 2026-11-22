@@ -1,6 +1,13 @@
 import 'server-only';
 
 import type { ApprovedMemberIdentity } from '@/features/auth';
+import {
+  deleteMockMemberPhoto,
+  photoIdFromUrl,
+  photoUrl,
+  readMockMemberPhoto,
+  saveMockMemberPhoto,
+} from '@/shared/data/mock/member-photos';
 import { mockTable } from '@/shared/data/mock/store';
 import { slugify } from '@/shared/lib/slug';
 
@@ -413,18 +420,33 @@ export function createMockMembersRepository(
       return Promise.resolve();
     },
 
-    setPhoto(who, photoUrl) {
-      const next = photoUrl ? { src: photoUrl } : null;
-      if (who.pending) {
-        const draft = (db.drafts[who.userId] ??= {});
-        const before = draft.photo !== undefined ? draft.photo : who.photoUrl ? { src: who.photoUrl } : null;
-        draft.photo = next;
-        return Promise.resolve(before?.src ?? null);
-      }
-      const profile = storedProfile(who);
-      const before = profile.photo?.src ?? null;
-      profile.photo = next;
-      return Promise.resolve(before);
+    savePhoto(who, photo) {
+      // The file store stands in for Storage; the profile keeps the address, as the database keeps the path.
+      const src = photo ? photoUrl(saveMockMemberPhoto(photo)) : null;
+      const target = who.pending ? (db.drafts[who.userId] ??= {}) : storedProfile(who);
+      const before =
+        who.pending && !('photo' in target) ? (who.photoUrl ?? null) : (target.photo?.src ?? null);
+      target.photo = src ? { src } : null;
+      const oldId = photoIdFromUrl(before);
+      if (oldId) deleteMockMemberPhoto(oldId);
+      return Promise.resolve({ src });
+    },
+
+    getPhotoFile(who) {
+      const stored = db.profiles.find((item) => item.userId === who.userId);
+      const draft = db.drafts[who.userId];
+      const src = stored
+        ? (stored.photo?.src ?? null)
+        : draft && 'photo' in draft
+          ? (draft.photo?.src ?? null)
+          : (who.photoUrl ?? null);
+      const id = photoIdFromUrl(src);
+      return Promise.resolve(id ? readMockMemberPhoto(id) : null);
+    },
+
+    // The mock's photos are delivered by the dev route; there is no private route to serve in this mode.
+    avatarFile() {
+      return Promise.resolve(null);
     },
 
     setConsents(userId, patch, now) {

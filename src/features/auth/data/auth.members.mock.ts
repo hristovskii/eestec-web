@@ -34,7 +34,7 @@ import type { AuthRepository } from './auth.repository';
 import type { AccountRecord } from './fixtures/accounts';
 import { accountDetailsFixture, registrationsFixture, tokensFixture } from './fixtures/members';
 import { SAMPLE_PASSWORD } from './fixtures/personas';
-import { deleteMockMemberPhoto, photoUrl, saveMockMemberPhoto } from './member-photos';
+import { deleteMockMemberPhoto, photoUrl, saveMockMemberPhoto } from '@/shared/data/mock/member-photos';
 import { sendMockMail } from './mailbox';
 
 // The member side of the mock: registrations, e-mail links and passwords. Registered people get an

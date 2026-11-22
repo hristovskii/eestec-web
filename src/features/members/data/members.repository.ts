@@ -39,6 +39,7 @@ import type {
   Team,
   TeamInput,
   TeamWithCount,
+  PhotoFile,
 } from '../types';
 
 /**
@@ -110,8 +111,18 @@ export interface MembersRepository {
   usernameAvailable(userId: string, username: string): Promise<boolean>;
   updateMine(who: MineContext, edit: SelfEdit): Promise<UpdateMineResult>;
   setVisibility(who: MineContext, visibility: ProfileVisibility): Promise<void>;
-  /** A new photo address (null removes the photo). Returns the address the old photo had, to delete its file. */
-  setPhoto(who: MineContext, photoUrl: string | null): Promise<string | null>;
+  /**
+   * Stores a new photo (null removes it) and returns the address that shows now. The file it replaces goes with it.
+   * The caller has checked that the bytes are a JPEG within the size limit (see `PHOTO`).
+   */
+  savePhoto(who: MineContext, photo: PhotoFile | null): Promise<{ src: string | null }>;
+  /** The photo with its content, for "Download my data" (null: no photo, or a sample one without a file). */
+  getPhotoFile(who: MineContext): Promise<PhotoFile | null>;
+  /**
+   * The file behind a private photo address, for the route that delivers it. Null when there is none or this viewer
+   * may not see it: the answer is the same, so the route cannot be used to find out which photos exist.
+   */
+  avatarFile(path: string): Promise<PhotoFile | null>;
   /**
    * Turning CV sharing on records when; turning it off deletes the CV file (decided: partners lose
    * access at once). E-mails and gallery names are plain choices.

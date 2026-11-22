@@ -724,16 +724,29 @@ export function describeMembersRepository(
         });
       });
 
-      it('changes visibility and the photo, and says which photo the old one was', async () => {
+      it('changes visibility', async () => {
         const repo = await createRepo();
-        const who = person({ photoUrl: '/api/dev-member-photos/one' });
+        const who = person();
         await repo.setVisibility(who, 'public');
         expect((await repo.getMine(who, 2026)).profile.visibility).toBe('public');
-        expect(await repo.setPhoto(who, '/api/dev-member-photos/two')).toBe('/api/dev-member-photos/one');
-        expect((await repo.getMine(who, 2026)).profile.photo).toEqual({ src: '/api/dev-member-photos/two' });
-        expect(await repo.setPhoto(who, null)).toBe('/api/dev-member-photos/two');
+      });
+
+      it('stores a photo, replaces it and removes it, and the file is the one that was sent', async () => {
+        const repo = await createRepo();
+        const who = person();
+        const jpeg = (last: number) => new Uint8Array([0xff, 0xd8, 0xff, last]);
+        expect(await repo.getPhotoFile(who)).toBeNull();
+        const first = await repo.savePhoto(who, { mimeType: 'image/jpeg', bytes: jpeg(1) });
+        expect(first.src).toEqual(expect.any(String));
+        expect((await repo.getMine(who, 2026)).profile.photo).toEqual({ src: first.src });
+        expect(await repo.getPhotoFile(who)).toEqual({ mimeType: 'image/jpeg', bytes: jpeg(1) });
+        const second = await repo.savePhoto(who, { mimeType: 'image/jpeg', bytes: jpeg(2) });
+        expect(second.src).not.toBe(first.src);
+        expect(await repo.getPhotoFile(who)).toEqual({ mimeType: 'image/jpeg', bytes: jpeg(2) });
+        expect(await repo.savePhoto(who, null)).toEqual({ src: null });
         expect((await repo.getMine(who, 2026)).profile.photo).toBeNull();
-        expect(await repo.setPhoto(who, null)).toBeNull();
+        expect(await repo.getPhotoFile(who)).toBeNull();
+        expect(await repo.savePhoto(who, null)).toEqual({ src: null });
       });
 
       it('records when CV sharing was turned on, takes a PDF only while it is on, and deletes it when turned off', async () => {

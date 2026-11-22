@@ -327,15 +327,136 @@ describe('MembersRepository (supabase, my profile)', () => {
     expect((await other.repo.getMine(other.who, 2026)).consents.newsletter).toBe(false);
   });
 
-  it('leaves the files and the account deletion to the parts that own them', async () => {
+  const jpeg = (last: number) => new Uint8Array([0xff, 0xd8, 0xff, last]);
+  const pdf = (last: number) => new Uint8Array([37, 80, 68, 70, 45, last]);
+  const folder = async (bucket: string, userId: string) =>
+    (await serviceClient().storage.from(bucket).list(userId)).data ?? [];
+  const queued = async (bucket: string, path: string) =>
+    (
+      await serviceClient()
+        .from('storage_cleanup_queue')
+        .select('reason')
+        .eq('bucket', bucket)
+        .eq('path', path)
+    ).data ?? [];
+
+  it('stores a photo in the person’s own folder and says where it is delivered from', async () => {
     const { who, repo } = await person();
-    const bytes = new Uint8Array([1]);
-    await expect(repo.setPhoto(who, null)).rejects.toBeInstanceOf(NotImplementedError);
-    await expect(repo.storeCv(who.userId, { fileName: 'a.pdf', bytes }, NOW)).rejects.toBeInstanceOf(
-      NotImplementedError,
-    );
-    await expect(repo.removeCv(who.userId)).rejects.toBeInstanceOf(NotImplementedError);
-    await expect(repo.getCvFile(who.userId)).rejects.toBeInstanceOf(NotImplementedError);
+    const { src } = await repo.savePhoto(who, { mimeType: 'image/jpeg', bytes: jpeg(1) });
+    expect(src).toMatch(new RegExp(`^/api/member-photos/${who.userId}/[0-9a-f-]{36}\\.jpg$`));
+    expect((await repo.getMine(who, 2026)).profile.photo).toEqual({ src });
+    expect(await repo.getPhotoFile(who)).toEqual({ mimeType: 'image/jpeg', bytes: jpeg(1) });
+    expect(await folder('avatars', who.userId)).toHaveLength(1);
+  });
+
+  it('delivers a photo only to those who may see the profile, and a refusal looks like a missing file', async () => {
+    const { who, repo } = await person();
+    const { src } = await repo.savePhoto(who, { mimeType: 'image/jpeg', bytes: jpeg(2) });
+    const path = src!.slice('/api/member-photos/'.length);
+    const sees = (client: ReturnType<typeof anonClient>) => repoFor(client).avatarFile(path);
+    const file = { mimeType: 'image/jpeg', bytes: jpeg(2) };
+    // Members only: the owner, other members and staff, not a visitor or another person's request for a made-up path.
+    expect(await sees(anonClient())).toBeNull();
+    expect(await sees(member.client())).toEqual(file);
+    expect(await sees(editor.client())).toEqual(file);
+    expect(await repo.avatarFile(path)).toEqual(file);
+    expect(await sees(member.client())).toEqual(file);
+    expect(await repo.avatarFile(`${who.userId}/${crypto.randomUUID()}.jpg`)).toBeNull();
+    expect(await repo.avatarFile('../etc/passwd')).toBeNull();
+    // Public: everyone. A hidden photo: only the owner and staff.
+    await repo.setVisibility(who, 'public');
+    expect(await sees(anonClient())).toEqual(file);
+    await serviceClient().from('profiles').update({ hide_photo: true }).eq('id', who.userId);
+    expect(await sees(anonClient())).toBeNull();
+    expect(await sees(member.client())).toBeNull();
+    expect(await repo.avatarFile(path)).toEqual(file);
+    expect(await sees(editor.client())).toEqual(file);
+  });
+
+  it('replaces a photo (the old file goes and is queued) and removes it', async () => {
+    const { who, repo } = await person();
+    const first = (await repo.savePhoto(who, { mimeType: 'image/jpeg', bytes: jpeg(1) })).src!;
+    const second = (await repo.savePhoto(who, { mimeType: 'image/jpeg', bytes: jpeg(2) })).src!;
+    expect(second).not.toBe(first);
+    expect(await repo.getPhotoFile(who)).toEqual({ mimeType: 'image/jpeg', bytes: jpeg(2) });
+    expect(await repo.avatarFile(first.slice('/api/member-photos/'.length))).toBeNull();
+    expect(await folder('avatars', who.userId)).toHaveLength(1);
+    expect(await queued('avatars', first.slice('/api/member-photos/'.length))).toHaveLength(1);
+    expect(await repo.savePhoto(who, null)).toEqual({ src: null });
+    expect((await repo.getMine(who, 2026)).profile.photo).toBeNull();
+    expect(await repo.getPhotoFile(who)).toBeNull();
+    expect(await folder('avatars', who.userId)).toHaveLength(0);
+    expect(await repo.savePhoto(who, null)).toEqual({ src: null });
+  });
+
+  it('cannot put a photo into someone else’s folder or onto someone else’s profile', async () => {
+    const mine = await person();
+    const other = await person();
+    await expect(
+      mine.repo.savePhoto(
+        { ...mine.who, userId: other.who.userId },
+        { mimeType: 'image/jpeg', bytes: jpeg(3) },
+      ),
+    ).rejects.toMatchObject({ kind: 'forbidden' });
+    expect(await folder('avatars', other.who.userId)).toHaveLength(0);
+    expect((await other.repo.getMine(other.who, 2026)).profile.photo).toBeNull();
+  });
+
+  it('takes a CV only while sharing is on, keeps it in the person’s folder and hands it back', async () => {
+    const { who, repo } = await person();
+    const file = { fileName: 'cv.pdf', bytes: pdf(1) };
+    expect(await repo.storeCv(who.userId, file, NOW)).toEqual({ status: 'not_opted_in' });
+    expect(await folder('cvs', who.userId)).toHaveLength(0);
+    await repo.setConsents(who.userId, { cvOptIn: true }, NOW);
+    expect(await repo.storeCv(who.userId, file, NOW)).toEqual({
+      status: 'stored',
+      cv: { fileName: 'cv.pdf', size: 6, uploadedAt: NOW.toISOString() },
+    });
+    expect((await repo.getMine(who, 2026)).cv).toEqual({
+      fileName: 'cv.pdf',
+      size: 6,
+      uploadedAt: NOW.toISOString(),
+    });
+    expect(await repo.getCvFile(who.userId)).toEqual({ fileName: 'cv.pdf', size: 6, bytes: pdf(1) });
+    // Nobody else reads it through Storage: not another member, not staff.
+    const path = (await folder('cvs', who.userId))[0]!.name;
+    for (const other of [member, editor])
+      expect(
+        (await other.client().storage.from('cvs').download(`${who.userId}/${path}`)).error,
+      ).not.toBeNull();
+    expect(await repoFor(member.client()).getCvFile(who.userId)).toBeNull();
+  });
+
+  it('replaces the CV (the old file goes and is queued) and removes it, leaving sharing on', async () => {
+    const { who, repo } = await person();
+    await repo.setConsents(who.userId, { cvOptIn: true }, NOW);
+    await repo.storeCv(who.userId, { fileName: 'a.pdf', bytes: pdf(1) }, NOW);
+    const first = `${who.userId}/${(await folder('cvs', who.userId))[0]!.name}`;
+    await repo.storeCv(who.userId, { fileName: 'b.pdf', bytes: pdf(2) }, NOW);
+    expect(await folder('cvs', who.userId)).toHaveLength(1);
+    expect(await queued('cvs', first)).toHaveLength(1);
+    expect(await repo.getCvFile(who.userId)).toMatchObject({ fileName: 'b.pdf', bytes: pdf(2) });
+    expect(await repo.removeCv(who.userId)).toBe(true);
+    expect(await repo.removeCv(who.userId)).toBe(false);
+    expect(await folder('cvs', who.userId)).toHaveLength(0);
+    expect(await repo.getCvFile(who.userId)).toBeNull();
+    expect((await repo.getMine(who, 2026)).consents.cvOptIn).toBe(true);
+  });
+
+  it('deletes the CV file at once when CV sharing is turned off', async () => {
+    const { who, repo } = await person();
+    await repo.setConsents(who.userId, { cvOptIn: true }, NOW);
+    await repo.storeCv(who.userId, { fileName: 'a.pdf', bytes: pdf(1) }, NOW);
+    const path = `${who.userId}/${(await folder('cvs', who.userId))[0]!.name}`;
+    await repo.setConsents(who.userId, { cvOptIn: false }, NOW);
+    expect(await folder('cvs', who.userId)).toHaveLength(0);
+    expect(await repo.getCvFile(who.userId)).toBeNull();
+    expect((await repo.getMine(who, 2026)).cv).toBeNull();
+    expect(await queued('cvs', path)).toHaveLength(1);
+  });
+
+  it('leaves the account deletion to the part that owns it (M20i)', async () => {
+    const { who, repo } = await person();
     await expect(repo.deleteMine(who.userId)).rejects.toBeInstanceOf(NotImplementedError);
   });
 });

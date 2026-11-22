@@ -2702,6 +2702,8 @@ export type Database = {
       remove_event_topic: { Args: { p_id: string }; Returns: boolean };
       remove_event_type: { Args: { p_id: string; p_replacement?: string }; Returns: boolean };
       remove_events: { Args: { p_ids: string[] }; Returns: string[] };
+      remove_my_cv: { Args: Record<PropertyKey, never>; Returns: string };
+      remove_my_photo: { Args: Record<PropertyKey, never>; Returns: string };
       renumber_event_waitlist: { Args: { p_event: string }; Returns: undefined };
       reorder_event_taxonomy: { Args: { p_ids: string[]; p_kind: string }; Returns: boolean };
       reorder_seats: { Args: { p_ids: string[]; p_mandate: string }; Returns: undefined };
@@ -2731,6 +2733,14 @@ export type Database = {
       set_home_committee: { Args: { p_id: string }; Returns: boolean };
       set_inbox_read: { Args: { p_id: string; p_kind: string; p_read_at: string }; Returns: boolean };
       set_inbox_status: { Args: { p_id: string; p_kind: string; p_status: string }; Returns: boolean };
+      set_my_cv: {
+        Args: { p_file_name: string; p_now?: string; p_path: string; p_size: number };
+        Returns: Json;
+      };
+      set_my_photo: {
+        Args: { p_file_name?: string; p_mime: string; p_path: string; p_size: number };
+        Returns: Json;
+      };
       slug_taken: { Args: { p_except?: string; p_slug: string }; Returns: boolean };
       submit_application: {
         Args: {
