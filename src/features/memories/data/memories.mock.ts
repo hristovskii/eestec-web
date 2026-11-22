@@ -3,29 +3,25 @@ import 'server-only';
 
 import { mockTable } from '@/shared/data/mock/store';
 import { paginate } from '@/shared/data/paged';
-import { countWords } from '@/shared/lib/rich-text';
 
 import { changesBetween } from '../domain/memory-changes';
-import { excerptOf, readMinutes } from '../domain/memory-fields';
 import { placeLabel, samePlace } from '../domain/memory-place';
 import { memorySlug } from '../domain/memory-slug';
+import { listItemOf, postOf, summaryOf } from '../domain/memory-views';
 import type {
   AdminMemoryCounts,
   AdminMemoryRow,
   MemoryContent,
   MemoryFacets,
-  MemoryListItem,
-  MemoryPost,
   MemoryQueueItem,
   MemoryRecord,
   MemoryStatus,
-  MemorySummary,
   OwnMemory,
 } from '../types';
 import { MEMORIES_PAGE_SIZE, MEMORY_STATUSES } from '../types';
 import { memoriesFixture } from './fixtures/memories';
 import type { MemoriesRepository } from './memories.repository';
-import { deleteMockMemoryPhoto } from './memory-photos';
+import { deleteMockMemoryPhoto, readMockMemoryPhoto, saveMockMemoryPhoto } from './memory-photos';
 
 const tables = () =>
   mockTable<{ memories: MemoryRecord[] }>('memories', () => ({ memories: memoriesFixture }));
@@ -61,52 +57,6 @@ function dropUnused(before: string[], after: string[]) {
 const yearOf = (record: MemoryRecord) =>
   Number((record.content.happenedOn ?? record.publishedAt ?? record.createdAt).slice(0, 4));
 
-const summary = (record: MemoryRecord): MemorySummary => ({
-  id: record.id,
-  slug: record.slug ?? record.id,
-  title: record.content.title,
-  excerpt: excerptOf(record.content.body),
-  eventId: record.content.eventId,
-  otherEventName: record.content.otherEventName,
-  city: record.content.city,
-  country: record.content.country,
-  cover: record.content.cover,
-  authorId: record.authorId,
-  authorDeleted: record.authorDeleted,
-  publishedAt: record.publishedAt ?? record.updatedAt,
-});
-
-function post(record: MemoryRecord): MemoryPost {
-  const words = countWords(record.content.body);
-  return {
-    ...summary(record),
-    status: record.status,
-    body: record.content.body,
-    happenedOn: record.content.happenedOn,
-    photos: record.content.photos,
-    readMinutes: readMinutes(words),
-    wordCount: words,
-    featuredOnHome: record.featuredOnHome,
-    readsCount: record.readsCount,
-  };
-}
-
-const listItem = (record: MemoryRecord): MemoryListItem => ({
-  id: record.id,
-  slug: record.slug,
-  title: record.content.title,
-  status: record.status,
-  revision: record.status === 'published' && record.revision ? record.revision.status : null,
-  cover: record.content.cover,
-  eventId: record.content.eventId,
-  otherEventName: record.content.otherEventName,
-  rejectionReason: record.status === 'rejected' ? record.rejectionReason : '',
-  publishedAt: record.publishedAt,
-  submittedAt: record.submittedAt,
-  updatedAt: record.updatedAt,
-  readsCount: record.readsCount,
-});
-
 const byNewest = (a: MemoryRecord, b: MemoryRecord) =>
   Date.parse(b.publishedAt ?? b.updatedAt) - Date.parse(a.publishedAt ?? a.updatedAt);
 
@@ -131,7 +81,7 @@ export function createMockMemoriesRepository(): MemoriesRepository {
   });
 
   const adminRow = (record: MemoryRecord): AdminMemoryRow => ({
-    ...listItem(record),
+    ...listItemOf(record),
     authorId: record.authorId,
     authorDeleted: record.authorDeleted,
     featuredOnHome: record.featuredOnHome,
@@ -170,7 +120,7 @@ export function createMockMemoriesRepository(): MemoriesRepository {
       );
       matches.sort(byNewest);
       if (query.sort === 'oldest') matches.reverse();
-      return paginate(matches.map(summary), query.page, MEMORIES_PAGE_SIZE);
+      return paginate(matches.map(summaryOf), query.page, MEMORIES_PAGE_SIZE);
     },
 
     async facets() {
@@ -203,7 +153,7 @@ export function createMockMemoriesRepository(): MemoriesRepository {
 
     async findPost(slug) {
       const record = published().find((candidate) => candidate.slug === slug);
-      return record ? post(record) : null;
+      return record ? postOf(record) : null;
     },
 
     async listByEvent(eventId, { limit, excludeId }) {
@@ -211,7 +161,7 @@ export function createMockMemoriesRepository(): MemoriesRepository {
         .filter((record) => record.content.eventId === eventId && record.id !== excludeId)
         .sort(byNewest)
         .slice(0, limit)
-        .map(summary);
+        .map(summaryOf);
     },
     async countByEvent(eventId) {
       return published().filter((record) => record.content.eventId === eventId).length;
@@ -221,7 +171,7 @@ export function createMockMemoriesRepository(): MemoriesRepository {
         .filter((record) => record.authorId === authorId)
         .sort(byNewest)
         .slice(0, limit)
-        .map(summary);
+        .map(summaryOf);
     },
     async countByAuthor(authorId) {
       return published().filter((record) => record.authorId === authorId).length;
@@ -233,7 +183,7 @@ export function createMockMemoriesRepository(): MemoriesRepository {
         ...rows.filter((record) => !record.featuredOnHome),
       ]
         .slice(0, limit)
-        .map(summary);
+        .map(summaryOf);
     },
     async listSlugs() {
       return published().flatMap((record) => (record.slug ? [record.slug] : []));
@@ -243,11 +193,19 @@ export function createMockMemoriesRepository(): MemoriesRepository {
       if (record) record.readsCount += 1;
     },
 
+    async storePhoto(_userId, photo) {
+      return saveMockMemoryPhoto(photo);
+    },
+    async photoFile(fileId) {
+      const file = readMockMemoryPhoto(fileId);
+      return file ? { mimeType: file.mimeType, bytes: file.bytes } : null;
+    },
+
     async listMine(userId) {
       return all()
         .filter((record) => record.authorId === userId)
         .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
-        .map(listItem);
+        .map(listItemOf);
     },
     async countPublishedBy(userId) {
       return published().filter((record) => record.authorId === userId).length;
@@ -258,7 +216,7 @@ export function createMockMemoriesRepository(): MemoriesRepository {
     },
     async findMinePost(userId, slugOrId) {
       const record = own(userId, { slug: slugOrId }) ?? own(userId, { id: slugOrId });
-      return record ? { post: post(record), own: ownView(record) } : null;
+      return record ? { post: postOf(record), own: ownView(record) } : null;
     },
 
     async saveDraft(userId, id, content, now) {
@@ -438,6 +396,8 @@ export function createMockMemoriesRepository(): MemoriesRepository {
     async adminSave(id, content, { featuredOnHome, revision }, now) {
       const record = find(id);
       if (!record) return null;
+      // As in the database: the revision flag with no revision waiting changes nothing.
+      if (revision && !record.revision) return null;
       if (revision && record.revision) {
         const before = fileIdsOf(record.revision.content);
         record.revision.content = clone(content);

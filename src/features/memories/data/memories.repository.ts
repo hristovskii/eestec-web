@@ -6,6 +6,7 @@ import type {
   MemoriesPage,
   MemoriesQuery,
   MemoryContent,
+  MemoryPhotoFile,
   MemoryFacets,
   MemoryListItem,
   MemoryPost,
@@ -45,6 +46,15 @@ export interface MemoriesRepository {
   listSlugs(): Promise<string[]>;
   /** Counts a read of the post page (not for the author's own views). */
   countRead(slug: string): Promise<void>;
+
+  // ── Photo files ──
+  /** Stores one photo for this member (the caller checked the type and size) and returns the `fileId` to use. */
+  storePhoto(userId: string, photo: MemoryPhotoFile): Promise<string>;
+  /**
+   * The file behind a `fileId`, for the route that serves photos. Null when there is none or this viewer may not see
+   * it (a draft's photo is for its author and the board): both look the same, so the route reveals nothing.
+   */
+  photoFile(fileId: string): Promise<Pick<MemoryPhotoFile, 'mimeType' | 'bytes'> | null>;
 
   // ── The author's own Memories ──
   /** Every Memory of this member, newest change first. */

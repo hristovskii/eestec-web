@@ -10,7 +10,6 @@ import { now } from '@/shared/lib/now';
 import { sanitizeRichText } from '@/shared/lib/sanitize-html';
 
 import { memoriesRepository } from '../data';
-import { saveMockMemoryPhoto } from '../data/memory-photos';
 import { PHOTO_TYPES, photoTypeOf, submitProblems } from '../domain/memory-fields';
 import { notifyBoardOfMemory } from '../notify';
 import { memoryContentSchema } from '../schemas/memory-content.schema';
@@ -133,5 +132,8 @@ export async function uploadMemoryPhoto(formData: FormData): Promise<ActionResul
   const type = photoTypeOf(bytes);
   if (!type || !(PHOTO_TYPES as readonly string[]).includes(type))
     return { ok: false, error: 'validation', fieldErrors: { photo: ['photoType'] } };
-  return ok({ fileId: saveMockMemoryPhoto({ mimeType: type, width, height, bytes }) });
+  const fileId = await (
+    await memoriesRepository('session')
+  ).storePhoto(session.userId, { mimeType: type, width, height, bytes });
+  return ok({ fileId });
 }

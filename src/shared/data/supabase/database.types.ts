@@ -2647,6 +2647,7 @@ export type Database = {
       media_usage: { Args: { p_id: string }; Returns: Json };
       members_directory: { Args: Record<PropertyKey, never>; Returns: Json };
       members_hidden_count: { Args: Record<PropertyKey, never>; Returns: number };
+      memory_admin_counts: { Args: Record<PropertyKey, never>; Returns: Json };
       memory_admin_remove: { Args: { p_id: string }; Returns: boolean };
       memory_admin_save: {
         Args: { p_content: Json; p_featured: boolean; p_id: string; p_revision: boolean };
@@ -2659,8 +2660,26 @@ export type Database = {
         Returns: Json;
       };
       memory_discard: { Args: { p_id: string }; Returns: boolean };
+      memory_facets: { Args: Record<PropertyKey, never>; Returns: Json };
       memory_media_ids: { Args: { p_id: string }; Returns: string[] };
+      memory_media_sizes: { Args: { p_ids: string[] }; Returns: Json };
       memory_new_slug: { Args: { p_title: string }; Returns: string };
+      memory_page: {
+        Args: {
+          p_author?: string;
+          p_event?: string;
+          p_exclude?: string;
+          p_featured_first?: boolean;
+          p_limit?: number;
+          p_offset?: number;
+          p_place?: string;
+          p_q?: string;
+          p_sort?: string;
+          p_year?: number;
+        };
+        Returns: Json;
+      };
+      memory_photo_path: { Args: { p_media: string }; Returns: string };
       memory_queue_unused_media: { Args: { p_ids: string[] }; Returns: undefined };
       memory_save_draft: { Args: { p_content: Json; p_id: string }; Returns: Json };
       memory_set_featured: { Args: { p_featured: boolean; p_id: string }; Returns: boolean };
@@ -2699,6 +2718,10 @@ export type Database = {
         Returns: undefined;
       };
       reference_suffix: { Args: { p_number: number }; Returns: string };
+      register_memory_photo: {
+        Args: { p_height: number; p_mime: string; p_path: string; p_size: number; p_width: number };
+        Returns: string;
+      };
       remove_event_topic: { Args: { p_id: string }; Returns: boolean };
       remove_event_type: { Args: { p_id: string; p_replacement?: string }; Returns: boolean };
       remove_events: { Args: { p_ids: string[] }; Returns: string[] };

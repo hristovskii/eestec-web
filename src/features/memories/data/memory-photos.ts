@@ -8,7 +8,7 @@ import type { MemoryPhotoFile } from '../types';
 
 // Photos of Memories, in memory (stands in for the public-media bucket): per server instance,
 // gone after a restart. The browser compresses each photo before sending it (domain/memory-fields).
-// Served by /api/dev-memory-photos/[id].
+// Served by /api/memory-photos/[id], which asks the repository.
 
 const table = () =>
   mockTable<{ files: Record<string, MemoryPhotoFile> }>('memoryPhotos', () => ({ files: {} }));
@@ -36,8 +36,13 @@ export function memoryImage(ref: {
   sample: string | null;
   alt: string;
   credit?: string;
+  width?: number;
+  height?: number;
 }): AnyMedia {
   const credit = ref.credit ? { credit: ref.credit } : {};
+  // A database measured the file itself; the mock keeps the size with the file.
+  if (ref.fileId && ref.width && ref.height)
+    return { src: memoryPhotoUrl(ref.fileId), width: ref.width, height: ref.height, alt: ref.alt, ...credit };
   const file = ref.fileId ? readMockMemoryPhoto(ref.fileId) : null;
   if (ref.fileId && file)
     return {
