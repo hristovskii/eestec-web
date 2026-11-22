@@ -2620,7 +2620,23 @@ export type Database = {
           user_id: string;
         }[];
       };
+      feedback_for_manager: {
+        Args: { p_id: string };
+        Returns: {
+          created_at: string;
+          event_id: string;
+          event_title: string;
+          id: string;
+          impression: string;
+          locale: string;
+          rating: number;
+          reference: string;
+          status: Database['public']['Enums']['submission_status'];
+        }[];
+      };
+      feedback_json: { Args: { p_id: string }; Returns: Json };
       finish_member_deletion: { Args: { p_user: string }; Returns: boolean };
+      idea_json: { Args: { p_id: string }; Returns: Json };
       import_committees: { Args: { p_items: Json }; Returns: Json };
       internal_note_counts: { Args: { p_entity_type: string }; Returns: Json };
       is_active_member: { Args: Record<PropertyKey, never>; Returns: boolean };
@@ -2629,6 +2645,7 @@ export type Database = {
       is_member_audience: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_super_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      link_idea_event_draft: { Args: { p_event: string; p_id: string }; Returns: boolean };
       login_gate: { Args: { p_email: string }; Returns: Json };
       login_record: { Args: { p_email: string; p_ok: boolean }; Returns: Json };
       mark_all_inbox_read: { Args: { p_kind: string; p_read_at: string }; Returns: number };
@@ -2737,6 +2754,7 @@ export type Database = {
       resolve_event_address: { Args: { p_slug: string }; Returns: Json };
       save_application_form: { Args: { p_event: string; p_fields: Json; p_intro: Json }; Returns: undefined };
       save_contact_page: { Args: { p_content: Json; p_subjects: Json }; Returns: undefined };
+      save_idea_form: { Args: { p_intro: Json; p_types: Json }; Returns: undefined };
       save_partners_page: { Args: { p_content: Json; p_packages: Json }; Returns: undefined };
       save_site_settings: { Args: { p_data: Json }; Returns: undefined };
       save_sponsor_tiers: { Args: { p_tiers: Json }; Returns: Json };
@@ -2765,6 +2783,7 @@ export type Database = {
         Returns: Json;
       };
       slug_taken: { Args: { p_except?: string; p_slug: string }; Returns: boolean };
+      submission_counts: { Args: { p_kind: string }; Returns: Json };
       submit_application: {
         Args: {
           p_answers: Json;
@@ -2799,6 +2818,7 @@ export type Database = {
           p_email: string;
           p_locale: string;
           p_name: string;
+          p_now?: string;
           p_profile: string;
           p_title: string;
           p_type: string;
@@ -2816,6 +2836,7 @@ export type Database = {
           p_locale: string;
           p_memory_content?: Json;
           p_name: string;
+          p_now?: string;
           p_other_event: string;
           p_profile: string;
           p_rating: number;

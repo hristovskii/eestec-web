@@ -23,10 +23,15 @@ export function describeIdeaFormRepository(
         const changed = {
           ...original,
           intro: { ...original.intro, idea: { mk: 'Ново', en: 'New' } },
-          types: [...original.types, { id: 'itype-new', name: { mk: 'Ново' } }],
+          // A new type has no id yet: the store gives it one.
+          types: [...original.types, { id: '', name: { mk: 'Ново' } }],
         };
-        expect(await repo.save(changed)).toEqual(changed);
-        expect(await repo.get()).toEqual(changed);
+        const saved = await repo.save(changed);
+        expect(saved.intro).toEqual(changed.intro);
+        expect(saved.types.slice(0, original.types.length)).toEqual(original.types);
+        expect(saved.types.at(-1)).toMatchObject({ name: { mk: 'Ново' } });
+        expect(saved.types.at(-1)?.id).not.toBe('');
+        expect(await repo.get()).toEqual(saved);
       } finally {
         await repo.save(original);
       }

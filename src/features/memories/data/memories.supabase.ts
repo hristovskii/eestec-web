@@ -626,7 +626,9 @@ export function createSupabaseMemoriesRepository(client: DbClient, _scope: RepoS
 
     createFromImpression() {
       return Promise.reject(
-        new NotImplementedError('memories.createFromImpression is part of submit_impression (M20h2)'),
+        new NotImplementedError(
+          'memories.createFromImpression: on a database the Memory is made inside submissions.submitFeedback (submit_impression)',
+        ),
       );
     },
 

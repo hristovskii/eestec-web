@@ -168,10 +168,8 @@ export async function saveIdeaForm(input: unknown): Promise<ActionResult<{ saved
 
   await forms.save({
     intro: parsed.data.intro,
-    types: parsed.data.types.map((type) => ({
-      id: type.id || `itype-${crypto.randomUUID().slice(0, 8)}`,
-      name: type.name,
-    })),
+    // A new type has no id yet: the repository gives it one.
+    types: parsed.data.types.map((type) => ({ id: type.id, name: type.name })),
   });
   await recordActivity(session, {
     action: 'updated',

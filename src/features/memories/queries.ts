@@ -4,8 +4,7 @@ import { env } from '@/shared/config/env';
 import { devSurfacesEnabled } from '@/shared/config/flags';
 
 import { memoriesRepository } from './data';
-import { notifyBoardOfMemory } from './notify';
-import type { MemoryRecord } from './types';
+import type { MemoryContent } from './types';
 
 // What other features need from Memories today: the account (delete), the profile (how many are
 // published), the approvals count and the photo files. The public and author reads come with the
@@ -62,11 +61,12 @@ export async function memoryPhotoResponse(id: string): Promise<Response> {
 const escapeHtml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 /**
- * "Turn this into a Memories post" on /submit: the member's impression becomes a Memory that waits
- * for the board, with the same text and photos (the photos get empty alt text, the editor's checklist
- * flags them). One call, so the backend phase can make it one transaction (docs/ARCHITECTURE.md §4).
+ * "Turn this into a Memories post" on /submit: what a member's impression becomes as a Memory, with the same text and
+ * photos (the photos get empty alt text, the editor's checklist flags them). The photos are stored as the member, so
+ * they are theirs to use; the Memory itself is made together with the feedback (`submitFeedback`, one transaction on
+ * a database), which is why this only builds the content.
  */
-export async function createMemoryFromImpression(input: {
+export async function memoryFromImpression(input: {
   userId: string;
   title: string;
   eventId: string | null;
@@ -75,8 +75,7 @@ export async function createMemoryFromImpression(input: {
   country: string;
   text: string;
   photos: { bytes: Uint8Array; mimeType: string; width: number; height: number }[];
-  now: Date;
-}): Promise<MemoryRecord> {
+}): Promise<MemoryContent> {
   const body = input.text
     .split(/\n{2,}/)
     .map((paragraph) => paragraph.trim())
@@ -84,29 +83,34 @@ export async function createMemoryFromImpression(input: {
     .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br>')}</p>`)
     .join('');
   const repo = await memoriesRepository('session');
-  const photos = await Promise.all(input.photos.map((photo) => repo.storePhoto(input.userId, photo)));
-  const record = await repo.createFromImpression(
-    input.userId,
-    {
-      title: input.title,
-      eventId: input.eventId,
-      otherEventName: input.otherEventName,
-      city: input.city,
-      country: input.country,
-      happenedOn: null,
-      body,
-      cover: null,
-      photos: photos.map((fileId) => ({
-        id: crypto.randomUUID(),
-        fileId,
-        sample: null,
-        alt: '',
-        caption: '',
-      })),
-    },
-    'impression',
-    input.now,
-  );
-  await notifyBoardOfMemory({ title: input.title, revision: false, now: input.now });
-  return record;
+  const fileIds = await Promise.all(input.photos.map((photo) => repo.storePhoto(input.userId, photo)));
+  return {
+    title: input.title,
+    eventId: input.eventId,
+    otherEventName: input.otherEventName,
+    city: input.city,
+    country: input.country,
+    happenedOn: null,
+    body,
+    cover: null,
+    photos: fileIds.map((fileId) => ({
+      id: crypto.randomUUID(),
+      fileId,
+      sample: null,
+      alt: '',
+      caption: '',
+    })),
+  };
+}
+
+/** The mock's way to make that Memory (a database makes it inside `submit_impression`); returns its id. */
+export async function createImpressionMemory(
+  userId: string,
+  content: MemoryContent,
+  now: Date,
+): Promise<string> {
+  const record = await (
+    await memoriesRepository('session')
+  ).createFromImpression(userId, content, 'impression', now);
+  return record.id;
 }

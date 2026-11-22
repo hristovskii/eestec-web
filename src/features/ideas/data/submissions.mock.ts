@@ -3,10 +3,13 @@ import 'server-only';
 import { mockTable } from '@/shared/data/mock/store';
 import { paginate } from '@/shared/data/paged';
 
+import type { MemoryContent } from '@/features/memories';
+
 import type { EventRating, Feedback, Idea, SubmissionCounts, SubmissionStatus } from '../types';
 import { SUBMISSION_STATUSES } from '../types';
 import { feedbackFixture } from './fixtures/feedback';
 import { ideasFixture } from './fixtures/ideas';
+import { readMockSubmissionFile, saveMockSubmissionFile } from './submission-files';
 import type { SubmissionsRepository } from './submissions.repository';
 
 const tables = () =>
@@ -58,9 +61,42 @@ function apply<T extends { status: SubmissionStatus; ownerId: string | null; own
   }
 }
 
-export function createMockSubmissionsRepository(): SubmissionsRepository {
+/**
+ * What an event manager gets of feedback (D33): the rating and the impression, nothing of the sender, the owner, the
+ * photos or the Memory. A database gives exactly this through `event_feedback_for_manager`.
+ */
+const forManager = (row: Feedback): Feedback => ({
+  ...row,
+  name: null,
+  email: null,
+  consentAt: null,
+  userId: null,
+  isAnonymous: true,
+  ownerId: null,
+  ownerName: null,
+  photos: [],
+  memoryId: null,
+});
+
+/** Makes the Memory that comes with feedback and returns its id (the memories feature, injected by `data/index.ts`). */
+type CreateMemory = (userId: string, content: MemoryContent, now: Date) => Promise<string>;
+
+const defaultCreateMemory: CreateMemory = () => Promise.resolve(`mem-${crypto.randomUUID().slice(0, 8)}`);
+
+export function createMockSubmissionsRepository(
+  createMemory: CreateMemory = defaultCreateMemory,
+): SubmissionsRepository {
   const db = tables();
   return {
+    storeFile(blob) {
+      const id = saveMockSubmissionFile(blob);
+      return Promise.resolve({ id, name: blob.name, size: blob.bytes.length, mime: blob.mimeType });
+    },
+    readFile(fileId) {
+      const file = readMockSubmissionFile(fileId);
+      return Promise.resolve(file ? { ...file } : null);
+    },
+
     submitIdea(input, now) {
       const idea: Idea = {
         id: `idea-${crypto.randomUUID().slice(0, 8)}`,
@@ -80,7 +116,13 @@ export function createMockSubmissionsRepository(): SubmissionsRepository {
       return Promise.resolve(structuredClone(idea));
     },
 
-    submitFeedback(input, now) {
+    async submitFeedback(input, now) {
+      const who = sender(input.sender, now);
+      // Only an identified member can write a Memory (a database refuses anything else).
+      const memoryId =
+        input.memory && who.userId && !who.isAnonymous
+          ? await createMemory(who.userId, input.memory, now)
+          : null;
       const feedback: Feedback = {
         id: `fb-${crypto.randomUUID().slice(0, 8)}`,
         eventId: input.eventId,
@@ -89,8 +131,8 @@ export function createMockSubmissionsRepository(): SubmissionsRepository {
         rating: input.rating,
         text: input.text,
         photos: structuredClone(input.photos),
-        memoryId: input.memoryId,
-        ...sender(input.sender, now),
+        memoryId,
+        ...who,
         status: 'new',
         ownerId: null,
         ownerName: null,
@@ -98,7 +140,7 @@ export function createMockSubmissionsRepository(): SubmissionsRepository {
         createdAt: now.toISOString(),
       };
       db.feedback.unshift(feedback);
-      return Promise.resolve(structuredClone(feedback));
+      return structuredClone(feedback);
     },
 
     listIdeas(query) {
@@ -143,7 +185,10 @@ export function createMockSubmissionsRepository(): SubmissionsRepository {
           (!query.onlyEventIds || (row.eventId !== null && query.onlyEventIds.includes(row.eventId))) &&
           matches([row.text, row.eventTitle, row.name ?? ''], query.q),
       );
-      return Promise.resolve(structuredClone(paginate(rows, query.page, query.pageSize)));
+      const page = paginate(rows, query.page, query.pageSize);
+      return Promise.resolve(
+        structuredClone(query.onlyEventIds ? { ...page, items: page.items.map(forManager) } : page),
+      );
     },
     feedbackCounts: (onlyEventIds) =>
       Promise.resolve(
@@ -214,9 +259,9 @@ export function createMockSubmissionsRepository(): SubmissionsRepository {
     allFeedback: (onlyEventIds) =>
       Promise.resolve(
         structuredClone(
-          newestFirst(db.feedback).filter(
-            (row) => !onlyEventIds || (row.eventId !== null && onlyEventIds.includes(row.eventId)),
-          ),
+          newestFirst(db.feedback)
+            .filter((row) => !onlyEventIds || (row.eventId !== null && onlyEventIds.includes(row.eventId)))
+            .map((row) => (onlyEventIds ? forManager(row) : row)),
         ),
       ),
   };

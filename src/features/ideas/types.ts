@@ -1,3 +1,4 @@
+import type { MemoryContent } from '@/features/memories';
 import type { Localized } from '@/shared/types/localized';
 
 /** The four statuses of an idea and of a piece of feedback (decided list, never public). */
@@ -71,7 +72,11 @@ export type FeedbackInput = Pick<
 > & {
   sender: Pick<Sender, 'name' | 'email' | 'userId' | 'isAnonymous'>;
   photos: SubmissionFile[];
-  memoryId: string | null;
+  /**
+   * "Turn this into a Memories post": the Memory to create waiting for the board, made in the same step as the
+   * feedback (one transaction on a database). Only for a signed-in member who is not anonymous.
+   */
+  memory: MemoryContent | null;
 };
 
 export type SubmissionCounts = Record<SubmissionStatus | 'all', number>;
