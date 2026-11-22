@@ -3,7 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { anonClient, createTestUser, serviceClient } from '../../../../tests/supabase/harness';
 import { NotImplementedError } from '@/shared/data/select-implementation';
 import { createSupabaseAuthRepository } from './auth.supabase';
-import type { SignInDeps } from './auth.supabase-sign-in';
+import type { FlowDeps } from './auth.supabase-flows';
 
 type TestUser = Awaited<ReturnType<typeof createTestUser>>;
 type Client = ReturnType<typeof anonClient>;
@@ -11,12 +11,13 @@ type Client = ReturnType<typeof anonClient>;
 const NOW = new Date('2026-10-05T08:00:00.000Z');
 const unique = () => crypto.randomUUID().slice(0, 8);
 // Signing in is tested in auth.supabase-sign-in.test.ts; here the sign-in wiring is never used.
-const unused: SignInDeps = {
+const unused: FlowDeps = {
   service: () => {
     throw new Error('not used');
   },
   signInClient: () => Promise.reject(new Error('not used')),
   rememberChoice: () => Promise.resolve(),
+  mail: () => Promise.resolve(),
 };
 const repoFor = (client: Client) => createSupabaseAuthRepository(client, 'session', unused);
 

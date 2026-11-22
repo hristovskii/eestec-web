@@ -2557,6 +2557,25 @@ export type Database = {
           waitlist: number;
         }[];
       };
+      auth_link_issue: {
+        Args: {
+          p_expires: string;
+          p_hash: string;
+          p_kind: Database['public']['Enums']['auth_link_kind'];
+          p_new_email?: string;
+          p_user: string;
+        };
+        Returns: undefined;
+      };
+      auth_link_peek: {
+        Args: { p_hash: string; p_kind: Database['public']['Enums']['auth_link_kind']; p_now: string };
+        Returns: Json;
+      };
+      auth_link_use: {
+        Args: { p_hash: string; p_kind: Database['public']['Enums']['auth_link_kind']; p_now: string };
+        Returns: string;
+      };
+      auth_user_state: { Args: { p_email: string }; Returns: Json };
       author_cards: {
         Args: { p_ids: string[] };
         Returns: {
@@ -2719,6 +2738,7 @@ export type Database = {
       my_profile: { Args: { p_year: number }; Returns: Json };
       my_session: { Args: Record<PropertyKey, never>; Returns: Json };
       next_reference_number: { Args: { p_kind: string; p_year: number }; Returns: number };
+      password_reset_done: { Args: { p_now: string; p_user: string }; Returns: undefined };
       pending_deletion_files: { Args: { p_user: string }; Returns: Json };
       profile_events: {
         Args: { p_profile: string };
@@ -2746,6 +2766,21 @@ export type Database = {
         Returns: undefined;
       };
       reference_suffix: { Args: { p_number: number }; Returns: string };
+      register_member: {
+        Args: {
+          p_faculty: string;
+          p_locale: string;
+          p_name: string;
+          p_now: string;
+          p_phone: string;
+          p_photo?: Json;
+          p_user: string;
+          p_username: string;
+          p_visibility: string;
+          p_year: string;
+        };
+        Returns: Json;
+      };
       register_memory_photo: {
         Args: { p_height: number; p_mime: string; p_path: string; p_size: number; p_width: number };
         Returns: string;

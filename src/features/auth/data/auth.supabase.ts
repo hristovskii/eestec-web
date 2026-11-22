@@ -20,7 +20,8 @@ import type {
 } from '../types';
 import { MEMBER_YEARS } from '../types';
 import type { AuthRepository } from './auth.repository';
-import { createSignInMethods, type SignInDeps } from './auth.supabase-sign-in';
+import { createFlowMethods, type FlowDeps } from './auth.supabase-flows';
+import { createSignInMethods } from './auth.supabase-sign-in';
 
 // ─── What the SQL functions hand over (0025) ───
 
@@ -153,7 +154,7 @@ const notYet = (what: string) => () =>
 export function createSupabaseAuthRepository(
   client: DbClient,
   _scope: RepoScope,
-  deps: SignInDeps,
+  deps: FlowDeps,
 ): AuthRepository {
   async function registrations(userId: string | null, status?: MemberRegistration['status']) {
     const rows = unwrap(
@@ -195,12 +196,7 @@ export function createSupabaseAuthRepository(
       }
     },
     ...createSignInMethods(deps, client),
-    requestPasswordReset: notYet('requestPasswordReset'),
-    registerMember: notYet('registerMember'),
-    confirmEmail: notYet('confirmEmail'),
-    resendConfirmation: notYet('resendConfirmation'),
-    peekToken: notYet('peekToken'),
-    resetPassword: notYet('resetPassword'),
+    ...createFlowMethods(deps),
 
     // ─── My account ───
     getAccountDetails: details,
