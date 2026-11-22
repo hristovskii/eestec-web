@@ -5,9 +5,7 @@ import { z } from 'zod';
 
 import {
   currentMember,
-  deleteMemberPhoto,
   isUsernameTaken,
-  storeMemberPhoto,
   updateAccountDetails,
   updateMemberIdentity,
 } from '@/features/auth/server';
@@ -74,18 +72,18 @@ export async function saveMyPhoto(formData: FormData): Promise<ActionResult<{ sr
   const bytes = new Uint8Array(await file.arrayBuffer());
   if (!isJpeg(bytes)) return { ok: false, error: 'validation', fieldErrors: { photo: ['photoType'] } };
 
-  const stored = storeMemberPhoto({ mimeType: PHOTO.sendType, bytes });
-  const old = await (await membersRepository('session')).setPhoto(await getMineContext(session), stored.url);
-  deleteMemberPhoto(old);
+  const { src } = await (
+    await membersRepository('session')
+  ).savePhoto(await getMineContext(session), { mimeType: PHOTO.sendType, bytes });
+  if (!src) return { ok: false, error: 'unexpected' };
   refresh();
-  return ok({ src: stored.url });
+  return ok({ src });
 }
 
 export async function removeMyPhoto(): Promise<ActionResult> {
   const session = await currentMember();
   if (!session) return { ok: false, error: 'forbidden' };
-  const old = await (await membersRepository('session')).setPhoto(await getMineContext(session), null);
-  deleteMemberPhoto(old);
+  await (await membersRepository('session')).savePhoto(await getMineContext(session), null);
   refresh();
   return ok(undefined);
 }

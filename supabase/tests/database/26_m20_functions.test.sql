@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(89);
+select plan(105);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -220,5 +220,33 @@ select is((select e->>'faculty' from jsonb_array_elements(public.members_directo
 select is(public.admin_save_member('a9000000-0000-0000-0000-000000000001','{"status":"active","member_since":"2020-05-05","badges":[{"badge_id":"a9b00000-0000-0000-0000-000000000001","note":"n"}]}','2027-03-04 23:30+00'),true,'staff save a profile');
 reset role;
 select is((select awarded_at from public.member_badges where profile_id = 'a9000000-0000-0000-0000-000000000001'),'2027-03-05'::date,'a new badge is awarded on the app’s day in Skopje');
+-- ───────────── M20g2: the member's photo and CV ─────────────
+reset role;
+insert into storage.objects(bucket_id, name, owner_id) values
+ ('avatars', 'a9000000-0000-0000-0000-000000000002/one.jpg', 'a9000000-0000-0000-0000-000000000002'),
+ ('avatars', 'a9000000-0000-0000-0000-000000000002/two.jpg', 'a9000000-0000-0000-0000-000000000002'),
+ ('avatars', 'a9000000-0000-0000-0000-000000000001/theirs.jpg', 'a9000000-0000-0000-0000-000000000001'),
+ ('cvs', 'a9000000-0000-0000-0000-000000000002/one.pdf', 'a9000000-0000-0000-0000-000000000002'),
+ ('cvs', 'a9000000-0000-0000-0000-000000000002/two.pdf', 'a9000000-0000-0000-0000-000000000002');
+select pg_temp.visitor();
+select throws_ok($$select public.set_my_photo('a9000000-0000-0000-0000-000000000002/one.jpg', 'image/jpeg', 4)$$, '42501', null, 'a visitor cannot register a photo');
+select throws_ok($$select public.remove_my_cv()$$, '42501', null, 'or touch a CV');
+select pg_temp.act_as('a9000000-0000-0000-0000-000000000002');
+select throws_ok($$select public.set_my_photo('a9000000-0000-0000-0000-000000000001/theirs.jpg', 'image/jpeg', 4)$$, '22023', null, 'a photo in someone else’s folder is refused');
+select throws_ok($$select public.set_my_photo('a9000000-0000-0000-0000-000000000002/missing.jpg', 'image/jpeg', 4)$$, '22023', null, 'and so is a file that was never uploaded');
+select is(public.set_my_photo('a9000000-0000-0000-0000-000000000002/one.jpg', 'image/jpeg', 4)->>'status', 'saved', 'a member makes an uploaded file their photo');
+select is((select count(*)::integer from public.media where path = 'a9000000-0000-0000-0000-000000000002/one.jpg' and uploaded_by = 'a9000000-0000-0000-0000-000000000002' and bucket = 'avatars'), 1, 'which is a media row of theirs');
+select is(public.set_my_photo('a9000000-0000-0000-0000-000000000002/two.jpg', 'image/jpeg', 4)->>'previous', 'a9000000-0000-0000-0000-000000000002/one.jpg', 'a second photo names the one it replaces');
+select is((select count(*)::integer from public.media where path = 'a9000000-0000-0000-0000-000000000002/one.jpg'), 0, 'whose media row is gone');
+select is(public.remove_my_photo(), 'a9000000-0000-0000-0000-000000000002/two.jpg', 'removing the photo names the file');
+select is(public.remove_my_photo(), null, 'and removing it again finds none');
+select is(public.set_my_cv('a9000000-0000-0000-0000-000000000002/one.pdf', 'one.pdf', 5)->>'status', 'not_opted_in', 'a CV needs CV sharing to be on');
+update public.member_accounts set cv_opt_in = true where profile_id = 'a9000000-0000-0000-0000-000000000002';
+select is(public.set_my_cv('a9000000-0000-0000-0000-000000000002/one.pdf', 'one.pdf', 5, '2027-01-02 10:00+00')->>'status', 'stored', 'with sharing on it is stored');
+select is((select cv_uploaded_at from public.member_accounts where profile_id = 'a9000000-0000-0000-0000-000000000002'), '2027-01-02 10:00+00'::timestamptz, 'at the app’s time');
+select is(public.set_my_cv('a9000000-0000-0000-0000-000000000002/two.pdf', 'two.pdf', 6)->>'previous', 'a9000000-0000-0000-0000-000000000002/one.pdf', 'a second CV names the one it replaces');
+select is(public.remove_my_cv(), 'a9000000-0000-0000-0000-000000000002/two.pdf', 'removing the CV names the file');
+reset role;
+select is((select count(*)::integer from public.storage_cleanup_queue where path in ('a9000000-0000-0000-0000-000000000002/one.jpg', 'a9000000-0000-0000-0000-000000000002/two.jpg', 'a9000000-0000-0000-0000-000000000002/one.pdf', 'a9000000-0000-0000-0000-000000000002/two.pdf')), 4, 'every replaced or removed file is queued for clean-up');
 select * from finish();
 rollback;

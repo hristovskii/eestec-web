@@ -86,6 +86,15 @@ type BoardJson = {
 /** Private avatars are delivered by their own route, which asks the database whether this viewer may see the photo (M20g2). */
 const AVATAR_ROUTE = '/api/member-photos';
 
+/** Files a member owns live under `<user id>/<file id>.<ext>` in their own bucket folder. */
+const AVATARS = 'avatars';
+const CVS = 'cvs';
+const AVATAR_TYPES: Record<string, string> = { jpg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
+const AVATAR_PATH = /^[0-9a-f-]{36}\/[0-9a-f-]{36}\.(jpg|png|webp)$/;
+
+const extensionOf = (mimeType: string) =>
+  Object.entries(AVATAR_TYPES).find(([, type]) => type === mimeType)?.[0] ?? 'jpg';
+
 function photoSource(
   client: DbClient,
   row: { photo_bucket: string | null; photo_path: string | null; photo_public_path: string | null },
@@ -228,8 +237,34 @@ export function createSupabaseMembersRepository(
       : { ...NO_CONSENTS };
   }
 
-  const files = (what: string) =>
-    new NotImplementedError(`members.${what} needs Storage (M20g2) or the account-deletion port (M20i)`);
+  /** Storage as this person: policies allow their own folder only, so a failure here is a refusal or a bad file. */
+  const bucket = (name: string) => client.storage.from(name);
+
+  async function upload(name: string, path: string, bytes: Uint8Array, contentType: string) {
+    const { error } = await bucket(name).upload(path, bytes, { contentType, upsert: false });
+    if (error)
+      throw new DataError(
+        /row-level security|unauthorized|forbidden/i.test(error.message) ? 'forbidden' : 'invalid',
+        error.message,
+      );
+  }
+
+  /** Removes a file at once. A failure is not an error: the replaced path is in `storage_cleanup_queue` already. */
+  async function removeQuietly(name: string, path: string | null | undefined) {
+    if (path)
+      await bucket(name)
+        .remove([path])
+        .catch(() => undefined);
+  }
+
+  async function download(name: string, path: string): Promise<Uint8Array | null> {
+    const { data, error } = await bucket(name).download(path);
+    if (error) {
+      if (/not.?found/i.test(error.message)) return null;
+      throw new DataError('unknown', error.message);
+    }
+    return new Uint8Array(await data.arrayBuffer());
+  }
 
   return {
     // ─── Public reads ───
@@ -672,8 +707,56 @@ export function createSupabaseMembersRepository(
       if (rows.length === 0) throw new DataError('not_found', 'There is no profile to edit');
     },
 
-    setPhoto() {
-      return Promise.reject(files('setPhoto'));
+    /** Uploads into the person's own folder, then the database makes it the photo and names the file it replaces. */
+    async savePhoto(who, photo) {
+      if (!isUuid(who.userId)) throw new DataError('not_found', 'There is no profile to edit');
+      if (!photo) {
+        const previous = unwrap(await client.rpc('remove_my_photo')) as string | null;
+        await removeQuietly(AVATARS, previous);
+        return { src: null };
+      }
+      const path = `${who.userId}/${crypto.randomUUID()}.${extensionOf(photo.mimeType)}`;
+      await upload(AVATARS, path, photo.bytes, photo.mimeType);
+      const { data, error } = await client.rpc('set_my_photo', {
+        p_path: path,
+        p_mime: photo.mimeType,
+        p_size: photo.bytes.byteLength,
+        p_file_name: `photo.${extensionOf(photo.mimeType)}`,
+      });
+      const result = error ? null : (data as { status: 'saved' | 'not_found'; previous?: string | null });
+      if (error || result?.status !== 'saved') {
+        await removeQuietly(AVATARS, path);
+        if (error) throw toDataError(error);
+        throw new DataError('not_found', 'There is no profile to edit');
+      }
+      await removeQuietly(AVATARS, result.previous);
+      return { src: `${AVATAR_ROUTE}/${path}` };
+    },
+
+    async getPhotoFile(who) {
+      if (!isUuid(who.userId)) return null;
+      const profile = unwrapMaybe(
+        await client.from('profiles').select('photo_media_id').eq('id', who.userId).maybeSingle(),
+      );
+      if (!profile?.photo_media_id) return null;
+      const media = unwrapMaybe(
+        await client
+          .from('media')
+          .select('bucket, path, mime_type')
+          .eq('id', profile.photo_media_id)
+          .maybeSingle(),
+      );
+      if (media?.bucket !== AVATARS || !media.path) return null;
+      const bytes = await download(AVATARS, media.path);
+      return bytes ? { mimeType: media.mime_type ?? 'image/jpeg', bytes } : null;
+    },
+
+    /** Read as the viewer: Storage lets an avatar through only where `can_read_avatar` says so, and a refusal looks like a missing file. */
+    async avatarFile(path) {
+      const type = AVATAR_PATH.test(path) ? AVATAR_TYPES[path.slice(path.lastIndexOf('.') + 1)] : undefined;
+      if (!type) return null;
+      const bytes = await download(AVATARS, path).catch(() => null);
+      return bytes ? { mimeType: type, bytes } : null;
     },
 
     /** Turning CV sharing on stamps the moment (database clock); off forgets the file at once (trigger). Messages and gallery names are plain choices. */
@@ -682,24 +765,83 @@ export function createSupabaseMembersRepository(
       if (patch.newsletter !== undefined) update.newsletter_opt_in = patch.newsletter;
       if (patch.galleryName !== undefined) update.gallery_name_opt_in = patch.galleryName;
       if (patch.cvOptIn !== undefined) update.cv_opt_in = patch.cvOptIn;
+      // Off deletes the CV now: the trigger clears the row and queues the file, which is removed here without waiting.
+      const forgotten =
+        patch.cvOptIn === false && isUuid(userId)
+          ? unwrapMaybe(
+              await client.from('member_accounts').select('cv_path').eq('profile_id', userId).maybeSingle(),
+            )?.cv_path
+          : null;
       if (isUuid(userId) && Object.keys(update).length > 0)
         unwrap(
           await client.from('member_accounts').update(update).eq('profile_id', userId).select('profile_id'),
         );
+      await removeQuietly(CVS, forgotten);
       return readConsents(userId);
     },
 
-    storeCv() {
-      return Promise.reject(files('storeCv'));
+    /** The CV goes into the person's folder, then the database registers it, but only while CV sharing is on. */
+    async storeCv(userId, file, now) {
+      if (!isUuid(userId)) throw new DataError('not_found', 'There is no account to store a CV for');
+      if (!(await readConsents(userId)).cvOptIn) return { status: 'not_opted_in' };
+      const path = `${userId}/${crypto.randomUUID()}.pdf`;
+      await upload(CVS, path, file.bytes, 'application/pdf');
+      const { data, error } = await client.rpc('set_my_cv', {
+        p_path: path,
+        p_file_name: file.fileName,
+        p_size: file.bytes.byteLength,
+        p_now: now.toISOString(),
+      });
+      const result = error
+        ? null
+        : (data as {
+            status: 'stored' | 'not_opted_in' | 'not_found';
+            previous?: string | null;
+            cv?: { file_name: string; size: number; uploaded_at: string };
+          });
+      if (error || result?.status !== 'stored' || !result.cv) {
+        await removeQuietly(CVS, path);
+        if (error) throw toDataError(error);
+        if (result?.status === 'not_opted_in') return { status: 'not_opted_in' };
+        throw new DataError('not_found', 'There is no account to store a CV for');
+      }
+      await removeQuietly(CVS, result.previous);
+      return {
+        status: 'stored',
+        cv: {
+          fileName: result.cv.file_name,
+          size: result.cv.size,
+          uploadedAt: isoOf(result.cv.uploaded_at),
+        },
+      };
     },
-    removeCv() {
-      return Promise.reject(files('removeCv'));
+
+    async removeCv() {
+      const previous = unwrap(await client.rpc('remove_my_cv')) as string | null;
+      await removeQuietly(CVS, previous);
+      return previous !== null;
     },
-    getCvFile() {
-      return Promise.reject(files('getCvFile'));
+
+    async getCvFile(userId) {
+      if (!isUuid(userId)) return null;
+      const row = unwrapMaybe(
+        await client
+          .from('member_accounts')
+          .select('cv_path, cv_file_name, cv_size')
+          .eq('profile_id', userId)
+          .maybeSingle(),
+      );
+      if (!row?.cv_path) return null;
+      return {
+        fileName: row.cv_file_name ?? 'cv.pdf',
+        size: row.cv_size ?? 0,
+        bytes: await download(CVS, row.cv_path),
+      };
     },
     deleteMine() {
-      return Promise.reject(files('deleteMine'));
+      return Promise.reject(
+        new NotImplementedError('members.deleteMine is the account-deletion port, which M20i brings'),
+      );
     },
   };
 }

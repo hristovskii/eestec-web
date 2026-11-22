@@ -10,7 +10,7 @@ import {
   photoUrl,
   saveMockMemberPhoto,
   type MemberPhoto,
-} from './data/member-photos';
+} from '@/shared/data/mock/member-photos';
 import type { AccountDetailsPatch } from './types';
 
 // The member's own account, for the Members feature's "My profile" (callers have checked who is

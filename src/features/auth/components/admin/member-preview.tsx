@@ -6,7 +6,7 @@ import * as React from 'react';
 import { AdminBadge } from '@/shared/admin-ui/admin-page';
 import { hrefWithParams } from '@/shared/lib/search-params';
 
-import { photoUrl } from '../../data/member-photos';
+import { photoUrl } from '@/shared/data/mock/member-photos';
 import { checksOf } from '../../domain/registration-checks';
 import type { MemberRegistration } from '../../types';
 import { MemberDecision } from './member-decision';

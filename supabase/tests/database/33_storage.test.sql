@@ -1,7 +1,7 @@
 -- Revocable images and submission files never have public bucket access.
 begin;
 \ir ../helpers/isolate.inc
-select plan(19);
+select plan(26);
 insert into auth.users(id,aud,role,email) values
  ('b0000000-0000-0000-0000-000000000001','authenticated','authenticated','manager@test.mk'),
  ('b0000000-0000-0000-0000-000000000002','authenticated','authenticated','editor@test.mk'),
@@ -42,7 +42,7 @@ select is((select count(*)::integer from storage.buckets where id in ('avatars',
 select is((select count(*)::integer from storage.buckets where id in ('public-media','documents') and public),2,'site media and documents are public');
 select is((select count(*)::integer from storage.buckets where 'image/svg+xml' = any(allowed_mime_types)),0,'no bucket accepts uploaded SVG');
 select pg_temp.act_as('b0000000-0000-0000-0000-000000000001');
-select is((select count(*)::integer from storage.objects where bucket_id = 'avatars'),0,'owner cannot bypass avatar endpoint');
+select is((select count(*)::integer from storage.objects where bucket_id = 'avatars'),1,'owner reads their own folder, nobody else’s');
 select is((select count(*)::integer from storage.objects where bucket_id = 'memory-photos'),0,'owner cannot bypass Memory photo endpoint');
 select is((select count(*)::integer from storage.objects where bucket_id = 'submissions'),0,'manager cannot open feedback files');
 select is((select count(*)::integer from storage.objects where bucket_id = 'public-media'),1,'manager sees own public media metadata');
@@ -64,4 +64,15 @@ select is(public.can_read_memory_photo('mem/draft.jpg'),false,'another member do
 select pg_temp.act_as('b0000000-0000-0000-0000-000000000002');
 select is(public.can_read_memory_photo('mem/draft.jpg'),true,'staff see a draft photo');
 select is(public.can_read_avatar('avatars/hidden.jpg'),true,'staff see a moderated photo');
+-- M20g2: members write and read their own files in Storage.
+select pg_temp.act_as('b0000000-0000-0000-0000-000000000003');
+select lives_ok($$insert into storage.objects(bucket_id,name,owner_id) values ('avatars','b0000000-0000-0000-0000-000000000003/new.jpg','b0000000-0000-0000-0000-000000000003')$$,'a member uploads a photo to their own folder');
+select throws_ok($$insert into storage.objects(bucket_id,name,owner_id) values ('avatars','b0000000-0000-0000-0000-000000000004/new.jpg','b0000000-0000-0000-0000-000000000003')$$,'42501',null,'but not to someone else’s');
+select lives_ok($$insert into storage.objects(bucket_id,name,owner_id) values ('cvs','b0000000-0000-0000-0000-000000000003/cv.pdf','b0000000-0000-0000-0000-000000000003')$$,'or a CV');
+select throws_ok($$insert into storage.objects(bucket_id,name,owner_id) values ('cvs','b0000000-0000-0000-0000-000000000004/cv.pdf','b0000000-0000-0000-0000-000000000003')$$,'42501',null,'not into someone else’s folder either');
+select is((select count(*)::integer from storage.objects where bucket_id = 'cvs'),1,'a member reads their own CV');
+select pg_temp.act_as('b0000000-0000-0000-0000-000000000004');
+select is((select count(*)::integer from storage.objects where bucket_id = 'cvs'),0,'and nobody else’s');
+select pg_temp.visitor();
+select is((select count(*)::integer from storage.objects where bucket_id = 'avatars' and name like 'b0000000-0000-0000-0000-000000000003/%'),0,'a visitor reads no avatar that has no readable profile behind it');
 select * from finish(); rollback;

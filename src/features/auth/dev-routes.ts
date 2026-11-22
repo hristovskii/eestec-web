@@ -4,7 +4,7 @@ import { env } from '@/shared/config/env';
 import { devSurfacesEnabled } from '@/shared/config/flags';
 
 import { listMockMail } from './data/mailbox';
-import { readMockMemberPhoto } from './data/member-photos';
+import { readMockMemberPhoto } from '@/shared/data/mock/member-photos';
 
 // Dev and preview only (mock data): the e-mails the member flow would send, and the photos chosen at
 // sign-up. Production answers 404.

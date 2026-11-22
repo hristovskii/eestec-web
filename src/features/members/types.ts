@@ -458,6 +458,9 @@ export type UpdateMineResult =
 
 export type ConsentPatch = Partial<Pick<MemberConsents, 'newsletter' | 'galleryName' | 'cvOptIn'>>;
 
+/** A profile photo as bytes: what is stored and what is delivered. */
+export type PhotoFile = { mimeType: string; bytes: Uint8Array };
+
 export type StoreCvResult = { status: 'stored'; cv: CvInfo } | { status: 'not_opted_in' };
 
 /** What /profile draws, in the language of the page (the Profile and Visibility parts; later parts add their own). */

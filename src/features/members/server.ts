@@ -3,6 +3,7 @@ import 'server-only';
 export { membersCsvResponse } from './export';
 export { deleteMyAccount } from './actions/my-account';
 export { myDataResponse } from './export-me';
+export { memberPhotoResponse } from './photo-response';
 export { getMineContext, getMyProfile, getMyProfileView, type MyProfileData } from './my-profile';
 export {
   getAdminBoards,
