@@ -20,6 +20,7 @@ import type {
 } from '../types';
 import { MEMBER_YEARS } from '../types';
 import type { AuthRepository } from './auth.repository';
+import { createSignInMethods, type SignInDeps } from './auth.supabase-sign-in';
 
 // ─── What the SQL functions hand over (0025) ───
 
@@ -149,7 +150,11 @@ const notYet = (what: string) => () =>
  * decides, a member's account details and the board's accounts and roles. Signing in and out, links, passwords, 2-step
  * and invites are M21; deleting an account is the account-deletion port (`members/data/account-deletion.ts`).
  */
-export function createSupabaseAuthRepository(client: DbClient, _scope: RepoScope): AuthRepository {
+export function createSupabaseAuthRepository(
+  client: DbClient,
+  _scope: RepoScope,
+  deps: SignInDeps,
+): AuthRepository {
   async function registrations(userId: string | null, status?: MemberRegistration['status']) {
     const rows = unwrap(
       await client.rpc('member_registrations', {
@@ -189,14 +194,11 @@ export function createSupabaseAuthRepository(client: DbClient, _scope: RepoScope
         throw error;
       }
     },
-    signOut: notYet('signOut'),
-    signInAdmin: notYet('signInAdmin'),
-    verifyTwoFactor: notYet('verifyTwoFactor'),
+    ...createSignInMethods(deps, client),
     requestPasswordReset: notYet('requestPasswordReset'),
     registerMember: notYet('registerMember'),
     confirmEmail: notYet('confirmEmail'),
     resendConfirmation: notYet('resendConfirmation'),
-    signInMember: notYet('signInMember'),
     peekToken: notYet('peekToken'),
     resetPassword: notYet('resetPassword'),
 

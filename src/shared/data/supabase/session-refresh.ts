@@ -5,6 +5,7 @@ import type { NextRequest, NextResponse } from 'next/server';
 
 import { env } from '@/shared/config/env';
 
+import { authCookieOptions, REMEMBER_COOKIE } from './cookie-options';
 import type { Database } from './database.types';
 
 const AUTH_COOKIE = /^sb-.+-auth-token/;
@@ -26,7 +27,9 @@ export async function refreshSupabaseSession(request: NextRequest, response: Nex
         getAll: () => request.cookies.getAll(),
         setAll(items, headers) {
           for (const { name, value } of items) request.cookies.set(name, value);
-          for (const { name, value, options } of items) response.cookies.set(name, value, options);
+          const remember = request.cookies.get(REMEMBER_COOKIE)?.value === '1';
+          for (const { name, value, options } of items)
+            response.cookies.set(name, value, authCookieOptions(options, remember));
           for (const [key, value] of Object.entries(headers)) response.headers.set(key, value);
         },
       },
