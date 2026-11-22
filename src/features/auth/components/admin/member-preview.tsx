@@ -35,6 +35,7 @@ export async function MemberPreview({
 }) {
   const t = await getTranslations('admin.approvals.detail');
   const checks = checksOf(registration);
+  const photoSrc = registration.photoSrc ?? (registration.photoId ? photoUrl(registration.photoId) : null);
   const href = (id: string) => hrefWithParams('/admin/approvals', '', { open: id });
   const none = <span className="text-muted-ink">{t('none')}</span>;
   const fields: [string, React.ReactNode][] = [
@@ -100,11 +101,11 @@ export async function MemberPreview({
 
       <article className="flex flex-1 flex-col gap-6 p-4 lg:p-6">
         <div className="flex items-center gap-4">
-          {registration.photoId ? (
-            // The photo chosen at sign-up, from the mock store (dev and preview only): nothing to optimise.
+          {photoSrc ? (
+            // The photo chosen at sign-up (on mock data from the mock store, dev and preview only): nothing to optimise.
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={photoUrl(registration.photoId)}
+              src={photoSrc}
               alt={t('photoAlt', { name: registration.name })}
               className="size-20 shrink-0 rounded-full object-cover"
             />

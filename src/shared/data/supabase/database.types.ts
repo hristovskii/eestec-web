@@ -2511,6 +2511,7 @@ export type Database = {
     Functions: {
       accept_idea: { Args: { p_event_data: Json; p_id: string }; Returns: string };
       account_deletion_pending: { Args: { p_user: string }; Returns: boolean };
+      account_details: { Args: { p_user: string }; Returns: Json };
       activity_actors: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2524,7 +2525,13 @@ export type Database = {
         Args: { p_body: string; p_entity_id: string; p_entity_type: string };
         Returns: string;
       };
+      admin_accounts: { Args: Record<PropertyKey, never>; Returns: Json };
+      admin_remove_role: { Args: { p_user: string }; Returns: boolean };
       admin_save_member: { Args: { p_edit: Json; p_now?: string; p_user: string }; Returns: boolean };
+      admin_update_role: {
+        Args: { p_events?: string[]; p_role?: Database['public']['Enums']['admin_role']; p_user: string };
+        Returns: boolean;
+      };
       application_answer_counts: { Args: { p_event: string }; Returns: Json };
       application_availability: {
         Args: { p_event_ids: string[] };
@@ -2662,6 +2669,7 @@ export type Database = {
         }[];
       };
       media_usage: { Args: { p_id: string }; Returns: Json };
+      member_registrations: { Args: { p_status?: string; p_user?: string }; Returns: Json };
       members_directory: { Args: Record<PropertyKey, never>; Returns: Json };
       members_hidden_count: { Args: Record<PropertyKey, never>; Returns: number };
       memory_admin_counts: { Args: Record<PropertyKey, never>; Returns: Json };
@@ -2708,7 +2716,9 @@ export type Database = {
       };
       my_cv_export_count: { Args: { p_year: number }; Returns: number };
       my_profile: { Args: { p_year: number }; Returns: Json };
+      my_session: { Args: Record<PropertyKey, never>; Returns: Json };
       next_reference_number: { Args: { p_kind: string; p_year: number }; Returns: number };
+      pending_deletion_files: { Args: { p_user: string }; Returns: Json };
       profile_events: {
         Args: { p_profile: string };
         Returns: {

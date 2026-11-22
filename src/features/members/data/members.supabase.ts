@@ -840,7 +840,9 @@ export function createSupabaseMembersRepository(
     },
     deleteMine() {
       return Promise.reject(
-        new NotImplementedError('members.deleteMine is the account-deletion port, which M20i brings'),
+        new NotImplementedError(
+          'members.deleteMine is part of the account-deletion port (data/account-deletion.ts)',
+        ),
       );
     },
   };
