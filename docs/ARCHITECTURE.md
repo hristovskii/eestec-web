@@ -1441,7 +1441,7 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 - Sign-in, sign-out and the 2-step code on a database: `auth.supabase-sign-in.ts` (the methods, with injected `service`, `signInClient(remember)` and `rememberChoice`, so the contract suite runs without Next) and `auth.supabase-session.ts` (the app's wiring: service role, cookie client, marker cookie). `auth.sign-in.supabase.test.ts` runs the real Auth service: password, pause, 2-step with a TOTP code computed in the test (`tests/supabase/totp.ts`), rejected and unconfirmed accounts.
 - `supabase/config.toml` changed (restart the stack: `pnpm db:stop && pnpm db:start`): `enable_signup = false`, `minimum_password_length = 10`, `enable_confirmations = true`, TOTP enrol and verify on.
 - `createTestUser({ password })` makes an account that can sign in. Suites that sign in must clean `login_lockouts` (the helper does).
-- **Found while trying it in the app:** with `DATA_SOURCE=supabase` the public pages do not render yet. Several repositories default to scope `session` (media, partners, events, ...) and are called from `use cache` code, where `cookies()` is not allowed (`Route /[locale] used cookies() inside "use cache"`). Sign-in itself works (cookie set, `/profile` recognises the member). The fix is a separate PR: public reads of cached queries use scope `public`.
+- **Found while trying it in the app, fixed in the next PR:** with `DATA_SOURCE=supabase` the public pages did not render (see "Notes from building (M21 pages)").
 - Not in M21a: registration, links (confirm, reset, e-mail change), password change and checks, invites, the set-up of the first authenticator and backup codes (M21b to M21d, see `docs/HANDOFF.md`).
 
 ## Verification
@@ -1461,3 +1461,8 @@ Checkbox, radio and segmented choices are **native inputs** styled like the canv
 
 - Write this document to `docs/ARCHITECTURE.md`. That is the only file written.
 - Then wait for the go-ahead to start M0.
+
+## Notes from building (M21 pages on a database)
+
+- The site now builds and runs on `DATA_SOURCE=supabase`: `pnpm smoke:supabase` (CI, supabase job) makes a production build against the local stack, opens the public pages once and fails on a non-200 answer **or an error in the server log** (a page can answer 200 and still fail inside a streamed part). What it found: (1) media, event types and the Journey/Home/Join/Partners/event reads in cached code used the cookie client (`cookies()` is not allowed inside `use cache`): `mediaRepository(scope)` and `eventTaxonomyRepository(scope)` take a scope, `getMediaItems/getMediaMap(ids, scope)` pass `'public'` from cached pages; (2) the public media read asked for the uploader's name (`media_uploaders`, board only): the public scope skips it; (3) `/submit` listed ideas as a visitor: `acceptedEventIds(limit)` on `SubmissionsRepository` (migration `0026`, `accepted_idea_events`, callable by visitors) hands over event ids and nothing else; (4) the real clock was read while prerendering a member profile's metadata: `currentYear()` in `members/queries.ts` is a cached read.
+- Rule for new public reads: a cached query or a page that does not read the session passes scope `'public'`; the mock ignores the scope, so only this smoke test or the contract suites notice a wrong one.

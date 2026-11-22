@@ -25,7 +25,7 @@ export async function getJourney(locale: Locale): Promise<PublicJourney> {
   cacheTag(journeyTags.all);
   cacheLife('hours');
   const journey = await (await journeyRepository()).get();
-  const files = await getMediaMap(journeyMediaIds(journey));
+  const files = await getMediaMap(journeyMediaIds(journey), 'public');
   const phase2 = isEnabled('phase2');
   const text = (value: { mk: string; en?: string }) => resolveLocalized(value, locale);
   const button = (value: { label: { mk: string; en?: string }; href: string }) =>

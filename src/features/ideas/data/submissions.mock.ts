@@ -163,6 +163,13 @@ export function createMockSubmissionsRepository(
       apply(idea, patch);
       return Promise.resolve(structuredClone(idea));
     },
+    acceptedEventIds(limit) {
+      return Promise.resolve(
+        newestFirst(db.ideas)
+          .flatMap((idea) => (idea.status === 'accepted' && idea.eventDraftId ? [idea.eventDraftId] : []))
+          .slice(0, limit),
+      );
+    },
     linkEventDraft(id, eventDraftId) {
       const idea = db.ideas.find((candidate) => candidate.id === id);
       if (!idea) return Promise.resolve(null);

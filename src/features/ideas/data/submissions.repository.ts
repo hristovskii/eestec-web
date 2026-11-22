@@ -48,6 +48,11 @@ export interface SubmissionsRepository {
   ideaCounts(): Promise<SubmissionCounts>;
   getIdea(id: string): Promise<Idea | null>;
   updateIdea(id: string, patch: SubmissionPatch): Promise<Idea | null>;
+  /**
+   * The events of accepted ideas, newest idea first, and nothing else about them (for the public page "Ideas that became
+   * events"; a visitor may call it). The caller shows only the events that are published.
+   */
+  acceptedEventIds(limit: number): Promise<string[]>;
   /** Remembers the event draft made from an accepted idea. */
   linkEventDraft(id: string, eventDraftId: string): Promise<Idea | null>;
   /** Whose file this is (the download checks who may open it); null: no submission has it. */

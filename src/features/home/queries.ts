@@ -23,7 +23,7 @@ export async function getHome(locale: Locale): Promise<PublicHome> {
   cacheTag(homeTags.all);
   cacheLife('hours');
   const home = await (await homeRepository()).get();
-  const files = await getMediaMap(homeMediaIds(home));
+  const files = await getMediaMap(homeMediaIds(home), 'public');
   const text = (value: { mk: string; en?: string }) => resolveLocalized(value, locale);
   return {
     hero: {

@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { selectImplementation } from '@/shared/data/select-implementation';
+import { type RepoScope, selectImplementation } from '@/shared/data/select-implementation';
 import { withClient } from '@/shared/data/supabase/clients';
 
 import { createMockEventsRepository, createMockEventTaxonomyRepository } from './events.mock';
@@ -27,9 +27,10 @@ export const eventsAdminRepository = () =>
     'session',
   );
 
-export const eventTaxonomyRepository = () =>
+/** 'session' (default): the board's screens. 'public': the filter chips of public pages (cookie-less, cacheable). */
+export const eventTaxonomyRepository = (scope: RepoScope = 'session') =>
   selectImplementation<EventTaxonomyRepository>(
     'eventTaxonomy',
     { mock: createMockEventTaxonomyRepository, supabase: withClient(createSupabaseEventTaxonomyRepository) },
-    'session',
+    scope,
   );

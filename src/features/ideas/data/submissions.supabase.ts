@@ -408,6 +408,9 @@ export function createSupabaseSubmissionsRepository(
     async updateIdea(id, patch) {
       return (await update('idea', id, patch)) ? getIdea(id) : null;
     },
+    async acceptedEventIds(limit) {
+      return unwrap(await client.rpc('accepted_idea_events', { p_limit: limit }));
+    },
     async linkEventDraft(id, eventDraftId) {
       if (!isUuid(id)) return null;
       if (!isUuid(eventDraftId)) throw new DataError('invalid', 'That is not an event');

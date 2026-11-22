@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { cacheLife } from 'next/cache';
+
 import { getSession } from '@/features/auth/server';
 import { getEventsByIds } from '@/features/events/server';
 import { getSiteSettings } from '@/features/settings/server';
@@ -25,7 +27,14 @@ export async function getAudience(): Promise<Audience> {
   return isMember || session.adminRole ? 'member' : 'visitor';
 }
 
-const currentYear = () => now().getUTCFullYear();
+/** The year, read inside a cache scope: the real clock may not be read while a page is prerendered (build time). */
+// A cached function has to be async, whatever it awaits.
+// eslint-disable-next-line @typescript-eslint/require-await
+async function currentYear(): Promise<number> {
+  'use cache';
+  cacheLife('hours');
+  return now().getUTCFullYear();
+}
 
 /** Members-only profiles exist only for a signed-in reader: their reads use the session, visitors' the public client. */
 const scopeFor = (audience: Audience) => (audience === 'member' ? 'session' : 'public');
@@ -33,7 +42,7 @@ const scopeFor = (audience: Audience) => (audience === 'member' ? 'session' : 'p
 export async function listActiveMembers(audience: Audience, locale: Locale, query: ActiveMembersQuery) {
   const result = await (
     await membersRepository(scopeFor(audience))
-  ).listActive(audience, query, currentYear());
+  ).listActive(audience, query, await currentYear());
   return toActiveView(result, query.pageSize, locale);
 }
 
@@ -63,7 +72,7 @@ export async function getBoard(locale: Locale, label?: string) {
 
 /** What /members/<username> may show this viewer; null: 404. */
 export async function getProfile(audience: Audience, username: string): Promise<ProfileResult | null> {
-  return (await membersRepository(scopeFor(audience))).getProfile(audience, username, currentYear());
+  return (await membersRepository(scopeFor(audience))).getProfile(audience, username, await currentYear());
 }
 
 /** What /members/<username> shows this viewer, in the language of the page, events resolved; null: 404. */

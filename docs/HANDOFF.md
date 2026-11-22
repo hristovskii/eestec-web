@@ -131,7 +131,7 @@ database is everything that needs Auth itself (M21): sign-in and out, links, pas
 
 ### M21 auth
 
-Split into small PRs: **M21a** sign-in/out, lockout, 2-step code for an existing authenticator (D44, done); **M21b** first authenticator set-up and backup codes for super admins (no screen is drawn: ask the owner); **M21c** registration, confirm, reset and resend (own `auth_links`; the e-mails themselves are M22); **M21d** password check/change, e-mail change, invites, account-deletion password check. Also needed before the app can run on a database: the public pages call scope-`session` repositories inside `use cache` (see Notes M21a).
+Split into small PRs: **M21a** sign-in/out, lockout, 2-step code for an existing authenticator (D44, done); **M21b** first authenticator set-up and backup codes for super admins (no screen is drawn: ask the owner); **M21c** registration, confirm, reset and resend (own `auth_links`; the e-mails themselves are M22); **M21d** password check/change, e-mail change, invites, account-deletion password check.
 
 GoTrue config (min password 10), MFA enrolment for super admins (aal2 is already enforced in RLS helpers), backup codes
 (`mfa_backup_codes`), lockout via `login_gate`/`login_record` around `signInWithPassword` and every `verifyPassword` re-check, own
