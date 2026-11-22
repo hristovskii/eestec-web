@@ -78,6 +78,8 @@ export type MemberRegistration = {
   visibility: MemberVisibility;
   /** A file in the (mock) photo store; null: no photo. */
   photoId: string | null;
+  /** The address of the photo when a database gives it (the mock keeps `photoId` and builds it). */
+  photoSrc?: string | null;
   status: RegistrationStatus;
   /** Language of the page they used: links in e-mails keep it. */
   locale: 'mk' | 'en';

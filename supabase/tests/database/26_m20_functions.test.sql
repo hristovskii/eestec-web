@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(120);
+select plan(156);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -281,5 +281,66 @@ select is(public.memory_photo_path(current_setting('m20h.media')::uuid), 'a90000
 select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
 select cmp_ok((public.memory_admin_counts() ->> 'published')::integer, '>=', 1, 'staff count the published Memories');
 select is((public.memory_admin_counts() ->> 'all')::integer, (public.memory_admin_counts() ->> 'draft')::integer + (public.memory_admin_counts() ->> 'pending')::integer + (public.memory_admin_counts() ->> 'published')::integer + (public.memory_admin_counts() ->> 'rejected')::integer, 'and every status adds up to all');
+-- ───────────── M20i: the session, registrations, account details, board accounts and the deletion queue ─────────────
+reset role;
+insert into auth.users(id, aud, role, email, email_confirmed_at) values
+ ('a1000000-0000-0000-0000-000000000005', 'authenticated', 'authenticated', 'm20i-pending@test.mk', now()),
+ ('a1000000-0000-0000-0000-000000000006', 'authenticated', 'authenticated', 'm20i-unconfirmed@test.mk', null);
+update auth.users set email_confirmed_at = now() where id = 'a1000000-0000-0000-0000-000000000003';
+insert into public.profiles(id, username, full_name, status, visibility) values
+ ('a1000000-0000-0000-0000-000000000003', 'm20i-member', 'M20i Member', 'active', 'public'),
+ ('a1000000-0000-0000-0000-000000000005', 'm20i-pending', 'M20i Pending', 'pending', 'members_only'),
+ ('a1000000-0000-0000-0000-000000000006', 'm20i-unconfirmed', 'M20i Unconfirmed', 'pending', 'members_only');
+insert into public.member_accounts(profile_id, faculty, year_of_study, phone, data_consent_at, registration_locale) values
+ ('a1000000-0000-0000-0000-000000000003', 'FEEIT', '2', '070', now(), 'mk'),
+ ('a1000000-0000-0000-0000-000000000005', 'FINKI', '3', '071', now(), 'en'),
+ ('a1000000-0000-0000-0000-000000000006', 'FINKI', '1', '072', now(), 'mk');
+select pg_temp.visitor();
+select throws_ok($$select public.my_session()$$, '42501', null, 'a visitor has no session to read');
+select throws_ok($$select public.member_registrations()$$, '42501', null, 'or registrations');
+select throws_ok($$select public.account_details('a1000000-0000-0000-0000-000000000003')$$, '42501', null, 'or account details');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000003');
+select is(public.my_session() ->> 'member_status', 'active', 'a member’s session carries their status');
+select is(public.my_session() ->> 'name', 'M20i Member', 'and their name');
+select is(public.my_session() ->> 'admin_role', null, 'and no board role');
+select is((select count(*)::integer from jsonb_array_elements(public.member_registrations())), 1, 'a person sees their own registration only');
+select is(jsonb_array_length(public.member_registrations('a1000000-0000-0000-0000-000000000005')), 0, 'and not someone else’s');
+select is(public.account_details('a1000000-0000-0000-0000-000000000003') ->> 'email', 'member@test.mk', 'their account details carry the e-mail from Auth');
+select is(public.account_details('a1000000-0000-0000-0000-000000000005'), null, 'but not another person’s');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select is(public.my_session() ->> 'admin_role', 'editor', 'a board member’s session carries their role');
+select is(public.my_session() ->> 'member_status', null, 'and no member status without a profile');
+select is((select e ->> 'status' from jsonb_array_elements(public.member_registrations()) e where e ->> 'user_id' = 'a1000000-0000-0000-0000-000000000005'), 'pending', 'the board sees a confirmed registration as pending');
+select is((select e ->> 'status' from jsonb_array_elements(public.member_registrations()) e where e ->> 'user_id' = 'a1000000-0000-0000-0000-000000000006'), 'awaiting_confirmation', 'and one without the e-mail link used as awaiting');
+select is((select e ->> 'status' from jsonb_array_elements(public.member_registrations()) e where e ->> 'user_id' = 'a1000000-0000-0000-0000-000000000003'), 'active', 'and an approved one as active');
+select is((select count(*)::integer from jsonb_array_elements(public.member_registrations(null, 'pending')) e where e ->> 'user_id' = 'a1000000-0000-0000-0000-000000000005'), 1, 'filtered by status it lists the pending ones');
+select is((select count(*)::integer from jsonb_array_elements(public.member_registrations(null, 'pending')) e where e ->> 'status' <> 'pending'), 0, 'and only those');
+select is(public.account_details('a1000000-0000-0000-0000-000000000005') ->> 'email', 'm20i-pending@test.mk', 'the board reads any account’s details');
+select throws_ok($$select public.admin_accounts()$$, '42501', null, 'an editor cannot list board accounts');
+select throws_ok($$select public.admin_update_role('a1000000-0000-0000-0000-000000000002', 'editor')$$, '42501', null, 'or change a role');
+select throws_ok($$select public.admin_remove_role('a1000000-0000-0000-0000-000000000002')$$, '42501', null, 'or remove one');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000004', 'aal1');
+select is(public.my_session() ->> 'admin_role', null, 'a super admin without 2-step has no role yet');
+select throws_ok($$select public.admin_accounts()$$, '42501', null, 'and cannot list board accounts');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000004', 'aal2');
+select is(public.my_session() ->> 'admin_role', 'super_admin', 'with 2-step they do');
+select is((select e ->> 'two_factor' from jsonb_array_elements(public.admin_accounts()) e where e ->> 'user_id' = 'a1000000-0000-0000-0000-000000000004'), 'not_set_up', 'a super admin without a factor is "not set up"');
+select is((select e ->> 'two_factor' from jsonb_array_elements(public.admin_accounts()) e where e ->> 'user_id' = 'a1000000-0000-0000-0000-000000000001'), 'off', 'an editor’s is off');
+select is((select e ->> 'role' from jsonb_array_elements(public.admin_accounts()) e limit 1), 'super_admin', 'the list starts with super admins');
+select is(public.admin_update_role('a1000000-0000-0000-0000-000000000001', 'event_manager', array[]::uuid[]), true, 'a super admin changes a role');
+select is((select e ->> 'role' from jsonb_array_elements(public.admin_accounts()) e where e ->> 'user_id' = 'a1000000-0000-0000-0000-000000000001'), 'event_manager', 'and it shows');
+select is(public.admin_update_role('a1000000-0000-0000-0000-000000000099', 'editor'), false, 'a person without a role has none to change');
+select is(public.admin_remove_role('a1000000-0000-0000-0000-000000000002'), true, 'a super admin removes board access');
+select is(public.admin_remove_role('a1000000-0000-0000-0000-000000000002'), false, 'once');
+reset role;
+select is((select count(*)::integer from public.profiles where id = 'a1000000-0000-0000-0000-000000000003'), 1, 'and a member account is left alone');
+insert into public.account_deletion_jobs(user_id, delete_published_memories) values ('a1000000-0000-0000-0000-000000000003', false);
+insert into public.account_deletion_files(user_id, bucket, path) values ('a1000000-0000-0000-0000-000000000003', 'avatars', 'gone/a.jpg');
+set local role service_role;
+select is(public.pending_deletion_files('a1000000-0000-0000-0000-000000000003') -> 0 ->> 'path', 'gone/a.jpg', 'the server reads the files still to remove');
+reset role;
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000003');
+select is(public.my_session(), null, 'an account being deleted has no session');
+select throws_ok($$select public.pending_deletion_files('a1000000-0000-0000-0000-000000000003')$$, '42501', null, 'and nobody but the server reads the queue');
 select * from finish();
 rollback;

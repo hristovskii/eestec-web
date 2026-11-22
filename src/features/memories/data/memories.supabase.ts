@@ -638,7 +638,11 @@ export function createSupabaseMemoriesRepository(client: DbClient, _scope: RepoS
     },
 
     retire() {
-      return Promise.reject(new NotImplementedError('memories.retire is the account-deletion port (M20i)'));
+      return Promise.reject(
+        new NotImplementedError(
+          'memories.retire is part of the account-deletion port (members/data/account-deletion.ts)',
+        ),
+      );
     },
 
     // ─── Admin ───

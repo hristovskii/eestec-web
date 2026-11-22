@@ -2,23 +2,16 @@
 
 import { z } from 'zod';
 
-import { deleteApplicationsOf } from '@/features/applications/server';
-import {
-  currentMember,
-  deleteMemberAccount,
-  deleteMemberPhoto,
-  passwordFailure,
-  verifyMemberPassword,
-} from '@/features/auth/server';
-import { retireMemoriesOf } from '@/features/memories/server';
+import { currentMember, passwordFailure, verifyMemberPassword } from '@/features/auth/server';
 import { type ActionResult, ok } from '@/shared/forms/action-result';
 
-import { membersRepository } from '../data';
+import { accountDeletion } from '../data';
 
-// /profile › Account › Delete my account. It spans three features, so it is composed here: the
-// profile, choices, CV and photo (members), the applications, the Memories (drafts and waiting ones
-// always go; published ones only when asked) and last the account itself
-// (which also clears the session). No `refresh()`: the page would only redirect to log in.
+// /profile › Account › Delete my account. It spans several features (the profile, choices, CV and photo,
+// the applications, the Memories, the account itself), so it goes through the account-deletion port
+// (data/account-deletion.ts): one durable job on a database, the same steps one by one on mock data.
+// Drafts and waiting Memories always go; published ones only when asked. No `refresh()`: the page
+// would only redirect to log in.
 
 const deleteSchema = z.object({
   password: z.string().min(1),
@@ -39,11 +32,15 @@ export async function deleteMyAccount(input: unknown): Promise<ActionResult<{ fi
   const check = await verifyMemberPassword(session.userId, parsed.data.password);
   if (check.status !== 'ok') return passwordFailure(check, 'password');
 
-  const { photoUrl } = await (await membersRepository('session')).deleteMine(session.userId);
-  deleteMemberPhoto(photoUrl);
-  await deleteApplicationsOf(session.email);
-  await retireMemoriesOf(session.userId, parsed.data.alsoDeleteMemories);
-  const deleted = await deleteMemberAccount(session.userId);
+  const deleted = await (
+    await accountDeletion()
+  ).deleteAccount({
+    userId: session.userId,
+    name: session.name,
+    email: session.email,
+    locale: 'mk',
+    alsoDeleteMemories: parsed.data.alsoDeleteMemories,
+  });
   if (deleted.status !== 'deleted') return { ok: false, error: 'unexpected' };
   return ok({ firstName: session.name.split(' ')[0] ?? session.name });
 }
