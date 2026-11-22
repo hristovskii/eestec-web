@@ -27,8 +27,13 @@ export async function getAudience(): Promise<Audience> {
 
 const currentYear = () => now().getUTCFullYear();
 
+/** Members-only profiles exist only for a signed-in reader: their reads use the session, visitors' the public client. */
+const scopeFor = (audience: Audience) => (audience === 'member' ? 'session' : 'public');
+
 export async function listActiveMembers(audience: Audience, locale: Locale, query: ActiveMembersQuery) {
-  const result = await (await membersRepository()).listActive(audience, query, currentYear());
+  const result = await (
+    await membersRepository(scopeFor(audience))
+  ).listActive(audience, query, currentYear());
   return toActiveView(result, query.pageSize, locale);
 }
 
@@ -39,7 +44,7 @@ export async function listAlumni(
   limit = 9,
 ) {
   const result = await (
-    await membersRepository()
+    await membersRepository(scopeFor(audience))
   ).listAlumni(audience, {
     q: query.q,
     limit: query.all ? 'all' : limit,
@@ -58,7 +63,7 @@ export async function getBoard(locale: Locale, label?: string) {
 
 /** What /members/<username> may show this viewer; null: 404. */
 export async function getProfile(audience: Audience, username: string): Promise<ProfileResult | null> {
-  return (await membersRepository()).getProfile(audience, username, currentYear());
+  return (await membersRepository(scopeFor(audience))).getProfile(audience, username, currentYear());
 }
 
 /** What /members/<username> shows this viewer, in the language of the page, events resolved; null: 404. */
@@ -134,18 +139,18 @@ export async function getAuthorCards(
 ): Promise<Record<string, AuthorCardData>> {
   const unique = [...new Set(userIds)];
   if (unique.length === 0) return {};
-  const found = await (await membersRepository()).findAuthors(audience, unique);
+  const found = await (await membersRepository(scopeFor(audience))).findAuthors(audience, unique);
   return Object.fromEntries(
-    found.map(({ profile, page, teams }) => [
-      profile.userId,
+    found.map((author) => [
+      author.userId,
       {
-        name: profile.name,
-        initials: initials(profile.name),
-        username: page === 'none' ? null : profile.username,
-        photo: page === 'full' && !profile.hidePhoto ? profile.photo : null,
-        teams: teams.map((team) => resolveLocalized(team.name, locale)),
-        since: Number(profile.memberSince.slice(0, 4)),
-        bio: page === 'full' && !profile.hideBio ? profile.bio : '',
+        name: author.name,
+        initials: initials(author.name),
+        username: author.username,
+        photo: author.photo,
+        teams: author.teams.map((name) => resolveLocalized(name, locale)),
+        since: author.since,
+        bio: author.bio,
       } satisfies AuthorCardData,
     ]),
   );
