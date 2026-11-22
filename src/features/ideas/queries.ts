@@ -7,7 +7,6 @@ import { devSurfacesEnabled } from '@/shared/config/flags';
 import type { Locale } from '@/shared/i18n/routing';
 
 import { ideaFormRepository, submissionsRepository } from './data';
-import { readMockSubmissionFile } from './data/submission-files';
 
 /** The new ideas and new feedback: the dashboard tile and the sidebar badge. */
 export async function countNewSubmissions(): Promise<{ newIdeas: number; newFeedback: number }> {
@@ -22,20 +21,20 @@ export async function getIdeaFormSettings() {
 }
 
 /**
- * A file that came with an idea or a feedback, for the board only (mock stand-in for a signed link).
- * Event managers read the rating and impression of feedback on their own events (D18) but never its
- * photos or attachments (D29, D33); nothing at all on real data until the private bucket exists.
+ * A file that came with an idea or a feedback, for the board only (on mock data a stand-in for the private bucket,
+ * dev and preview only). Event managers read the rating and impression of feedback on their own events (D18) but
+ * never its photos or attachments (D29, D33): the board's right is 'edit', and a database reads the file as the
+ * signed-in person, whose row and object policies only the board passes.
  */
 export async function submissionFileResponse(id: string): Promise<Response> {
-  if (!(devSurfacesEnabled() && env.DATA_SOURCE === 'mock'))
-    return new Response('Not found', { status: 404 });
-  const owner = await (await submissionsRepository('session')).fileOwner(id);
-  const file = owner ? readMockSubmissionFile(id) : null;
-  if (!owner || !file) return new Response('Not found', { status: 404 });
+  if (env.DATA_SOURCE === 'mock' && !devSurfacesEnabled()) return new Response('Not found', { status: 404 });
   // 'edit' is the board's right on ideas: event managers only have 'ownRead' (D18), which must not reach files.
   const allowed = await authorize('edit', 'ideas');
   if (!allowed) return new Response('Forbidden', { status: 403 });
-  return new Response(new Uint8Array(file.bytes), {
+  const repo = await submissionsRepository('session');
+  const file = (await repo.fileOwner(id)) ? await repo.readFile(id) : null;
+  if (!file) return new Response('Not found', { status: 404 });
+  return new Response(Buffer.from(file.bytes), {
     headers: {
       'Content-Type': file.mimeType,
       'Content-Disposition': `attachment; filename="${encodeURIComponent(file.name)}"`,

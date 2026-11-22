@@ -2,7 +2,7 @@
 
 import { getSession, sendMockMail } from '@/features/auth/server';
 import { getStartedEvents } from '@/features/events/server';
-import { createMemoryFromImpression } from '@/features/memories/server';
+import { memoryFromImpression, notifyBoardOfMemory } from '@/features/memories/server';
 import { deviceKey, rateLimiter } from '@/shared/data/rate-limit';
 import { type ActionResult, fieldErrorsFrom, ok } from '@/shared/forms/action-result';
 import { checkSpamGuard } from '@/shared/forms/spam-guard';
@@ -10,7 +10,6 @@ import { type Locale, routing } from '@/shared/i18n/routing';
 import { now } from '@/shared/lib/now';
 
 import { ideaFormRepository, submissionsRepository } from '../data';
-import { saveMockSubmissionFile } from '../data/submission-files';
 import { fileTypeOf } from '../domain/file-type';
 import {
   buildIdeaSchema,
@@ -51,8 +50,11 @@ async function signedInMember() {
 
 type StoredFile = { file: SubmissionFile; bytes: Uint8Array; type: string };
 
+type Store = Pick<Awaited<ReturnType<typeof submissionsRepository>>, 'storeFile'>;
+
 /** Reads, checks the real type of and stores one uploaded file; 'invalid': it is not what it says. */
 async function storeFile(
+  store: Store,
   value: FormDataEntryValue | null,
   allowed: readonly string[],
 ): Promise<StoredFile | null | 'invalid'> {
@@ -61,8 +63,8 @@ async function storeFile(
   const type = fileTypeOf(bytes);
   if (!type || !allowed.includes(type)) return 'invalid';
   const name = value.name.replace(/[^\w. -]/g, '_').slice(0, 120) || 'file';
-  const id = saveMockSubmissionFile({ bytes, mimeType: type, name });
-  return { file: { id, name, size: bytes.length, mime: type }, bytes, type };
+  const file = await store.storeFile({ bytes, mimeType: type, name });
+  return { file, bytes, type };
 }
 
 const fakeReceipt = (kind: SubmitReceipt['kind'], anonymous: boolean): SubmitReceipt => ({
@@ -107,7 +109,9 @@ export async function submitIdea(data: FormData): Promise<ActionResult<SubmitRec
   if (!parsed.success)
     return { ok: false, error: 'validation', fieldErrors: fieldErrorsFrom(parsed.error.issues) };
 
-  const attachment = await storeFile(data.get(SUBMIT_FIELDS.attachment), [
+  // Submitting is the server's work: a database lets only the service role call it.
+  const repo = await submissionsRepository('service');
+  const attachment = await storeFile(repo, data.get(SUBMIT_FIELDS.attachment), [
     'application/pdf',
     'image/jpeg',
     'image/png',
@@ -119,9 +123,7 @@ export async function submitIdea(data: FormData): Promise<ActionResult<SubmitRec
   if (wait) return { ok: false, error: 'rate_limited', retryAt: wait.retryAt };
 
   const stamp = now();
-  const idea = await (
-    await submissionsRepository('session')
-  ).submitIdea(
+  const idea = await repo.submitIdea(
     {
       typeId: parsed.data.type,
       title: parsed.data.title,
@@ -167,11 +169,12 @@ export async function submitImpression(data: FormData): Promise<ActionResult<Sub
   if (!parsed.success)
     return { ok: false, error: 'validation', fieldErrors: fieldErrorsFrom(parsed.error.issues) };
 
+  const repo = await submissionsRepository('service');
   const widths = data.getAll('photoWidths').map(Number);
   const heights = data.getAll('photoHeights').map(Number);
   const photos: { stored: StoredFile; width: number; height: number }[] = [];
   for (const [index, value] of data.getAll(SUBMIT_FIELDS.photos).entries()) {
-    const stored = await storeFile(value, ['image/jpeg', 'image/png', 'image/webp']);
+    const stored = await storeFile(repo, value, ['image/jpeg', 'image/png', 'image/webp']);
     if (stored === 'invalid')
       return { ok: false, error: 'validation', fieldErrors: { photos: ['photoType'] } };
     if (stored) photos.push({ stored, width: widths[index] ?? 0, height: heights[index] ?? 0 });
@@ -187,11 +190,12 @@ export async function submitImpression(data: FormData): Promise<ActionResult<Sub
   const anonymous = parsed.data.anonymous;
   const stamp = now();
 
-  // "Turn this into a Memories post": only an active member or alumnus who is not anonymous.
+  // "Turn this into a Memories post": only an active member or alumnus who is not anonymous. The Memory is made
+  // together with the feedback, so there is never one without the other.
   const canWrite = member?.memberStatus === 'active' || member?.memberStatus === 'alumni';
   const memory =
     parsed.data.asMemory && member && canWrite && !anonymous
-      ? await createMemoryFromImpression({
+      ? await memoryFromImpression({
           userId: member.userId,
           title: parsed.data.memoryTitle,
           eventId: event?.id ?? null,
@@ -209,13 +213,10 @@ export async function submitImpression(data: FormData): Promise<ActionResult<Sub
               width: photo.width,
               height: photo.height,
             })),
-          now: stamp,
         })
       : null;
 
-  const feedback = await (
-    await submissionsRepository('session')
-  ).submitFeedback(
+  const feedback = await repo.submitFeedback(
     {
       eventId: event?.id ?? null,
       otherEventName: event ? '' : parsed.data.otherEvent,
@@ -224,11 +225,13 @@ export async function submitImpression(data: FormData): Promise<ActionResult<Sub
       text: parsed.data.impression,
       locale,
       photos: photos.map((photo) => photo.stored.file),
-      memoryId: memory?.id ?? null,
+      memory,
       sender: senderOf(anonymous, member, parsed.data),
     },
     stamp,
   );
+  if (feedback.memoryId)
+    await notifyBoardOfMemory({ title: parsed.data.memoryTitle, revision: false, now: stamp });
   await notifyBoardOfSubmission({ kind: 'feedback', what: eventTitle, now: stamp });
   if (feedback.email)
     sendMockMail({
@@ -244,7 +247,7 @@ export async function submitImpression(data: FormData): Promise<ActionResult<Sub
     firstName: feedback.name ? firstName(feedback.name) : null,
     email: feedback.email,
     anonymous: feedback.isAnonymous,
-    asMemory: memory !== null,
+    asMemory: feedback.memoryId !== null,
     eventTitle,
     eventSlug: event?.slug ?? null,
   });

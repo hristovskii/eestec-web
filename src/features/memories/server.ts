@@ -8,9 +8,10 @@ export {
 } from './data/memory-photos';
 export {
   countMyPublishedMemories,
-  createMemoryFromImpression,
+  createImpressionMemory,
   getMyMemoryForEditor,
   listMyMemories,
+  memoryFromImpression,
   listMemoryQueue,
   memoryPhotoResponse,
   memoryQueueCount,
@@ -28,6 +29,7 @@ export {
   getMemorySlugs,
   getMyMemoryPost,
 } from './public-queries';
+export { notifyBoardOfMemory } from './notify';
 export { memoryTags } from './cache-tags';
 export { getAdminMemories, getMemoryForAdmin, getMemoryQueue, getMemoryReview } from './admin-queries';
 export type { MemoryReviewView } from './admin-queries';

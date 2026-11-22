@@ -10,6 +10,7 @@ import type {
   IdeasQuery,
   RatingsQuery,
   SubmissionCounts,
+  SubmissionFile,
   SubmissionStatus,
 } from '../types';
 
@@ -20,13 +21,26 @@ export type SubmissionPatch = {
   owner?: { id: string; name: string } | null;
 };
 
-/** Ideas and feedback from /submit, and the board's handling of them (Admin › Ideas & Feedback). */
+/** A file as it arrives from the form: the caller has checked its real type. */
+export type SubmissionBlob = { bytes: Uint8Array; mimeType: string; name: string };
+
+/**
+ * Ideas and feedback from /submit, and the board's handling of them (Admin › Ideas & Feedback).
+ * Submitting and storing files are the server's work (service scope on a database); the rest is the board's.
+ */
 export interface SubmissionsRepository {
+  /** Stores a file of a submission in the private store and returns what the submit refers to. */
+  storeFile(blob: SubmissionBlob): Promise<SubmissionFile>;
+  /** The file with its content, for the board's download; null when there is none or this person may not open it. */
+  readFile(fileId: string): Promise<SubmissionBlob | null>;
+
   /**
    * Stores an idea as "new". Anonymous ideas keep no name, no e-mail and no account, whatever
    * the input says; an e-mail without a name is kept as it is (consent recorded at `now`).
+   * A named sender with an account must be that account's person (a database checks the verified e-mail).
    */
   submitIdea(input: IdeaInput, now: Date): Promise<Idea>;
+  /** Stores feedback as "new", and the Memory that comes with it (`input.memory`) in the same step. */
   submitFeedback(input: FeedbackInput, now: Date): Promise<Feedback>;
 
   /** Newest first. */
@@ -41,6 +55,10 @@ export interface SubmissionsRepository {
   /** How many ideas use this type (a type in use cannot be removed). */
   countIdeasOfType(typeId: string): Promise<number>;
 
+  /**
+   * With `onlyEventIds` (an event manager, D33) the rows carry the rating and the impression and nothing of the
+   * sender, the owner, the photos or the Memory.
+   */
   listFeedback(query: FeedbackQuery): Promise<Paged<Feedback>>;
   feedbackCounts(onlyEventIds?: readonly string[]): Promise<SubmissionCounts>;
   getFeedback(id: string): Promise<Feedback | null>;

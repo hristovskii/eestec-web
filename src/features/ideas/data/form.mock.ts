@@ -14,7 +14,14 @@ export function createMockIdeaFormRepository(): IdeaFormRepository {
   return {
     get: () => Promise.resolve(structuredClone(db.form)),
     save(input) {
-      db.form = structuredClone(input);
+      // A new type comes without an id: the store gives it one (a database does the same).
+      db.form = structuredClone({
+        ...input,
+        types: input.types.map((type) => ({
+          ...type,
+          id: type.id || `itype-${crypto.randomUUID().slice(0, 8)}`,
+        })),
+      });
       return Promise.resolve(structuredClone(db.form));
     },
   };
