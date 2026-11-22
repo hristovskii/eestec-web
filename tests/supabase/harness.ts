@@ -76,12 +76,16 @@ export type TestMemberStatus = 'pending' | 'active' | 'alumni';
  * profile. `cleanup()` removes it again (the account's rows go with the user or are deleted here).
  */
 export async function createTestUser(
-  options: { role?: TestRole; member?: TestMemberStatus; name?: string } = {},
+  options: { role?: TestRole; member?: TestMemberStatus; name?: string; password?: string } = {},
 ) {
   const service = serviceClient();
   const tag = randomUUID().slice(0, 8);
   const email = `contract-${tag}@example.invalid`;
-  const created = await service.auth.admin.createUser({ email, email_confirm: true });
+  const created = await service.auth.admin.createUser({
+    email,
+    email_confirm: true,
+    ...(options.password ? { password: options.password } : {}),
+  });
   if (created.error || !created.data.user) throw created.error ?? new Error('Could not create a test user');
   const id = created.data.user.id;
   if (options.role) {
@@ -104,6 +108,10 @@ export async function createTestUser(
     email,
     client: (aal: Aal = 'aal1') => clientAs({ id, aal }),
     async cleanup() {
+      await service
+        .from('login_lockouts')
+        .delete()
+        .in('email_key', [email, `2fa:${id}`]);
       await service.from('admin_roles').delete().eq('user_id', id);
       await service.from('profiles').delete().eq('id', id);
       await service.auth.admin.deleteUser(id);

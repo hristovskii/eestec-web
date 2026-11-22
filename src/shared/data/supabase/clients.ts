@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 
 import { env } from '@/shared/config/env';
 
+import { authCookieOptions, REMEMBER_COOKIE } from './cookie-options';
 import type { Database } from './database.types';
 import type { RepoScope } from '../select-implementation';
 
@@ -34,8 +35,11 @@ export function serviceClient(): DbClient {
   return createClient<Database>(url, serviceKey, { auth: stateless });
 }
 
-/** The visitor's or admin's own session, read from the request cookies. */
-export async function sessionClient(): Promise<DbClient> {
+/**
+ * The visitor's or admin's own session, read from the request cookies. `remember` is for the request that signs
+ * someone in (their choice is not in a cookie yet); afterwards the marker cookie carries it.
+ */
+export async function sessionClient(remember?: boolean): Promise<DbClient> {
   const { url, anonKey } = config();
   const jar = await cookies();
   return createServerClient<Database>(url, anonKey, {
@@ -43,7 +47,9 @@ export async function sessionClient(): Promise<DbClient> {
       getAll: () => jar.getAll(),
       setAll(items) {
         try {
-          for (const { name, value, options } of items) jar.set(name, value, options);
+          const kept = remember ?? jar.get(REMEMBER_COOKIE)?.value === '1';
+          for (const { name, value, options } of items)
+            jar.set(name, value, authCookieOptions(options, kept));
         } catch {
           // A Server Component cannot set cookies; the proxy already refreshed the session.
         }

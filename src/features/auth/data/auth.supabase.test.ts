@@ -3,13 +3,22 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { anonClient, createTestUser, serviceClient } from '../../../../tests/supabase/harness';
 import { NotImplementedError } from '@/shared/data/select-implementation';
 import { createSupabaseAuthRepository } from './auth.supabase';
+import type { SignInDeps } from './auth.supabase-sign-in';
 
 type TestUser = Awaited<ReturnType<typeof createTestUser>>;
 type Client = ReturnType<typeof anonClient>;
 
 const NOW = new Date('2026-10-05T08:00:00.000Z');
 const unique = () => crypto.randomUUID().slice(0, 8);
-const repoFor = (client: Client) => createSupabaseAuthRepository(client, 'session');
+// Signing in is tested in auth.supabase-sign-in.test.ts; here the sign-in wiring is never used.
+const unused: SignInDeps = {
+  service: () => {
+    throw new Error('not used');
+  },
+  signInClient: () => Promise.reject(new Error('not used')),
+  rememberChoice: () => Promise.resolve(),
+};
+const repoFor = (client: Client) => createSupabaseAuthRepository(client, 'session', unused);
 
 const created: TestUser[] = [];
 const track = async <T extends TestUser>(user: Promise<T>) => {
@@ -141,12 +150,8 @@ describe('AuthRepository (supabase, who is signed in)', () => {
     await serviceClient().from('account_deletion_jobs').delete().eq('user_id', user.id);
   });
 
-  it('leaves signing in and out, links, passwords and invites to M21', async () => {
+  it('leaves links, passwords and invites to M21', async () => {
     const repo = repoFor(anonClient());
-    await expect(
-      repo.signInMember({ email: 'a@b.c', password: 'x', remember: false, now: NOW }),
-    ).rejects.toBeInstanceOf(NotImplementedError);
-    await expect(repo.signOut()).rejects.toBeInstanceOf(NotImplementedError);
     await expect(repo.verifyPassword({ userId: member.id, password: 'x', now: NOW })).rejects.toBeInstanceOf(
       NotImplementedError,
     );
