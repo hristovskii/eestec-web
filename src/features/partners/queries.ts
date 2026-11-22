@@ -27,7 +27,7 @@ export async function getPartners(locale: Locale): Promise<PublicPartnersPage> {
   cacheLife('hours');
   const repo = await partnersRepository();
   const [page, tiers, sponsors] = await Promise.all([repo.getPage(), repo.listTiers(), repo.listSponsors()]);
-  const files = await getMediaMap(partnersMediaIds(page, sponsors));
+  const files = await getMediaMap(partnersMediaIds(page, sponsors), 'public');
   const text = (value: { mk: string; en?: string }) => resolveLocalized(value, locale);
   const today = isoToZoned(now().toISOString()).date;
 
@@ -149,7 +149,10 @@ export async function getEventPartners(ids: string[], locale: Locale): Promise<P
     const sponsor = sponsors.find((candidate) => candidate.id === id);
     return sponsor?.isActive ? [sponsor] : [];
   });
-  const files = await getMediaMap(picked.flatMap((sponsor) => (sponsor.logo ? [sponsor.logo.mediaId] : [])));
+  const files = await getMediaMap(
+    picked.flatMap((sponsor) => (sponsor.logo ? [sponsor.logo.mediaId] : [])),
+    'public',
+  );
   return picked.map((sponsor) => {
     const file = sponsor.logo ? files.get(sponsor.logo.mediaId) : undefined;
     return {

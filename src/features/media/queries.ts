@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { accessTo, type Actor } from '@/features/auth';
+import type { RepoScope } from '@/shared/data/select-implementation';
 import { resolveLocalized } from '@/shared/i18n/localized';
 import type { Locale } from '@/shared/i18n/routing';
 import type { AnyMedia, MediaRef } from '@/shared/types/media';
@@ -25,15 +26,20 @@ export async function listMedia(actor: Actor, params: MediaListParams) {
 }
 
 /** Library items by id (other features' admin screens: event covers, galleries). Unknown ids are left out. */
-export async function getMediaItems(ids: readonly string[]) {
-  const repo = await mediaRepository();
+export async function getMediaItems(ids: readonly string[], scope: RepoScope = 'session') {
+  const repo = await mediaRepository(scope);
   const items = await Promise.all([...new Set(ids)].map((id) => repo.get(id)));
   return items.filter((item) => item !== null);
 }
 
-/** Library files by id, for resolving the photos of a page. */
-export async function getMediaMap(ids: readonly string[]): Promise<Map<string, MediaItem>> {
-  return new Map((await getMediaItems(ids)).map((item) => [item.id, item]));
+/**
+ * Library files by id, for resolving the photos of a page. Pages that are cached or public pass 'public' (no cookies).
+ */
+export async function getMediaMap(
+  ids: readonly string[],
+  scope: RepoScope = 'session',
+): Promise<Map<string, MediaItem>> {
+  return new Map((await getMediaItems(ids, scope)).map((item) => [item.id, item]));
 }
 
 /**

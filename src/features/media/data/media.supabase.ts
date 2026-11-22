@@ -1,6 +1,7 @@
 import 'server-only';
 
 import type { Paged } from '@/shared/data/paged';
+import type { RepoScope } from '@/shared/data/select-implementation';
 import type { DbClient } from '@/shared/data/supabase/clients';
 import type { Tables } from '@/shared/data/supabase/database.types';
 import { DataError, unwrap, unwrapMaybe } from '@/shared/data/supabase/errors';
@@ -27,13 +28,17 @@ const safeName = (fileName: string) => fileName.replace(/[^A-Za-z0-9._-]+/g, '-'
  * take two steps so files never pass through a Server Action: `createUpload` reserves a row and returns a
  * signed Storage URL the browser PUTs to; `confirmUpload` marks it ready with its alt text.
  */
-export function createSupabaseMediaRepository(client: DbClient): MediaRepository {
+export function createSupabaseMediaRepository(
+  client: DbClient,
+  scope: RepoScope = 'session',
+): MediaRepository {
   const srcOf = (row: Row): string | null => mediaSource(client, row);
 
   async function toItems(rows: Row[]): Promise<MediaItem[]> {
     const ids = [...new Set(rows.map((row) => row.uploaded_by).filter((id): id is string => !!id))];
     const names = new Map<string, string>();
-    if (ids.length > 0) {
+    // Who uploaded a file is for the board; a public page (no session) does not ask.
+    if (ids.length > 0 && scope !== 'public') {
       for (const person of unwrap(await client.rpc('media_uploaders', { p_ids: ids }))) {
         if (person.name) names.set(person.id, person.name);
       }

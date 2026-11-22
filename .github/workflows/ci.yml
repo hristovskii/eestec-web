@@ -79,6 +79,8 @@ jobs:
       - run: bash supabase/tests/application-concurrency.sh
       - run: bash supabase/tests/member-content-concurrency.sh
       - run: pnpm exec supabase db lint --fail-on error
+      # The site itself on the seeded database: a production build and the public pages, once.
+      - run: pnpm smoke:supabase
       # The repositories' contract suites against the migrated and seeded database.
       - run: pnpm test:supabase
       - run: pnpm db:types && git diff --exit-code -- src/shared/data/supabase/database.types.ts

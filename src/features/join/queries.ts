@@ -19,7 +19,7 @@ export async function getJoin(locale: Locale): Promise<PublicJoin> {
   cacheTag(joinTags.all);
   cacheLife('hours');
   const join = await (await joinRepository()).get();
-  const files = await getMediaMap(joinMediaIds(join));
+  const files = await getMediaMap(joinMediaIds(join), 'public');
   const text = (value: { mk: string; en?: string }) => resolveLocalized(value, locale);
   const lines = (items: JoinRecord['eligibility']['items']) =>
     items.map((item) => text(item.text)).filter(Boolean);

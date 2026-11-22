@@ -52,7 +52,10 @@ function toImage(ref: EventMediaRef, files: Map<string, MediaItem>): AnyMedia | 
 }
 
 async function filesFor(ids: (string | null | undefined)[]) {
-  const items = await getMediaItems(ids.filter((id): id is string => !!id));
+  const items = await getMediaItems(
+    ids.filter((id): id is string => !!id),
+    'public',
+  );
   return new Map(items.map((item) => [item.id, item]));
 }
 
@@ -66,7 +69,7 @@ export async function getArchiveTypes(locale: Locale): Promise<ArchiveTypeOption
   'use cache';
   cacheTag(eventTags.list);
   cacheLife('events');
-  const types = await (await eventTaxonomyRepository()).list('types');
+  const types = await (await eventTaxonomyRepository('public')).list('types');
   return types.map((type) => ({
     id: type.id,
     // Slugs come from the Macedonian name (the required one), so they stay the same in both languages.

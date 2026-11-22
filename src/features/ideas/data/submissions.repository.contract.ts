@@ -158,6 +158,12 @@ export function describeSubmissionsRepository(
       expect((await repo.updateIdea(stored.id, { status: 'archived' }))?.status).toBe('archived');
       const draft = id('ev-power-up-2026');
       expect((await repo.linkEventDraft(stored.id, draft))?.eventDraftId).toBe(draft);
+      // Only an accepted idea's event is public knowledge, and nothing else about the idea.
+      expect(await repo.acceptedEventIds(200)).not.toContain(draft);
+      await repo.updateIdea(stored.id, { status: 'accepted' });
+      expect(await repo.acceptedEventIds(200)).toContain(draft);
+      expect((await repo.acceptedEventIds(1)).length).toBe(1);
+      await repo.updateIdea(stored.id, { status: 'archived' });
       expect(await repo.updateIdea('no-such-id', { status: 'archived' })).toBeNull();
       expect(await repo.linkEventDraft('no-such-id', draft)).toBeNull();
       expect(await repo.getIdea('no-such-id')).toBeNull();

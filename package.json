@@ -19,6 +19,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:supabase": "bash scripts/test-supabase.sh",
+    "smoke:supabase": "bash scripts/smoke-supabase.sh",
     "e2e": "playwright test",
     "lighthouse": "node scripts/lighthouse.ts",
     "i18n:check": "node scripts/check-i18n-keys.ts",

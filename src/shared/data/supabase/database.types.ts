@@ -2510,6 +2510,7 @@ export type Database = {
     };
     Functions: {
       accept_idea: { Args: { p_event_data: Json; p_id: string }; Returns: string };
+      accepted_idea_events: { Args: { p_limit?: number }; Returns: string[] };
       account_deletion_pending: { Args: { p_user: string }; Returns: boolean };
       account_details: { Args: { p_user: string }; Returns: Json };
       activity_actors: {

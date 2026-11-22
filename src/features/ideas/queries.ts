@@ -51,10 +51,8 @@ export async function submissionFileResponse(id: string): Promise<Response> {
 export async function getIdeasThatBecameEvents(
   locale: Locale,
 ): Promise<{ id: string; title: string; slug: string }[]> {
-  const { items } = await (
-    await submissionsRepository('session')
-  ).listIdeas({ status: 'accepted', page: 1, pageSize: 50 });
-  const ids = items.flatMap((idea) => (idea.eventDraftId ? [idea.eventDraftId] : []));
+  // A visitor may read nothing of an idea: the repository hands over the event ids and no more.
+  const ids = await (await submissionsRepository('public')).acceptedEventIds(50);
   if (ids.length === 0) return [];
   const events = await getEventCardsByIds(ids, locale);
   return events.slice(0, 4).map((event) => ({ id: event.id, title: event.title.text, slug: event.slug }));
