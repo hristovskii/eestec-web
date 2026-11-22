@@ -22,9 +22,19 @@ export type MemoryPhoto = {
   sample: string | null;
   alt: string;
   caption: string;
+  /** The measured size of the stored file. Only a database gives it here; the mock keeps it with the file. */
+  width?: number;
+  height?: number;
 };
 
-export type MemoryCover = { fileId: string | null; sample: string | null; alt: string; credit: string };
+export type MemoryCover = {
+  fileId: string | null;
+  sample: string | null;
+  alt: string;
+  credit: string;
+  width?: number;
+  height?: number;
+};
 
 /** Everything the author edits. A revision of a published Memory holds a full copy. */
 export type MemoryContent = {

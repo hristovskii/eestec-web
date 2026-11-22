@@ -1,7 +1,7 @@
 -- Revocable images and submission files never have public bucket access.
 begin;
 \ir ../helpers/isolate.inc
-select plan(26);
+select plan(30);
 insert into auth.users(id,aud,role,email) values
  ('b0000000-0000-0000-0000-000000000001','authenticated','authenticated','manager@test.mk'),
  ('b0000000-0000-0000-0000-000000000002','authenticated','authenticated','editor@test.mk'),
@@ -73,6 +73,12 @@ select throws_ok($$insert into storage.objects(bucket_id,name,owner_id) values (
 select is((select count(*)::integer from storage.objects where bucket_id = 'cvs'),1,'a member reads their own CV');
 select pg_temp.act_as('b0000000-0000-0000-0000-000000000004');
 select is((select count(*)::integer from storage.objects where bucket_id = 'cvs'),0,'and nobody else’s');
+select pg_temp.act_as('b0000000-0000-0000-0000-000000000003');
+select lives_ok($$insert into storage.objects(bucket_id,name,owner_id) values ('memory-photos','b0000000-0000-0000-0000-000000000003/mine.jpg','b0000000-0000-0000-0000-000000000003')$$,'a member uploads a Memory photo to their own folder');
+select throws_ok($$insert into storage.objects(bucket_id,name,owner_id) values ('memory-photos','b0000000-0000-0000-0000-000000000004/not-mine.jpg','b0000000-0000-0000-0000-000000000003')$$,'42501',null,'but not to someone else’s');
+select is((select count(*)::integer from storage.objects where bucket_id = 'memory-photos' and name like 'b0000000-0000-0000-0000-000000000003/%'),0,'and reads it back only once a Memory they may see uses it');
+select pg_temp.act_as('b0000000-0000-0000-0000-000000000001');
+select throws_ok($$insert into storage.objects(bucket_id,name,owner_id) values ('memory-photos','b0000000-0000-0000-0000-000000000001/manager.jpg','b0000000-0000-0000-0000-000000000001')$$,'42501',null,'a board member who is not a member cannot upload Memory photos');
 select pg_temp.visitor();
 select is((select count(*)::integer from storage.objects where bucket_id = 'avatars' and name like 'b0000000-0000-0000-0000-000000000003/%'),0,'a visitor reads no avatar that has no readable profile behind it');
 select * from finish(); rollback;

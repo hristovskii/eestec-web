@@ -10,9 +10,9 @@ import type { MemoriesRepository } from './memories.repository';
 const NOW = new Date('2026-10-10T10:00:00+02:00');
 const unique = () => crypto.randomUUID().slice(0, 8);
 
-const content = (patch: Partial<MemoryContent> = {}): MemoryContent => ({
+const contentOf = (event: (id: string) => string, patch: Partial<MemoryContent> = {}): MemoryContent => ({
   title: `Contract story ${unique()}`,
-  eventId: 'ev-power-up-2026',
+  eventId: event('ev-power-up-2026'),
   otherEventName: '',
   city: 'Skopje',
   country: 'North Macedonia',
@@ -23,16 +23,31 @@ const content = (patch: Partial<MemoryContent> = {}): MemoryContent => ({
   ...patch,
 });
 
-const author = () => `u-contract-${unique()}`;
+/**
+ * `ids` maps the fixture ids (events) to the ids a database seed uses. `newAuthor` makes a person who may write
+ * Memories (a database needs a real active member). `retire` and `impression` switch off the two methods that a database
+ * only has as part of account deletion and of the impression form (M20i, M20h2): their own tests cover them there.
+ */
+export type MemoriesContractOptions = {
+  ids?: (id: string) => string;
+  newAuthor?: () => string | Promise<string>;
+  retire?: boolean;
+  impression?: boolean;
+};
 
 export function describeMemoriesRepository(
   name: string,
   createRepo: () => MemoriesRepository | Promise<MemoriesRepository>,
+  options: MemoriesContractOptions = {},
 ) {
+  const event = options.ids ?? ((id: string) => id);
+  const content = (patch: Partial<MemoryContent> = {}) => contentOf(event, patch);
+  const newAuthor = async () => options.newAuthor?.() ?? `u-contract-${unique()}`;
+  const itOnly = (enabled: boolean | undefined) => (enabled === false ? it.skip : it);
   describe(`MemoriesRepository (${name})`, () => {
     it('keeps a draft private and gives it no address until it is submitted', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const saved = await repo.saveDraft(userId, null, content({ title: 'Private draft' }), NOW);
       expect(saved).toMatchObject({
         status: 'saved',
@@ -40,7 +55,7 @@ export function describeMemoriesRepository(
       });
       if (saved.status !== 'saved') return;
       expect(await repo.findMine(userId, { id: saved.record.id })).toMatchObject({ mode: 'draft' });
-      expect(await repo.findMine(author(), { id: saved.record.id })).toBeNull();
+      expect(await repo.findMine(await newAuthor(), { id: saved.record.id })).toBeNull();
       const mine = await repo.listMine(userId);
       expect(mine.map((item) => item.title)).toEqual(['Private draft']);
       const slugs = await repo.listSlugs();
@@ -49,7 +64,7 @@ export function describeMemoriesRepository(
 
     it('overwrites a draft while it is saved again and refuses to save while waiting', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const first = await repo.saveDraft(userId, null, content({ title: 'v1' }), NOW);
       if (first.status !== 'saved') throw new Error('expected saved');
       const second = await repo.saveDraft(userId, first.record.id, content({ title: 'v2' }), NOW);
@@ -58,14 +73,14 @@ export function describeMemoriesRepository(
       expect(await repo.saveDraft(userId, first.record.id, content({ title: 'v3' }), NOW)).toEqual({
         status: 'locked',
       });
-      expect(await repo.saveDraft(author(), first.record.id, content(), NOW)).toEqual({
+      expect(await repo.saveDraft(await newAuthor(), first.record.id, content(), NOW)).toEqual({
         status: 'not_found',
       });
     });
 
     it('submits for review, makes the address once and never uses the reserved ones', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const saved = await repo.saveDraft(userId, null, content({ title: 'New' }), NOW);
       if (saved.status !== 'saved') throw new Error('expected saved');
       const submitted = await repo.submit(userId, saved.record.id, content({ title: 'New' }), NOW);
@@ -84,7 +99,7 @@ export function describeMemoriesRepository(
 
     it('approving publishes it; the public sees it, counts reads and lists it', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const title = `Approve me ${unique()}`;
       const saved = await repo.saveDraft(userId, null, content({ title }), NOW);
       if (saved.status !== 'saved') throw new Error('expected saved');
@@ -110,7 +125,7 @@ export function describeMemoriesRepository(
 
     it('rejecting keeps the reason, shows it to the author, and lets them resubmit', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const saved = await repo.saveDraft(userId, null, content({ title: 'Reject me' }), NOW);
       if (saved.status !== 'saved') throw new Error('expected saved');
       await repo.submit(userId, saved.record.id, content({ title: 'Reject me' }), NOW);
@@ -131,7 +146,7 @@ export function describeMemoriesRepository(
 
     it('editing a published Memory queues a revision and keeps the live version', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const saved = await repo.saveDraft(userId, null, content({ title: 'Live one' }), NOW);
       if (saved.status !== 'saved') throw new Error('expected saved');
       await repo.submit(userId, saved.record.id, content({ title: 'Live one' }), NOW);
@@ -171,7 +186,7 @@ export function describeMemoriesRepository(
 
     it('unpublishing turns it into a draft again and removes it from the public site', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const saved = await repo.saveDraft(userId, null, content({ title: 'Pull me' }), NOW);
       if (saved.status !== 'saved') throw new Error('expected saved');
       await repo.submit(userId, saved.record.id, content({ title: 'Pull me' }), NOW);
@@ -185,11 +200,11 @@ export function describeMemoriesRepository(
 
     it('filters the list by event, year, place, author and search, and pages it', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const tag = unique();
       for (const [title, eventId, city, country, happenedOn] of [
-        [`Alpha ${tag}`, 'ev-power-up-2026', 'Tallinn', 'Estonia', '2024-02-01'],
-        [`Beta ${tag}`, 'ev-robomac-2026', 'Skopje', 'North Macedonia', '2025-04-01'],
+        [`Alpha ${tag}`, event('ev-power-up-2026'), 'Tallinn', 'Estonia', '2024-02-01'],
+        [`Beta ${tag}`, event('ev-robomac-2026'), 'Skopje', 'North Macedonia', '2025-04-01'],
       ] as const) {
         const draft = await repo.saveDraft(
           userId,
@@ -218,51 +233,54 @@ export function describeMemoriesRepository(
       const all = await repo.list(base);
       expect(all.items).toHaveLength(2);
       expect(
-        (await repo.list({ ...base, eventId: 'ev-robomac-2026' })).items.map((item) => item.title),
+        (await repo.list({ ...base, eventId: event('ev-robomac-2026') })).items.map((item) => item.title),
       ).toEqual([`Beta ${tag}`]);
       expect((await repo.list({ ...base, year: 2024 })).items.map((item) => item.title)).toEqual([
         `Alpha ${tag}`,
       ]);
       expect((await repo.list({ ...base, place: 'tallinn, estonia' })).items).toHaveLength(1);
       expect((await repo.list({ ...base, q: `beta ${tag}` })).items).toHaveLength(1);
-      expect((await repo.list({ ...base, authorId: author() })).items).toHaveLength(0);
+      expect((await repo.list({ ...base, authorId: await newAuthor() })).items).toHaveLength(0);
       const facets = await repo.facets();
       expect(facets.places).toContain('Tallinn, Estonia');
       expect(facets.years).toContain(2024);
     });
 
-    it('deleting an account keeps published Memories as "a former member" unless asked', async () => {
-      const repo = await createRepo();
-      const userId = author();
-      const publish = async (title: string) => {
-        const draft = await repo.saveDraft(userId, null, content({ title }), NOW);
+    itOnly(options.retire)(
+      'deleting an account keeps published Memories as "a former member" unless asked',
+      async () => {
+        const repo = await createRepo();
+        const userId = await newAuthor();
+        const publish = async (title: string) => {
+          const draft = await repo.saveDraft(userId, null, content({ title }), NOW);
+          if (draft.status !== 'saved') throw new Error('expected saved');
+          await repo.submit(userId, draft.record.id, content({ title }), NOW);
+          const approved = await repo.approve(draft.record.id, { reviewerName: 'x', now: NOW });
+          if (approved.status !== 'approved') throw new Error('expected approved');
+          return approved.record;
+        };
+        const kept = await publish('Stays');
+        await repo.saveDraft(userId, null, content({ title: 'A draft that goes' }), NOW);
+        expect(await repo.countPublishedBy(userId)).toBe(1);
+        expect(await repo.retire(userId, false)).toEqual({ deleted: 1, kept: 1 });
+        const post = await repo.findPost(kept.slug!);
+        expect(post).toMatchObject({ authorId: null, authorDeleted: true });
+        expect(await repo.listMine(userId)).toEqual([]);
+
+        const other = await newAuthor();
+        const draft = await repo.saveDraft(other, null, content({ title: 'Gone with the account' }), NOW);
         if (draft.status !== 'saved') throw new Error('expected saved');
-        await repo.submit(userId, draft.record.id, content({ title }), NOW);
+        await repo.submit(other, draft.record.id, content({ title: 'Gone with the account' }), NOW);
         const approved = await repo.approve(draft.record.id, { reviewerName: 'x', now: NOW });
         if (approved.status !== 'approved') throw new Error('expected approved');
-        return approved.record;
-      };
-      const kept = await publish('Stays');
-      await repo.saveDraft(userId, null, content({ title: 'A draft that goes' }), NOW);
-      expect(await repo.countPublishedBy(userId)).toBe(1);
-      expect(await repo.retire(userId, false)).toEqual({ deleted: 1, kept: 1 });
-      const post = await repo.findPost(kept.slug!);
-      expect(post).toMatchObject({ authorId: null, authorDeleted: true });
-      expect(await repo.listMine(userId)).toEqual([]);
-
-      const other = author();
-      const draft = await repo.saveDraft(other, null, content({ title: 'Gone with the account' }), NOW);
-      if (draft.status !== 'saved') throw new Error('expected saved');
-      await repo.submit(other, draft.record.id, content({ title: 'Gone with the account' }), NOW);
-      const approved = await repo.approve(draft.record.id, { reviewerName: 'x', now: NOW });
-      if (approved.status !== 'approved') throw new Error('expected approved');
-      expect(await repo.retire(other, true)).toEqual({ deleted: 1, kept: 0 });
-      expect(await repo.findPost(approved.record.slug!)).toBeNull();
-    });
+        expect(await repo.retire(other, true)).toEqual({ deleted: 1, kept: 0 });
+        expect(await repo.findPost(approved.record.slug!)).toBeNull();
+      },
+    );
 
     it('the admin can edit, feature and delete', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const draft = await repo.saveDraft(userId, null, content({ title: 'Admin touch' }), NOW);
       if (draft.status !== 'saved') throw new Error('expected saved');
       await repo.submit(userId, draft.record.id, content({ title: 'Admin touch' }), NOW);
@@ -282,9 +300,9 @@ export function describeMemoriesRepository(
       expect(await repo.adminGet(draft.record.id)).toBeNull();
     });
 
-    it('turns an impression into a waiting Memory', async () => {
+    itOnly(options.impression)('turns an impression into a waiting Memory', async () => {
       const repo = await createRepo();
-      const userId = author();
+      const userId = await newAuthor();
       const record = await repo.createFromImpression(
         userId,
         content({ title: 'From an impression' }),

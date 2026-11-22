@@ -1,7 +1,7 @@
 -- Functions added while building the Supabase repositories (M20): who may call them and what they return.
 begin;
 \ir ../helpers/isolate.inc
-select plan(105);
+select plan(120);
 insert into auth.users(id,aud,role,email) values
  ('a1000000-0000-0000-0000-000000000001','authenticated','authenticated','editor@test.mk'),
  ('a1000000-0000-0000-0000-000000000002','authenticated','authenticated','manager@test.mk'),
@@ -248,5 +248,38 @@ select is(public.set_my_cv('a9000000-0000-0000-0000-000000000002/two.pdf', 'two.
 select is(public.remove_my_cv(), 'a9000000-0000-0000-0000-000000000002/two.pdf', 'removing the CV names the file');
 reset role;
 select is((select count(*)::integer from public.storage_cleanup_queue where path in ('a9000000-0000-0000-0000-000000000002/one.jpg', 'a9000000-0000-0000-0000-000000000002/two.jpg', 'a9000000-0000-0000-0000-000000000002/one.pdf', 'a9000000-0000-0000-0000-000000000002/two.pdf')), 4, 'every replaced or removed file is queued for clean-up');
+-- ───────────── M20h: Memories ─────────────
+reset role;
+insert into storage.objects(bucket_id, name, owner_id) values
+ ('memory-photos', 'a9000000-0000-0000-0000-000000000002/m1.jpg', 'a9000000-0000-0000-0000-000000000002'),
+ ('memory-photos', 'a9000000-0000-0000-0000-000000000001/theirs.jpg', 'a9000000-0000-0000-0000-000000000001');
+select pg_temp.visitor();
+select throws_ok($$select public.register_memory_photo('a9000000-0000-0000-0000-000000000002/m1.jpg', 'image/jpeg', 4, 640, 480)$$, '42501', null, 'a visitor cannot register a Memory photo');
+select pg_temp.act_as('a9000000-0000-0000-0000-000000000002');
+select throws_ok($$select public.register_memory_photo('a9000000-0000-0000-0000-000000000001/theirs.jpg', 'image/jpeg', 4, 640, 480)$$, '22023', null, 'a photo in someone else’s folder is refused');
+select throws_ok($$select public.register_memory_photo('a9000000-0000-0000-0000-000000000002/m1.jpg', 'image/jpeg', 4, 0, 480)$$, '22023', null, 'and so is a size that is not one');
+select isnt(public.register_memory_photo('a9000000-0000-0000-0000-000000000002/m1.jpg', 'image/jpeg', 4, 640, 480), null, 'a member registers an uploaded photo');
+select is((select count(*)::integer from public.media where bucket = 'memory-photos' and path = 'a9000000-0000-0000-0000-000000000002/m1.jpg' and uploaded_by = 'a9000000-0000-0000-0000-000000000002'), 1, 'as a media row of theirs');
+reset role;
+insert into public.memories(id, author_id, slug, status, title, body, city, country, event_id, published_at, cover_media_id)
+  values ('a9e00000-0000-0000-0000-000000000001', 'a9000000-0000-0000-0000-000000000002', 'm20h-live', 'published', 'M20h live story',
+          '<p>Some <b>bold</b> words</p>', 'Bitola', 'North Macedonia', null, '2026-06-01 10:00+00',
+          (select id from public.media where path = 'a9000000-0000-0000-0000-000000000002/m1.jpg')),
+         ('a9e00000-0000-0000-0000-000000000002', 'a9000000-0000-0000-0000-000000000002', null, 'draft', 'M20h draft story', '', '', '', null, null, null);
+select pg_temp.visitor();
+select is((public.memory_media_sizes(array[(select cover_media_id from public.memories where id = 'a9e00000-0000-0000-0000-000000000001')]) -> (select cover_media_id::text from public.memories where id = 'a9e00000-0000-0000-0000-000000000001') ->> 'width'), '640', 'anyone may ask for the size of a Memory photo');
+select is(public.memory_photo_path((select cover_media_id from public.memories where id = 'a9e00000-0000-0000-0000-000000000001')), 'a9000000-0000-0000-0000-000000000002/m1.jpg', 'the photo of a published Memory has a path for a visitor');
+select is((public.memory_page('', null, null, null, 'a9000000-0000-0000-0000-000000000002') ->> 'total')::integer, 1, 'the list holds the published Memory, not the draft');
+select is((public.memory_page('bold', null, null, null, 'a9000000-0000-0000-0000-000000000002') ->> 'total')::integer, 1, 'search reads the text');
+select is((public.memory_page('<b>', null, null, null, 'a9000000-0000-0000-0000-000000000002') ->> 'total')::integer, 0, 'but not its tags');
+select is((public.memory_page('%', null, null, null, 'a9000000-0000-0000-0000-000000000002') ->> 'total')::integer, 0, 'and a percent sign is not a wildcard');
+select ok((public.memory_facets() -> 'places') ? 'Bitola, North Macedonia', 'the place facet lists the published place');
+reset role;
+select set_config('m20h.media', (select id::text from public.media where path = 'a9000000-0000-0000-0000-000000000002/m1.jpg'), true);
+select pg_temp.act_as('a9000000-0000-0000-0000-000000000004');
+select is(public.memory_photo_path(current_setting('m20h.media')::uuid), 'a9000000-0000-0000-0000-000000000002/m1.jpg', 'a signed-in member also gets the path of a published photo');
+select pg_temp.act_as('a1000000-0000-0000-0000-000000000001');
+select cmp_ok((public.memory_admin_counts() ->> 'published')::integer, '>=', 1, 'staff count the published Memories');
+select is((public.memory_admin_counts() ->> 'all')::integer, (public.memory_admin_counts() ->> 'draft')::integer + (public.memory_admin_counts() ->> 'pending')::integer + (public.memory_admin_counts() ->> 'published')::integer + (public.memory_admin_counts() ->> 'rejected')::integer, 'and every status adds up to all');
 select * from finish();
 rollback;

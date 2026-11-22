@@ -73,8 +73,8 @@ export const textFacts = (html: string) => {
   return { words, minutes: readMinutes(words) };
 };
 
-/** Where a stored photo is served from (the mock store; Supabase Storage later). */
-export const memoryPhotoSrc = (fileId: string) => `/api/dev-memory-photos/${fileId}`;
+/** Where a stored photo is served from: one route for both implementations, which asks the repository. */
+export const memoryPhotoSrc = (fileId: string) => `/api/memory-photos/${fileId}`;
 
 /** The photo types the store accepts, by their first bytes. */
 export function photoTypeOf(bytes: Uint8Array): 'image/jpeg' | 'image/png' | 'image/webp' | null {

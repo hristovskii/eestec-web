@@ -4,7 +4,6 @@ import { env } from '@/shared/config/env';
 import { devSurfacesEnabled } from '@/shared/config/flags';
 
 import { memoriesRepository } from './data';
-import { readMockMemoryPhoto, saveMockMemoryPhoto } from './data/memory-photos';
 import { notifyBoardOfMemory } from './notify';
 import type { MemoryRecord } from './types';
 
@@ -41,16 +40,20 @@ export async function listMemoryQueue() {
   return (await memoriesRepository('session')).queue();
 }
 
-/** A photo file of the mock store (dev and preview only, like the other mock files). */
-export function memoryPhotoResponse(id: string): Response {
-  if (!(devSurfacesEnabled() && env.DATA_SOURCE === 'mock'))
-    return new Response('Not found', { status: 404 });
-  const file = readMockMemoryPhoto(id);
+/**
+ * GET /api/memory-photos/[id]: a Memory photo for whoever may see it. The repository answers "no file" for a missing one
+ * and for one this viewer may not see, so the route cannot be used to find out which photos exist. A published photo is
+ * public and kept for an hour; a draft's photo (its author and the board) is not shared. Mock photos exist only where
+ * dev surfaces do, like the other mock files.
+ */
+export async function memoryPhotoResponse(id: string): Promise<Response> {
+  if (env.DATA_SOURCE === 'mock' && !devSurfacesEnabled()) return new Response('Not found', { status: 404 });
+  const file = await (await memoriesRepository('session')).photoFile(id);
   if (!file) return new Response('Not found', { status: 404 });
-  return new Response(new Uint8Array(file.bytes), {
+  return new Response(Buffer.from(file.bytes), {
     headers: {
       'Content-Type': file.mimeType,
-      'Cache-Control': 'private, max-age=3600',
+      'Cache-Control': 'private, max-age=300',
       'X-Content-Type-Options': 'nosniff',
     },
   });
@@ -80,9 +83,9 @@ export async function createMemoryFromImpression(input: {
     .filter(Boolean)
     .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br>')}</p>`)
     .join('');
-  const record = await (
-    await memoriesRepository('session')
-  ).createFromImpression(
+  const repo = await memoriesRepository('session');
+  const photos = await Promise.all(input.photos.map((photo) => repo.storePhoto(input.userId, photo)));
+  const record = await repo.createFromImpression(
     input.userId,
     {
       title: input.title,
@@ -93,9 +96,9 @@ export async function createMemoryFromImpression(input: {
       happenedOn: null,
       body,
       cover: null,
-      photos: input.photos.map((photo) => ({
+      photos: photos.map((fileId) => ({
         id: crypto.randomUUID(),
-        fileId: saveMockMemoryPhoto(photo),
+        fileId,
         sample: null,
         alt: '',
         caption: '',
