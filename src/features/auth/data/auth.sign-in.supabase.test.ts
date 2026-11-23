@@ -1,9 +1,8 @@
 import { afterAll, describe, expect, it } from 'vitest';
 
 import { anonClient, createTestUser, serviceClient } from '../../../../tests/supabase/harness';
+import { authBrowser } from '../../../../tests/supabase/auth-browser';
 import { totpCode } from '../../../../tests/supabase/totp';
-import { createSupabaseAuthRepository } from './auth.supabase';
-import type { SignInDeps } from './auth.supabase-sign-in';
 
 type TestUser = Awaited<ReturnType<typeof createTestUser>>;
 
@@ -20,20 +19,7 @@ const user = async (options: Parameters<typeof createTestUser>[0] = {}) => {
   return made;
 };
 
-/** One browser: a single Auth client that holds the session, and the choices the app would have written to cookies. */
-function browser() {
-  const client = anonClient();
-  const choices: (boolean | null)[] = [];
-  const deps: SignInDeps = {
-    service: () => serviceClient(),
-    signInClient: () => Promise.resolve(client),
-    rememberChoice: (remember) => {
-      choices.push(remember);
-      return Promise.resolve();
-    },
-  };
-  return { client, choices, repo: createSupabaseAuthRepository(client, 'session', deps) };
-}
+const browser = authBrowser;
 
 const credentials = (who: TestUser, password = PASSWORD) => ({
   email: who.email,
